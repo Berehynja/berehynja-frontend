@@ -1,4 +1,4 @@
-import logo from "../../assets/images/logo_berehynja1.jpg";
+import logo from "../../images/logo_berehynja1.jpg";
 import { Languges } from "../icons/Languges";
 import {
   ButtonLanguges,
