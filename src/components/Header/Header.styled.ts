@@ -101,7 +101,7 @@ export const ButtonLanguges = styled.button`
   height: 100px;
   & svg {
     fill: #ffffffff;
-    transition: 550ms;
+    transition: 250ms;
   }
   &:hover svg {
     stroke: #1973faff;
