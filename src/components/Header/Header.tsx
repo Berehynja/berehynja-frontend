@@ -1,5 +1,7 @@
 import logo from "../../assets/images/logo_berehynja1.jpg";
+import { Languges } from "../icons/Languges";
 import {
+  ButtonLanguges,
   HeaderContainer,
   Link,
   LogoBox,
@@ -29,6 +31,7 @@ export function Header() {
         <Link to="events">Події</Link>
         <Link to="news">Новини</Link>
       </Nav>
+      <ButtonLanguges><Languges/></ButtonLanguges>
     </HeaderContainer>
   );
 }

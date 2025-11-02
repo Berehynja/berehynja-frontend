@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 
 export const HeaderContainer = styled.header`
   /* position: fixed; */
@@ -22,14 +22,16 @@ export const LogoText = styled.p`
   justify-content: center;
   align-items: center;
   margin: 0;
+
   font-size: 38px;
   font-weight: 500;
-  font-family: 'Times New Roman';
+  font-family: "Times New Roman";
   color: #000000;
   & span {
     font-size: 16px;
     font-weight: 400;
-    font-family: 'Times New Roman';}
+    font-family: "Times New Roman";
+  }
 `;
 
 export const LogoImg = styled.img`
@@ -45,11 +47,10 @@ export const LogoBox = styled.div`
 `;
 
 export const LogoLink = styled(NavLink)`
-display: flex;
+  display: flex;
   justify-content: center;
   text-decoration: none;
 `;
-
 
 export const Link = styled(NavLink)`
   display: flex;
@@ -81,4 +82,8 @@ export const Nav = styled.nav`
   justify-content: center;
   align-items: center;
   width: 100%;
+`;
+
+export const ButtonLanguges = styled.button`
+  background-color: transparent;
 `;
