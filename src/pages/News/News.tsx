@@ -1,10 +1,9 @@
-import { HomeContainer } from "./HomePage.styled";
-// import { StartContent } from 'components/StartContent/StartContent';
+import { NewsContainer } from "./News.styled"
 
-export function HomePage() {
+export const News = () => {
   return (
-    <HomeContainer>
-      <p>HOME</p>
+    <NewsContainer>
+      <p>Новини</p>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint vero
         aspernatur cupiditate voluptatibus! Odio suscipit tempora pariatur
@@ -123,6 +122,6 @@ export function HomePage() {
         natus, culpa ipsum vero cupiditate assumenda quaerat placeat, enim
         dolorum adipisci, minus vel.
       </p>
-    </HomeContainer>
+    </NewsContainer>
   );
 }

@@ -3,8 +3,11 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css'
 import { AppBar } from './components';
 import { HomePage } from './pages/HomePage/HomePage';
-import { Galery } from './pages/Galery/Galery'; 
-import { Service } from './pages/Service/Services';
+import { Events } from './pages/Events/Events'; 
+import { About } from './pages/About/About';
+import { Programs } from './pages/Programs/Programs'; 
+import { News } from './pages/News/News';
+
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -14,8 +17,10 @@ function App() {
     <Routes>
       <Route path="/" element={<AppBar />}>
         <Route index element={<HomePage />} />
-        <Route path="/service" element={<Service/>} />
-        <Route path="/galery" element={<Galery />} />
+        <Route path="/about" element={<About/>} />
+        <Route path="/events" element={<Events/>} />
+        <Route path="/programs" element={<Programs/>} />
+        <Route path="/news" element={<News/>} />  
         <Route path="*" element={<HomePage />} />
       </Route>
     </Routes>

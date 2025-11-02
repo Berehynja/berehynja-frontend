@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
 
-export const ServiceContainer = styled.div`
+export const AboutContainer = styled.div`
 width: 100%;
 `;

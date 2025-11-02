@@ -6,8 +6,7 @@ export const HeaderContainer = styled.header`
   display: flex;
   transition: top 0.2s;
   align-items: center;
-  width: 100%;
-  padding: 8px 10px;
+  padding: 5px 15px;
   border-bottom: 1px solid #000;
   background-color: #ffffff;
   z-index: 10;
@@ -16,13 +15,48 @@ export const HeaderContainer = styled.header`
   }
 `;
 
+export const LogoText = styled.p`
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  font-size: 38px;
+  font-weight: 500;
+  font-family: 'Times New Roman';
+  color: #000000;
+  & span {
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Times New Roman';}
+`;
+
+export const LogoImg = styled.img`
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+`;
+
+export const LogoBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const LogoLink = styled(NavLink)`
+display: flex;
+  justify-content: center;
+  text-decoration: none;
+`;
+
 
 export const Link = styled(NavLink)`
   display: flex;
   justify-content: center;
   font-size: 25px;
-  padding: 8px 16px;
-  width: 100px;
+  padding: 5px 10px;
+  /* width: 100px; */
   border-radius: 5px;
   align-items: center;
   text-decoration: none;
@@ -43,7 +77,7 @@ export const Link = styled(NavLink)`
 
 export const Nav = styled.nav`
   display: flex;
-  gap: 80px;
+  gap: 20px;
   justify-content: center;
   align-items: center;
   width: 100%;

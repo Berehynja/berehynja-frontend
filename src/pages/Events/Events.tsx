@@ -1,10 +1,10 @@
-import { HomeContainer } from "./HomePage.styled";
-// import { StartContent } from 'components/StartContent/StartContent';
+import { EventsContainer } from "./Events.styled"
 
-export function HomePage() {
+export const Events = () => {
   return (
-    <HomeContainer>
-      <p>HOME</p>
+    <EventsContainer>
+      <p>Події + Галерея
+      </p>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint vero
         aspernatur cupiditate voluptatibus! Odio suscipit tempora pariatur
@@ -123,6 +123,6 @@ export function HomePage() {
         natus, culpa ipsum vero cupiditate assumenda quaerat placeat, enim
         dolorum adipisci, minus vel.
       </p>
-    </HomeContainer>
+    </EventsContainer>
   );
 }

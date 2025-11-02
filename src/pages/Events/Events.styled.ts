@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 
-export const Container = styled.header`
+export const EventsContainer = styled.div`
 width: 100%;
-color: #000;
 `;

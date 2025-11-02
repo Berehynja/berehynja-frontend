@@ -1,10 +1,11 @@
-import { HomeContainer } from "./HomePage.styled";
-// import { StartContent } from 'components/StartContent/StartContent';
+import { AboutContainer } from './About.styled';
 
-export function HomePage() {
+export const About = ()  => {
   return (
-    <HomeContainer>
-      <p>HOME</p>
+    <AboutContainer>
+      <p>Історія команди</p>
+      <p>Статут PDF</p>
+      <p>Партнерство</p>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint vero
         aspernatur cupiditate voluptatibus! Odio suscipit tempora pariatur
@@ -123,6 +124,6 @@ export function HomePage() {
         natus, culpa ipsum vero cupiditate assumenda quaerat placeat, enim
         dolorum adipisci, minus vel.
       </p>
-    </HomeContainer>
+    </AboutContainer>
   );
 }
