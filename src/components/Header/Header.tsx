@@ -1,11 +1,12 @@
-import logo from "../../images/logo_berehynja1.jpg";
+// import logo from "../../images/logo_berehynja1.jpg";
+import { LogoSvg } from "../icons/Logo";
 import { Languges } from "../icons/Languges";
 import {
   ButtonLanguges,
   HeaderContainer,
   Link,
   LogoBox,
-  LogoImg,
+  // LogoImg,
   LogoLink,
   LogoText,
   Nav,
@@ -16,7 +17,8 @@ export function Header() {
     <HeaderContainer>
       <LogoLink to="/" end>
         <LogoBox>
-          <LogoImg src={logo} alt="laibl" />
+          {/* <LogoImg src={logo} alt="laibl" /> */}
+          <LogoSvg />
         </LogoBox>
         <LogoText>
           BEREHYNJA<span>Центр українського розвитку</span>

@@ -22,7 +22,7 @@ export const LogoText = styled.p`
   white-space: nowrap;
   justify-content: center;
   align-items: center;
-  margin: 0;
+  margin: 0 0 0 20px;
 
   font-size: 38px;
   font-weight: 500;
@@ -35,11 +35,11 @@ export const LogoText = styled.p`
   }
 `;
 
-export const LogoImg = styled.img`
-  width: 100px;
-  height: 100px;
-  margin-right: 20px;
-`;
+// export const LogoImg = styled.img`
+//   width: 100px;
+//   height: 100px;
+//   margin-right: 20px;
+// `;
 
 export const LogoBox = styled.div`
   display: flex;
