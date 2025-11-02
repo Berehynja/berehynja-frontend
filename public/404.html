@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Page Not Found</title>
+    <script type="text/javascript">
+      // Базовий шлях для вашого репозиторію на GitHub Pages
+      var BASE_PATH = "/berehynja-frontend"; 
+      
+      var path = window.location.pathname;
+      
+      // Перевіряємо, чи шлях починається з базового
+      if (path.startsWith(BASE_PATH)) {
+          // Якщо поточний шлях містить BASE_PATH, видаляємо його, щоб отримати
+          // лише потрібний роут (наприклад, /about)
+          var route = path.substring(BASE_PATH.length);
+      } else {
+          // Якщо щось пішло не так, просто використовуємо весь шлях
+          var route = path;
+      }
+      
+      // Замінюємо поточний URL на URL з хешем (#),
+      // щоб React Router зміг прочитати його, коли index.html завантажиться.
+      var redirectPath = BASE_PATH + "/#" + route;
+
+      // Використовуємо replaceState, щоб змінити URL в браузері без додавання 
+      // нового запису в історію і без перезавантаження.
+      window.history.replaceState(null, null, redirectPath);
+
+      // Нарешті, перенаправляємо на корінь вашого базового шляху, 
+      // який повинен містити файл index.html (це його знайде GitHub Pages).
+      window.location.replace(BASE_PATH);
+    </script>
+  </head>
+  <body>
+    </body>
+</html>
