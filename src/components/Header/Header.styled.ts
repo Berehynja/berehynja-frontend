@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { keyframes } from "@emotion/react";
 import { NavLink } from "react-router-dom";
 
 export const HeaderContainer = styled.header`
@@ -84,6 +85,27 @@ export const Nav = styled.nav`
   width: 100%;
 `;
 
+const rotateAnimation = keyframes`
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+`;
+
 export const ButtonLanguges = styled.button`
   background-color: transparent;
+  border: none;
+  cursor: pointer;
+  height: 100px;
+  & svg {
+    fill: #ffffffff;
+    transition: 550ms;
+  }
+  &:hover svg {
+    stroke: #1973faff;
+    fill: #fffcceff;
+    /* animation: ${rotateAnimation} 2500ms linear infinite; */
+  }
 `;

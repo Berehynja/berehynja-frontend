@@ -23,9 +23,7 @@ export function Header() {
         </LogoText>
       </LogoLink>
       <Nav>
-        <Link to="/" end>
-          Головна
-        </Link>
+        <Link to="/" end>Головна</Link>
         <Link to="about">Про Нас</Link>
         <Link to="programs">Програми</Link>
         <Link to="events">Події</Link>
