@@ -7,6 +7,7 @@ import { Events } from './pages/Events/Events';
 import { About } from './pages/About/About';
 import { Programs } from './pages/Programs/Programs'; 
 import { News } from './pages/News/News';
+import { PageNotFound } from './pages/PageNotFound/PageNotFound';
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
         <Route path="/events" element={<Events/>} />
         <Route path="/programs" element={<Programs/>} />
         <Route path="/news" element={<News/>} />  
-        <Route path="*" element={<HomePage />} />
+        <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
   )
