@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import { Section, Container, Main } from "./AppBar.styled";
 import { Header } from "../Header/Header";
+import { Footer } from "../Footer/Footer";
 
 export const AppBar = () => {
   return (
@@ -13,6 +14,7 @@ export const AppBar = () => {
             <Outlet />
           </Suspense>
         </Main>
+        <Footer />
       </Container>
     </Section>
   );

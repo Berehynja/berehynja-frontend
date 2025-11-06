@@ -47,8 +47,6 @@ export const LogoLink = styled(NavLink)`
   text-decoration: none;
 `;
 
-
-
 const rotateAnimation = keyframes`
   from {
     transform: rotateY(0deg);
