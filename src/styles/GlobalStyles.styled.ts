@@ -1,7 +1,5 @@
-/* eslint-disable react-refresh/only-export-components*/
-//src/components/index.tsx
-
 import { css } from '@emotion/react';
+
 import { Theme } from './Theme.styled.ts';
 
 export const GlobalStyles = css`
