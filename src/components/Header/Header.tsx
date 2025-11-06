@@ -1,4 +1,3 @@
-// import logo from "../../images/logo_berehynja1.jpg";
 import { LogoSvg } from "../icons/Logo";
 import { Languges } from "../icons/Languges";
 import {
@@ -6,7 +5,6 @@ import {
   HeaderContainer,
   Link,
   LogoBox,
-  // LogoImg,
   LogoLink,
   LogoText,
   Nav,
@@ -17,7 +15,6 @@ export function Header() {
     <HeaderContainer>
       <LogoLink to="/" end>
         <LogoBox>
-          {/* <LogoImg src={logo} alt="laibl" /> */}
           <LogoSvg />
         </LogoBox>
         <LogoText>

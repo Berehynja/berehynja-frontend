@@ -1,4 +1,24 @@
-export const theme = Object.freeze({
+export interface ThemeType {
+  colors: {
+    [key: string]: string;}
+  fontSizes: {
+    [key: string]: string;}
+  lineHeight: { 
+    [key: string]: string;}
+  fontWeight: {
+    [key: string]: number;}
+  breakpoints: {
+    [key: string]: string;}
+  animations: {
+    cubicBezier: string;
+    transitionDuration: string;}
+  spacing: {
+    step: number;}
+  zIndexes: {
+    [key: string]: number;}
+  }
+
+export const Theme = Object.freeze({
   colors: {
     // main
     green: '#B2AB73',
@@ -7,7 +27,7 @@ export const theme = Object.freeze({
     black: '#000000',
     white: '#ffffff',
     beige: '#F3ECDC',
-    mainBackground: '#F3ECDC',
+    mainBackground: '#ffffff',
 
     // secondary
     secGreen: '#D8D4B8',
@@ -51,7 +71,7 @@ export const theme = Object.freeze({
     s: '768px',
     m: '1024px',
     l: '1280px',
-    xl: '1440px',
+    // xl: '1440px',
   },
   animations: {
     // cubicBezier: 'cubic-bezier(0, 0.110, 0.35, 2);',
@@ -75,4 +95,4 @@ export const theme = Object.freeze({
     backdropLoader: 888,
     loginMenu: 10,
   },
-});
+}) as ThemeType;

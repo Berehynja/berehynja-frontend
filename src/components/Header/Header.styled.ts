@@ -35,12 +35,6 @@ export const LogoText = styled.p`
   }
 `;
 
-// export const LogoImg = styled.img`
-//   width: 100px;
-//   height: 100px;
-//   margin-right: 20px;
-// `;
-
 export const LogoBox = styled.div`
   display: flex;
   justify-content: center;
@@ -56,9 +50,8 @@ export const LogoLink = styled(NavLink)`
 export const Link = styled(NavLink)`
   display: flex;
   justify-content: center;
-  font-size: 25px;
+  font-size: 20px;
   padding: 5px 10px;
-  /* width: 100px; */
   border-radius: 5px;
   align-items: center;
   text-decoration: none;

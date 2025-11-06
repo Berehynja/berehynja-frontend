@@ -5,15 +5,15 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import "modern-normalize/modern-normalize.css";
 import { Global, ThemeProvider } from "@emotion/react";
-import { GlobalStyles } from "./styles/GlobalStyles.tsx";
-import { theme } from "./styles/theme.tsx";
+import { GlobalStyles } from "./styles/GlobalStyles.styled.ts";
+import { Theme } from "./styles/Theme.styled.ts";
 
 import App from "./components/App/App.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter basename="/berehynja-frontend">
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={Theme}>
         <Global styles={GlobalStyles} />
         <App />
       </ThemeProvider>

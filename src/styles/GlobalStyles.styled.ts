@@ -1,5 +1,8 @@
+/* eslint-disable react-refresh/only-export-components*/
+//src/components/index.tsx
+
 import { css } from '@emotion/react';
-import { theme } from './theme';
+import { Theme } from './Theme.styled.ts';
 
 export const GlobalStyles = css`
   html {
@@ -11,11 +14,10 @@ export const GlobalStyles = css`
     font-family: 'Inter', sans-serif;
 
     margin: 0;
-    background: ${theme.colors.mainBackground};
+    background: ${Theme.colors.mainBackground};
     min-height: 100vh;
 
     overflow-x: hidden;
-
     font-style: normal;
     cursor: default;
   }
@@ -85,12 +87,12 @@ export const GlobalStyles = css`
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: ${theme.colors.secGreen};
+      background-color: ${Theme.colors.secGreen};
       border-radius: 10px;
-      border: 4px solid ${theme.colors.beige};
+      border: 4px solid ${Theme.colors.beige};
     }
     &::-webkit-scrollbar-thumb:hover {
-      background-color: ${theme.colors.green};
+      background-color: ${Theme.colors.green};
     }
 
     /* &::-webkit-scrollbar-thumb:vertical {
@@ -98,7 +100,7 @@ export const GlobalStyles = css`
     } */
 
     &::-webkit-scrollbar-track {
-      background-color: ${theme.colors.beige};
+      background-color: ${Theme.colors.beige};
     }
   }
 `;
