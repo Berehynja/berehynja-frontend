@@ -1,16 +1,18 @@
 import { LogoSvg } from "../icons/Logo";
 import { Languges } from "../icons/Languges";
+import { useWindowSize } from "../../hooks/useWindowSize";
+import { Navigation } from "../Navigation/Navigation";
 import {
   ButtonLanguges,
   HeaderContainer,
-  Link,
   LogoBox,
   LogoLink,
   LogoText,
-  Nav,
+ 
 } from "./Header.styled";
 
 export function Header() {
+  const screenWidth = useWindowSize();
   return (
     <HeaderContainer>
       <LogoLink to="/" end>
@@ -21,13 +23,7 @@ export function Header() {
           BEREHYNJA<span>Центр українського розвитку</span>
         </LogoText>
       </LogoLink>
-      <Nav>
-        <Link to="/" end>Головна</Link>
-        <Link to="about">Про Нас</Link>
-        <Link to="programs">Програми</Link>
-        <Link to="events">Події</Link>
-        <Link to="news">Новини</Link>
-      </Nav>
+       {screenWidth >= 1024 && <Navigation />}
       <ButtonLanguges><Languges/></ButtonLanguges>
     </HeaderContainer>
   );
