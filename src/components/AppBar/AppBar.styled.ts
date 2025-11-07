@@ -2,6 +2,8 @@ import styled from "@emotion/styled";
 
 // import { Theme } from '../../styles/Theme.styled.ts';
 
+export const AppBarContainer = styled.div`
+  `
 
 export const Hidden = styled.div`
   /* visibility: hidden; */

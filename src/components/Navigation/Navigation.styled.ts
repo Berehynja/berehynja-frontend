@@ -7,21 +7,23 @@ export const Link = styled(NavLink)`
   justify-content: center;
   font-size: 20px;
   padding: 5px 10px;
-  border-radius: 5px;
+  border-radius: 10px;
   align-items: center;
   text-decoration: none;
-  color: #aca8a3;
-  font-weight: 500;
+  color: #000000ff;
+  font-weight: 400;
   background-color: #fff;
   &:hover {
     color: white;
-    background-color: #b2b2b2;
+    background-color: #ddbe8fff;
     transition: 250ms;
   }
   &.active {
     color: white;
-    background-color: #4d4d4d;
+    background-color: #e68a00ff;
+    /* border: 1px solid #000000ff; */
     transition: 250ms;
+    pointer-events: none;
   }
 `;
 

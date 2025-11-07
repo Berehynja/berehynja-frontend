@@ -2,16 +2,17 @@ import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 
 export const FooterStyled = styled.footer`
-  background-color: ${props => props.theme.colors.green};
-  margin-top: ${props => props.theme.spacing.step * 8}px;
+    background-color: #161942ff;
+  /* margin-top: ${props => props.theme.spacing.step * 8}px; */
 `;
 
 export const FooterContainer = styled.div`
   display: block;
   margin: 0 auto;
   overflow: hidden;
+  color: ${props => props.theme.colors.white};
   gap: ${props => props.theme.spacing.step * 1}px;
-  padding: 40px ${props => props.theme.spacing.step * 0}px
+  padding: 20px ${props => props.theme.spacing.step * 0}px
     ${props => props.theme.spacing.step * 10}px
     ${props => props.theme.spacing.step * 0}px;
   @media (min-width: ${props => props.theme.breakpoints.xs}) and (max-width: 767px) {
@@ -31,9 +32,9 @@ export const FooterContainer = styled.div`
   };
   @media (min-width: ${props => props.theme.breakpoints.m}) {
     flex-wrap: nowrap;
-    padding: 0 ${props => props.theme.spacing.step * 20 + 2}px
+    padding: 0 ${props => props.theme.spacing.step * 5}px
       ${props => props.theme.spacing.step * 20}px
-      ${props => props.theme.spacing.step * 20 + 2}px;
+      ${props => props.theme.spacing.step * 5}px;
     width: ${props => props.theme.breakpoints.m};
   };
   @media (min-width: ${props => props.theme.breakpoints.l}) {
@@ -127,7 +128,7 @@ export const ArrowWraper = styled.span<ToggleProps>`
 `;
 
 export const FooterH2Styled = styled.h2`
-  color: ${props => props.theme.colors.white};
+  /* color: ${props => props.theme.colors.black}; */
   font-size: ${props => props.theme.fontSizes.l};
   font-weight: ${props => props.theme.fontWeight.Medium};
   line-height: ${props => props.theme.lineHeight.l};
@@ -184,7 +185,7 @@ export const InfoList = styled.ul`
 `;
 
 export const InfoLink = styled(Link)`
-  color: ${props => props.theme.colors.white};
+  /* color: ${props => props.theme.colors.black}; */
   font-size: ${props => props.theme.fontSizes.xs};
   font-weight: ${props => props.theme.fontWeight.Light};
   line-height: ${props => props.theme.lineHeight.m};
@@ -193,8 +194,6 @@ export const InfoLink = styled(Link)`
 
 export const LicenseLink = styled(Link)`
   padding: 0px 28px;
-
-  color: ${props => props.theme.colors.white};
   font-size: ${props => props.theme.fontSizes.xs};
   font-weight: ${props => props.theme.fontWeight.Light};
   line-height: ${props => props.theme.lineHeight.m};

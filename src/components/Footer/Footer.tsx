@@ -49,16 +49,13 @@ export const Footer = () => {
   return (
     <FooterStyled>
       <FooterContainer>
-        <FooterBox
+        <FooterBox isOpenContacts={isOpenContacts}
           onClick={() => toggleList("КОНТАКТИ")}
-          isOpenContacts={isOpenContacts}
+          
           
         >
           <FooterH2Styled>КОНТАКТИ</FooterH2Styled>
-          <ArrowWraper
-            isOpenContacts={isOpenContacts}
-        
-          >
+          <ArrowWraper isOpenContacts={isOpenContacts}>
             <CaretDown />
           </ArrowWraper>
           <FooterList id="contacts">

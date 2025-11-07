@@ -1,14 +1,39 @@
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 import { NavLink } from "react-router-dom";
+import { Theme } from "../../styles/Theme.styled";
 
-export const HeaderContainer = styled.header`
+export const HeaderStyled = styled.header`
+padding: 5px 0;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+`;
+
+export const HeaderContainer = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+  @media (min-width: ${Theme.breakpoints.xs}) and (max-width: 767px) {
+    min-width: ${Theme.breakpoints.xs};
+    max-width: 430px;
+  }
+  @media (min-width: ${Theme.breakpoints.s}) {
+    width: ${Theme.breakpoints.s};
+  }
+  @media (min-width: ${Theme.breakpoints.m}) {
+    width: ${Theme.breakpoints.m};
+  }
+  @media (min-width: ${Theme.breakpoints.l}) {
+    padding: 0 ${Theme.spacing.step * 5}px;
+    width: ${Theme.breakpoints.l};
+  }
+`;
+
+export const HeaderWrapper = styled.div`
   /* position: fixed; */
   display: flex;
   transition: top 0.2s;
   align-items: center;
-  padding: 5px 15px;
-  border-bottom: 1px solid #000;
+  padding: 0px 15px;
+  /* border-bottom: 1px solid #000; */
   background-color: #ffffff;
   z-index: 10;
   > nav {
@@ -60,7 +85,6 @@ export const ButtonLanguges = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  height: 100px;
   & svg {
     fill: #ffffffff;
     transition: 250ms;
