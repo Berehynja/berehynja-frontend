@@ -28,8 +28,46 @@ export const Hidden = styled.div`
 
 export const Container = styled.div`
   margin-top: 80px;
+  
+
+  /* @media (min-width: ${props => props.theme.breakpoints.xs} ) and (max-width: 767px) {
+    min-width: ${props => props.theme.breakpoints.xs};
+   max-width: 430px;
+  } */
+
+  @media (min-width: ${props => props.theme.breakpoints.s}) {
+    margin-top: 100px;
+    /* padding-left: ${props => props.theme.spacing.step * 4}px;
+    padding-right: ${props => props.theme.spacing.step * 4}px;
+    width: ${(props) => { console.log(props);
+        return props.theme.breakpoints.s}}; */
+  }
+  @media (min-width: ${props => props.theme.breakpoints.m}) {
+    /* margin-top: 90px; */
+    /* padding-left: ${props => props.theme.spacing.step * 15}px;
+    padding-right: ${props => props.theme.spacing.step * 15}px; */
+    /* width: ${props => props.theme.breakpoints.m}; */
+  }
+  @media (min-width: ${props => props.theme.breakpoints.l}) {
+    /* margin-top: 90px; */
+    /* padding-left: ${props => props.theme.spacing.step * 5 }px;
+    padding-right: ${props => props.theme.spacing.step * 5 }px;
+    width: ${props => props.theme.breakpoints.l}; */
+  };
+  /* @media (min-width: ${props => props.theme.breakpoints.xl}) {
+    width: ${props => props.theme.breakpoints.xl};
+  }
+*/`;
+
+export const Main = styled.main`
+display: flex;
+flex-direction: column;
+justify-content: start;
+align-items: center;
   margin-left: auto;
   margin-right: auto;
+  padding-left: ${props => props.theme.spacing.step * 4 - 1}px;
+    padding-right: ${props => props.theme.spacing.step * 4 - 1}px;
 
   @media (min-width: ${props => props.theme.breakpoints.xs} ) and (max-width: 767px) {
     min-width: ${props => props.theme.breakpoints.xs};
@@ -37,9 +75,9 @@ export const Container = styled.div`
   }
 
   @media (min-width: ${props => props.theme.breakpoints.s}) {
-    margin-top: 100px;
-    /* padding-left: ${props => props.theme.spacing.step * 10}pxt
-    padding-right: ${props => props.theme.spacing.step * 10}px; */
+    /* margin-top: 100px; */
+    padding-left: ${props => props.theme.spacing.step * 4}px;
+    padding-right: ${props => props.theme.spacing.step * 4}px;
     width: ${(props) => { console.log(props);
         return props.theme.breakpoints.s}};
   }
@@ -58,11 +96,5 @@ export const Container = styled.div`
   /* @media (min-width: ${props => props.theme.breakpoints.xl}) {
     width: ${props => props.theme.breakpoints.xl};
   }
-*/`;
-
-export const Main = styled.main`
-display: flex;
-flex-direction: column;
-justify-content: start;
-align-items: center;
+*/
 `;

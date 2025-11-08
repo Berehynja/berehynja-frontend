@@ -7,10 +7,8 @@ export const Hero = styled.section`
 `;
 
 export const Baner = styled.div`
-    min-width: 320px;
-    /* max-width: 450px; */
-    min-height: 320px;
-    /* max-height: 450px; */
+    min-width: 290px;
+    min-height: 290px;
     background-image: url(${ban});;
     background-repeat: no-repeat;
     background-size: cover;
