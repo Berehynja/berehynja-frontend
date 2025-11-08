@@ -1,14 +1,13 @@
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
-import { Section, Container, Main, AppBarContainer } from "./AppBar.styled";
+import {  Container, Main, LayoutContainer } from "./Layout.styled";
 import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
 
-export const AppBar = () => {
+export const Layout = () => {
   return (
-    <AppBarContainer>
+    <LayoutContainer>
       <Header />
-      <Section>
         <Container>
           <Main>
             <Suspense fallback={<div>Loading page....</div>}>
@@ -16,8 +15,7 @@ export const AppBar = () => {
             </Suspense>
           </Main>
         </Container>
-      </Section>
       <Footer />
-    </AppBarContainer>
+    </LayoutContainer>
   );
 };

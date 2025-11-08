@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 // import { Theme } from '../../styles/Theme.styled.ts';
 
-export const AppBarContainer = styled.div`
+export const LayoutContainer = styled.div`
   `
 
 export const Hidden = styled.div`
@@ -25,19 +25,6 @@ export const Hidden = styled.div`
   }
 `;
 
-export const Section = styled.section`
-  /* padding-top: ${props => props.theme.spacing.step * 5}px; */
-  /* padding-bottom: ${props => props.theme.spacing.step * 5}px; */
-
-  @media (min-width: ${({theme}) => theme.breakpoints.s}) {
-    /* padding-top: ${props => props.theme.spacing.step * 10}px; */
-    /* padding-bottom: ${props => props.theme.spacing.step * 10}px; */
-  }
-  @media (min-width: ${props => props.theme.breakpoints.l}) {
-    /* padding-top: ${props => props.theme.spacing.step * 20}px; */
-    /* padding-bottom: ${props => props.theme.spacing.step * 20}px; */
-  }
-`;
 
 export const Container = styled.div`
   /* outline: 1px solid red; */
