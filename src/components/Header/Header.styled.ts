@@ -16,8 +16,8 @@ export const HeaderStyled = styled.header`
 `;
 
 export const HeaderContainer = styled.div`
-  margin-left: auto;
-  margin-right: auto;
+   margin-left: auto;
+   margin-right: auto;
   @media (min-width: ${Theme.breakpoints.xs}) and (max-width: 767px) {
     min-width: ${Theme.breakpoints.xs};
     max-width: 430px;
@@ -35,18 +35,13 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderWrapper = styled.div`
-  
   display: flex;
   justify-content: space-between;
-  /* transition: top 0.2s; */
   align-items: center;
   padding: 0px 15px;
-  /* border-bottom: 1px solid #000; */
   background-color: #ffffff;
   z-index: 10;
-  > nav {
-    display: flex;
-  }
+
 `;
 
 export const LogoText = styled.p`
@@ -55,9 +50,9 @@ export const LogoText = styled.p`
   white-space: nowrap;
   justify-content: center;
   align-items: center;
-  margin: 0 0 0 20px;
+  margin-left: 15px;
 
-  font-size: 32px;
+  font-size: 22px;
   font-weight: 500;
   font-family: "montserrat", sans-serif;
   color: #000000;
@@ -66,12 +61,22 @@ export const LogoText = styled.p`
     font-weight: 500;
     font-family: "Caveat", cursive;
   }
+  @media (min-width: ${Theme.breakpoints.s}) {
+    font-size: 32px;
+    margin-left: 20px;
+  }
 `;
 
 export const LogoBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  > svg {
+  @media (max-width: 767px) {
+    width: 70px;
+    height: 70px;
+  }
+  }
 `;
 
 export const LogoLink = styled(NavLink)`

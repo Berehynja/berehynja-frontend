@@ -27,10 +27,6 @@ export const Hidden = styled.div`
 
 
 export const Container = styled.div`
-  /* outline: 1px solid red; */
-
- /* padding-left: ${props => props.theme.spacing.step * 7}px;
-  padding-right: ${props => props.theme.spacing.step * 7}px; */
   margin-top: 70px;
   margin-left: auto;
   margin-right: auto;
@@ -41,7 +37,7 @@ export const Container = styled.div`
   }
 
   @media (min-width: ${props => props.theme.breakpoints.s}) {
-
+    margin-top: 90px;
     /* padding-left: ${props => props.theme.spacing.step * 10}pxt
     padding-right: ${props => props.theme.spacing.step * 10}px; */
     width: ${(props) => { console.log(props);
