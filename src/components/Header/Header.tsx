@@ -24,7 +24,7 @@ export function Header() {
           <LogoSvg />
         </LogoBox>
         <LogoText>
-          BEREHYNJA<span>Центр українського розвитку</span>
+          BEREHYNJA<span>український простір</span>
         </LogoText>
       </LogoLink>
        {screenWidth >= 1024 && <Navigation />}

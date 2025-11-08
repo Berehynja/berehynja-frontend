@@ -51,12 +51,12 @@ export const LogoText = styled.p`
 
   font-size: 32px;
   font-weight: 500;
-  font-family: "Times New Roman";
+  font-family: "montserrat", sans-serif;
   color: #000000;
   & span {
-    font-size: 16px;
-    font-weight: 400;
-    font-family: "Times New Roman";
+    font-size: 20px;
+    font-weight: 500;
+    font-family: "Caveat", cursive;
   }
 `;
 

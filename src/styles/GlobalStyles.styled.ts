@@ -9,7 +9,7 @@ export const GlobalStyles = css`
   }
 
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif, 'Dancing Script', 'Montserrat';
 
     margin: 0;
     background: ${Theme.colors.mainBackground};
