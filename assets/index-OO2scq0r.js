@@ -71,7 +71,7 @@ Please change the parent <Route path="${B}"> to <Route path="${B==="/"?"*":`${B}
   }
 
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif, 'Dancing Script', 'Montserrat';
 
     margin: 0;
     background: ${ae.colors.mainBackground};
@@ -690,12 +690,12 @@ padding: 5px 0;
 
   font-size: 32px;
   font-weight: 500;
-  font-family: "Times New Roman";
+  font-family: "montserrat", sans-serif;
   color: #000000;
   & span {
-    font-size: 16px;
-    font-weight: 400;
-    font-family: "Times New Roman";
+    font-size: 20px;
+    font-weight: 500;
+    font-family: "Caveat", cursive;
   }
 `,Em=it.div`
   display: flex;
@@ -725,7 +725,7 @@ padding: 5px 0;
     fill: #fffcceff;
     /* animation: ${Mm} 2500ms linear infinite; */
   }
-`;function Tm(){const i=e3();return o.jsx(bm,{children:o.jsx(Sm,{children:o.jsxs(xm,{children:[o.jsxs(Cm,{to:"/",end:!0,children:[o.jsx(Em,{children:o.jsx(hm,{})}),o.jsxs(zm,{children:["BEREHYNJA",o.jsx("span",{children:"Центр українського розвитку"})]})]}),i>=1024&&o.jsx(gm,{}),o.jsx(jm,{children:o.jsx(vm,{})})]})})})}const Om=it.footer`
+`;function Tm(){const i=e3();return o.jsx(bm,{children:o.jsx(Sm,{children:o.jsxs(xm,{children:[o.jsxs(Cm,{to:"/",end:!0,children:[o.jsx(Em,{children:o.jsx(hm,{})}),o.jsxs(zm,{children:["BEREHYNJA",o.jsx("span",{children:"український простір"})]})]}),i>=1024&&o.jsx(gm,{}),o.jsx(jm,{children:o.jsx(vm,{})})]})})})}const Om=it.footer`
     background-color: #161942ff;
   /* margin-top: ${i=>i.theme.spacing.step*8}px; */
 `,Am=it.div`
