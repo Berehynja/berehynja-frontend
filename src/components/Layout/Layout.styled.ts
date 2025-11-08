@@ -27,7 +27,7 @@ export const Hidden = styled.div`
 
 
 export const Container = styled.div`
-  margin-top: 70px;
+  margin-top: 80px;
   margin-left: auto;
   margin-right: auto;
 
