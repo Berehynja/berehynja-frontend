@@ -191,7 +191,7 @@ position: relative;
     display: block;
   }
 `;const Tx=ft.div`
-  margin-top: 70px;
+  margin-top: 80px;
   margin-left: auto;
   margin-right: auto;
 
