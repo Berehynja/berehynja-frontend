@@ -37,20 +37,20 @@ export const Container = styled.div`
   }
 
   @media (min-width: ${props => props.theme.breakpoints.s}) {
-    margin-top: 90px;
+    margin-top: 100px;
     /* padding-left: ${props => props.theme.spacing.step * 10}pxt
     padding-right: ${props => props.theme.spacing.step * 10}px; */
     width: ${(props) => { console.log(props);
         return props.theme.breakpoints.s}};
   }
   @media (min-width: ${props => props.theme.breakpoints.m}) {
-    margin-top: 90px;
+    /* margin-top: 90px; */
     /* padding-left: ${props => props.theme.spacing.step * 15}px;
     padding-right: ${props => props.theme.spacing.step * 15}px; */
     width: ${props => props.theme.breakpoints.m};
   }
   @media (min-width: ${props => props.theme.breakpoints.l}) {
-    margin-top: 90px;
+    /* margin-top: 90px; */
     padding-left: ${props => props.theme.spacing.step * 5 }px;
     padding-right: ${props => props.theme.spacing.step * 5 }px;
     width: ${props => props.theme.breakpoints.l};
