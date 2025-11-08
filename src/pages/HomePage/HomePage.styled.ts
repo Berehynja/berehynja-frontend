@@ -7,13 +7,29 @@ export const Hero = styled.section`
 `;
 
 export const Baner = styled.div`
-    width: 1240px;
-    min-height: 900px;
+    min-width: 320px;
+    /* max-width: 450px; */
+    min-height: 320px;
+    /* max-height: 450px; */
     background-image: url(${ban});;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     background-color: #000;
+
+@media (min-width: ${Theme.breakpoints.s}) {
+    min-width: ${Theme.breakpoints.s};
+    min-height: ${Theme.breakpoints.s};
+
+  }
+
+    @media (min-width: ${Theme.breakpoints.m}) {
+     min-width: ${Theme.breakpoints.m};
+    min-height: ${Theme.breakpoints.m};
+  }
+  @media (min-width: ${Theme.breakpoints.l}) {
+    width: auto;
+  };
 `;
 
 export const HomeContainer = styled.div`
