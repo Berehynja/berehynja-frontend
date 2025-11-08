@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 // import { Theme } from '../../styles/Theme.styled.ts';
 
 export const LayoutContainer = styled.div`
+position: relative;
   `
 
 export const Hidden = styled.div`
@@ -16,7 +17,6 @@ export const Hidden = styled.div`
   position: absolute;
   top: 0;
 
-  /* z-index: 6; */
   z-index: ${props => props.theme.zIndexes};
 
   &.isHidden {
@@ -31,7 +31,7 @@ export const Container = styled.div`
 
  /* padding-left: ${props => props.theme.spacing.step * 7}px;
   padding-right: ${props => props.theme.spacing.step * 7}px; */
-
+  margin-top: 70px;
   margin-left: auto;
   margin-right: auto;
 
@@ -48,11 +48,13 @@ export const Container = styled.div`
         return props.theme.breakpoints.s}};
   }
   @media (min-width: ${props => props.theme.breakpoints.m}) {
+    margin-top: 90px;
     /* padding-left: ${props => props.theme.spacing.step * 15}px;
     padding-right: ${props => props.theme.spacing.step * 15}px; */
     width: ${props => props.theme.breakpoints.m};
   }
   @media (min-width: ${props => props.theme.breakpoints.l}) {
+    margin-top: 90px;
     padding-left: ${props => props.theme.spacing.step * 5 }px;
     padding-right: ${props => props.theme.spacing.step * 5 }px;
     width: ${props => props.theme.breakpoints.l};

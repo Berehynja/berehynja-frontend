@@ -4,7 +4,14 @@ import { NavLink } from "react-router-dom";
 import { Theme } from "../../styles/Theme.styled";
 
 export const HeaderStyled = styled.header`
-padding: 5px 0;
+  position: fixed;
+  margin-left: auto;
+  margin-right: auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 5px 0;
+  background-color: ${Theme.colors.white};
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 `;
 
@@ -28,9 +35,10 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderWrapper = styled.div`
-  /* position: fixed; */
+  
   display: flex;
-  transition: top 0.2s;
+  justify-content: space-between;
+  /* transition: top 0.2s; */
   align-items: center;
   padding: 0px 15px;
   /* border-bottom: 1px solid #000; */
