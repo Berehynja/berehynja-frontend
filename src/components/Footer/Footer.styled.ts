@@ -17,7 +17,7 @@ export const FooterContainer = styled.div`
     ${props => props.theme.spacing.step * 0}px;
   @media (min-width: ${props => props.theme.breakpoints.xs}) and (max-width: 767px) {
     min-width: ${props => props.theme.breakpoints.xs};
-    max-width: 430px;
+    max-width: 480px;
   }
 
   @media (min-width: ${props => props.theme.breakpoints.s}) {

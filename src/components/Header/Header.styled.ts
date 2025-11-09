@@ -20,7 +20,7 @@ export const HeaderContainer = styled.div`
    margin-right: auto;
   @media (min-width: ${Theme.breakpoints.xs}) and (max-width: 767px) {
     min-width: ${Theme.breakpoints.xs};
-    max-width: 430px;
+    max-width: 480px;
   }
   @media (min-width: ${Theme.breakpoints.s}) {
     width: ${Theme.breakpoints.s};

@@ -66,31 +66,25 @@ justify-content: start;
 align-items: center;
   margin-left: auto;
   margin-right: auto;
-  padding-left: ${props => props.theme.spacing.step * 4 - 1}px;
-    padding-right: ${props => props.theme.spacing.step * 4 - 1}px;
 
   @media (min-width: ${props => props.theme.breakpoints.xs} ) and (max-width: 767px) {
     min-width: ${props => props.theme.breakpoints.xs};
-   max-width: 430px;
+   max-width: 480px;
   }
 
   @media (min-width: ${props => props.theme.breakpoints.s}) {
-    /* margin-top: 100px; */
     padding-left: ${props => props.theme.spacing.step * 4}px;
     padding-right: ${props => props.theme.spacing.step * 4}px;
-    width: ${(props) => { console.log(props);
-        return props.theme.breakpoints.s}};
+    width: ${(props) => props.theme.breakpoints.s};
   }
   @media (min-width: ${props => props.theme.breakpoints.m}) {
-    /* margin-top: 90px; */
-    /* padding-left: ${props => props.theme.spacing.step * 15}px;
-    padding-right: ${props => props.theme.spacing.step * 15}px; */
+    padding-left: ${props => props.theme.spacing.step * 5}px;
+    padding-right: ${props => props.theme.spacing.step * 5}px;
     width: ${props => props.theme.breakpoints.m};
   }
   @media (min-width: ${props => props.theme.breakpoints.l}) {
-    /* margin-top: 90px; */
-    padding-left: ${props => props.theme.spacing.step * 5 }px;
-    padding-right: ${props => props.theme.spacing.step * 5 }px;
+    /* padding-left: ${props => props.theme.spacing.step * 5 }px;
+    padding-right: ${props => props.theme.spacing.step * 5 }px; */
     width: ${props => props.theme.breakpoints.l};
   };
   /* @media (min-width: ${props => props.theme.breakpoints.xl}) {

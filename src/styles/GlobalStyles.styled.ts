@@ -9,7 +9,7 @@ export const GlobalStyles = css`
   }
 
   body {
-    font-family: 'Inter', sans-serif, 'Dancing Script', 'Montserrat';
+    font-family: 'Inter', sans-serif, 'Dancing Script', 'Montserrat', 'Caveat';
 
     margin: 0;
     background: ${Theme.colors.mainBackground};
@@ -71,7 +71,7 @@ export const GlobalStyles = css`
     font-family: Releway, monospace;
   }
   main {
-    min-height: 930px;
+    min-height: 900px;
   }
 
   .modal-lg {
