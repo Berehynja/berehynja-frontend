@@ -160,7 +160,7 @@ export const Footer = () => {
             <FooterH2Styled>Соціальні мережі</FooterH2Styled>
             <SocialListStyled>
               <li>
-                <SocialLinkStyled href="http://instagram.com" target="_blank">
+                <SocialLinkStyled href="https://www.instagram.com/berehynja.de?igsh=MWRtdWpscm1vNW8yZw==" target="_blank">
                   <InstagramIcon />
                 </SocialLinkStyled>
               </li>
@@ -170,7 +170,7 @@ export const Footer = () => {
                 </SocialLinkStyled>
               </li>
               <li>
-                <SocialLinkStyled href="http://t.me" target="_blank">
+                <SocialLinkStyled href="https://t.me/bereginia_de" target="_blank">
                   <TelegramIcon />
                 </SocialLinkStyled>
               </li>
