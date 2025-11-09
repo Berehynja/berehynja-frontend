@@ -71,7 +71,7 @@ export const GlobalStyles = css`
     font-family: Releway, monospace;
   }
   main {
-    min-height: 900px;
+    min-height: 500px;
   }
 
   .modal-lg {

@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { Theme } from "../../styles/Theme.styled";
 import ban from "../../images/banner223.webp";
 
 export const Hero = styled.section``;
@@ -14,17 +13,17 @@ export const Baner = styled.div`
   background-position: center;
   background-color: #000;
 
-  @media (min-width: ${Theme.breakpoints.s}) {
-    max-width: ${Theme.breakpoints.s};
-    height: ${Theme.breakpoints.s};
+  @media (min-width: ${props => props.theme.breakpoints.s}) {
+    max-width: ${props => props.theme.breakpoints.s};
+    height: ${props => props.theme.breakpoints.s};
   }
-  @media (min-width: ${Theme.breakpoints.m}) {
-    max-width: ${Theme.breakpoints.m};
-    height: ${Theme.breakpoints.m};
+  @media (min-width: ${props => props.theme.breakpoints.m}) {
+    max-width: ${props => props.theme.breakpoints.m};
+    height: ${props => props.theme.breakpoints.m};
   }
-  @media (min-width: ${Theme.breakpoints.l}) {
-    max-width: ${Theme.breakpoints.l};
-    height: ${Theme.breakpoints.l};
+  @media (min-width: ${props => props.theme.breakpoints.l}) {
+    max-width: ${props => props.theme.breakpoints.l};
+    height: ${props => props.theme.breakpoints.l};
   }
 `;
 

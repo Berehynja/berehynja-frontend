@@ -42,6 +42,83 @@ export const FooterContainer = styled.div`
   };
 `;
 
+
+interface ToggleProps {
+    isOpenContacts: boolean;
+  isOpenAdress: boolean;
+}
+
+export const FooterBox = styled.div<ToggleProps>`
+  /* width: 250px; */
+  display: flex;
+  flex-direction: column;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  @media (min-width: ${props =>props.theme.breakpoints.xs}) and (max-width: 767px) {
+    justify-content: start;
+    position: relative;
+    overflow: hidden;
+    max-height: ${({
+      isOpenContacts,
+      isOpenAdress,
+    }) =>
+      isOpenContacts || isOpenAdress
+        ? '210px'
+        : '72px'};
+    transition: max-height 0.8s ease;
+    border-bottom: 0.5px solid ${props => props.theme.colors.white};
+    padding-left: 28px;
+    padding-right: 28px;
+  };
+
+  @media (min-width: ${props => props.theme.breakpoints.s}) {
+    padding-top: 40px;
+    width: 280px;
+  }
+  @media (min-width: ${props => props.theme.breakpoints.m}) {
+    width: 304px;
+  }
+`;
+
+
+export const ArrowWraper = styled.span<ToggleProps>`
+  position: absolute;
+  right: 25px;
+  top: 18px;
+  transform: ${({
+    isOpenContacts,
+    isOpenAdress,
+  }) =>
+  isOpenContacts || isOpenAdress
+      ? 'rotate(180deg)'
+      : 'rotate(0deg)'};
+  @media (min-width: ${props => props.theme.breakpoints.s}) {
+    display: none;
+  }
+`;
+
+export const FooterH2Styled = styled.h2`
+  /* color: ${props => props.theme.colors.black}; */
+  font-size: ${props => props.theme.fontSizes.l};
+  font-weight: ${props => props.theme.fontWeight.Medium};
+  line-height: ${props => props.theme.lineHeight.l};
+  padding-top: ${props => props.theme.spacing.step * 3}px;
+  padding-bottom: ${props => props.theme.spacing.step * 3}px;
+  @media (min-width: ${props =>props.theme.breakpoints.xs}) and (max-width: 767px) {
+    margin-bottom: ${props => props.theme.spacing.step * 2}px;
+  }
+`;
+
+export const FooterList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.step * 2}px;
+  margin-top: ${props => props.theme.spacing.step * 2}px;
+  @media (min-width: ${props => props.theme.breakpoints.s}) {
+    margin-top: ${props => props.theme.spacing.step * 5}px;
+  }
+`;
+
 export const FooterLinkStyled = styled.a`
   color: ${props => props.theme.colors.white};
   font-size: ${props => props.theme.fontSizes.s};
@@ -67,80 +144,13 @@ export const FooterLinkStyled = styled.a`
   @media (min-width: ${props =>props.theme.breakpoints.xs}) and (max-width: 767px) {
     display: flex;
     align-items: center;
-    font-size: ${props => props.theme.fontSizes.l};
+    font-size: ${props => props.theme.fontSizes.s};
     font-weight: ${props => props.theme.fontWeight.Medium};
     line-height: ${props => props.theme.lineHeight.xl};
+    margin-bottom: ${props => props.theme.spacing.step * 4}px;
     svg {
       margin-right: ${props => props.theme.spacing.step * 4}px;;
     }
-  }
-`;
-
-interface ToggleProps {
-    isOpenContacts: boolean;
-  isOpenAdress: boolean;
-}
-
-export const FooterBox = styled.div<ToggleProps>`
-  /* width: 250px; */
-  padding-top: 14px;
-  padding-bottom: 14px;
-  @media (min-width: ${props =>props.theme.breakpoints.xs}) and (max-width: 767px) {
-    position: relative;
-    overflow: hidden;
-    max-height: ${({
-      isOpenContacts,
-      isOpenAdress,
-    }) =>
-      isOpenContacts || isOpenAdress
-        ? '210px'
-        : '46px'};
-    transition: max-height 0.8s ease;
-    border-bottom: 0.5px solid ${props => props.theme.colors.white};
-    padding-left: 28px;
-    padding-right: 28px;
-  };
-
-  @media (min-width: ${props => props.theme.breakpoints.s}) {
-    padding-top: 40px;
-    width: 280px;
-  }
-  @media (min-width: ${props => props.theme.breakpoints.m}) {
-    width: 304px;
-  }
-`;
-
-
-export const ArrowWraper = styled.span<ToggleProps>`
-  position: absolute;
-  right: 25px;
-  top: 6px;
-  transform: ${({
-    isOpenContacts,
-    isOpenAdress,
-  }) =>
-  isOpenContacts || isOpenAdress
-      ? 'rotate(180deg)'
-      : 'rotate(0deg)'};
-  @media (min-width: ${props => props.theme.breakpoints.s}) {
-    display: none;
-  }
-`;
-
-export const FooterH2Styled = styled.h2`
-  /* color: ${props => props.theme.colors.black}; */
-  font-size: ${props => props.theme.fontSizes.l};
-  font-weight: ${props => props.theme.fontWeight.Medium};
-  line-height: ${props => props.theme.lineHeight.l};
-`;
-
-export const FooterList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: ${props => props.theme.spacing.step * 2}px;
-  margin-top: ${props => props.theme.spacing.step * 2}px;
-  @media (min-width: ${props => props.theme.breakpoints.s}) {
-    margin-top: ${props => props.theme.spacing.step * 5}px;
   }
 `;
 

@@ -1,7 +1,5 @@
 import styled from "@emotion/styled";
 
-// import { Theme } from '../../styles/Theme.styled.ts';
-
 export const LayoutContainer = styled.div`
 position: relative;
   `
@@ -28,36 +26,14 @@ export const Hidden = styled.div`
 
 export const Container = styled.div`
   margin-top: 80px;
-  
-
-  /* @media (min-width: ${props => props.theme.breakpoints.xs} ) and (max-width: 767px) {
-    min-width: ${props => props.theme.breakpoints.xs};
-   max-width: 430px;
-  } */
-
   @media (min-width: ${props => props.theme.breakpoints.s}) {
     margin-top: 100px;
-    /* padding-left: ${props => props.theme.spacing.step * 4}px;
-    padding-right: ${props => props.theme.spacing.step * 4}px;
-    width: ${(props) => { console.log(props);
-        return props.theme.breakpoints.s}}; */
-  }
-  @media (min-width: ${props => props.theme.breakpoints.m}) {
-    /* margin-top: 90px; */
-    /* padding-left: ${props => props.theme.spacing.step * 15}px;
-    padding-right: ${props => props.theme.spacing.step * 15}px; */
-    /* width: ${props => props.theme.breakpoints.m}; */
-  }
-  @media (min-width: ${props => props.theme.breakpoints.l}) {
-    /* margin-top: 90px; */
-    /* padding-left: ${props => props.theme.spacing.step * 5 }px;
-    padding-right: ${props => props.theme.spacing.step * 5 }px;
-    width: ${props => props.theme.breakpoints.l}; */
   };
-  /* @media (min-width: ${props => props.theme.breakpoints.xl}) {
-    width: ${props => props.theme.breakpoints.xl};
-  }
-*/`;
+  @media (min-width: ${props => props.theme.breakpoints.m}) {
+  };
+  @media (min-width: ${props => props.theme.breakpoints.l}) {
+  };
+`;
 
 export const Main = styled.main`
 display: flex;
@@ -83,12 +59,6 @@ align-items: center;
     width: ${props => props.theme.breakpoints.m};
   }
   @media (min-width: ${props => props.theme.breakpoints.l}) {
-    /* padding-left: ${props => props.theme.spacing.step * 5 }px;
-    padding-right: ${props => props.theme.spacing.step * 5 }px; */
     width: ${props => props.theme.breakpoints.l};
   };
-  /* @media (min-width: ${props => props.theme.breakpoints.xl}) {
-    width: ${props => props.theme.breakpoints.xl};
-  }
-*/
 `;
