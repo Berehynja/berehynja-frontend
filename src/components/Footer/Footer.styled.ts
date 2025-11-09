@@ -25,7 +25,7 @@ export const FooterContainer = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     padding: 0 ${props => props.theme.spacing.step * 10}px
-      ${props => props.theme.spacing.step * 33}px
+      ${props => props.theme.spacing.step * 20}px
       ${props => props.theme.spacing.step * 10}px;
     width: ${props => props.theme.breakpoints.s};
     gap: ${props => props.theme.spacing.step * 5}px;
@@ -36,6 +36,7 @@ export const FooterContainer = styled.div`
       ${props => props.theme.spacing.step * 20}px
       ${props => props.theme.spacing.step * 5}px;
     width: ${props => props.theme.breakpoints.m};
+    gap: ${props => props.theme.spacing.step * 10}px;
   };
   @media (min-width: ${props => props.theme.breakpoints.l}) {
     width: ${props => props.theme.breakpoints.l};
@@ -63,7 +64,7 @@ export const FooterBox = styled.div<ToggleProps>`
       isOpenAdress,
     }) =>
       isOpenContacts || isOpenAdress
-        ? '210px'
+        ? '280px'
         : '72px'};
     transition: max-height 0.8s ease;
     border-bottom: 0.5px solid ${props => props.theme.colors.white};
@@ -76,7 +77,7 @@ export const FooterBox = styled.div<ToggleProps>`
     width: 280px;
   }
   @media (min-width: ${props => props.theme.breakpoints.m}) {
-    width: 304px;
+    width: 350px;
   }
 `;
 
@@ -112,6 +113,7 @@ export const FooterH2Styled = styled.h2`
 export const FooterList = styled.ul`
   display: flex;
   flex-direction: column;
+  flex-wrap: 'nowrap';
   gap: ${props => props.theme.spacing.step * 2}px;
   margin-top: ${props => props.theme.spacing.step * 2}px;
   @media (min-width: ${props => props.theme.breakpoints.s}) {
@@ -120,9 +122,15 @@ export const FooterList = styled.ul`
 `;
 
 export const FooterLinkStyled = styled.a`
+  display: flex;
+  align-items: center;
   color: ${props => props.theme.colors.white};
   font-size: ${props => props.theme.fontSizes.s};
   line-height: ${props => props.theme.lineHeight.l};
+
+  svg {
+      margin-right: ${props => props.theme.spacing.step * 3}px;;
+    };
 
   &:hover {
     text-decoration: underline;
@@ -142,15 +150,15 @@ export const FooterLinkStyled = styled.a`
     pointer-events: none;
   };
   @media (min-width: ${props =>props.theme.breakpoints.xs}) and (max-width: 767px) {
-    display: flex;
-    align-items: center;
+    
     font-size: ${props => props.theme.fontSizes.s};
     font-weight: ${props => props.theme.fontWeight.Medium};
     line-height: ${props => props.theme.lineHeight.xl};
     margin-bottom: ${props => props.theme.spacing.step * 4}px;
-    svg {
-      margin-right: ${props => props.theme.spacing.step * 4}px;;
-    }
+    
+  }
+  @media (min-width: ${props => props.theme.breakpoints.s}) {
+    padding: 10px 0;
   }
 `;
 

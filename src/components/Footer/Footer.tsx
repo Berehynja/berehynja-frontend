@@ -22,6 +22,8 @@ import {
   TelegramIcon
 } from "../icons/SocialIcons";
 import { GoogleMapIcon } from "../icons/GoogleMapIcon";
+import { Phone } from "../icons/Phone";
+import { GmailIcon } from "../icons/GmailIcon";
 
 export const Footer = () => {
   const [isOpenContacts, setIsOpenContacts] = useState(false);
@@ -40,7 +42,7 @@ export const Footer = () => {
   return (
     <FooterStyled>
       <FooterContainer>
-        <FooterBox isOpenContacts={isOpenContacts}
+        <FooterBox className="footerBox" isOpenContacts={isOpenContacts}
           onClick={() => toggleList("КОНТАКТИ")}
           
           
@@ -52,7 +54,8 @@ export const Footer = () => {
           <FooterList id="contacts">
             <li>
               <FooterLinkStyled href="tel:+380486752312">
-                tel: +491750000000
+                <Phone/>
+                <span>+491750000000</span>
               </FooterLinkStyled>
             </li>
             <li>
@@ -60,7 +63,8 @@ export const Footer = () => {
                 href="mailto:bereginia.badoeynhausen@gmail.com"
                 target="_blank"
               >
-                email: bereginia.badoeynhausen@gmail.com
+                <GmailIcon/>
+                <span>bereginia.badoeynhausen@gmail.com</span> 
               </FooterLinkStyled>
             </li>
           </FooterList>
@@ -89,6 +93,13 @@ export const Footer = () => {
               >
                 32545 Weserstraße 24
               </FooterLinkStyled>
+              <FooterLinkStyled
+                  href="https://www.google.com/maps/place/Johanniter-Mehrgenerationenhaus+Bad+Oeynhausen/@52.1979902,8.8037727,314m/data=!3m1!1e3!4m6!3m5!1s0x47ba72a07b459829:0x19fbe41cee571634!8m2!3d52.1978688!4d8.8039899!16s%2Fg%2F11c6q9n5kc?entry=ttu&g_ep=EgoyMDI1MTEwNC4xIKXMDSoASAFQAw%3D%3D"
+                  target="_blank"
+                >
+                  <GoogleMapIcon />
+                  Наші координати
+                </FooterLinkStyled>
             </li>
           </FooterList>
         </FooterBox>
@@ -122,15 +133,7 @@ export const Footer = () => {
                   Напишіть нам
                 </FooterLinkStyled>
               </li>
-              <li>
-                <FooterLinkStyled
-                  href="https://www.google.com/maps/place/Johanniter-Mehrgenerationenhaus+Bad+Oeynhausen/@52.1979902,8.8037727,314m/data=!3m1!1e3!4m6!3m5!1s0x47ba72a07b459829:0x19fbe41cee571634!8m2!3d52.1978688!4d8.8039899!16s%2Fg%2F11c6q9n5kc?entry=ttu&g_ep=EgoyMDI1MTEwNC4xIKXMDSoASAFQAw%3D%3D"
-                  target="_blank"
-                >
-                  <GoogleMapIcon />
-                  Наші координати
-                </FooterLinkStyled>
-              </li>
+             
             </ContactsList>
             <LicenseLink>Усі права захищені 2025</LicenseLink>
           </>
