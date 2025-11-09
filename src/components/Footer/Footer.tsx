@@ -8,8 +8,6 @@ import {
   FooterLinkStyled,
   FooterList,
   FooterStyled,
-  InfoLink,
-  InfoList,
   LicenseLink,
   SocialLinkStyled,
   SocialListStyled,
@@ -33,15 +31,9 @@ export const Footer = () => {
 
   const toggleList = (value: string) => {
     if (value === "КОНТАКТИ") {
-      // setIsOpenCatalog(false);
-      // setIsOpenForClients(false);
       setIsOpenContacts(!isOpenContacts);
-      // setIsOpenAboutUs(false);
     }
     if (value === "АДРЕСА") {
-      // setIsOpenCatalog(false);
-      // setIsOpenForClients(false);
-      // setIsOpenContacts(false);
       setIsOpenAdress(!isOpenAdress);
     }
   };
@@ -141,18 +133,6 @@ export const Footer = () => {
                 </FooterLinkStyled>
               </li>
             </ContactsList>
-
-            <InfoList>
-              <li>
-                <InfoLink>Умови обслуговування</InfoLink>
-              </li>
-              <li>
-                <InfoLink>Політика конфіденційност</InfoLink>
-              </li>
-              <li>
-                <InfoLink>Доступність</InfoLink>
-              </li>
-            </InfoList>
             <LicenseLink>Усі права захищені 2025</LicenseLink>
           </>
         ) : (

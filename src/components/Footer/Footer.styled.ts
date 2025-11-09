@@ -181,27 +181,6 @@ export const ContactsList = styled.ul`
   padding: 0px 28px;
 `;
 
-export const InfoList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: ${props => props.theme.spacing.step * 3}px;
-  margin-top: ${props => props.theme.spacing.step * 19}px;
-  margin-bottom: ${props => props.theme.spacing.step * 16}px;
-  padding: 0px 28px;
-  li:not(:last-child) a {
-    border-right: 1px solid white;
-    padding-right: 7px;
-  }
-`;
-
-export const InfoLink = styled(Link)`
-  /* color: ${props => props.theme.colors.black}; */
-  font-size: ${props => props.theme.fontSizes.xs};
-  font-weight: ${props => props.theme.fontWeight.Light};
-  line-height: ${props => props.theme.lineHeight.m};
-  letter-spacing: 1.1px;
-`;
-
 export const LicenseLink = styled(Link)`
   padding: 0px 28px;
   font-size: ${props => props.theme.fontSizes.xs};
