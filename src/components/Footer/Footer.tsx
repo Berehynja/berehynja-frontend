@@ -105,7 +105,7 @@ export const Footer = () => {
           <>
             <SocialListStyled>
               <li>
-                <SocialLinkStyled href="http://instagram.com" target="_blank">
+                <SocialLinkStyled href="https://www.instagram.com/berehynja.de?igsh=MWRtdWpscm1vNW8yZw==" target="_blank">
                   <InstagramIcon />
                 </SocialLinkStyled>
               </li>
