@@ -33,7 +33,7 @@ export const MobileMenuConteiner = styled.div<Menu>`
 
     @media (min-width: ${({ theme }) => theme.breakpoints.s}) and (max-width: 1023px) {
       width: 30vw;
-;
+      top: 95px;
   }
   };`
 
