@@ -1,9 +1,7 @@
 import { useState } from "react";
 import {
   ArrowWraperAdress,
-  ArrowWraperContacts,
-  // ContactsList,
- 
+  ArrowWraperContacts, 
   FooterBoxAdress,
   FooterBoxContact,
   FooterContainer,
@@ -12,7 +10,6 @@ import {
   FooterLinkWrapper,
   FooterStyled,
   License,
-  // SocialBox,
   SocialLinkStyled,
   SocialStyled,
 } from "./Footer.styled";
@@ -97,7 +94,7 @@ export const Footer = () => {
           </ArrowWraperAdress>
           <FooterLinkWrapper >
             <FooterLinkStyled href="tel:+380486752312">
-              Bad-Oeynhause, Germany
+              Bad-Oeynhausen, Germany
             </FooterLinkStyled>
 
             <FooterLinkStyled

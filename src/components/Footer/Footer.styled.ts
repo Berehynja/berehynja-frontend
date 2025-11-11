@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-// import { Link } from "react-router-dom";
 
 export const FooterStyled = styled.footer`
   background-color: #161942ff;
@@ -14,9 +13,10 @@ export const FooterContainer = styled.div`
   padding: 20px ${(props) => props.theme.spacing.step * 0}px
     ${(props) => props.theme.spacing.step * 10}px
     ${(props) => props.theme.spacing.step * 0}px;
-  @media (min-width: ${(props) =>props.theme.breakpoints.xs}) and (max-width: 767px) {
-    min-width: ${(props) => props.theme.breakpoints.xs};
-    max-width: 480px;
+    
+  @media (max-width: 767px) {
+    /* min-width: ${(props) => props.theme.breakpoints.xs}; */
+    /* max-width: 580px; */
   }
 
   @media (min-width: ${(props) => props.theme.breakpoints.s}) {
@@ -55,7 +55,8 @@ display: flex;
   flex-direction: column;
   padding-top: 14px;
   padding-bottom: 14px;
-  @media (min-width: ${(props) =>props.theme.breakpoints.xs}) and (max-width: 767px) {
+
+  @media  (max-width: 767px) {
     justify-content: start;
     position: relative;
     overflow: hidden;
@@ -77,7 +78,8 @@ export const FooterBoxAdress = styled.div<TogglePropsAdress>`
   flex-direction: column;
   padding-top: 14px;
   padding-bottom: 14px;
-  @media (min-width: ${(props) =>props.theme.breakpoints.xs}) and (max-width: 767px) {
+
+  @media  (max-width: 767px) {
     justify-content: start;
     position: relative;
     overflow: hidden;
@@ -106,7 +108,8 @@ transform: ${({ isOpenContacts}) =>
     isOpenContacts  
       ? "rotate(180deg)"
       : "rotate(0deg)"};
-      @media (min-width: ${(props) => props.theme.breakpoints.s}) {
+
+  @media (min-width: ${(props) => props.theme.breakpoints.s}) {
     display: none;
   }
 `;
@@ -127,7 +130,8 @@ export const FooterH2Styled = styled.h2`
   line-height: ${(props) => props.theme.lineHeight.l};
   padding-top: ${(props) => props.theme.spacing.step * 3}px;
   padding-bottom: ${(props) => props.theme.spacing.step * 3}px;
-  @media (min-width: ${(props) =>props.theme.breakpoints.xs}) and (max-width: 767px) {
+
+  @media  (max-width: 767px) {
     margin-bottom: ${(props) => props.theme.spacing.step * 2}px;
   }
 `;
@@ -157,6 +161,7 @@ export const FooterLinkStyled = styled.a`
   &:hover {
      color: ${(props) => props.theme.colors.secOrange};
     text-decoration: underline;
+    transition: 250ms;
   }
 
   &:active {
@@ -164,7 +169,7 @@ export const FooterLinkStyled = styled.a`
     text-decoration: none;
   }
 
-  @media (min-width: ${(props) =>props.theme.breakpoints.xs}) and (max-width: 767px) {
+  @media  (max-width: 767px) {
     font-size: ${(props) => props.theme.fontSizes.s};
     font-weight: ${(props) => props.theme.fontWeight.Medium};
     line-height: ${(props) => props.theme.lineHeight.xl};
@@ -177,7 +182,7 @@ export const FooterLinkStyled = styled.a`
 export const SocialStyled = styled.div`
   display: flex;
   gap: ${(props) => props.theme.spacing.step * 11}px;
-  @media (min-width: ${(props) =>props.theme.breakpoints.xs}) and (max-width: 767px) {
+  @media  (max-width: 767px) {
     align-items: center;
     justify-content: center;
     padding-left: 28px;
