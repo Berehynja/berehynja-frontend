@@ -33,4 +33,8 @@ export const Nav = styled.nav`
   justify-content: center;
   align-items: center;
   width: 100%;
+  @media (max-width: 1023px) {
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
 `;

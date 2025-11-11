@@ -15,8 +15,8 @@ export const FooterContainer = styled.div`
     ${(props) => props.theme.spacing.step * 0}px;
     
   @media (max-width: 767px) {
-    /* min-width: ${(props) => props.theme.breakpoints.xs}; */
-    /* max-width: 580px; */
+    min-width: 100px;
+    max-width: 480px;
   }
 
   @media (min-width: ${(props) => props.theme.breakpoints.s}) {
@@ -51,15 +51,16 @@ interface TogglePropsAdress {
 }
 
 export const FooterBoxContact = styled.div<TogglePropsContact>`
-display: flex;
+  display: flex;
   flex-direction: column;
   padding-top: 14px;
   padding-bottom: 14px;
-
+  z-index: 0;
   @media  (max-width: 767px) {
     justify-content: start;
     position: relative;
     overflow: hidden;
+    max-width: 480px;
     max-height: ${({ isOpenContacts}) =>
      isOpenContacts ? "280px" : "72px"};
     transition: max-height 0.8s ease;
@@ -78,11 +79,13 @@ export const FooterBoxAdress = styled.div<TogglePropsAdress>`
   flex-direction: column;
   padding-top: 14px;
   padding-bottom: 14px;
+    z-index: 0;
 
   @media  (max-width: 767px) {
     justify-content: start;
     position: relative;
     overflow: hidden;
+    max-width: 480px;
     max-height: ${({ isOpenAdress}) =>
      isOpenAdress ? "280px" : "72px"};
     transition: max-height 0.8s ease;
@@ -101,6 +104,7 @@ export const ArrowWraper = styled.span`
   position: absolute;
   right: 25px;
   top: 18px;
+  z-index: 0;
 `;
 
 export const ArrowWraperContacts = styled(ArrowWraper)<TogglePropsContact>`
@@ -108,6 +112,7 @@ transform: ${({ isOpenContacts}) =>
     isOpenContacts  
       ? "rotate(180deg)"
       : "rotate(0deg)"};
+    z-index: 0;
 
   @media (min-width: ${(props) => props.theme.breakpoints.s}) {
     display: none;
@@ -118,6 +123,8 @@ transform: ${({  isOpenAdress }) =>
      isOpenAdress 
       ? "rotate(180deg)"
       : "rotate(0deg)"};
+        z-index: 0;
+
       @media (min-width: ${(props) => props.theme.breakpoints.s}) {
     display: none;
   }

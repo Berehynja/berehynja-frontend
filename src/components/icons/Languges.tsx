@@ -3,8 +3,8 @@ export const Languges = () => {
     <svg
       role="img"
       xmlns="http://www.w3.org/2000/svg"
-      width="48px"
-      height="48px"
+      width="20px"
+      height="20px"
       viewBox="0 0 24 24"
       aria-labelledby="languageIconTitle languageIconDesc"
       stroke="#000000"

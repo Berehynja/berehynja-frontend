@@ -35,6 +35,7 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderWrapper = styled.div`
+position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -95,7 +96,11 @@ const rotateAnimation = keyframes`
 `;
 
 export const ButtonLanguges = styled.button`
-  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
   border: none;
   cursor: pointer;
   & svg {
@@ -107,4 +112,14 @@ export const ButtonLanguges = styled.button`
     fill: #fffcceff;
     /* animation: ${rotateAnimation} 2500ms linear infinite; */
   }
+  @media (max-width: 1023px) {
+    /* width: ${Theme.breakpoints.m}; */
+  }
+`;
+
+export const ButtonMobMenu = styled.button`
+padding-left: 15px;
+padding-right: 15px;
+height: 70px;
+cursor: pointer;
 `;
