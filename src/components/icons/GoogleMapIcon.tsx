@@ -5,11 +5,11 @@ export const GoogleMapIcon = () => {
       width="32"
       height="32"
       viewBox="0 0 232597 333333"
-      shape-rendering="geometricPrecision"
-      text-rendering="geometricPrecision"
-      image-rendering="optimizeQuality"
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      shapeRendering="geometricPrecision"
+      textRendering="geometricPrecision"
+      imageRendering="optimizeQuality"
+      fillRule="evenodd"
+      clipRule="evenodd"
     >
       <path
         d="M151444 5419C140355 1916 128560 0 116311 0 80573 0 48591 16155 27269 41534l54942 46222 69232-82338z"

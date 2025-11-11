@@ -1,25 +1,27 @@
 import { useState } from "react";
 import {
-  ArrowWraper,
-  ContactsList,
-  FooterBox,
+  ArrowWraperAdress,
+  ArrowWraperContacts,
+  // ContactsList,
+ 
+  FooterBoxAdress,
+  FooterBoxContact,
   FooterContainer,
   FooterH2Styled,
   FooterLinkStyled,
-  FooterList,
+  FooterLinkWrapper,
   FooterStyled,
-  LicenseLink,
+  License,
+  // SocialBox,
   SocialLinkStyled,
-  SocialListStyled,
+  SocialStyled,
 } from "./Footer.styled";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { CaretDown } from "../icons/CaretDown";
-import { EmailIcon } from "../icons/EmailIcon";
-import { MdiYoutube } from "../icons/MdiYoutube";
 import {
-  FacebookIcon,
+  
   InstagramIcon,
-  TelegramIcon
+  TelegramIcon,
 } from "../icons/SocialIcons";
 import { GoogleMapIcon } from "../icons/GoogleMapIcon";
 import { Phone } from "../icons/Phone";
@@ -42,124 +44,105 @@ export const Footer = () => {
   return (
     <FooterStyled>
       <FooterContainer>
-        <FooterBox className="footerBox" isOpenContacts={isOpenContacts}
+
+        <FooterBoxContact
+          className="footerBox"
+          isOpenContacts={isOpenContacts}
           onClick={() => toggleList("КОНТАКТИ")}
-          
-          
         >
           <FooterH2Styled>КОНТАКТИ</FooterH2Styled>
-          <ArrowWraper isOpenContacts={isOpenContacts}>
+          <ArrowWraperContacts isOpenContacts={isOpenContacts}>
             <CaretDown />
-          </ArrowWraper>
-          <FooterList id="contacts">
-            <li>
-              <FooterLinkStyled href="tel:+380486752312">
-                <Phone/>
-                <span>+491750000000</span>
-              </FooterLinkStyled>
-            </li>
-            <li>
-              <FooterLinkStyled
-                href="mailto:bereginia.badoeynhausen@gmail.com"
+          </ArrowWraperContacts>
+          <FooterLinkWrapper>
+            <FooterLinkStyled href="tel:+380486752312">
+              <Phone />
+              <span>+491750000000</span>
+            </FooterLinkStyled>
+
+            <FooterLinkStyled
+              href="mailto:bereginia.badoeynhausen@gmail.com"
+              target="_blank"
+            >
+              <GmailIcon />
+              <span>bereginia.badoeynhausen@gmail.com</span>
+            </FooterLinkStyled>
+
+            {screenWidth > 767 && (<SocialStyled>
+              <SocialLinkStyled
+                href="https://www.instagram.com/berehynja.de?igsh=MWRtdWpscm1vNW8yZw=="
                 target="_blank"
               >
-                <GmailIcon/>
-                <span>bereginia.badoeynhausen@gmail.com</span> 
-              </FooterLinkStyled>
-            </li>
-          </FooterList>
-        </FooterBox>
+                <InstagramIcon />
+              </SocialLinkStyled>
 
-        <FooterBox
+              <SocialLinkStyled
+                href="https://t.me/bereginia_de"
+                target="_blank"
+              >
+                <TelegramIcon />
+              </SocialLinkStyled>
+            </SocialStyled>)}
+
+          </FooterLinkWrapper>
+        </FooterBoxContact>
+
+        <FooterBoxAdress
           onClick={() => toggleList("АДРЕСА")}
           isOpenAdress={isOpenAdress}
         >
           <FooterH2Styled>АДРЕСА</FooterH2Styled>
-          <ArrowWraper
-            isOpenAdress={isOpenAdress}
-          >
+          <ArrowWraperAdress isOpenAdress={isOpenAdress}>
             <CaretDown />
-          </ArrowWraper>
-          <FooterList id="adress">
-            <li>
-              <FooterLinkStyled href="tel:+380486752312">
-                Bad-Oeynhause, Germany
-              </FooterLinkStyled>
-            </li>
-            <li>
-              <FooterLinkStyled
-                href="https://www.google.com/maps"
+          </ArrowWraperAdress>
+          <FooterLinkWrapper >
+            <FooterLinkStyled href="tel:+380486752312">
+              Bad-Oeynhause, Germany
+            </FooterLinkStyled>
+
+            <FooterLinkStyled
+              href="https://www.google.com/maps"
+              target="_blank"
+            >
+              32545 Weserstraße 24
+            </FooterLinkStyled>
+            <FooterLinkStyled
+              href="https://www.google.com/maps/place/Johanniter-Mehrgenerationenhaus+Bad+Oeynhausen/@52.1979902,8.8037727,314m/data=!3m1!1e3!4m6!3m5!1s0x47ba72a07b459829:0x19fbe41cee571634!8m2!3d52.1978688!4d8.8039899!16s%2Fg%2F11c6q9n5kc?entry=ttu&g_ep=EgoyMDI1MTEwNC4xIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+            >
+              <GoogleMapIcon />
+              Наші координати
+            </FooterLinkStyled>
+          </FooterLinkWrapper>
+        </FooterBoxAdress>
+
+           { screenWidth < 768 && ( <SocialStyled>
+              <SocialLinkStyled
+                href="https://www.instagram.com/berehynja.de?igsh=MWRtdWpscm1vNW8yZw=="
                 target="_blank"
               >
-                32545 Weserstraße 24
-              </FooterLinkStyled>
-              <FooterLinkStyled
-                  href="https://www.google.com/maps/place/Johanniter-Mehrgenerationenhaus+Bad+Oeynhausen/@52.1979902,8.8037727,314m/data=!3m1!1e3!4m6!3m5!1s0x47ba72a07b459829:0x19fbe41cee571634!8m2!3d52.1978688!4d8.8039899!16s%2Fg%2F11c6q9n5kc?entry=ttu&g_ep=EgoyMDI1MTEwNC4xIKXMDSoASAFQAw%3D%3D"
-                  target="_blank"
-                >
-                  <GoogleMapIcon />
-                  Наші координати
-                </FooterLinkStyled>
-            </li>
-          </FooterList>
-        </FooterBox>
-        {screenWidth <= 767 ? (
-          <>
-            <SocialListStyled>
-              <li>
-                <SocialLinkStyled href="https://www.instagram.com/berehynja.de?igsh=MWRtdWpscm1vNW8yZw==" target="_blank">
-                  <InstagramIcon />
-                </SocialLinkStyled>
-              </li>
-              <li>
-                <SocialLinkStyled href="http://youtube.com" target="_blank">
-                  <MdiYoutube />
-                </SocialLinkStyled>
-              </li>
-              <li>
-                <SocialLinkStyled href="https://t.me/bereginia_de" target="_blank">
-                  <TelegramIcon />
-                </SocialLinkStyled>
-              </li>
-            </SocialListStyled>
+                <InstagramIcon />
+              </SocialLinkStyled>
 
-            <ContactsList>
-              <li>
-                <FooterLinkStyled
-                  href="mailto:bereginia.badoeynhausen@gmail.com"
-                  target="_blank"
-                >
-                  <EmailIcon />
-                  Напишіть нам
-                </FooterLinkStyled>
-              </li>
-             
-            </ContactsList>
-            <LicenseLink>Усі права захищені 2025</LicenseLink>
-          </>
-        ) : (
-          <FooterBox>
-            <FooterH2Styled>Соціальні мережі</FooterH2Styled>
-            <SocialListStyled>
-              <li>
-                <SocialLinkStyled href="https://www.instagram.com/berehynja.de?igsh=MWRtdWpscm1vNW8yZw==" target="_blank">
-                  <InstagramIcon />
-                </SocialLinkStyled>
-              </li>
-              <li>
-                <SocialLinkStyled href="http://facebook.com" target="_blank">
-                  <FacebookIcon />
-                </SocialLinkStyled>
-              </li>
-              <li>
-                <SocialLinkStyled href="https://t.me/bereginia_de" target="_blank">
-                  <TelegramIcon />
-                </SocialLinkStyled>
-              </li>
-            </SocialListStyled>
-          </FooterBox>
-        )}
+              <SocialLinkStyled
+                href="https://t.me/bereginia_de"
+                target="_blank"
+              >
+                <TelegramIcon />
+              </SocialLinkStyled>
+            </SocialStyled>)}
+           
+            <License >Berehynja 2025</License>
+        {/* )} */}
       </FooterContainer>
+      
     </FooterStyled>
   );
 };
+
+ {/* <ContactsList> */}
+              {/* <FooterLinkStyled href="mailto:bereginia.badoeynhausen@gmail.com" target="_blank">
+                <EmailIcon />
+                Напишіть нам
+              </FooterLinkStyled> */}
+            {/* </ContactsList> */}

@@ -33,7 +33,7 @@ export const Theme = Object.freeze({
     secGreen: '#D8D4B8',
     secGrey: '#D8D8D8',
     secBlack: '#4F4F4F',
-
+    secOrange: '#ffa55bff',
     // other
     brightGreen: '#00bd35',
     brightRed: '#ff1515',
