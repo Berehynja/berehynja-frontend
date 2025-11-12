@@ -13,13 +13,16 @@ export const MobileMenuConteiner = styled.div<Menu>`
   width: 200px;
   height: 100vh;
   padding-top: 40px;
-  background-color: black;
-  
-  /* Анимация через keyframes */
-  animation: ${({ mobMenuIsOpen }) =>
-    mobMenuIsOpen
-      ? '0.4s ease forwards slideIn'
-      : '0.4s ease forwards slideOut'};
+  background-color: ${props=> props.theme.colors.black};
+   z-index:  ${props=> props.theme.zIndexes.b + 2000};;
+  isolation: isolate;
+  overflow: hidden;
+  /* Анимация */
+  animation: ${({ mobMenuIsOpen }) => mobMenuIsOpen ? 'slideIn' : 'slideOut'} 0.4s ease forwards;
+  visibility: ${({ mobMenuIsOpen }) => mobMenuIsOpen ? "visible" : "hidden"};
+  transition: visibility 0s linear ${({ mobMenuIsOpen }) => mobMenuIsOpen ? "0s" : "0.4s"}; 
+  pointer-events: ${({ mobMenuIsOpen }) => mobMenuIsOpen ? "auto" : "none"};
+
   /* Чтобы keyframes были доступны */
   & {
     @keyframes slideIn {

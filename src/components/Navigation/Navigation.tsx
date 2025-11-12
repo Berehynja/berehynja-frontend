@@ -2,7 +2,7 @@ import { Link, Nav } from "./Navigation.styled";
 
 export const Navigation = () => {
   return (
-    <Nav>
+    <Nav  >
       <Link to="/" end>
         Головна
       </Link>
