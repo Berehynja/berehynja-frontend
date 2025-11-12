@@ -1,7 +1,9 @@
 import styled from "@emotion/styled";
 import ban from "../../images/children.jpg";
 
-export const Hero = styled.section``;
+export const Hero = styled.section`
+width: 100%;
+`;
 
 export const Baner = styled.div`
   min-width: 320px;
