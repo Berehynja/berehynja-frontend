@@ -55,10 +55,8 @@ export const FooterBoxContact = styled.div<TogglePropsContact>`
   flex-direction: column;
   padding-top: 14px;
   padding-bottom: 14px;
-  z-index: ${props=> props.theme.zIndexes.priceSliderBase};
   @media  (max-width: 767px) {
     justify-content: start;
-    position: relative;
     overflow: hidden;
     max-width: 480px;
     max-height: ${({ isOpenContacts}) =>
@@ -79,11 +77,10 @@ export const FooterBoxAdress = styled.div<TogglePropsAdress>`
   flex-direction: column;
   padding-top: 14px;
   padding-bottom: 14px;
-    z-index: ${props=> props.theme.zIndexes.priceSliderBase};
 
   @media  (max-width: 767px) {
     justify-content: start;
-    position: relative;
+    /* position: relative; */
     overflow: hidden;
     max-width: 480px;
     max-height: ${({ isOpenAdress}) =>
@@ -100,30 +97,36 @@ export const FooterBoxAdress = styled.div<TogglePropsAdress>`
 `;
 
 
-export const ArrowWraper = styled.span`
-  position: absolute;
-  right: 25px;
-  top: 18px;
-  z-index: ${props=> props.theme.zIndexes.priceSliderBase};
-`;
+// export const ArrowWraper = styled.span`
+//   position: absolute;
+//   right: 25px;
+//   top: 18px;
+// `;
 
-export const ArrowWraperContacts = styled(ArrowWraper)<TogglePropsContact>`
+export const ArrowWraperContacts = styled.div<TogglePropsContact>`
+display: flex;
+justify-content: space-between;
+align-items: center;
+& > svg {
 transform: ${({ isOpenContacts}) =>
     isOpenContacts  
       ? "rotate(180deg)"
-      : "rotate(0deg)"};
-    z-index: ${props=> props.theme.zIndexes.priceSliderBase};
+      : "rotate(0deg)"};}
 
   @media (min-width: ${(props) => props.theme.breakpoints.s}) {
     display: none;
   }
 `;
-export const ArrowWraperAdress = styled(ArrowWraper)<TogglePropsAdress>`
+export const ArrowWraperAdress = styled.div<TogglePropsAdress>`
+display: flex;
+justify-content: space-between;
+align-items: center;
+
+& > svg {
 transform: ${({  isOpenAdress }) =>
      isOpenAdress 
       ? "rotate(180deg)"
-      : "rotate(0deg)"};
-        z-index: ${props=> props.theme.zIndexes.priceSliderBase};
+      : "rotate(0deg)"};}
 
       @media (min-width: ${(props) => props.theme.breakpoints.s}) {
     display: none;
@@ -137,7 +140,6 @@ export const FooterH2Styled = styled.h2`
   line-height: ${(props) => props.theme.lineHeight.l};
   padding-top: ${(props) => props.theme.spacing.step * 3}px;
   padding-bottom: ${(props) => props.theme.spacing.step * 3}px;
-  z-index: ${props=> props.theme.zIndexes.priceSliderBase};
   @media  (max-width: 767px) {
     margin-bottom: ${(props) => props.theme.spacing.step * 2}px;
   }
@@ -148,7 +150,6 @@ export const FooterLinkWrapper = styled.div`
   flex-direction: column;
   flex-wrap: "nowrap";
   margin-top: ${(props) => props.theme.spacing.step * 2}px;
-  z-index: ${props=> props.theme.zIndexes.priceSliderBase};
   @media (min-width: ${(props) => props.theme.breakpoints.s}) {
     margin-top: ${(props) => props.theme.spacing.step * 5}px;
   }
@@ -161,7 +162,6 @@ export const FooterLinkStyled = styled.a`
   color: ${(props) => props.theme.colors.white};
   font-size: ${(props) => props.theme.fontSizes.s};
   line-height: ${(props) => props.theme.lineHeight.l};
-  z-index: ${props=> props.theme.zIndexes.priceSliderBase};
   svg {
     margin-right: ${(props) => props.theme.spacing.step * 3}px;
   }

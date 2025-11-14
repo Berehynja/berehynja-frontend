@@ -14,7 +14,7 @@ export const MobileMenuConteiner = styled.div<Menu>`
   height: 100vh;
   padding-top: 60px;
   background-color: #3a3a3aff;
-   z-index:  ${props=> props.theme.zIndexes.b + 2000};;
+   z-index: 1000;
   isolation: isolate;
   overflow: hidden;
   /* Анимация */

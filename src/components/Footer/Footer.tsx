@@ -47,8 +47,10 @@ export const Footer = () => {
           isOpenContacts={isOpenContacts}
           onClick={() => toggleList("КОНТАКТИ")}
         >
-          <FooterH2Styled>КОНТАКТИ</FooterH2Styled>
+          
+          
           <ArrowWraperContacts isOpenContacts={isOpenContacts}>
+            <FooterH2Styled>КОНТАКТИ</FooterH2Styled>
             <CaretDown />
           </ArrowWraperContacts>
           <FooterLinkWrapper>
@@ -88,8 +90,9 @@ export const Footer = () => {
           onClick={() => toggleList("АДРЕСА")}
           isOpenAdress={isOpenAdress}
         >
-          <FooterH2Styled>АДРЕСА</FooterH2Styled>
+          
           <ArrowWraperAdress isOpenAdress={isOpenAdress}>
+            <FooterH2Styled>АДРЕСА</FooterH2Styled>
             <CaretDown />
           </ArrowWraperAdress>
           <FooterLinkWrapper >
