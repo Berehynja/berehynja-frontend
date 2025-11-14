@@ -6,10 +6,10 @@ export const Navigation = () => {
       <Link to="/" end>
         Головна
       </Link>
-      <Link to="about">Про Нас</Link>
-      <Link to="programs">Програми</Link>
-      <Link to="events">Події</Link>
-      <Link to="news">Новини</Link>
+      <Link to="about">ПРО НАС</Link>
+      <Link to="programs">ПРОГРАМИ</Link>
+      <Link to="events">ПОДІЇ</Link>
+      <Link to="news">НОВИНИ</Link>
     </Nav>
   );
 };

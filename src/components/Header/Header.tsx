@@ -26,9 +26,9 @@ export function Header() {
   };
 
   return (
-    <HeaderStyled>
-      <HeaderContainer>
-        <HeaderWrapper>
+    <HeaderStyled className="header">
+      <HeaderContainer className="header_container">
+        <HeaderWrapper className="header_wrapper">
           <LogoLink to="/" end>
             <LogoBox>
               <LogoSvg />
@@ -47,14 +47,14 @@ export function Header() {
               </ButtonLanguges>
             </>
           ) : (
-            <>
+          
             <ButtonMobMenu onClick={ToggleMobMenu}>
               <MobMenuIcon />
               </ButtonMobMenu>
-               <MobileMenu mobMenuIsOpen={mobMenuIsOpen} />
-            </>
+            
           )}
         </HeaderWrapper>
+         <MobileMenu mobMenuIsOpen={mobMenuIsOpen} setMobMenuIsOpen={setMobMenuIsOpen}/>
       </HeaderContainer>
     </HeaderStyled>
   );

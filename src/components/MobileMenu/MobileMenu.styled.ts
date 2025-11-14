@@ -6,14 +6,14 @@ interface Menu {
 
 
 export const MobileMenuConteiner = styled.div<Menu>`
-  position: absolute;
-  display: block;
-  top: 75px;
-  right: 0;
+  position: fixed;
+  /* display: block; */
+  top: 0px;
+  right: 0px;
   width: 200px;
   height: 100vh;
-  padding-top: 40px;
-  background-color: ${props=> props.theme.colors.black};
+  padding-top: 60px;
+  background-color: #3a3a3aff;
    z-index:  ${props=> props.theme.zIndexes.b + 2000};;
   isolation: isolate;
   overflow: hidden;
@@ -33,10 +33,17 @@ export const MobileMenuConteiner = styled.div<Menu>`
       from { opacity: 1; transform: translateX(0); }
       to { opacity: 0; transform: translateX(100%); }
     }
-
+}
     @media (min-width: ${({ theme }) => theme.breakpoints.s}) and (max-width: 1023px) {
       width: 30vw;
-      top: 95px;
+      /* top: 95px; */
   }
-  };`
+  
+  ;`
+
+  export const BattonCloseMenu = styled.button`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  `;
 

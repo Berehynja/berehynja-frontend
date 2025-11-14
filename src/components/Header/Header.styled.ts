@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
-import { keyframes } from "@emotion/react";
 import { NavLink } from "react-router-dom";
 import { Theme } from "../../styles/Theme.styled";
 
 export const HeaderStyled = styled.header`
+  position: relative;
   position: fixed;
   margin-left: auto;
   margin-right: auto;
@@ -11,19 +11,28 @@ export const HeaderStyled = styled.header`
   left: 0;
   width: 100%;
   padding: 5px 0;
-  background-color: ${Theme.colors.white};
+  /* background-color: #ffffffff; */
+  background-image: repeating-linear-gradient(
+    -20deg,
+     #e8f2ffff, 
+    #e8f2ffff 5px, 
+    #fffdebff 10px,
+    #fffdebff 20px
+  );
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 `;
 
 export const HeaderContainer = styled.div`
    margin-left: auto;
    margin-right: auto;
+   height: 70px;
   @media (min-width: ${Theme.breakpoints.xs}) and (max-width: 767px) {
     min-width: ${Theme.breakpoints.xs};
     max-width: 480px;
   }
   @media (min-width: ${Theme.breakpoints.s}) {
     width: ${Theme.breakpoints.s};
+    height: 90px;
   }
   @media (min-width: ${Theme.breakpoints.m}) {
     width: ${Theme.breakpoints.m};
@@ -35,12 +44,11 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderWrapper = styled.div`
-position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0px 15px;
-  background-color: #ffffff;
+  background-color: transparent;
   z-index: 10;
 
 `;
@@ -86,15 +94,6 @@ export const LogoLink = styled(NavLink)`
   text-decoration: none;
 `;
 
-const rotateAnimation = keyframes`
-  from {
-    transform: rotateY(0deg);
-  }
-  to {
-    transform: rotateY(360deg);
-  }
-`;
-
 export const ButtonLanguges = styled.button`
   display: flex;
   justify-content: center;
@@ -110,7 +109,6 @@ export const ButtonLanguges = styled.button`
   &:hover svg {
     stroke: #1973faff;
     fill: #fffcceff;
-    /* animation: ${rotateAnimation} 2500ms linear infinite; */
   }
   @media (max-width: 1023px) {
     /* width: ${Theme.breakpoints.m}; */

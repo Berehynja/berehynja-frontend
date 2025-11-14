@@ -18,7 +18,7 @@ export interface ThemeType {
     [key: string]: number;}
   }
 
-export const Theme = Object.freeze({
+export const Theme = Object({
   colors: {
     // main
     green: '#B2AB73',
@@ -37,6 +37,8 @@ export const Theme = Object.freeze({
     // other
     brightGreen: '#00bd35',
     brightRed: '#ff1515',
+    brightBlue: '#9ce0ffff',
+    brightYelow: '#fdffa3ff',
 
     filterImg: 'rgba(178, 178, 178, 0.60)',
   },
