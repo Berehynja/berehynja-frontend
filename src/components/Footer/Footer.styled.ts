@@ -7,7 +7,7 @@ export const FooterStyled = styled.footer`
 export const FooterContainer = styled.div`
   display: block;
   margin: 0 auto;
-  overflow: hidden;
+  /* overflow: hidden; */
   color: ${(props) => props.theme.colors.white};
   gap: ${(props) => props.theme.spacing.step * 1}px;
   padding: 20px ${(props) => props.theme.spacing.step * 0}px
@@ -77,10 +77,8 @@ export const FooterBoxAdress = styled.div<TogglePropsAdress>`
   flex-direction: column;
   padding-top: 14px;
   padding-bottom: 14px;
-
   @media  (max-width: 767px) {
     justify-content: start;
-    /* position: relative; */
     overflow: hidden;
     max-width: 480px;
     max-height: ${({ isOpenAdress}) =>
@@ -121,8 +119,8 @@ export const ArrowWraperAdress = styled.div<TogglePropsAdress>`
 display: flex;
 justify-content: space-between;
 align-items: center;
-
 & > svg {
+  background-color: inherit;
 transform: ${({  isOpenAdress }) =>
      isOpenAdress 
       ? "rotate(180deg)"

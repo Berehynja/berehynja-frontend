@@ -11,6 +11,7 @@ export const HeaderStyled = styled.header`
   left: 0;
   width: 100%;
   padding: 5px 0;
+  z-index: ${props => props.theme.zIndexes.header};
   /* background-color: #ffffffff; */
   background-image: repeating-linear-gradient(
     -20deg,
@@ -26,6 +27,7 @@ export const HeaderContainer = styled.div`
    margin-left: auto;
    margin-right: auto;
    height: 70px;
+   /* z-index: 9999999; */
   @media (min-width: ${Theme.breakpoints.xs}) and (max-width: 767px) {
     min-width: ${Theme.breakpoints.xs};
     max-width: 480px;
@@ -49,7 +51,6 @@ export const HeaderWrapper = styled.div`
   align-items: center;
   padding: 0px 15px;
   background-color: transparent;
-  z-index: 10;
 
 `;
 

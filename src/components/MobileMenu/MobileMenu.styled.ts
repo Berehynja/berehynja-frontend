@@ -7,15 +7,12 @@ interface Menu {
 
 export const MobileMenuConteiner = styled.div<Menu>`
   position: fixed;
-  /* display: block; */
   top: 0px;
   right: 0px;
   width: 200px;
   height: 100vh;
   padding-top: 60px;
-  background-color: #3a3a3aff;
-   z-index: 1000;
-  isolation: isolate;
+  background: #000000ff;
   overflow: hidden;
   /* Анимация */
   animation: ${({ mobMenuIsOpen }) => mobMenuIsOpen ? 'slideIn' : 'slideOut'} 0.4s ease forwards;
