@@ -652,6 +652,7 @@ m-202 -470 c22 -21 20 -47 -4 -69 -18 -17 -21 -17 -45 -1 -29 19 -32 42 -8 68
   left: 0;
   width: 100%;
   padding: 5px 0;
+  z-index: ${i=>i.theme.zIndexes.header};
   /* background-color: #ffffffff; */
   background-image: repeating-linear-gradient(
     -20deg,
@@ -665,6 +666,7 @@ m-202 -470 c22 -21 20 -47 -4 -69 -18 -17 -21 -17 -45 -1 -29 19 -32 42 -8 68
    margin-left: auto;
    margin-right: auto;
    height: 70px;
+   /* z-index: 9999999; */
   @media (min-width: ${Pt.breakpoints.xs}) and (max-width: 767px) {
     min-width: ${Pt.breakpoints.xs};
     max-width: 480px;
@@ -686,7 +688,6 @@ m-202 -470 c22 -21 20 -47 -4 -69 -18 -17 -21 -17 -45 -1 -29 19 -32 42 -8 68
   align-items: center;
   padding: 0px 15px;
   background-color: transparent;
-  z-index: 10;
 
 `,b5=it.p`
   display: flex;
@@ -749,15 +750,12 @@ height: 70px;
 cursor: pointer;
 `,E5=it.div`
   position: fixed;
-  /* display: block; */
   top: 0px;
   right: 0px;
   width: 200px;
   height: 100vh;
   padding-top: 60px;
-  background-color: #3a3a3aff;
-   z-index: 1000;
-  isolation: isolate;
+  background: #000000ff;
   overflow: hidden;
   /* Анимация */
   animation: ${({mobMenuIsOpen:i})=>i?"slideIn":"slideOut"} 0.4s ease forwards;
@@ -790,7 +788,7 @@ cursor: pointer;
 `,_5=it.div`
   display: block;
   margin: 0 auto;
-  overflow: hidden;
+  /* overflow: hidden; */
   color: ${i=>i.theme.colors.white};
   gap: ${i=>i.theme.spacing.step*1}px;
   padding: 20px ${i=>i.theme.spacing.step*0}px
@@ -847,10 +845,8 @@ cursor: pointer;
   flex-direction: column;
   padding-top: 14px;
   padding-bottom: 14px;
-
   @media  (max-width: 767px) {
     justify-content: start;
-    /* position: relative; */
     overflow: hidden;
     max-width: 480px;
     max-height: ${({isOpenAdress:i})=>i?"280px":"72px"};
@@ -877,8 +873,8 @@ transform: ${({isOpenContacts:i})=>i?"rotate(180deg)":"rotate(0deg)"};}
 display: flex;
 justify-content: space-between;
 align-items: center;
-
 & > svg {
+  background-color: inherit;
 transform: ${({isOpenAdress:i})=>i?"rotate(180deg)":"rotate(0deg)"};}
 
       @media (min-width: ${i=>i.theme.breakpoints.s}) {
