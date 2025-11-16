@@ -656,14 +656,14 @@ m-202 -470 c22 -21 20 -47 -4 -69 -18 -17 -21 -17 -45 -1 -29 19 -32 42 -8 68
   width: 100%;
   padding: 5px 0;
   z-index: ${i=>i.theme.zIndexes.header};
-  /* background-color: #ffffffff; */
-  background-image: repeating-linear-gradient(
+  background-color: #ffffffff;
+  /* background-image: repeating-linear-gradient(
     -20deg,
      #e8f2ffff, 
     #e8f2ffff 5px, 
     #fffdebff 10px,
     #fffdebff 20px
-  );
+  ); */
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 `,y5=lt.div`
    margin-left: auto;
