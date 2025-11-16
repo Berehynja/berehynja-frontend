@@ -11,9 +11,12 @@ export const Nav = styled.nav`
   width: 100%;
   @media (max-width: 1023px) {
     flex-direction: column;
-    margin-top: 20px;
     margin-bottom: 20px;
   }
+  @media (min-width: ${props=>props.theme.breakpoints.l}) {
+      flex-direction: row;
+      gap: 30px;
+    }
 `;
 
 export const Link = styled(NavLink)`

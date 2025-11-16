@@ -16,15 +16,15 @@ export const Baner = styled.div`
   background-color: #000;
 
   @media (min-width: ${props => props.theme.breakpoints.s}) {
-    width: ${props => props.theme.breakpoints.s};
+    max-width: ${props => props.theme.breakpoints.s};
     min-height: 500px;
   }
   @media (min-width: ${props => props.theme.breakpoints.m}) {
-    width: ${props => props.theme.breakpoints.m};
+    max-width: ${props => props.theme.breakpoints.m};
     min-height: 650px;
   }
   @media (min-width: ${props => props.theme.breakpoints.l}) {
-    width: ${props => props.theme.breakpoints.l};
+    max-width: ${props => props.theme.breakpoints.l};
     min-height: 850px;
   }
 `;
