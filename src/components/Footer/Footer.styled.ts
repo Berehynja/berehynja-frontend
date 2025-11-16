@@ -92,14 +92,8 @@ export const FooterBoxAdress = styled.div<TogglePropsAdress>`
   @media (min-width: ${(props) => props.theme.breakpoints.s}) {
     padding-top: 40px;
   }
+
 `;
-
-
-// export const ArrowWraper = styled.span`
-//   position: absolute;
-//   right: 25px;
-//   top: 18px;
-// `;
 
 export const ArrowWraperContacts = styled.div<TogglePropsContact>`
 display: flex;

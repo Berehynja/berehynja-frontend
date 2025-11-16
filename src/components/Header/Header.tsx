@@ -19,10 +19,9 @@ import { MobMenuIcon } from "../icons/MobMenuIcon";
 export function Header() {
   const [mobMenuIsOpen, setMobMenuIsOpen] = useState(false);
   const screenWidth = useWindowSize();
-   
-  const ToggleMobMenu = () => {
 
-    setMobMenuIsOpen(!mobMenuIsOpen)
+  const ToggleMobMenu = () => {
+    setMobMenuIsOpen(!mobMenuIsOpen);
   };
 
   return (
@@ -47,14 +46,17 @@ export function Header() {
               </ButtonLanguges>
             </>
           ) : (
-          
-            <ButtonMobMenu onClick={ToggleMobMenu}>
-              <MobMenuIcon />
+            <>
+              <ButtonMobMenu onClick={ToggleMobMenu}>
+                <MobMenuIcon />
               </ButtonMobMenu>
-            
+              <MobileMenu
+                mobMenuIsOpen={mobMenuIsOpen}
+                setMobMenuIsOpen={setMobMenuIsOpen}
+              />
+            </>
           )}
         </HeaderWrapper>
-         <MobileMenu mobMenuIsOpen={mobMenuIsOpen} setMobMenuIsOpen={setMobMenuIsOpen}/>
       </HeaderContainer>
     </HeaderStyled>
   );

@@ -27,7 +27,6 @@ export const HeaderContainer = styled.div`
    margin-left: auto;
    margin-right: auto;
    height: 70px;
-   /* z-index: 9999999; */
   @media (min-width: ${Theme.breakpoints.xs}) and (max-width: 767px) {
     min-width: ${Theme.breakpoints.xs};
     max-width: 480px;

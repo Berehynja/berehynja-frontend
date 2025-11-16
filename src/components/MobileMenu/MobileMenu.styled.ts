@@ -14,13 +14,11 @@ export const MobileMenuConteiner = styled.div<Menu>`
   padding-top: 60px;
   background: #000000ff;
   overflow: hidden;
-  /* Анимация */
   animation: ${({ mobMenuIsOpen }) => mobMenuIsOpen ? 'slideIn' : 'slideOut'} 0.4s ease forwards;
   visibility: ${({ mobMenuIsOpen }) => mobMenuIsOpen ? "visible" : "hidden"};
   transition: visibility 0s linear ${({ mobMenuIsOpen }) => mobMenuIsOpen ? "0s" : "0.4s"}; 
   pointer-events: ${({ mobMenuIsOpen }) => mobMenuIsOpen ? "auto" : "none"};
 
-  /* Чтобы keyframes были доступны */
   & {
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(100%); }
@@ -35,7 +33,6 @@ export const MobileMenuConteiner = styled.div<Menu>`
       width: 30vw;
       /* top: 95px; */
   }
-  
   ;`
 
   export const BattonCloseMenu = styled.button`

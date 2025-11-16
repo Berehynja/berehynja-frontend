@@ -4,7 +4,7 @@ export const Navigation = () => {
   return (
     <Nav  >
       <Link to="/" end>
-        Головна
+        ГОЛОВНА
       </Link>
       <Link to="about">ПРО НАС</Link>
       <Link to="programs">ПРОГРАМИ</Link>
