@@ -12,7 +12,7 @@ export const MobileMenuConteiner = styled.div<Menu>`
   right: 0px;
   width: 200px;
   height: 100vh;
-  background: #373a16ff;
+  background: #000000;
   overflow: hidden;
   animation: ${({ mobMenuIsOpen }) => (mobMenuIsOpen ? "slideIn" : "slideOut")}
     0.4s ease forwards;
