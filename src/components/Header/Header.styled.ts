@@ -12,14 +12,14 @@ export const HeaderStyled = styled.header`
   width: 100%;
   padding: 5px 0;
   z-index: ${props => props.theme.zIndexes.header};
-  /* background-color: #ffffffff; */
-  background-image: repeating-linear-gradient(
+  background-color: #ffffffff;
+  /* background-image: repeating-linear-gradient(
     -20deg,
      #e8f2ffff, 
     #e8f2ffff 5px, 
     #fffdebff 10px,
     #fffdebff 20px
-  );
+  ); */
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 `;
 
