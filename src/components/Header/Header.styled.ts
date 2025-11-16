@@ -112,6 +112,7 @@ export const ButtonLanguges = styled.button`
   }
   @media (max-width: 1023px) {
     /* width: ${Theme.breakpoints.m}; */
+    margin-bottom: 20px;
   }
 `;
 

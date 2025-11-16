@@ -35,6 +35,16 @@ export const MobileMenuConteiner = styled.div<Menu>`
   }
   ;`
 
+  export const DekorWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  /* height: 30px; */
+  & > svg { 
+    width: 100%;
+    height: 100%;
+  }
+  `;
+
   export const BattonCloseMenu = styled.button`
   position: absolute;
   top: 15px;

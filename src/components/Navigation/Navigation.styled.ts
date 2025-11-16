@@ -11,6 +11,7 @@ export const Nav = styled.nav`
   width: 100%;
   @media (max-width: 1023px) {
     flex-direction: column;
+    margin-top: 20px;
     margin-bottom: 20px;
   }
 `;
