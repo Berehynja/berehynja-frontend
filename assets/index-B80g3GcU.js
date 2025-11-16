@@ -622,14 +622,12 @@ m-202 -470 c22 -21 20 -47 -4 -69 -18 -17 -21 -17 -45 -1 -29 19 -32 42 -8 68
    flex-direction: column;
   padding: 14px 15px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   color: #fff;
-  /* text-transform: uppercase; */
   background: linear-gradient(145deg, #3b7ddd, #2a5cb8);
   border: none;
   border-radius: 12px;
-  box-shadow:
-    6px 6px 12px #1d3f7a;
+  box-shadow: 6px 6px 12px #1d3f7a;
   transition: all 0.25s ease;
   cursor: pointer;
 
@@ -642,8 +640,9 @@ m-202 -470 c22 -21 20 -47 -4 -69 -18 -17 -21 -17 -45 -1 -29 19 -32 42 -8 68
     color: #fbff00ff;
     box-shadow: 5px 5px 16px #d0e1fdff;
     filter: brightness(1.2);
+    
   }
-`,P0=()=>o.jsxs(h5,{children:[o.jsx(Wn,{to:"/",end:!0,children:"Головна"}),o.jsx(Wn,{to:"about",children:"ПРО НАС"}),o.jsx(Wn,{to:"programs",children:"ПРОГРАМИ"}),o.jsx(Wn,{to:"events",children:"ПОДІЇ"}),o.jsx(Wn,{to:"news",children:"НОВИНИ"})]}),v5=it.header`
+`,P0=()=>o.jsxs(h5,{children:[o.jsx(Wn,{to:"/",end:!0,children:"ГОЛОВНА"}),o.jsx(Wn,{to:"about",children:"ПРО НАС"}),o.jsx(Wn,{to:"programs",children:"ПРОГРАМИ"}),o.jsx(Wn,{to:"events",children:"ПОДІЇ"}),o.jsx(Wn,{to:"news",children:"НОВИНИ"})]}),v5=it.header`
   position: relative;
   position: fixed;
   margin-left: auto;
@@ -666,7 +665,6 @@ m-202 -470 c22 -21 20 -47 -4 -69 -18 -17 -21 -17 -45 -1 -29 19 -32 42 -8 68
    margin-left: auto;
    margin-right: auto;
    height: 70px;
-   /* z-index: 9999999; */
   @media (min-width: ${Pt.breakpoints.xs}) and (max-width: 767px) {
     min-width: ${Pt.breakpoints.xs};
     max-width: 480px;
@@ -757,13 +755,11 @@ cursor: pointer;
   padding-top: 60px;
   background: #000000ff;
   overflow: hidden;
-  /* Анимация */
   animation: ${({mobMenuIsOpen:i})=>i?"slideIn":"slideOut"} 0.4s ease forwards;
   visibility: ${({mobMenuIsOpen:i})=>i?"visible":"hidden"};
   transition: visibility 0s linear ${({mobMenuIsOpen:i})=>i?"0s":"0.4s"}; 
   pointer-events: ${({mobMenuIsOpen:i})=>i?"auto":"none"};
 
-  /* Чтобы keyframes были доступны */
   & {
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(100%); }
@@ -778,12 +774,11 @@ cursor: pointer;
       width: 30vw;
       /* top: 95px; */
   }
-  
   ;`,M5=it.button`
   position: absolute;
   top: 15px;
   right: 15px;
-  `,j5=()=>o.jsx("svg",{xmlns:"http://www.w3.org/2000/svg",width:"28",height:"28",viewBox:"0 0 28 28",fill:"#fff",children:o.jsx("path",{d:"M21.7656 20.6336C21.8399 20.708 21.8988 20.7962 21.9391 20.8933C21.9793 20.9904 22 21.0945 22 21.1996C22 21.3047 21.9793 21.4088 21.9391 21.5059C21.8988 21.603 21.8399 21.6912 21.7656 21.7656C21.6912 21.8399 21.603 21.8988 21.5059 21.9391C21.4088 21.9793 21.3047 22 21.1996 22C21.0945 22 20.9904 21.9793 20.8933 21.9391C20.7962 21.8988 20.708 21.8399 20.6336 21.7656L14 15.1309L7.36637 21.7656C7.21626 21.9157 7.01268 22 6.8004 22C6.58812 22 6.38454 21.9157 6.23443 21.7656C6.08433 21.6155 6 21.4119 6 21.1996C6 20.9873 6.08433 20.7837 6.23443 20.6336L12.8691 14L6.23443 7.36637C6.08433 7.21626 6 7.01268 6 6.8004C6 6.58812 6.08433 6.38454 6.23443 6.23443C6.38454 6.08433 6.58812 6 6.8004 6C7.01268 6 7.21626 6.08433 7.36637 6.23443L14 12.8691L20.6336 6.23443C20.7837 6.08433 20.9873 6 21.1996 6C21.4119 6 21.6155 6.08433 21.7656 6.23443C21.9157 6.38454 22 6.58812 22 6.8004C22 7.01268 21.9157 7.21626 21.7656 7.36637L15.1309 14L21.7656 20.6336Z",fill:""})}),T5=({mobMenuIsOpen:i,setMobMenuIsOpen:c})=>o.jsxs(E5,{className:"mobile_menu",mobMenuIsOpen:i,children:[o.jsx(P0,{}),o.jsx(M5,{onClick:()=>c(!i),children:o.jsx(j5,{})}),o.jsxs(td,{children:[o.jsx("span",{children:"UA"}),o.jsx(F0,{})]})]}),O5=()=>o.jsx("svg",{version:"1.1",id:"Layer_1",xmlns:"http://www.w3.org/2000/svg",x:"0px",y:"0px",width:"32",height:"32",viewBox:"0 0 122.88 95.95",children:o.jsx("path",{d:"M8.94,0h105c4.92,0,8.94,4.02,8.94,8.94l0,0c0,4.92-4.02,8.94-8.94,8.94h-105C4.02,17.88,0,13.86,0,8.94l0,0 C0,4.02,4.02,0,8.94,0L8.94,0z M8.94,78.07h105c4.92,0,8.94,4.02,8.94,8.94l0,0c0,4.92-4.02,8.94-8.94,8.94h-105 C4.02,95.95,0,91.93,0,87.01l0,0C0,82.09,4.02,78.07,8.94,78.07L8.94,78.07z M8.94,39.03h105c4.92,0,8.94,4.02,8.94,8.94l0,0 c0,4.92-4.02,8.94-8.94,8.94h-105C4.02,56.91,0,52.89,0,47.97l0,0C0,43.06,4.02,39.03,8.94,39.03L8.94,39.03z"})});function A5(){const[i,c]=A.useState(!1),f=I0(),s=()=>{c(!i)};return o.jsx(v5,{className:"header",children:o.jsxs(y5,{className:"header_container",children:[o.jsxs(g5,{className:"header_wrapper",children:[o.jsxs(S5,{to:"/",end:!0,children:[o.jsx(x5,{children:o.jsx(m5,{})}),o.jsxs(b5,{children:["BEREHYNJA",o.jsx("span",{children:"український простір"})]})]}),f>=1024?o.jsxs(o.Fragment,{children:[o.jsx(P0,{}),o.jsxs(td,{children:[o.jsx("span",{children:"UA"}),o.jsx(F0,{})]})]}):o.jsx(z5,{onClick:s,children:o.jsx(O5,{})})]}),o.jsx(T5,{mobMenuIsOpen:i,setMobMenuIsOpen:c})]})})}const C5=it.footer`
+  `,j5=()=>o.jsx("svg",{xmlns:"http://www.w3.org/2000/svg",width:"28",height:"28",viewBox:"0 0 28 28",fill:"#fff",children:o.jsx("path",{d:"M21.7656 20.6336C21.8399 20.708 21.8988 20.7962 21.9391 20.8933C21.9793 20.9904 22 21.0945 22 21.1996C22 21.3047 21.9793 21.4088 21.9391 21.5059C21.8988 21.603 21.8399 21.6912 21.7656 21.7656C21.6912 21.8399 21.603 21.8988 21.5059 21.9391C21.4088 21.9793 21.3047 22 21.1996 22C21.0945 22 20.9904 21.9793 20.8933 21.9391C20.7962 21.8988 20.708 21.8399 20.6336 21.7656L14 15.1309L7.36637 21.7656C7.21626 21.9157 7.01268 22 6.8004 22C6.58812 22 6.38454 21.9157 6.23443 21.7656C6.08433 21.6155 6 21.4119 6 21.1996C6 20.9873 6.08433 20.7837 6.23443 20.6336L12.8691 14L6.23443 7.36637C6.08433 7.21626 6 7.01268 6 6.8004C6 6.58812 6.08433 6.38454 6.23443 6.23443C6.38454 6.08433 6.58812 6 6.8004 6C7.01268 6 7.21626 6.08433 7.36637 6.23443L14 12.8691L20.6336 6.23443C20.7837 6.08433 20.9873 6 21.1996 6C21.4119 6 21.6155 6.08433 21.7656 6.23443C21.9157 6.38454 22 6.58812 22 6.8004C22 7.01268 21.9157 7.21626 21.7656 7.36637L15.1309 14L21.7656 20.6336Z",fill:""})}),T5=({mobMenuIsOpen:i,setMobMenuIsOpen:c})=>o.jsxs(E5,{className:"mobile_menu",mobMenuIsOpen:i,children:[o.jsx(P0,{}),o.jsx(M5,{onClick:()=>c(!i),children:o.jsx(j5,{})}),o.jsxs(td,{children:[o.jsx("span",{children:"UA"}),o.jsx(F0,{})]})]}),O5=()=>o.jsx("svg",{version:"1.1",id:"Layer_1",xmlns:"http://www.w3.org/2000/svg",x:"0px",y:"0px",width:"32",height:"32",viewBox:"0 0 122.88 95.95",children:o.jsx("path",{d:"M8.94,0h105c4.92,0,8.94,4.02,8.94,8.94l0,0c0,4.92-4.02,8.94-8.94,8.94h-105C4.02,17.88,0,13.86,0,8.94l0,0 C0,4.02,4.02,0,8.94,0L8.94,0z M8.94,78.07h105c4.92,0,8.94,4.02,8.94,8.94l0,0c0,4.92-4.02,8.94-8.94,8.94h-105 C4.02,95.95,0,91.93,0,87.01l0,0C0,82.09,4.02,78.07,8.94,78.07L8.94,78.07z M8.94,39.03h105c4.92,0,8.94,4.02,8.94,8.94l0,0 c0,4.92-4.02,8.94-8.94,8.94h-105C4.02,56.91,0,52.89,0,47.97l0,0C0,43.06,4.02,39.03,8.94,39.03L8.94,39.03z"})});function A5(){const[i,c]=A.useState(!1),f=I0(),s=()=>{c(!i)};return o.jsx(v5,{className:"header",children:o.jsx(y5,{className:"header_container",children:o.jsxs(g5,{className:"header_wrapper",children:[o.jsxs(S5,{to:"/",end:!0,children:[o.jsx(x5,{children:o.jsx(m5,{})}),o.jsxs(b5,{children:["BEREHYNJA",o.jsx("span",{children:"український простір"})]})]}),f>=1024?o.jsxs(o.Fragment,{children:[o.jsx(P0,{}),o.jsxs(td,{children:[o.jsx("span",{children:"UA"}),o.jsx(F0,{})]})]}):o.jsxs(o.Fragment,{children:[o.jsx(z5,{onClick:s,children:o.jsx(O5,{})}),o.jsx(T5,{mobMenuIsOpen:i,setMobMenuIsOpen:c})]})]})})})}const C5=it.footer`
   background-color: #161942ff;
 `,_5=it.div`
   display: block;
@@ -859,6 +854,7 @@ cursor: pointer;
   @media (min-width: ${i=>i.theme.breakpoints.s}) {
     padding-top: 40px;
   }
+
 `,w5=it.div`
 display: flex;
 justify-content: space-between;
