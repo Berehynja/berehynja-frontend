@@ -103,11 +103,13 @@ align-items: center;
 transform: ${({ isOpenContacts}) =>
     isOpenContacts  
       ? "rotate(180deg)"
-      : "rotate(0deg)"};}
-
-  @media (min-width: ${(props) => props.theme.breakpoints.s}) {
+      : "rotate(0deg)"};
+    @media (min-width: ${(props) => props.theme.breakpoints.s}) {
     display: none;
   }
+    }
+
+  
 `;
 export const ArrowWraperAdress = styled.div<TogglePropsAdress>`
 display: flex;
@@ -118,11 +120,14 @@ align-items: center;
 transform: ${({  isOpenAdress }) =>
      isOpenAdress 
       ? "rotate(180deg)"
-      : "rotate(0deg)"};}
-
-      @media (min-width: ${(props) => props.theme.breakpoints.s}) {
+      : "rotate(0deg)"};
+      
+    @media (min-width: ${(props) => props.theme.breakpoints.s}) {
     display: none;
   }
+    }
+
+      
 `;
 
 
