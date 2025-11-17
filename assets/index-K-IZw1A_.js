@@ -892,22 +892,27 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 & > svg {
-transform: ${({isOpenContacts:i})=>i?"rotate(180deg)":"rotate(0deg)"};}
-
-  @media (min-width: ${i=>i.theme.breakpoints.s}) {
+transform: ${({isOpenContacts:i})=>i?"rotate(180deg)":"rotate(0deg)"};
+    @media (min-width: ${i=>i.theme.breakpoints.s}) {
     display: none;
   }
+    }
+
+  
 `,q5=lt.div`
 display: flex;
 justify-content: space-between;
 align-items: center;
 & > svg {
   background-color: inherit;
-transform: ${({isOpenAdress:i})=>i?"rotate(180deg)":"rotate(0deg)"};}
-
-      @media (min-width: ${i=>i.theme.breakpoints.s}) {
+transform: ${({isOpenAdress:i})=>i?"rotate(180deg)":"rotate(0deg)"};
+      
+    @media (min-width: ${i=>i.theme.breakpoints.s}) {
     display: none;
   }
+    }
+
+      
 `,h0=lt.h2`
   font-size: ${i=>i.theme.fontSizes.l};
   font-weight: ${i=>i.theme.fontWeight.Medium};
