@@ -726,7 +726,7 @@ m-202 -470 c22 -21 20 -47 -4 -69 -18 -17 -21 -17 -45 -1 -29 19 -32 42 -8 68
   display: flex;
   justify-content: center;
   text-decoration: none;
-`,td=lt.button`
+`,td=lt.div`
   display: flex;
   justify-content: center;
   margin-left: auto;
