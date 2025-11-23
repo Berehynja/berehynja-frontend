@@ -94,7 +94,7 @@ export const LogoLink = styled(NavLink)`
   text-decoration: none;
 `;
 
-export const ButtonLanguges = styled.button`
+export const LangugeBox = styled.div`
   display: flex;
   justify-content: center;
   margin-left: auto;

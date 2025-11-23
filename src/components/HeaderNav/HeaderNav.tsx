@@ -1,6 +1,6 @@
-import { Link, Nav } from "./Navigation.styled";
+import { Link, Nav } from "./HeaderNav.styled";
 
-export const Navigation = () => {
+export const HeaderNav = () => {
   return (
     <Nav  >
       <Link to="/" end>

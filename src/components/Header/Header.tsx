@@ -2,10 +2,10 @@ import { useState } from "react";
 import { LogoSvg } from "../icons/Logo";
 import { Languges } from "../icons/Languges";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { Navigation } from "../Navigation/Navigation";
+import { HeaderNav } from "../HeaderNav/HeaderNav";
 import {
   HeaderStyled,
-  ButtonLanguges,
+  LangugeBox,
   HeaderContainer,
   HeaderWrapper,
   LogoBox,
@@ -39,11 +39,11 @@ export function Header() {
 
           {screenWidth >= 1024 ? (
             <>
-              <Navigation />
-              <ButtonLanguges>
+              <HeaderNav />
+              <LangugeBox>
                 <span>UA</span>
                 <Languges />
-              </ButtonLanguges>
+              </LangugeBox>
             </>
           ) : (
             <>
