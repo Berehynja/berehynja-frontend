@@ -94,27 +94,7 @@ export const LogoLink = styled(NavLink)`
   text-decoration: none;
 `;
 
-export const LangugeBox = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: white;
-  border: none;
-  cursor: pointer;
-  & svg {
-    fill: #ffffffff;
-    transition: 250ms;
-  }
-  &:hover svg {
-    stroke: #1973faff;
-    fill: #fffcceff;
-  }
-  @media (max-width: 1023px) {
-    /* width: ${Theme.breakpoints.m}; */
-    margin-bottom: 20px;
-  }
-`;
+
 
 export const ButtonMobMenu = styled.button`
 padding-left: 15px;

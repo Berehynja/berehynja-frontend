@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { LogoSvg } from "../icons/Logo";
-import { Languges } from "../icons/Languges";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { HeaderNav } from "../HeaderNav/HeaderNav";
 import {
   HeaderStyled,
-  LangugeBox,
   HeaderContainer,
   HeaderWrapper,
   LogoBox,
@@ -15,6 +13,7 @@ import {
 } from "./Header.styled";
 import { MobileMenu } from "../MobileMenu/MobileMenu";
 import { MobMenuIcon } from "../icons/MobMenuIcon";
+import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";
 
 export function Header() {
   const [mobMenuIsOpen, setMobMenuIsOpen] = useState(false);
@@ -40,10 +39,7 @@ export function Header() {
           {screenWidth >= 1024 ? (
             <>
               <HeaderNav />
-              <LangugeBox>
-                <span>UA</span>
-                <Languges />
-              </LangugeBox>
+              <LanguageSwitcher/>
             </>
           ) : (
             <>

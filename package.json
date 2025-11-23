@@ -19,6 +19,7 @@
     "framer-motion": "^12.23.24",
     "modern-normalize": "^3.0.1",
     "react": "^19.1.1",
+    "react-country-flag": "^3.1.0",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.4"
   },

@@ -1,8 +1,7 @@
 import { BattonCloseMenu, DekorWrapper, MobileMenuConteiner, NavWrapper } from "./MobileMenu.styled";
 import { HeaderNav } from "../HeaderNav/HeaderNav";
-import { LangugeBox } from "../Header/Header.styled";
-import { Languges } from "../icons/Languges";
 import { CrossToDelete } from "../icons/CrossToDelete";
+import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";
 
 interface MobileMenuProps {
   mobMenuIsOpen: boolean;
@@ -18,10 +17,8 @@ export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps)
       <DekorWrapper/>
 
       <NavWrapper><HeaderNav />
-      <LangugeBox>
-        <span>UA</span>
-        <Languges />
-      </LangugeBox></NavWrapper>
+      <LanguageSwitcher/>
+      </NavWrapper>
       
       {/* <DekorWrapper><Dekor/><Dekor/></DekorWrapper> */}
     </MobileMenuConteiner>
