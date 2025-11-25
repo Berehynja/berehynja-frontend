@@ -9,7 +9,7 @@ export const HeaderNav = () => {
       <Link to="about">ПРО НАС</Link>
       <Link to="programs">ПРОГРАМИ</Link>
       <Link to="events">ПОДІЇ</Link>
-      <Link to="news">НОВИНИ</Link>
+      {/* <Link to="news">НОВИНИ</Link> */}
     </Nav>
   );
 };

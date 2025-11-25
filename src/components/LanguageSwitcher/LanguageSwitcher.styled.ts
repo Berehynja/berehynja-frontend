@@ -1,27 +1,59 @@
 import styled from "@emotion/styled";
 
+interface ToggleLandSwitcherProps {
+  isClickBurger: boolean;
+}
 
 export const LangugeBox = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 5px;
+  @media (min-width: 1024px) {
+    margin: 0px;
+    padding: 0px;
+  }
+`;
+export const LangDefault = styled.div<ToggleLandSwitcherProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 70px;
+  width: 100%;
   height: 30px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: white;
-  border: none;
+  padding: 0 10px 0 10px;
   cursor: pointer;
-  /* & svg {
-    margin-left: 5px;
-    fill: #ffffffff;
-    transition: 250ms;
+  & svg {
+    width: 20px;
+    height: 20px;
+    margin-left: auto;
+    /* margin-right: 10px; */
+    fill: #111111ff;
+    transition: 50ms;
+    transform: ${({  isClickBurger }) =>
+     !isClickBurger 
+      ? "rotate(180deg)"
+      : "rotate(0deg)"};
   }
-  &:hover svg {
-    stroke: #1973faff;
-    fill: #fffcceff;
-  } */
-  @media (max-width: 1023px) {
-    margin-bottom: 20px;
-  }
+`;
+
+export const LangList = styled.ul`
+  width: 100%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 0 5px 5px;
+  bottom: -71px;
+  left: 0px;
+  background-color: white;
+  padding: 0 10px 15px 10px;
+
+`;
+
+export const LangItem = styled.li`
+  display: flex;
+  margin-top: 15px;
+  cursor: pointer;
 `;
