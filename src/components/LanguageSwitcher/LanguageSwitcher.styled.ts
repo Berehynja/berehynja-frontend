@@ -13,6 +13,7 @@ export const LangugeBox = styled.div`
   background-color: white;
   border-radius: 5px;
   @media (min-width: 1024px) {
+    width: 140px;
     margin: 0px;
     padding: 0px;
   }
