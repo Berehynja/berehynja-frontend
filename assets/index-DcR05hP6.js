@@ -817,8 +817,8 @@ cursor: pointer;
     margin-left: auto;
     /* margin-right: 10px; */
     fill: #111111ff;
-    transition: 50ms;
-    transform: ${({isClickBurger:i})=>i?"rotate(0deg)":"rotate(180deg)"};
+    transition: 40ms;
+    transform: ${({isClickBurger:i})=>i?"rotate(180deg)":"rotate(0deg)"};
   }
 `,Hp=tt.ul`
   width: 100%;
