@@ -32,9 +32,9 @@ export const LangDefault = styled.div<ToggleLandSwitcherProps>`
     margin-left: auto;
     /* margin-right: 10px; */
     fill: #111111ff;
-    transition: 50ms;
+    transition: 40ms;
     transform: ${({  isClickBurger }) =>
-     !isClickBurger 
+     isClickBurger 
       ? "rotate(180deg)"
       : "rotate(0deg)"};
   }
