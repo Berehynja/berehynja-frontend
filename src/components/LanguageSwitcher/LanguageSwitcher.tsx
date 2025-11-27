@@ -1,5 +1,6 @@
-import { useEffect, useState, type FocusEvent } from "react";
+import { useState, type FocusEvent } from "react";
 import ReactCountryFlag from "react-country-flag";
+import { useTranslation } from "react-i18next";
 import {
   LangDefault,
   LangItem,
@@ -8,19 +9,19 @@ import {
 } from "./LanguageSwitcher.styled";
 import { CaretDown } from "../icons/CaretDown";
 
-const languages = ["UA", "GB", "DE"];
+const languagesArr = ["UA", "EN", "DE"];
 
 export const LanguageSwitcher = () => {
-  const [langIndicator, setLangIndicator] = useState("");
-  console.log("🚀 ~ langIndicator:", langIndicator);
+//   const [langIndicator, setLangIndicator] = useState("");
+//   console.log("🚀 ~ langIndicator:", langIndicator);
   const [isClickBurger, setIsClickBurger] = useState(false);
+    const { i18n } = useTranslation();
 
-  useEffect(() => {
-    if (!langIndicator) {
-      setLangIndicator("UA");
-    }
-  }, [langIndicator]);
-
+//   useEffect(() => {
+//     if (!langIndicator) {
+//       setLangIndicator("UA");
+//     }
+//   }, [langIndicator]);
   const onClickHandler = () => setIsClickBurger(!isClickBurger);
 
   const onBlurHandler = (e: FocusEvent<HTMLDivElement>) => {
@@ -28,15 +29,16 @@ export const LanguageSwitcher = () => {
     setIsClickBurger(false);
   };
 
-  const indicatorHandler = (language: string) => {
-    setLangIndicator(language);
+  const indicatorHandler = (lang: string) => {
+    // setLangIndicator(lang);
+    i18n.changeLanguage(lang.toLowerCase());
   };
 
   return (
     <LangugeBox tabIndex={0} onBlur={(e) => {console.log('click onblur'); onBlurHandler(e)}} onClick={onClickHandler}>
       <LangDefault isClickBurger = {isClickBurger}>
         <ReactCountryFlag
-          countryCode={langIndicator}
+          countryCode={i18n.language === "en" ? "gb" : i18n.language}
           svg
           style={{
             width: "20px",
@@ -46,17 +48,17 @@ export const LanguageSwitcher = () => {
           }}
           // title="UA"
         />
-        <span>{langIndicator === "GB" ? "EN" : langIndicator}</span>
+        <span>{i18n.language.toUpperCase()}</span>
         <CaretDown />
       </LangDefault>
       {isClickBurger && (
         <LangList>
-          {languages
-            .filter((lang) => lang !== langIndicator)
+          {languagesArr
+            .filter((lang) => lang !== i18n.language.toUpperCase())
             .map((lang) => (
               <LangItem key={lang} onClick={() => indicatorHandler(lang)}>
                 <ReactCountryFlag
-                  countryCode={lang}
+                  countryCode={lang === "EN" ? "GB" : lang}
                   svg
                   style={{
                     width: "20px",
@@ -66,7 +68,7 @@ export const LanguageSwitcher = () => {
                   }}
                   // title="UA"
                 />
-                <span>{lang === "GB" ? "EN" : lang}</span>
+                <span>{lang}</span>
               </LangItem>
             ))}
         </LangList>

@@ -1,0 +1,15 @@
+{
+  "header": {
+    "home": "Головна",
+    "about": "Про нас",
+    "programs": "Програми",
+    "events": "Події"
+  },
+  "footer": {
+    "contacts": "Контакти",
+    "adress": "Адреса"
+  },
+  "languageSwitcher": {
+    "ukrainian": "UA"
+  }
+}

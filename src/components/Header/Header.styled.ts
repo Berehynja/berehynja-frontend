@@ -62,7 +62,7 @@ export const LogoText = styled.p`
   margin-left: 15px;
 
   font-size: 22px;
-  font-weight: 500;
+  font-weight: 400;
   font-family: "montserrat", sans-serif;
   color: #000000;
   & span {

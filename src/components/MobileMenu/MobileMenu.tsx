@@ -9,6 +9,7 @@ interface MobileMenuProps {
 }
 
 export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps) => {
+  
   return (
     <MobileMenuConteiner className="mobile_menu" mobMenuIsOpen={mobMenuIsOpen}>
       <BattonCloseMenu onClick={()=>setMobMenuIsOpen(!mobMenuIsOpen)}>
