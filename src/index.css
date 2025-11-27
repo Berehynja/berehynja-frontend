@@ -1,3 +1,78 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Dancing+Script:wght@400..700&display=swap");
+
+/* :root {
+  --header-items-color: #ffc107;
+  --btn-bg-color: #54adff;
+  --hover-btn-bg-color: linear-gradient(315deg, #419ef1 0%, #9bd0ff 100%);
+
+  --duration: 250ms;
+  --cubic: cubic-bezier(0.4, 0, 0.2, 1);
+} */
+
+@font-face {
+  font-family: 'Inter-Medium';
+  src: local('Inter-Medium'),
+    url('./fonts/Inter/Inter-Medium.ttf') format('truetype');
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'Inter-Regular';
+  src: local('Inter-Regular'),
+    url('./fonts/Inter/Inter-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Montserrat-Light';
+  src: local('Montserrat-Light'),
+    url('./fonts/Montserrat/Montserrat-Light.ttf') format('truetype');
+  font-weight: 300;
+}
+@font-face {
+  font-family: 'Montserrat-Regular';
+  src: local('Montserrat-Regular'),
+    url('./fonts/Montserrat/Montserrat-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Montserrat-Medium';
+  src: local('Montserrat-Medium'),
+    url('./fonts/Montserrat/Montserrat-Medium.ttf') format('truetype');
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'Montserrat-SemiBold';
+  src: local('Montserrat-SemiBold'),
+    url('./fonts/Montserrat/Montserrat-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'Montserrat-Bold';
+  src: local('Montserrat-Bold'),
+    url('./fonts/Montserrat/Montserrat-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Caveat-Regular';
+  src: local('Caveat-Regular'),
+    url('./fonts/Caveat/Caveat-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Caveat-Medium';
+  src: local('Caveat-Medium'),
+    url('./fonts/Caveat/Caveat-Medium.ttf') format('truetype');
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'Caveat-SemiBold';
+  src: local('Caveat-SemiBold'),
+    url('./fonts/Caveat/Caveat-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'Caveat-Bold';
+  src: local('Caveat-Bold'),
+    url('./fonts/Caveat/Caveat-Bold.ttf') format('truetype');
+  font-weight: 700;
+}

@@ -63,12 +63,12 @@ export const LogoText = styled.p`
 
   font-size: 22px;
   font-weight: 400;
-  font-family: "montserrat", sans-serif;
+  font-family: "Montserrat-Regular", sans-serif;
   color: #000000;
   & span {
     font-size: 20px;
     font-weight: 500;
-    font-family: "Caveat", cursive;
+    font-family: "Caveat-Medium", cursive;
   }
   @media (min-width: ${Theme.breakpoints.s}) {
     font-size: 32px;
