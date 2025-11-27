@@ -58,7 +58,7 @@ export const Footer = () => {
           <FooterLinkWrapper>
             <FooterLinkStyled href="tel:+4915128161383">
               <Phone />
-              <span>+4915128161383</span>
+              <span>+49 151 28161383</span>
             </FooterLinkStyled>
 
             <FooterLinkStyled
