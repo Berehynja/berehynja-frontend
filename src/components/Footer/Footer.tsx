@@ -73,6 +73,7 @@ export const Footer = () => {
               <SocialLinkStyled
                 href="https://www.instagram.com/berehynja.de?igsh=MWRtdWpscm1vNW8yZw=="
                 target="_blank"
+                aria-label="Instagram"
               >
                 <InstagramIcon />
               </SocialLinkStyled>
@@ -80,6 +81,7 @@ export const Footer = () => {
               <SocialLinkStyled
                 href="https://t.me/bereginia_de"
                 target="_blank"
+                aria-label="Telegram"
               >
                 <TelegramIcon />
               </SocialLinkStyled>
@@ -98,19 +100,21 @@ export const Footer = () => {
             <CaretDown />
           </ArrowWraperAdress>
           <FooterLinkWrapper >
-            <FooterLinkStyled href="tel:+380486752312">
+            <FooterLinkStyled href="">
               Bad-Oeynhausen, Germany
             </FooterLinkStyled>
 
             <FooterLinkStyled
-              href="https://www.google.com/maps"
+              href=""
               target="_blank"
+              aria-label="Adress location"
             >
               32545 Weserstraße 24
             </FooterLinkStyled>
             <FooterLinkStyled
               href="https://www.google.com/maps/place/Johanniter-Mehrgenerationenhaus+Bad+Oeynhausen/@52.1979902,8.8037727,314m/data=!3m1!1e3!4m6!3m5!1s0x47ba72a07b459829:0x19fbe41cee571634!8m2!3d52.1978688!4d8.8039899!16s%2Fg%2F11c6q9n5kc?entry=ttu&g_ep=EgoyMDI1MTEwNC4xIKXMDSoASAFQAw%3D%3D"
               target="_blank"
+              aria-label="Google Maps location"
             >
               <GoogleMapIcon />
               {t("footer.location")}
@@ -122,6 +126,7 @@ export const Footer = () => {
               <SocialLinkStyled
                 href="https://www.instagram.com/berehynja.de?igsh=MWRtdWpscm1vNW8yZw=="
                 target="_blank"
+                aria-label="Instagram"
               >
                 <InstagramIcon />
               </SocialLinkStyled>
@@ -129,6 +134,7 @@ export const Footer = () => {
               <SocialLinkStyled
                 href="https://t.me/bereginia_de"
                 target="_blank"
+                aria-label="Telegram"
               >
                 <TelegramIcon />
               </SocialLinkStyled>
