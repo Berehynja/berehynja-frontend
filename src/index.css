@@ -8,6 +8,8 @@
   --cubic: cubic-bezier(0.4, 0, 0.2, 1);
 } */
 
+/* -------------------------------------INTER----------------------------------- */
+
 @font-face {
   font-family: 'Inter-Medium';
   src: local('Inter-Medium'),
@@ -20,6 +22,8 @@
     url('./fonts/Inter/Inter-Regular.ttf') format('truetype');
   font-weight: 400;
 }
+
+/* -----------------------------------------Montserrat----------------------------------- */
 
 @font-face {
   font-family: 'Montserrat-Light';
@@ -52,6 +56,8 @@
   font-weight: 700;
 }
 
+/* --------------------------------------------------Caveat---------------------------------------- */
+
 @font-face {
   font-family: 'Caveat-Regular';
   src: local('Caveat-Regular'),
@@ -74,5 +80,32 @@
   font-family: 'Caveat-Bold';
   src: local('Caveat-Bold'),
     url('./fonts/Caveat/Caveat-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+
+/* -------------------------------------Dancing Script----------------------------------- */
+
+@font-face {
+  font-family: 'DancingScript-Regular';
+  src: local('DancingScript-Regular'),
+    url('./fonts/DancingScript/DancingScript-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'DancingScript-Medium';
+  src: local('DancingScript-Medium'),
+    url('./fonts/DancingScript/DancingScript-Medium.ttf') format('truetype');
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'DancingScript-SemiBold';
+  src: local('DancingScript-SemiBold'),
+    url('./fonts/DancingScript/DancingScript-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'DancingScript-Bold';
+  src: local('DancingScript-Bold'),
+    url('./fonts/DancingScript/DancingScript-Bold.ttf') format('truetype');
   font-weight: 700;
 }
