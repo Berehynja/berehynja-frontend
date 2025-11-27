@@ -1,0 +1,15 @@
+{
+  "header": {
+    "home": "Home",
+    "about": "About Us",
+    "programs": "Programs",
+    "events": "Events"
+  },
+  "footer": {
+    "contacts": "Contacts",
+    "adress": "Adress"
+  },
+  "languageSwitcher": {
+    "english": "EN"
+  }
+}

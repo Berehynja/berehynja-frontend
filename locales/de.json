@@ -1,0 +1,15 @@
+{
+  "header": {
+    "home": "Startseite",
+    "about": "Über uns",
+    "programs": "Programme",
+    "events": "Veranstaltungen"
+  },
+  "footer": {
+    "contacts": "Kontakte",
+    "adress": "Adresse"
+  },
+  "languageSwitcher": {
+    "german": "DE"
+  }
+}
