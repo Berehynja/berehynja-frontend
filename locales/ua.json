@@ -7,9 +7,10 @@
   },
   "footer": {
     "contacts": "Контакти",
-    "adress": "Адреса"
+    "adress": "Адреса",
+    "location": "Наше розташування"
   },
   "languageSwitcher": {
-    "ukrainian": "UA"
+    "lang": "UA"
   }
 }
