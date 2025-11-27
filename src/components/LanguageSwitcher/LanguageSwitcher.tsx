@@ -49,6 +49,7 @@ export const LanguageSwitcher = () => {
         <Flag
           countryCode={i18n.language === "en" ? "gb" : i18n.language}
           svg
+          alt="flag"
         />
         <span>{i18n.language.toUpperCase()}</span>
         <CaretDown />
@@ -62,6 +63,7 @@ export const LanguageSwitcher = () => {
                 <Flag
                   countryCode={lng === "EN" ? "gb" : lng}
                   svg
+                  alt="flag"
                 />
                 <span>{lng}</span>
               </LangItem>
