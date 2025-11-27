@@ -5,9 +5,7 @@ export const HeaderNav = () => {
   const { t } = useTranslation();
   return (
     <Nav  >
-      <Link to="/" end>
-        {t("header.home")}
-      </Link>
+      <Link to="/" end>{t("header.home")}</Link>
       <Link to="about">{t("header.about")}</Link>
       <Link to="programs">{t("header.programs")}</Link>
       <Link to="events">{t("header.events")}</Link>

@@ -100,7 +100,10 @@ export const Footer = () => {
             <CaretDown />
           </ArrowWraperAdress>
           <FooterLinkWrapper >
-            <FooterLinkStyled href="">
+            <FooterLinkStyled 
+            href="https://www.badoeynhausen.de/startseite" 
+            target="_blank" 
+            aria-label="City website">
               Bad-Oeynhausen, Germany
             </FooterLinkStyled>
 
