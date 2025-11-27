@@ -33,7 +33,7 @@ export const LanguageSwitcher = () => {
 
   const indicatorHandler = (lng: string) => {
      const searchParams = new URLSearchParams();
-     searchParams.set("lng", lng.toLowerCase());
+     searchParams.set("lang", lng.toLowerCase());
    
    navigate({ pathname, search: searchParams.toString() });
     i18n.changeLanguage(lng.toLowerCase());

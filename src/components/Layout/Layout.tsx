@@ -13,8 +13,8 @@ export const Layout = () => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams();
-    if (searchParams.get("lng") !== i18n.language) {
-      searchParams.set("lng", i18n.language);
+    if (searchParams.get("lang") !== i18n.language) {
+      searchParams.set("lang", i18n.language);
       navigate({ pathname: location.pathname, search: searchParams.toString() }, { replace: true });
     }
   }, [location.pathname, i18n.language, navigate]);
