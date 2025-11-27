@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ArrowWraperAdress,
   ArrowWraperContacts, 
@@ -24,11 +25,12 @@ import { GoogleMapIcon } from "../icons/GoogleMapIcon";
 import { Phone } from "../icons/Phone";
 import { GmailIcon } from "../icons/GmailIcon";
 
+
 export const Footer = () => {
   const [isOpenContacts, setIsOpenContacts] = useState(false);
   const [isOpenAdress, setIsOpenAdress] = useState(false);
   const screenWidth = useWindowSize();
-
+  const { t } = useTranslation();
   const toggleList = (value: string) => {
     if (value === "КОНТАКТИ") {
       setIsOpenContacts(!isOpenContacts);
@@ -50,13 +52,13 @@ export const Footer = () => {
           
           
           <ArrowWraperContacts isOpenContacts={isOpenContacts}>
-            <FooterH2Styled>КОНТАКТИ</FooterH2Styled>
+            <FooterH2Styled>{t("footer.contacts")}</FooterH2Styled>
             <CaretDown />
           </ArrowWraperContacts>
           <FooterLinkWrapper>
-            <FooterLinkStyled href="tel:+380486752312">
+            <FooterLinkStyled href="tel:+4915128161383">
               <Phone />
-              <span>+491750000000</span>
+              <span>+4915128161383</span>
             </FooterLinkStyled>
 
             <FooterLinkStyled
@@ -92,7 +94,7 @@ export const Footer = () => {
         >
           
           <ArrowWraperAdress isOpenAdress={isOpenAdress}>
-            <FooterH2Styled>АДРЕСА</FooterH2Styled>
+            <FooterH2Styled>{t("footer.adress")}</FooterH2Styled>
             <CaretDown />
           </ArrowWraperAdress>
           <FooterLinkWrapper >
@@ -111,7 +113,7 @@ export const Footer = () => {
               target="_blank"
             >
               <GoogleMapIcon />
-              Наші координати
+              {t("footer.location")}
             </FooterLinkStyled>
           </FooterLinkWrapper>
         </FooterBoxAdress>

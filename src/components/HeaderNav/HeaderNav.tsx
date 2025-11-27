@@ -3,7 +3,6 @@ import { Link, Nav } from "./HeaderNav.styled";
 
 export const HeaderNav = () => {
   const { t } = useTranslation();
-  console.log("🚀 ~ t:", t)
   return (
     <Nav  >
       <Link to="/" end>

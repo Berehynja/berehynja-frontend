@@ -9,15 +9,15 @@ i18next
   .use(initReactI18next)
   .init({
     fallbackLng: "ua",
-    debug: true,
+    debug: false,
 
     backend: {
       loadPath: "/berehynja-frontend/locales/{{lng}}.json",
     },
-    lng: "ua",
     detection: {
-      order: ["querystring", "localStorage", "cookie"],
+      order: ["querystring", "localStorage"],
       caches: ["localStorage"],
+      lookupQuerystring: "lng",
     },
     interpolation: {
       escapeValue: false,

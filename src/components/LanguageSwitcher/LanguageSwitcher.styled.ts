@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import ReactCountryFlag from "react-country-flag";
 
 interface ToggleLandSwitcherProps {
   isClickBurger: boolean;
@@ -38,6 +39,13 @@ export const LangDefault = styled.div<ToggleLandSwitcherProps>`
       ? "rotate(180deg)"
       : "rotate(0deg)"};
   }
+`;
+
+export const Flag = styled(ReactCountryFlag)`
+  width: 20px;
+  height: 14px;
+  border-radius: 2px;
+  margin-right: 5px;
 `;
 
 export const LangList = styled.ul`

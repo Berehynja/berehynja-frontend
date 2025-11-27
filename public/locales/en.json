@@ -7,9 +7,10 @@
   },
   "footer": {
     "contacts": "Contacts",
-    "adress": "Adress"
+    "adress": "Adress",
+    "location": "Our location"
   },
   "languageSwitcher": {
-    "english": "EN"
+    "lang": "EN"
   }
 }
