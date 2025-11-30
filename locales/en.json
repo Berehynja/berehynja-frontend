@@ -5,6 +5,10 @@
     "programs": "Programs",
     "events": "Events"
   },
+  "hero": {
+    "welcome": "Welcome to «Berehynja»!",
+    "description": "«Berehynja» is a Ukrainian space in Germany created for children, teenagers, and adults who were forced to find themselves far from home. We bring Ukrainian families together, help preserve their language, culture, and traditions, and support those who are going through the process of adaptation and integration into a new environment."
+  },
   "footer": {
     "contacts": "Contacts",
     "adress": "Adress",

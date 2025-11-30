@@ -5,6 +5,10 @@
     "programs": "Programme",
     "events": "Veranstaltungen"
   },
+  "hero": {
+    "welcome": "Willkommen bei «Berehynja»!",
+    "description": "«Berehynja» ist ein ukrainischer Raum in Deutschland, geschaffen für Kinder, Jugendliche und Erwachsene, die sich gezwungenermaßen fern von ihrem Zuhause wiedergefunden haben. Wir vereinen ukrainische Familien, helfen, die Sprache, Kultur und Traditionen zu bewahren und unterstützen jene, die den Weg der Anpassung und Integration in eine neue Umgebung gehen."
+  },
   "footer": {
     "contacts": "Kontakte",
     "adress": "Adresse",
