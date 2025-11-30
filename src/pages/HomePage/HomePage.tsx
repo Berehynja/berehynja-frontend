@@ -1,17 +1,15 @@
+import { useTranslation } from "react-i18next";
 import { Baner, BanerText, BannerTitele, Hero, HomeContainer } from "./HomePage.styled";
 
 export function HomePage() {
+  const { t } = useTranslation();
   return (
     <>
       <Hero>
         <Baner>
-          <BannerTitele>Ласкаво просимо до «Berehynja»!</BannerTitele>
+          <BannerTitele>{t("hero.welcome")}</BannerTitele>
           <BanerText>
-                «Berehynja» — це український простір у Німеччині, створений для
-            дітей, підлітків та дорослих, які вимушено опинилися далеко від
-            дому. Ми об’єднуємо українські родини, допомагаємо зберігати мову,
-            культуру та традиції, а також підтримуємо тих, хто проходить шлях
-            адаптації та інтеграції в нове середовище. <br /> 
+            {t("hero.description")}
             {/* Наша мета — створити тепле та дружнє середовище, де кожен
             почуватиметься як вдома, знайде нових друзів та отримає необхідну
             підтримку. */}
