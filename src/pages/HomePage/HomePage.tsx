@@ -3,6 +3,7 @@ import { Baner, BanerText, BannerTitele, Hero, HomeContainer } from "./HomePage.
 
 export function HomePage() {
   const { t } = useTranslation();
+  
   return (
     <>
       <Hero>

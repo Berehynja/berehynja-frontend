@@ -11,6 +11,7 @@ import { Theme } from "./styles/Theme.styled.ts";
 
 import App from "./components/App/App.tsx";
 
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter basename="/berehynja-frontend">
