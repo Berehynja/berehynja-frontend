@@ -61,7 +61,7 @@ export const LogoText = styled.p`
   align-items: center;
   margin-left: 15px;
 
-  font-size: 22px;
+  font-size: 1.4rem;
   font-weight: 400;
   font-family: "Montserrat-Regular", sans-serif;
   color: #000000;
@@ -71,7 +71,7 @@ export const LogoText = styled.p`
     font-family: "Caveat-Medium", cursive;
   }
   @media (min-width: ${Theme.breakpoints.s}) {
-    font-size: 32px;
+    font-size: 2rem;
     margin-left: 20px;
   }
 `;
