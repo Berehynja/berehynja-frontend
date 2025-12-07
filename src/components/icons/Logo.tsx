@@ -3,8 +3,8 @@ export const LogoSvg = () => (
   <svg
     version="1.0"
     xmlns="http://www.w3.org/2000/svg"
-    width="90"
-    height="90"
+    width="70"
+    height="70"
     viewBox="0 0 433 435"
     preserveAspectRatio="xMidYMid meet"
   >

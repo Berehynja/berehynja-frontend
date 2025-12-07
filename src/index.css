@@ -1,103 +1,110 @@
 @import "tailwindcss";
 
+@theme {
+  /* Inter */
+  --font-interRegular: "Inter-Regular", sans-serif;
+  --font-interMedium: "Inter-Medium", sans-serif; 
+
+
+  /* Montserrat */
+  --font-montserratRegular: "Montserrat-Regular", sans-serif;
+  --font-montserratMedium: "Montserrat-Medium", sans-serif;
+  --font-montserratBold: "Montserrat-Bold", sans-serif;
+
+  /* Caveat */
+  --font-caveatRegular: "Caveat-Regular", cursive;
+  --font-caveatMedium: "Caveat-Medium", cursive;
+
+  /* Dancing Script */
+  --font-dancingRegular: "DancingScript-Regular", cursive;
+  --font-dancingMedium: "DancingScript-Medium", cursive;
+}
+
 /* -------------------------------------INTER----------------------------------- */
 
 @font-face {
-  font-family: 'Inter-Medium';
-  src: local('Inter-Medium'),
-    url('./fonts/Inter/Inter-Medium.ttf') format('truetype');
+  font-family: "Inter-Medium";
+  src: local("Inter-Medium"),
+    url("./fonts/Inter/Inter_18pt-Medium.ttf") format("truetype");
   font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 @font-face {
-  font-family: 'Inter-Regular';
-  src: local('Inter-Regular'),
-    url('./fonts/Inter/Inter-Regular.ttf') format('truetype');
+  font-family: "Inter-Regular";
+  src: local("Inter-Regular"),
+    url("./fonts/Inter/Inter_18pt-Regular.ttf") format("truetype");
   font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* -----------------------------------------Montserrat----------------------------------- */
 
 @font-face {
-  font-family: 'Montserrat-Light';
-  src: local('Montserrat-Light'),
-    url('./fonts/Montserrat/Montserrat-Light.ttf') format('truetype');
-  font-weight: 300;
-}
-@font-face {
-  font-family: 'Montserrat-Regular';
-  src: local('Montserrat-Regular'),
-    url('./fonts/Montserrat/Montserrat-Regular.ttf') format('truetype');
+  font-family: "Montserrat-Regular";
+  src: local("Montserrat-Regular"),
+    url("./fonts/Montserrat/Montserrat-Regular.ttf") format("truetype");
   font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 @font-face {
-  font-family: 'Montserrat-Medium';
-  src: local('Montserrat-Medium'),
-    url('./fonts/Montserrat/Montserrat-Medium.ttf') format('truetype');
+  font-family: "Montserrat-Medium";
+  src: local("Montserrat-Medium"),
+    url("./fonts/Montserrat/Montserrat-Medium.ttf") format("truetype");
   font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 @font-face {
-  font-family: 'Montserrat-SemiBold';
-  src: local('Montserrat-SemiBold'),
-    url('./fonts/Montserrat/Montserrat-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-}
-@font-face {
-  font-family: 'Montserrat-Bold';
-  src: local('Montserrat-Bold'),
-    url('./fonts/Montserrat/Montserrat-Bold.ttf') format('truetype');
+  font-family: "Montserrat-Bold";
+  src: local("Montserrat-Bold"),
+    url("./fonts/Montserrat/Montserrat-Bold.ttf") format("truetype");
   font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* --------------------------------------------------Caveat---------------------------------------- */
 
 @font-face {
-  font-family: 'Caveat-Regular';
-  src: local('Caveat-Regular'),
-    url('./fonts/Caveat/Caveat-Regular.ttf') format('truetype');
+  font-family: "Caveat-Regular";
+  src: local("Caveat-Regular"),
+    url("./fonts/Caveat/Caveat-Regular.ttf") format("truetype");
   font-weight: 400;
-}
-@font-face {
-  font-family: 'Caveat-Medium';
-  src: local('Caveat-Medium'),
-    url('./fonts/Caveat/Caveat-Medium.ttf') format('truetype');
-  font-weight: 500;
-}
-@font-face {
-  font-family: 'Caveat-SemiBold';
-  src: local('Caveat-SemiBold'),
-    url('./fonts/Caveat/Caveat-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-}
-@font-face {
-  font-family: 'Caveat-Bold';
-  src: local('Caveat-Bold'),
-    url('./fonts/Caveat/Caveat-Bold.ttf') format('truetype');
-  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
+@font-face {
+  font-family: "Caveat-Medium";
+  src: local("Caveat-Medium"),
+    url("./fonts/Caveat/Caveat-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 /* -------------------------------------Dancing Script----------------------------------- */
 
 @font-face {
-  font-family: 'DancingScript-Regular';
-  src: local('DancingScript-Regular'),
-    url('./fonts/DancingScript/DancingScript-Regular.ttf') format('truetype');
+  font-family: "DancingScript-Regular";
+  src: local("DancingScript-Regular"),
+    url("./fonts/DancingScript/DancingScript-Regular.ttf") format("truetype");
   font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
+
 @font-face {
-  font-family: 'DancingScript-Medium';
-  src: local('DancingScript-Medium'),
-    url('./fonts/DancingScript/DancingScript-Medium.ttf') format('truetype');
+  font-family: "DancingScript-Medium";
+  src: local("DancingScript-Medium"),
+    url("./fonts/DancingScript/DancingScript-Medium.ttf") format("truetype");
   font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
-@font-face {
-  font-family: 'DancingScript-SemiBold';
-  src: local('DancingScript-SemiBold'),
-    url('./fonts/DancingScript/DancingScript-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-}
-@font-face {
-  font-family: 'DancingScript-Bold';
-  src: local('DancingScript-Bold'),
-    url('./fonts/DancingScript/DancingScript-Bold.ttf') format('truetype');
-  font-weight: 700;
-}
+
+
+
+

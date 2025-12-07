@@ -6,7 +6,7 @@ import {
   LangDefault,
   LangItem,
   LangList,
-  LangugeBox,
+  // LangugeBox,
 } from "./LanguageSwitcher.styled";
 import { CaretDown } from "../icons/CaretDown";
 
@@ -40,7 +40,7 @@ export const LanguageSwitcher = () => {
   };
 
   return (
-    <LangugeBox
+    <div className=" relative bg-white rounded-sm flex flex-col w-22 ml-auto lg:w-36 lg:ml-0  "
       tabIndex={0}
       onBlur={onBlurHandler}
       onClick={onClickHandler}
@@ -70,6 +70,6 @@ export const LanguageSwitcher = () => {
             ))}
         </LangList>
       )}
-    </LangugeBox>
+    </div>
   );
 };

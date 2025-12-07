@@ -1,18 +1,12 @@
 import { useState } from "react";
+import { Menu } from "lucide-react";
+import { NavLink } from "react-router-dom";
+
 import { LogoSvg } from "../icons/Logo";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { HeaderNav } from "../HeaderNav/HeaderNav";
-import {
-  HeaderStyled,
-  HeaderContainer,
-  HeaderWrapper,
-  LogoBox,
-  LogoLink,
-  LogoText,
-  ButtonMobMenu,
-} from "./Header.styled";
+
 import { MobileMenu } from "../MobileMenu/MobileMenu";
-import { MobMenuIcon } from "../icons/MobMenuIcon";
 import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";
 
 export function Header() {
@@ -24,36 +18,42 @@ export function Header() {
   };
 
   return (
-    <HeaderStyled className="header">
-      <HeaderContainer className="header_container">
-        <HeaderWrapper className="header_wrapper">
-          <LogoLink to="/" end>
-            <LogoBox>
-              <LogoSvg />
-            </LogoBox>
-            <LogoText>
-              BEREHYNJA<span>український простір</span>
-            </LogoText>
-          </LogoLink>
+    <header className=" sticky top-0 max-w-full z-50 bg-white shadow-2xs">
+      <div className=" flex justify-between items-center mx-auto px-5 max-w-7xl h-20 sm:px-8   ">
+        <NavLink className=" flex justify-center decoration-0" to="/" end>
+          <div className=" flex justify-center items-center ">
+            <LogoSvg />
+          </div>
+          <div className=" flex flex-col whitespace-nowrap justify-center items-center ml-3 sm:ml-4 text-2xl font-interMedium ">
+            BEREHYNJA
+            <span className=" -mt-2 font-caveatMedium font-medium text-xl ">
+              український простір
+            </span>
+          </div>
+        </NavLink>
 
-          {screenWidth >= 1024 ? (
-            <>
-              <HeaderNav />
-              <LanguageSwitcher/>
-            </>
-          ) : (
-            <>
-              <ButtonMobMenu onClick={ToggleMobMenu}>
-                <MobMenuIcon />
-              </ButtonMobMenu>
-              <MobileMenu
-                mobMenuIsOpen={mobMenuIsOpen}
-                setMobMenuIsOpen={setMobMenuIsOpen}
-              />
-            </>
-          )}
-        </HeaderWrapper>
-      </HeaderContainer>
-    </HeaderStyled>
+        {screenWidth >= 1024 ? (
+          <>
+            <HeaderNav />
+            <LanguageSwitcher />
+          </>
+        ) : (
+          <>
+            {screenWidth >= 640 && <LanguageSwitcher />}
+            <button
+              onClick={ToggleMobMenu}
+              aria-label="Mobile menu button"
+              className=" flex justify-center items-center w-13 h-13 "
+            >
+              <Menu className=" w-8 h-8" />
+            </button>
+            <MobileMenu
+              mobMenuIsOpen={mobMenuIsOpen}
+              setMobMenuIsOpen={setMobMenuIsOpen}
+            />
+          </>
+        )}
+      </div>
+    </header>
   );
 }
