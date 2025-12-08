@@ -41,7 +41,7 @@ export function Header() {
           <>
             <button
               onClick={ToggleMobMenu}
-              aria-label="Mobile menu button"
+              aria-label="open menu button"
               className=" flex justify-center items-center w-13 h-13 "
             >
               <Menu className=" w-8 h-8" />

@@ -20,7 +20,7 @@ export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps)
     sm:w-[30vw]`}
     
     >
-      <button className=" absolute top-4 right-4 " onClick={()=>setMobMenuIsOpen(!mobMenuIsOpen)}>
+      <button className=" absolute top-4 right-4 " onClick={()=>setMobMenuIsOpen(!mobMenuIsOpen)} aria-label='close mobile menu'>
         <X className=' stroke-white' size={32}/>
       </button>
       <div 
