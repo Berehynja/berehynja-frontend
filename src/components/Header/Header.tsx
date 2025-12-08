@@ -33,15 +33,15 @@ export function Header() {
         </NavLink>
 
         {screenWidth >= 1024 ? (
-          <>
+          <div className=" relative flex justify-center items-center  ">
             <HeaderNav />
             <LanguageSwitcher />
-          </>
+          </div>
         ) : (
           <>
             <button
               onClick={ToggleMobMenu}
-              aria-label="open menu button"
+              aria-label="Mobile menu button"
               className=" flex justify-center items-center w-13 h-13 "
             >
               <Menu className=" w-8 h-8" />

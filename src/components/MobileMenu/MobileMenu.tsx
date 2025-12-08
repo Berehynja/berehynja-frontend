@@ -15,7 +15,7 @@ export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps)
     className=
     {`fixed flex top-0 right-0 
     w-50 h-screen bg-stone-800 overflow-hidden
-    transition-transform duration-300 ease-in-out
+    transition-transform duration-300 ease
     ${mobMenuIsOpen ? 'translate-x-0' : 'translate-x-full'}
     sm:w-[30vw]`}
     
@@ -28,7 +28,7 @@ export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps)
       style={{backgroundImage: `url(${dekor})`}}
       ></div>
 
-      <div className=" flex flex-col justify-start items-center w-full mx-auto py-16 ">
+      <div className=" relative flex flex-col justify-start items-center w-full mx-auto py-16 ">
        <HeaderNav />
        <LanguageSwitcher/>
       </div>
