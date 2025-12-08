@@ -40,7 +40,7 @@ export const LanguageSwitcher = () => {
   };
 
   return (
-    <div className=" relative bg-white rounded-sm flex flex-col w-22 ml-auto lg:w-36 lg:ml-0  "
+    <div className=" relative bg-white rounded-sm flex flex-col w-22 lg:w-36 lg:ml-0  "
       tabIndex={0}
       onBlur={onBlurHandler}
       onClick={onClickHandler}

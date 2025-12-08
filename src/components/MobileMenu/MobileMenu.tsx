@@ -1,8 +1,7 @@
-import { BattonCloseMenu, DekorWrapper, MobileMenuConteiner, NavWrapper } from "./MobileMenu.styled";
+import { X } from 'lucide-react';
+import dekor from "../../images/dek.jpg";
 import { HeaderNav } from "../HeaderNav/HeaderNav";
-import { CrossToDelete } from "../icons/CrossToDelete";
 import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";
-// import { useWindowSize } from "../../hooks/useWindowSize";
 
 
 interface MobileMenuProps {
@@ -11,19 +10,29 @@ interface MobileMenuProps {
 }
 
 export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps) => {
-  // const screenWidth = useWindowSize();
   return (
-    <MobileMenuConteiner className="mobile_menu" mobMenuIsOpen={mobMenuIsOpen}>
-      <BattonCloseMenu onClick={()=>setMobMenuIsOpen(!mobMenuIsOpen)}>
-        <CrossToDelete/>
-      </BattonCloseMenu>
-      <DekorWrapper/>
+    <div
+    className=
+    {`fixed flex top-0 right-0 
+    w-50 h-screen bg-stone-800 overflow-hidden
+    transition-transform duration-300 ease-in-out
+    ${mobMenuIsOpen ? 'translate-x-0' : 'translate-x-full'}
+    sm:w-[30vw]`}
+    
+    >
+      <button className=" absolute top-4 right-4 " onClick={()=>setMobMenuIsOpen(!mobMenuIsOpen)}>
+        <X className=' stroke-white' size={32}/>
+      </button>
+      <div 
+      className=" flex flex-col bg-repeat-y bg-size-[1.5rem] w-6 h-full"
+      style={{backgroundImage: `url(${dekor})`}}
+      ></div>
 
-      <NavWrapper><HeaderNav />
+      <div className=" flex flex-col justify-start items-center w-full mx-auto py-16 ">
+       <HeaderNav />
        <LanguageSwitcher/>
-      </NavWrapper>
+      </div>
       
-      {/* <DekorWrapper><Dekor/><Dekor/></DekorWrapper> */}
-    </MobileMenuConteiner>
+    </div>
   );
 };
