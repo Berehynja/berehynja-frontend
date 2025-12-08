@@ -27,7 +27,10 @@ export const HeaderNav = () => {
     text-white
     lg:flex-row 
     lg:gap-8 
-    lg:mb-0">
+    lg:mb-0
+    lg:text-black
+    ">
+      
       {links.map((link) => {
         return (
           <NavLink
