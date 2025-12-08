@@ -1,7 +1,6 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 // import { AnimatePresence, motion } from "framer-motion";
 // import { useState } from 'react'
-import "./App.styled.ts";
 import { Layout } from "../Layout/Layout.tsx";
 import {
   HomePage,
