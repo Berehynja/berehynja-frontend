@@ -2,7 +2,7 @@ import { BattonCloseMenu, DekorWrapper, MobileMenuConteiner, NavWrapper } from "
 import { HeaderNav } from "../HeaderNav/HeaderNav";
 import { CrossToDelete } from "../icons/CrossToDelete";
 import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";
-import { useWindowSize } from "../../hooks/useWindowSize";
+// import { useWindowSize } from "../../hooks/useWindowSize";
 
 
 interface MobileMenuProps {
@@ -11,7 +11,7 @@ interface MobileMenuProps {
 }
 
 export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps) => {
-  const screenWidth = useWindowSize();
+  // const screenWidth = useWindowSize();
   return (
     <MobileMenuConteiner className="mobile_menu" mobMenuIsOpen={mobMenuIsOpen}>
       <BattonCloseMenu onClick={()=>setMobMenuIsOpen(!mobMenuIsOpen)}>
@@ -20,7 +20,7 @@ export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps)
       <DekorWrapper/>
 
       <NavWrapper><HeaderNav />
-      {screenWidth < 640 && <LanguageSwitcher/>}
+       <LanguageSwitcher/>
       </NavWrapper>
       
       {/* <DekorWrapper><Dekor/><Dekor/></DekorWrapper> */}

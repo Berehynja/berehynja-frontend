@@ -28,6 +28,8 @@ export const HeaderNav = () => {
     lg:flex-row 
     lg:gap-8 
     lg:mb-0
+    lg:justify-end
+    lg:px-8
     lg:text-black
     ">
       

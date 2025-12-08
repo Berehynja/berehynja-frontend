@@ -39,7 +39,6 @@ export function Header() {
           </>
         ) : (
           <>
-            {screenWidth >= 640 && <LanguageSwitcher />}
             <button
               onClick={ToggleMobMenu}
               aria-label="Mobile menu button"
