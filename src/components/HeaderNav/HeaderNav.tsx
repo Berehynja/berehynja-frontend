@@ -16,14 +16,14 @@ export const HeaderNav = () => {
     <nav className="
     flex 
     flex-col
-    gap-6 
+    gap-7 
     justify-center 
     items-center 
     font-interRegular 
     text-xl 
     w-full 
     mb-10 
-    text-white
+    text-stone-500
     
     
     lg:flex-row 

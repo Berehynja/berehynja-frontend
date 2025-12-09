@@ -11,17 +11,24 @@ interface MobileMenuProps {
 
 export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps) => {
   return (
+    <>
+    {mobMenuIsOpen && (
+        <div
+          className="fixed inset-0 backdrop-blur-xs bg-black/30 "
+          onClick={() => setMobMenuIsOpen(false)}
+        />
+      )}
     <div
     className=
     {`fixed flex top-0 right-0 
-    w-50 h-screen bg-stone-800 overflow-hidden
+    w-50 h-screen bg-linear-to-br from-blue-100 to-yellow-100 overflow-hidden
     transition-transform duration-300 ease
     ${mobMenuIsOpen ? 'translate-x-0' : 'translate-x-full'}
     sm:w-[30vw]`}
     
     >
       <button className=" absolute top-4 right-4 z-10 " onClick={()=>setMobMenuIsOpen(!mobMenuIsOpen)} aria-label='close mobile menu'>
-        <X className=' stroke-white ' size={32}/>
+        <X className=' stroke-stone-500 ' size={32}/>
       </button>
       <div 
       className=" flex flex-col bg-repeat-y bg-size-[1.5rem] w-6 h-full"
@@ -34,5 +41,6 @@ export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps)
       </div>
       
     </div>
+    </>
   );
 };
