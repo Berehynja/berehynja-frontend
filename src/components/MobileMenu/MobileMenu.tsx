@@ -2,6 +2,7 @@ import { X } from 'lucide-react';
 import dekor from "../../images/dek.jpg";
 import { HeaderNav } from "../HeaderNav/HeaderNav";
 import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";
+import { useEffect } from 'react';
 
 
 interface MobileMenuProps {
@@ -10,6 +11,17 @@ interface MobileMenuProps {
 }
 
 export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps) => {
+   useEffect(() => {
+    if (mobMenuIsOpen) {
+      document.body.style.overflow = "hidden";   // блокируем скролл
+    } else {
+      document.body.style.overflow = "";         // возвращаем скролл
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobMenuIsOpen]);
   return (
     <>
     {mobMenuIsOpen && (
