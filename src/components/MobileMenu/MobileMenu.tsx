@@ -13,9 +13,9 @@ interface MobileMenuProps {
 export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps) => {
    useEffect(() => {
     if (mobMenuIsOpen) {
-      document.body.style.overflow = "hidden";   // блокируем скролл
+      document.body.style.overflow = "hidden";   // block scroll
     } else {
-      document.body.style.overflow = "";         // возвращаем скролл
+      document.body.style.overflow = "";         // restore scroll
     }
 
     return () => {
@@ -33,7 +33,7 @@ export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps)
     <div
     className=
     {`fixed flex top-0 right-0 
-    w-50 h-screen bg-linear-to-br from-blue-100 to-yellow-100 overflow-hidden
+    w-50 h-screen bg-linear-to-br from-blue-200 to-yellow-200 overflow-hidden
     transition-transform duration-300 ease
     ${mobMenuIsOpen ? 'translate-x-0' : 'translate-x-full'}
     sm:w-[30vw]`}
