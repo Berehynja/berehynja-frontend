@@ -9,7 +9,7 @@ import {
   FooterH2Styled,
   FooterLinkStyled,
   FooterLinkWrapper,
-  FooterStyled,
+  
   License,
   SocialLinkStyled,
   SocialStyled,
@@ -41,7 +41,7 @@ export const Footer = () => {
   };
 
   return (
-    <FooterStyled>
+    <footer className="bg-blue-800">
       <FooterContainer>
 
         <FooterBoxContact
@@ -147,7 +147,7 @@ export const Footer = () => {
         {/* )} */}
       </FooterContainer>
       
-    </FooterStyled>
+    </footer>
   );
 };
 
