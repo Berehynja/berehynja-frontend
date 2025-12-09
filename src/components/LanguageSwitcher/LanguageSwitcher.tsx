@@ -3,13 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ChevronUp } from "lucide-react";
 import Flag from "react-country-flag";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
-import {
-  // Flag,
-  // LangDefault,
-  // LangItem,
-  // LangList,
-  // LangugeBox,
-} from "./LanguageSwitcher.styled";
+
 
 const languagesArr = ["UA", "EN", "DE"];
 
