@@ -42,7 +42,7 @@ export const LanguageSwitcher = () => {
 
   return (
     <div
-      className={` flex flex-col w-22 bg-white rounded-sm lg:absolute lg:top-0 lg:right-0 lg:w-23 gap-3
+      className={` flex flex-col w-22 bg-white rounded-sm font-interMedium lg:absolute lg:top-0 lg:right-0 lg:w-23 gap-3
       transition-all duration-400 ease overflow-hidden px-2.5 py-1.5
         ${isOpenBurger ? " max-h-45" : " max-h-7.5 "}`}
       tabIndex={0}
