@@ -40,7 +40,7 @@ export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps)
     
     >
       <button className=" absolute top-4 right-4 z-10 " onClick={()=>setMobMenuIsOpen(!mobMenuIsOpen)} aria-label='close mobile menu'>
-        <X className=' stroke-stone-500 ' size={32}/>
+        <X className=' stroke-stone-600 ' size={32}/>
       </button>
       <div 
       className=" flex flex-col bg-repeat-y bg-size-[1.5rem] w-6 h-full"

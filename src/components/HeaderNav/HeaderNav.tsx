@@ -23,7 +23,7 @@ export const HeaderNav = () => {
     text-xl 
     w-full 
     mb-10 
-    text-stone-500
+    text-stone-600
     
     
     lg:flex-row 
