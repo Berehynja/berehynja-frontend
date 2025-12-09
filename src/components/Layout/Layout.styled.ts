@@ -25,9 +25,9 @@ export const Hidden = styled.div`
 
 
 export const Container = styled.div`
-  margin-top: 80px;
+  /* margin-top: 80px; */
   @media (min-width: ${props => props.theme.breakpoints.s}) {
-    margin-top: 100px;
+    /* margin-top: 100px; */
   };
   @media (min-width: ${props => props.theme.breakpoints.m}) {
   };
