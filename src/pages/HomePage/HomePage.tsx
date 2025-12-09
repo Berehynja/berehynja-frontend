@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Baner, BanerText, BannerTitele, Hero, HomeContainer } from "./HomePage.styled";
+import { HowWeHelp } from "../../components/Sections/HowWeHelp";
 
 export function HomePage() {
   const { t } = useTranslation();
@@ -17,8 +18,11 @@ export function HomePage() {
           </BanerText>
         </Baner>
       </Hero>
+      <HowWeHelp/>
+
       <HomeContainer>
         <p>HOME</p>
+
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint vero
           aspernatur cupiditate voluptatibus! Odio suscipit tempora pariatur
