@@ -22,7 +22,7 @@ export const Layout = () => {
       <ScrollToTop />
       <Header />
         <main >
-          <div className=" flex flex-col justify-center items-center min-w-85 max-w-120 mx-auto 
+          <div className=" flex flex-col justify-center items-center min-w-80 max-w-120 mx-auto 
           sm:max-w-3xl
           md:px-4 md:max-w-5xl
           lg:px-8 lg:max-w-7xl
