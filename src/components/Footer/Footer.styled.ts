@@ -1,13 +1,12 @@
 import styled from "@emotion/styled";
 
-export const FooterStyled = styled.footer`
-  background-color: #161942ff;
-`;
+// export const FooterStyled = styled.footer`
+//   background-color: #161942ff;
+// `;
 
 export const FooterContainer = styled.div`
   display: block;
   margin: 0 auto;
-  /* overflow: hidden; */
   color: ${(props) => props.theme.colors.white};
   gap: ${(props) => props.theme.spacing.step * 1}px;
   padding: 20px ${(props) => props.theme.spacing.step * 0}px
@@ -217,17 +216,20 @@ export const ContactsList = styled.div`
 
 export const License = styled.div`
   display: flex;
+  flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
+  gap: 10px;
   min-width: 150px;
   padding: 0px 28px;
-  margin-top: 40px;
+
+  color: ${(props) => props?.theme.colors.secGrey};
   font-size: ${(props) => props?.theme.fontSizes.xs};
   font-weight: ${(props) => props?.theme.fontWeight.Light};
   line-height: ${(props) => props?.theme.lineHeight.m};
   letter-spacing: 1.1px;
-  @media (min-width: ${(props) => props.theme.breakpoints.s}) {
+  /* @media (min-width: ${(props) => props.theme.breakpoints.s}) {
     display: none;
-  }
+  } */
 `;

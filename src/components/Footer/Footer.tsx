@@ -5,11 +5,10 @@ import {
   ArrowWraperContacts, 
   FooterBoxAdress,
   FooterBoxContact,
-  FooterContainer,
   FooterH2Styled,
   FooterLinkStyled,
   FooterLinkWrapper,
-  FooterStyled,
+  
   License,
   SocialLinkStyled,
   SocialStyled,
@@ -24,6 +23,7 @@ import {
 import { GoogleMapIcon } from "../icons/GoogleMapIcon";
 import { Phone } from "../icons/Phone";
 import { GmailIcon } from "../icons/GmailIcon";
+import { Heart } from "lucide-react";
 
 
 export const Footer = () => {
@@ -41,8 +41,18 @@ export const Footer = () => {
   };
 
   return (
-    <FooterStyled>
-      <FooterContainer>
+    <footer className="bg-blue-800">
+      <div className=" footerOverlay  py-5  
+          
+          
+          
+      ">
+      {/* <FooterContainer> */}
+      <div className="min-w-80 max-w-120 mx-auto border-b pb-4 border-gray-700 text-white  gap-1
+           md:px-4 md:max-w-5xl md:flex md:justify-center md:items-center md:gap-8 
+           lg:px-8 lg:max-w-7xl lg:gap-30
+           xl:gap-40 xl:px-10 xl:max-w-360 
+      ">
 
         <FooterBoxContact
           className="footerBox"
@@ -142,12 +152,15 @@ export const Footer = () => {
                 <TelegramIcon />
               </SocialLinkStyled>
             </SocialStyled>)}
-           
-            <License >Berehynja 2025</License>
-        {/* )} */}
-      </FooterContainer>
-      
-    </FooterStyled>
+      </div>
+      <License className="  border-t border-blue-800 mt-3  py-4  flex flex-col md:flex-row md:justify-between md:items-center ">
+         <p className="text-sm flex items-center justify-center">
+            {t("footer.madeWith")} <Heart size={16} className="mx-2 text-red-500" /> for the Ukrainian community
+          </p>
+        <p className="">Berehynja 2025</p>
+      </License>
+      </div>
+    </footer>
   );
 };
 

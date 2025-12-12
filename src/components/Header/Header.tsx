@@ -19,7 +19,7 @@ export function Header() {
 
   return (
     <header className=" sticky top-0 max-w-full z-50 bg-white shadow-2xs">
-      <div className=" flex justify-between items-center mx-auto px-5 max-w-7xl h-20 sm:px-8   ">
+      <div className=" flex justify-between items-center mx-auto px-5 max-w-360 h-20 sm:px-8 lg:px-8 xl:px-10 ">
         <NavLink className=" flex justify-center decoration-0" to="/" end>
           <div className=" flex justify-center items-center ">
             <LogoSvg />

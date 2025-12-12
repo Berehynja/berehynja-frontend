@@ -1,6 +1,5 @@
 import { Suspense, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import {  Container, Main, LayoutContainer } from "./Layout.styled";
 import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
 import { ScrollToTop } from "../ScrollToTop/ScrollToTop";
@@ -19,17 +18,23 @@ export const Layout = () => {
     }
   }, [location.pathname, i18n.language, navigate]);
   return (
-    <LayoutContainer>
+    <div className="layout">
       <ScrollToTop />
       <Header />
-        <Container>
-          <Main>
+        <main >
+          <div className=" flex flex-col justify-center items-center min-w-80 max-w-120 mx-auto 
+          sm:max-w-3xl
+          md:px-4 md:max-w-5xl
+          lg:px-8 lg:max-w-7xl
+          xl:px-10 xl:max-w-360
+
+          ">
             <Suspense fallback={<div>Loading page....</div>}>
               <Outlet />
             </Suspense>
-          </Main>
-        </Container>
+          </div>
+        </main>
       <Footer />
-    </LayoutContainer>
+    </div>
   );
 };
