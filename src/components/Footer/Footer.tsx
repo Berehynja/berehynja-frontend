@@ -155,7 +155,7 @@ export const Footer = () => {
       </div>
       <License className="  border-t border-blue-800 mt-3  py-4  flex flex-col md:flex-row md:justify-between md:items-center ">
          <p className="text-sm flex items-center justify-center">
-            Зроблено з <Heart size={16} className="mx-2 text-red-500" /> for the Ukrainian community
+            {t("footer.madeWith")} <Heart size={16} className="mx-2 text-red-500" /> for the Ukrainian community
           </p>
         <p className="">Berehynja 2025</p>
       </License>
