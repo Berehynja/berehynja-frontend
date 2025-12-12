@@ -12,7 +12,8 @@
   "footer": {
     "contacts": "Kontakte",
     "adress": "Adresse",
-    "location": "Unser Standort"
+    "location": "Unser Standort",
+    "madeWith": "Mit Liebe gemacht"
   },
   "languageSwitcher": {
     "lang": "DE"

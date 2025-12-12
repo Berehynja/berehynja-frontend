@@ -12,7 +12,8 @@
   "footer": {
     "contacts": "Контакти",
     "adress": "Адреса",
-    "location": "Наше розташування"
+    "location": "Наше розташування",
+    "madeWith": "Зроблено з"
   },
   "languageSwitcher": {
     "lang": "UA"
