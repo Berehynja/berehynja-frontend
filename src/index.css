@@ -18,6 +18,70 @@
   /* Dancing Script */
   --font-dancingRegular: "DancingScript-Regular", cursive;
   --font-dancingMedium: "DancingScript-Medium", cursive;
+
+
+  --color-Red: #DF7D84;
+  --color-Cyan: #C1DDEF;
+  --color-Orange: #E2CD7A;
+  --color-Blue: #2F6EBB;
+  --color-Green: #A4C9A0;
+
+/* 
+#3B6291   (раніше #31527A)
+#E2CD7A   (раніше #D8C16A)
+#D36C73   (раніше #C65B63)
+#96B88F   (раніше #86A57E)
+#B4D1E5   (раніше #A8C5D9)
+#EDC4D2   (раніше #E4B8C6)
+#8A77AF   (раніше #7A689C)
+#FBF9F7   (раніше #F7F6F4)
+#333943   (раніше #2C3038)
+
+#2F6EBB   (новий український синій – глибокий, але живіший)
+#ECD887
+#DF7D84
+#A4C9A0
+#C1DDEF
+#F1CEDA
+#9987BE
+#FEFCFB
+#3A404B
+
+
+
+
+ */
+
+
+/*
+#F1EFAE
+#E6D86A
+#C8BE55
+#8FAF4C
+#64873A
+#3F5C28
+#A7C8D2
+#8AC5E2
+#6BA8CC
+#A8D4E1
+#CFE3ED
+#F2D3CE
+#E6B7B1
+#D9A39E
+#C18F88
+#A8796F
+#8E6B5A
+#6E4F3B
+#4A3B2E
+#2E241C
+*/
+
+
+
+
+  --shadow-card: 0 15px 30px -11px rgba(131, 166, 210, 0.5);
+
+
 }
 
 /* -------------------------------------INTER----------------------------------- */

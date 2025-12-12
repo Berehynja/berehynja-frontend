@@ -1,4 +1,6 @@
 import { useTranslation } from "react-i18next";
+import { Baner, BanerText, BannerTitele, Hero, HomeContainer } from "./HomePage.styled";
+import { HowWeHelp } from "../../components/Sections/HowWeHelp";
 import ban from "../../images/children.jpg";
 
 export function HomePage() {
@@ -28,6 +30,7 @@ export function HomePage() {
       </section>
       <section className=" w-full px-3.5 md:px-4 lg:px-8 xl:px-10 my-10">
         <p>HOME</p>
+
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint vero
           aspernatur cupiditate voluptatibus! Odio suscipit tempora pariatur
