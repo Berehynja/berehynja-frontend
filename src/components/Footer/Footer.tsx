@@ -20,10 +20,10 @@ import {
   InstagramIcon,
   TelegramIcon,
 } from "../icons/SocialIcons";
-import { GoogleMapIcon } from "../icons/GoogleMapIcon";
-import { Phone } from "../icons/Phone";
-import { GmailIcon } from "../icons/GmailIcon";
-import { Heart } from "lucide-react";
+// import { GoogleMapIcon } from "../icons/GoogleMapIcon";
+// import { Phone } from "../icons/Phone";
+// import { GmailIcon } from "../icons/GmailIcon";
+import { Heart, Phone, Mail, MapPin,  } from "lucide-react";
 
 
 export const Footer = () => {
@@ -47,7 +47,7 @@ export const Footer = () => {
           
           
       ">
-      {/* <FooterContainer> */}
+      
       <div className="min-w-80 max-w-120 mx-auto border-b pb-4 border-gray-700 text-white  gap-1
            md:px-4 md:max-w-5xl md:flex md:justify-center md:items-center md:gap-8 
            lg:px-8 lg:max-w-7xl lg:gap-30
@@ -75,7 +75,7 @@ export const Footer = () => {
               href="mailto:bereginia.badoeynhausen@gmail.com"
               target="_blank"
             >
-              <GmailIcon />
+              <Mail />
               <span>bereginia.badoeynhausen@gmail.com</span>
             </FooterLinkStyled>
 
@@ -129,7 +129,7 @@ export const Footer = () => {
               target="_blank"
               aria-label="Google Maps location"
             >
-              <GoogleMapIcon />
+              <MapPin />
               {t("footer.location")}
             </FooterLinkStyled>
           </FooterLinkWrapper>
@@ -164,9 +164,3 @@ export const Footer = () => {
   );
 };
 
- {/* <ContactsList> */}
-              {/* <FooterLinkStyled href="mailto:bereginia.badoeynhausen@gmail.com" target="_blank">
-                <EmailIcon />
-                Напишіть нам
-              </FooterLinkStyled> */}
-            {/* </ContactsList> */}

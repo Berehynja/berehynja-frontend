@@ -4,42 +4,42 @@ import styled from "@emotion/styled";
 //   background-color: #161942ff;
 // `;
 
-export const FooterContainer = styled.div`
-  display: block;
-  margin: 0 auto;
-  color: ${(props) => props.theme.colors.white};
-  gap: ${(props) => props.theme.spacing.step * 1}px;
-  padding: 20px ${(props) => props.theme.spacing.step * 0}px
-    ${(props) => props.theme.spacing.step * 10}px
-    ${(props) => props.theme.spacing.step * 0}px;
+// export const FooterContainer = styled.div`
+//   display: block;
+//   margin: 0 auto;
+//   color: ${(props) => props.theme.colors.white};
+//   gap: ${(props) => props.theme.spacing.step * 1}px;
+//   padding: 20px ${(props) => props.theme.spacing.step * 0}px
+//     ${(props) => props.theme.spacing.step * 10}px
+//     ${(props) => props.theme.spacing.step * 0}px;
     
-  @media (max-width: 767px) {
-    min-width: 100px;
-    max-width: 480px;
-  }
+//   @media (max-width: 767px) {
+//     min-width: 100px;
+//     max-width: 480px;
+//   }
 
-  @media (min-width: ${(props) => props.theme.breakpoints.s}) {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0 ${(props) => props.theme.spacing.step * 10}px
-      ${(props) => props.theme.spacing.step * 20}px
-      ${(props) => props.theme.spacing.step * 10}px;
-    width: ${(props) => props.theme.breakpoints.s};
-    gap: ${(props) => props.theme.spacing.step * 5}px;
-  }
-  @media (min-width: ${(props) => props.theme.breakpoints.m}) {
-    flex-wrap: nowrap;
-    padding: 0 ${(props) => props.theme.spacing.step * 5}px
-      ${(props) => props.theme.spacing.step * 20}px
-      ${(props) => props.theme.spacing.step * 5}px;
-    width: ${(props) => props.theme.breakpoints.m};
-    gap: ${(props) => props.theme.spacing.step * 30}px;
-  }
-  @media (min-width: ${(props) => props.theme.breakpoints.l}) {
-    width: ${(props) => props.theme.breakpoints.l};
-  }
-`;
+//   @media (min-width: ${(props) => props.theme.breakpoints.s}) {
+//     display: flex;
+//     flex-wrap: wrap;
+//     justify-content: center;
+//     padding: 0 ${(props) => props.theme.spacing.step * 10}px
+//       ${(props) => props.theme.spacing.step * 20}px
+//       ${(props) => props.theme.spacing.step * 10}px;
+//     width: ${(props) => props.theme.breakpoints.s};
+//     gap: ${(props) => props.theme.spacing.step * 5}px;
+//   }
+//   @media (min-width: ${(props) => props.theme.breakpoints.m}) {
+//     flex-wrap: nowrap;
+//     padding: 0 ${(props) => props.theme.spacing.step * 5}px
+//       ${(props) => props.theme.spacing.step * 20}px
+//       ${(props) => props.theme.spacing.step * 5}px;
+//     width: ${(props) => props.theme.breakpoints.m};
+//     gap: ${(props) => props.theme.spacing.step * 30}px;
+//   }
+//   @media (min-width: ${(props) => props.theme.breakpoints.l}) {
+//     width: ${(props) => props.theme.breakpoints.l};
+//   }
+// `;
 
 
 interface TogglePropsContact {
