@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Baner, BanerText, BannerTitele, Hero, HomeContainer } from "./HomePage.styled";
+// import { Baner, BanerText, BannerTitele, Hero, HomeContainer } from "./HomePage.styled";
 import { HowWeHelp } from "../../components/Sections/HowWeHelp";
 import ban from "../../images/children.jpg";
 
