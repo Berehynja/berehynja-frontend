@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 // import { Baner, BanerText, BannerTitele, Hero, HomeContainer } from "./HomePage.styled";
 import { HowWeHelp } from "../../components/Sections/HowWeHelp";
 import ban from "../../images/children.jpg";
+import OurMission from "../../components/Sections/OurMission";
 
 export function HomePage() {
   const { t } = useTranslation();
@@ -28,7 +29,14 @@ export function HomePage() {
           </p>
         </div>
       </section>
-      <section className=" w-full px-3.5 md:px-4 lg:px-8 xl:px-10 my-10">
+
+      <HowWeHelp/>
+      <OurMission/>
+
+      {/* <section className=" w-full px-3.5 md:px-4 lg:px-8 xl:px-10 my-10">
+
+          
+
         <p>HOME</p>
 
         <p>
@@ -55,7 +63,7 @@ export function HomePage() {
           natus, culpa ipsum vero cupiditate assumenda quaerat placeat, enim
           dolorum adipisci, minus vel.
         </p>
-      </section>
+      </section> */}
     </>
   );
 }
