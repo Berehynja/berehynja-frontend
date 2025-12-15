@@ -25,8 +25,8 @@ export const HeaderNav = () => {
           >
             <span
               className=" relative 
-              before:absolute before:left-1/2 before:-bottom-2 before:h-0.5 before:w-0
-              before:-translate-x-1/2 before:bg-blue-500 before:transition-all
+              before:absolute  before:-bottom-2 before:h-0.5 
+              before:w-0 before:left-1/2 before:-translate-x-1/2 before:bg-blue-500 before:transition-all
               
               hover:text-blue-500 hover:before:w-full hover:before:transition-all hover:before:duration-300
 
