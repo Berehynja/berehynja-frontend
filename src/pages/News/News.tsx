@@ -1,8 +1,6 @@
-import { NewsContainer } from "./News.styled"
-
 export const News = () => {
   return (
-    <NewsContainer>
+    <div className="w-full ">
       <p>Новини</p>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint vero
@@ -122,6 +120,6 @@ export const News = () => {
         natus, culpa ipsum vero cupiditate assumenda quaerat placeat, enim
         dolorum adipisci, minus vel.
       </p>
-    </NewsContainer>
+    </div>
   );
 }
