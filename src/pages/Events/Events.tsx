@@ -1,8 +1,6 @@
-import { EventsContainer } from "./Events.styled"
-
 export const Events = () => {
   return (
-    <EventsContainer>
+    <div className="w-full ">
       <p>Події + Галерея
       </p>
       <p>
@@ -123,6 +121,6 @@ export const Events = () => {
         natus, culpa ipsum vero cupiditate assumenda quaerat placeat, enim
         dolorum adipisci, minus vel.
       </p>
-    </EventsContainer>
+    </div>
   );
 }

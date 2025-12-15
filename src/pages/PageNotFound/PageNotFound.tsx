@@ -1,11 +1,10 @@
-import { PageNotFoundContainer } from "./PageNotFound.styled";
 
 export const PageNotFound = () => {
   return (
-    <PageNotFoundContainer>
+    <div className="w-full h-screen flex flex-col justify-center font-interMedium items-center text-5xl">
       <span>"</span>
       <p>Page not found...</p>
       <span>"</span>
-    </PageNotFoundContainer>
+    </div>
   );
 };

@@ -1,8 +1,6 @@
-import { AboutContainer } from './About.styled';
-
 export const About = ()  => {
   return (
-    <AboutContainer>
+    <div className="w-full ">
       <p>Історія команди</p>
       <p>Статут PDF</p>
       <p>Партнерство</p>
@@ -124,6 +122,6 @@ export const About = ()  => {
         natus, culpa ipsum vero cupiditate assumenda quaerat placeat, enim
         dolorum adipisci, minus vel.
       </p>
-    </AboutContainer>
+    </div>
   );
 }

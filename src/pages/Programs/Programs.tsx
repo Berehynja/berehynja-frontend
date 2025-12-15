@@ -1,8 +1,7 @@
-import { ProgramsContainer } from "./Programs.styled"
 
 export const Programs = () => {
   return (
-    <ProgramsContainer>
+    <div className="w-full ">
       <p>Програми</p>
       <p>Учбові матеріали</p>
       <p>
@@ -123,6 +122,6 @@ export const Programs = () => {
         natus, culpa ipsum vero cupiditate assumenda quaerat placeat, enim
         dolorum adipisci, minus vel.
       </p>
-    </ProgramsContainer>
+    </div>
   );
 }
