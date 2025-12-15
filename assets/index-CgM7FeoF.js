@@ -540,8 +540,8 @@ m-202 -470 c22 -21 20 -47 -4 -69 -18 -17 -21 -17 -45 -1 -29 19 -32 42 -8 68
 30 -82 14 -119 14 -119 1z`})]})}),I2=()=>{const[r,i]=A.useState(window.innerWidth);return A.useLayoutEffect(()=>{const c=()=>{i(window.innerWidth)};return window.addEventListener("resize",c),()=>{window.removeEventListener("resize",c)}},[]),r},e0=()=>{const{t:r}=Il(),i=[{to:"/",label:r("header.home")},{to:"/about",label:r("header.about")},{to:"/programs",label:r("header.programs")},{to:"/events",label:r("header.events")}];return h.jsx("nav",{className:` flex flex-col gap-7 justify-center items-center font-interRegular text-xl w-full mb-10 text-stone-600
      lg:flex-row lg:gap-8 lg:mb-0 lg:mr-23 lg:justify-end lg:px-8 lg:text-black
     `,children:i.map(c=>h.jsx(Oc,{to:c.to,end:c.to==="/",children:h.jsx("span",{className:` relative 
-              before:absolute before:left-1/2 before:-bottom-2 before:h-0.5 before:w-0
-              before:-translate-x-1/2 before:bg-blue-500 before:transition-all
+              before:absolute  before:-bottom-2 before:h-0.5 
+              before:w-0 before:left-1/2 before:-translate-x-1/2 before:bg-blue-500 before:transition-all
               
               hover:text-blue-500 hover:before:w-full hover:before:transition-all hover:before:duration-300
 
