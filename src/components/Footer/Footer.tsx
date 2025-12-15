@@ -50,7 +50,7 @@ export const Footer = () => {
 
             <div className=" flex flex-col flex-nowrap mt-2 text-lg md:mt-0 ">
               <a
-                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-default hover:text-amber-200"
+                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-pointer hover:text-amber-200"
                 href="tel:+4915128161383"
               >
                 <Phone />
@@ -58,7 +58,7 @@ export const Footer = () => {
               </a>
 
               <a
-                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-default hover:text-amber-200"
+                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-pointer hover:text-amber-200"
                 href="mailto:bereginia.badoeynhausen@gmail.com"
                 target="_blank"
               >
@@ -91,7 +91,7 @@ export const Footer = () => {
 
             <div className=" flex flex-col flex-nowrap mt-2 text-lg md:mt-0 ">
               <a
-                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-default hover:text-amber-200"
+                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-pointer hover:text-amber-200 "
                 href="https://www.badoeynhausen.de/startseite"
                 target="_blank"
                 aria-label="City website"
@@ -99,16 +99,14 @@ export const Footer = () => {
                 Bad-Oeynhausen, Germany
               </a>
 
-              <a
-                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-default hover:text-amber-200"
-                href=""
-                target="_blank"
+              <p
+                className=" flex items-center min-h-13  "
                 aria-label="Adress location"
               >
                 32545 Weserstraße 24
-              </a>
+              </p>
               <a
-                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-default hover:text-amber-200"
+                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-pointer hover:text-amber-200"
                 href="https://www.google.com/maps/place/Johanniter-Mehrgenerationenhaus+Bad+Oeynhausen/@52.1979902,8.8037727,314m/data=!3m1!1e3!4m6!3m5!1s0x47ba72a07b459829:0x19fbe41cee571634!8m2!3d52.1978688!4d8.8039899!16s%2Fg%2F11c6q9n5kc?entry=ttu&g_ep=EgoyMDI1MTEwNC4xIKXMDSoASAFQAw%3D%3D"
                 target="_blank"
                 aria-label="Google Maps location"
