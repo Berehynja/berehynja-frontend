@@ -1,30 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  ArrowWraperAdress,
-  ArrowWraperContacts, 
-  FooterBoxAdress,
-  FooterBoxContact,
-  FooterH2Styled,
-  FooterLinkStyled,
-  FooterLinkWrapper,
-  
-  License,
-  SocialLinkStyled,
-  SocialStyled,
-} from "./Footer.styled";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { CaretDown } from "../icons/CaretDown";
-import {
-  
-  InstagramIcon,
-  TelegramIcon,
-} from "../icons/SocialIcons";
-// import { GoogleMapIcon } from "../icons/GoogleMapIcon";
-// import { Phone } from "../icons/Phone";
-// import { GmailIcon } from "../icons/GmailIcon";
-import { Heart, Phone, Mail, MapPin,  } from "lucide-react";
 
+import { Heart, Phone, Mail, MapPin, ChevronUp } from "lucide-react";
+import { SocialMedia } from "../SocialMedia/SocialMedia";
 
 export const Footer = () => {
   const [isOpenContacts, setIsOpenContacts] = useState(false);
@@ -41,126 +20,119 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="bg-blue-800">
-      <div className=" footerOverlay  py-5  
-          
-          
-          
-      ">
-      
-      <div className="min-w-80 max-w-120 mx-auto border-b pb-4 border-gray-700 text-white  gap-1
+    <footer className="bg-blue-800 text-white font-interRegular">
+      <div className=" footerOverlay ">
+        <div
+          className="min-w-80 max-w-120 mx-auto py-4 gap-1
            md:px-4 md:max-w-5xl md:flex md:justify-center md:items-center md:gap-8 
            lg:px-8 lg:max-w-7xl lg:gap-30
            xl:gap-40 xl:px-10 xl:max-w-360 
-      ">
-
-        <FooterBoxContact
-          className="footerBox"
-          isOpenContacts={isOpenContacts}
-          onClick={() => toggleList("КОНТАКТИ")}
+      "
         >
-          
-          
-          <ArrowWraperContacts isOpenContacts={isOpenContacts}>
-            <FooterH2Styled>{t("footer.contacts")}</FooterH2Styled>
-            <CaretDown />
-          </ArrowWraperContacts>
-          <FooterLinkWrapper>
-            <FooterLinkStyled href="tel:+4915128161383">
-              <Phone />
-              <span>+49 151 28161383</span>
-            </FooterLinkStyled>
+          <div
+            className={`flex flex-col pb-3.5 px-7 justify-start  overflow-hidden max-w-120 border-b border-white 
+            transition-all duration-700 ease ${
+              isOpenContacts ? " max-h-70" : " max-h-17 "
+            } 
+            md:py-0 md:px-0 md:border-0 md:max-w-none md:max-h-none md:overflow-visible md:transition-none`}
+            onClick={() => toggleList("КОНТАКТИ")}
+          >
+            <div className=" flex justify-between items-center">
+              <h2 className=" text-xl font-montserratMedium py-5">
+                {t("footer.contacts")}
+              </h2>
+              <ChevronUp
+                className={`${
+                  isOpenContacts ? "rotate-x-0" : "rotate-x-180"
+                } md:hidden`}
+              />
+            </div>
 
-            <FooterLinkStyled
-              href="mailto:bereginia.badoeynhausen@gmail.com"
-              target="_blank"
-            >
-              <Mail />
-              <span>bereginia.badoeynhausen@gmail.com</span>
-            </FooterLinkStyled>
-
-            {screenWidth > 767 && (<SocialStyled>
-              <SocialLinkStyled
-                href="https://www.instagram.com/berehynja.de?igsh=MWRtdWpscm1vNW8yZw=="
-                target="_blank"
-                aria-label="Instagram"
+            <div className=" flex flex-col flex-nowrap mt-2 text-lg md:mt-0 ">
+              <a
+                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-default hover:text-amber-200"
+                href="tel:+4915128161383"
               >
-                <InstagramIcon />
-              </SocialLinkStyled>
+                <Phone />
+                <span>+49 151 28161383</span>
+              </a>
 
-              <SocialLinkStyled
-                href="https://t.me/bereginia_de"
+              <a
+                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-default hover:text-amber-200"
+                href="mailto:bereginia.badoeynhausen@gmail.com"
                 target="_blank"
-                aria-label="Telegram"
               >
-                <TelegramIcon />
-              </SocialLinkStyled>
-            </SocialStyled>)}
+                <Mail />
+                <span>bereginia.badoeynhausen@gmail.com</span>
+              </a>
 
-          </FooterLinkWrapper>
-        </FooterBoxContact>
+              {screenWidth > 767 && <SocialMedia />}
+            </div>
+          </div>
 
-        <FooterBoxAdress
-          onClick={() => toggleList("АДРЕСА")}
-          isOpenAdress={isOpenAdress}
+          <div
+            className={` flex flex-col pb-3.5 px-7 justify-start overflow-hidden max-w-120 border-b border-white 
+            transition-all duration-700 ease ${
+              isOpenAdress ? " max-h-70" : " max-h-17 "
+            } 
+            md:py-0 md:px-0 md:border-0 md:max-w-none md:max-h-none md:overflow-visible md:transition-none`}
+            onClick={() => toggleList("АДРЕСА")}
+          >
+            <div className=" flex justify-between items-center">
+              <h2 className=" text-xl font-montserratMedium py-5">
+                {t("footer.adress")}
+              </h2>
+              <ChevronUp
+                className={`${
+                  isOpenAdress ? "rotate-x-0" : "rotate-x-180"
+                } md:hidden `}
+              />
+            </div>
+
+            <div className=" flex flex-col flex-nowrap mt-2 text-lg md:mt-0 ">
+              <a
+                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-default hover:text-amber-200"
+                href="https://www.badoeynhausen.de/startseite"
+                target="_blank"
+                aria-label="City website"
+              >
+                Bad-Oeynhausen, Germany
+              </a>
+
+              <a
+                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-default hover:text-amber-200"
+                href=""
+                target="_blank"
+                aria-label="Adress location"
+              >
+                32545 Weserstraße 24
+              </a>
+              <a
+                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-default hover:text-amber-200"
+                href="https://www.google.com/maps/place/Johanniter-Mehrgenerationenhaus+Bad+Oeynhausen/@52.1979902,8.8037727,314m/data=!3m1!1e3!4m6!3m5!1s0x47ba72a07b459829:0x19fbe41cee571634!8m2!3d52.1978688!4d8.8039899!16s%2Fg%2F11c6q9n5kc?entry=ttu&g_ep=EgoyMDI1MTEwNC4xIKXMDSoASAFQAw%3D%3D"
+                target="_blank"
+                aria-label="Google Maps location"
+              >
+                <MapPin />
+                {t("footer.location")}
+              </a>
+            </div>
+          </div>
+
+          {screenWidth < 768 && <SocialMedia />}
+        </div>
+        <div
+          className=" flex flex-col justify-between items-center border-t border-gray-700 py-4 text-sm text-Green gap-2.5
+       "
         >
-          
-          <ArrowWraperAdress isOpenAdress={isOpenAdress}>
-            <FooterH2Styled>{t("footer.adress")}</FooterH2Styled>
-            <CaretDown />
-          </ArrowWraperAdress>
-          <FooterLinkWrapper >
-            <FooterLinkStyled 
-            href="https://www.badoeynhausen.de/startseite" 
-            target="_blank" 
-            aria-label="City website">
-              Bad-Oeynhausen, Germany
-            </FooterLinkStyled>
-
-            <FooterLinkStyled
-              href=""
-              target="_blank"
-              aria-label="Adress location"
-            >
-              32545 Weserstraße 24
-            </FooterLinkStyled>
-            <FooterLinkStyled
-              href="https://www.google.com/maps/place/Johanniter-Mehrgenerationenhaus+Bad+Oeynhausen/@52.1979902,8.8037727,314m/data=!3m1!1e3!4m6!3m5!1s0x47ba72a07b459829:0x19fbe41cee571634!8m2!3d52.1978688!4d8.8039899!16s%2Fg%2F11c6q9n5kc?entry=ttu&g_ep=EgoyMDI1MTEwNC4xIKXMDSoASAFQAw%3D%3D"
-              target="_blank"
-              aria-label="Google Maps location"
-            >
-              <MapPin />
-              {t("footer.location")}
-            </FooterLinkStyled>
-          </FooterLinkWrapper>
-        </FooterBoxAdress>
-
-           { screenWidth < 768 && ( <SocialStyled>
-              <SocialLinkStyled
-                href="https://www.instagram.com/berehynja.de?igsh=MWRtdWpscm1vNW8yZw=="
-                target="_blank"
-                aria-label="Instagram"
-              >
-                <InstagramIcon />
-              </SocialLinkStyled>
-
-              <SocialLinkStyled
-                href="https://t.me/bereginia_de"
-                target="_blank"
-                aria-label="Telegram"
-              >
-                <TelegramIcon />
-              </SocialLinkStyled>
-            </SocialStyled>)}
-      </div>
-      <License className="  border-t border-blue-800 mt-3  py-4  flex flex-col md:flex-row md:justify-between md:items-center ">
-         <p className="text-sm flex items-center justify-center">
-            {t("footer.madeWith")} <Heart size={16} className="mx-2 text-red-500" /> for the Ukrainian community
+          <p className=" flex flex-wrap items-center justify-center">
+            {t("footer.madeWith")}{" "}
+            <Heart size={16} className="mx-2 text-red-500" /> for the Ukrainian
+            community
           </p>
-        <p className="">Berehynja 2025</p>
-      </License>
+          <p className="">Berehynja 2025</p>
+        </div>
       </div>
     </footer>
   );
 };
-
