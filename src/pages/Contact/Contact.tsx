@@ -1,7 +1,7 @@
-export const News = () => {
+export const Contact = () => {
   return (
     <div className="w-full ">
-      <p>Новини</p>
+      <p>Контакти</p>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint vero
         aspernatur cupiditate voluptatibus! Odio suscipit tempora pariatur

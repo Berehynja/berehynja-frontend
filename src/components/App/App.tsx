@@ -5,7 +5,7 @@ import {
   Events,
   About,
   Programs,
-  // News,
+  Contact,
   PageNotFound,
 } from "../../pages";
 
@@ -21,7 +21,7 @@ function App() {
           <Route path="/about" element={ <About /> } />
           <Route path="/events" element={<Events />} />
           <Route path="/programs" element={<Programs />} />
-          {/* <Route path="/news" element={<News />} /> */}
+          <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>

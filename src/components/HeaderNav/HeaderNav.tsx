@@ -10,6 +10,7 @@ export const HeaderNav = () => {
     { to: "/about", label: t("header.about") },
     { to: "/programs", label: t("header.programs") },
     { to: "/events", label: t("header.events") },
+    { to: "/contact", label: t("header.contact") },
   ];
 
   return (
