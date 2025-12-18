@@ -1,5 +1,4 @@
 import about from "../../images/bereg-about22.jpg";
-console.log("🚀 ~ about:", about);
 
 export const About = () => {
   return (
