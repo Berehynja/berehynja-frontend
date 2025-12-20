@@ -24,11 +24,11 @@ export const About = () => {
       </div>
 
       <section className="flex w-full flex-col md:flex-row justify-center items-center md:gap-6 lg:gap-8 py-12 ">
-        <div className="min-w-80 max-w-120 md:max-w-1/2 h-130  px-6  rounded-lg shadow-lg">
+        <div className="min-w-80 max-w-120 md:max-w-1/2 md:h-135  p-6  rounded-lg shadow-lg">
           <h2 className="font-montserratBold text-2xl py-3 xl:py-4">
             Історія команди
           </h2>
-          <p className="font-montserratRegular text-base lg:text-lg leading-5 md:leading-5 lg:leading-5.5 xl:leading-7 xl:py-5">
+          <p className="font-montserratRegular text-base lg:text-lg leading-5 md:leading-5.5 lg:leading-5.5 xl:leading-7 ">
             {" "}
             BEREHYNJA була заснована у відповідь на зростаючу потребу в
             підтримці українців у Німеччині. Наша назва походить від
@@ -47,7 +47,7 @@ export const About = () => {
           <img
             src={about}
             alt="About Berehynja"
-            className="w-full h-130 object-cover transform scale-[1.6] origin-center"
+            className="w-full h-135 object-cover transform scale-[1.6] origin-center"
           />
         </div>
       </section>
@@ -57,7 +57,7 @@ export const About = () => {
           <h2 className="flex flex-col justify-center items-center font-montserratBold text-2xl py-3 xl:py-4">
             Наша команда
           </h2>
-          <ul className="max-w-120 md:max-w-full grid  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 list-none text-base lg:text-lg leading-5 md:leading-5 lg:leading-5.5 xl:leading-7 xl:py-5">
+          <ul className="max-w-120 md:max-w-full grid  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 list-none text-base lg:text-lg leading-5 md:leading-5  xl:py-5">
             <li className="flex rounded-b-sm shadow-card p-3">
               <img src={avatar} />
               <p>Олена Іваненко <br /> Засновниця та виконавча директорка</p>
@@ -97,7 +97,7 @@ export const About = () => {
           <h2 className="flex flex-col justify-center items-center font-montserratBold text-2xl py-3 xl:py-4">
             Наші партнери
           </h2>
-          <ul className="max-w-120 md:max-w-full grid  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 list-none text-base lg:text-lg leading-5 md:leading-5 lg:leading-5.5 xl:leading-7 xl:py-5">
+          <ul className="max-w-120 md:max-w-full grid  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 list-none text-base lg:text-lg leading-5 md:leading-5 xl:py-5">
             <li className="flex rounded-b-sm bg-amber-50 shadow-card p-3">
               <img src={partner} alt="p"/>
               <p>Генеральне консульство України в Німеччині</p>
