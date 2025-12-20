@@ -86,6 +86,10 @@ export const About = () => {
               <img src={avatar} />
               <p>Тетяна Грищук <br /> Культурний куратор</p>
             </li>
+            <li className="flex rounded-sm shadow-card p-3">
+              <img src={avatar} />
+              <p>Вікторія Грищук <br /> Психолог</p>
+            </li>
           </ul>
         </div>
 
