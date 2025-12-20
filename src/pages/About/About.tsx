@@ -1,7 +1,7 @@
 import about from "../../images/bereg-about22.jpg";
 import avatar from "../../images/icons8-avatar-3d-fluency/icons8-avatar-100.png";
 import partner from "../../images/icons8-penguin-color/icons8-penguin-48.png";
-console.log("🚀 ~ about:", about);
+
 
 export const About = () => {
   return (
@@ -85,6 +85,10 @@ export const About = () => {
             <li className="flex rounded-sm shadow-card p-3">
               <img src={avatar} />
               <p>Тетяна Грищук <br /> Культурний куратор</p>
+            </li>
+            <li className="flex rounded-sm shadow-card p-3">
+              <img src={avatar} />
+              <p>Вікторія Грищук <br /> Психолог</p>
             </li>
           </ul>
         </div>
