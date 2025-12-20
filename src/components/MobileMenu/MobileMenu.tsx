@@ -33,7 +33,7 @@ export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps)
     <div
     className=
     {`fixed flex top-0 right-0 
-    w-50 h-screen bg-linear-to-br from-blue-200 to-yellow-200 overflow-hidden
+    w-50 h-screen bg-linear-to-br from-blue-100 via-white to-yellow-100 overflow-hidden
     transition-transform duration-300 ease
     ${mobMenuIsOpen ? 'translate-x-0' : 'translate-x-full'}
     sm:w-[30vw]`}
