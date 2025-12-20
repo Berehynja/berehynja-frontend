@@ -5,13 +5,13 @@ console.log("🚀 ~ about:", about);
 
 export const About = () => {
   return (
-    <div className="flex flex-col justify-center   py-8">
+    <div className="flex flex-col justify-center font-montserratRegular py-8">
       <div
         className="flex flex-col justify-center items-center gap-8 py-7 md:py-10 font-montserratBold 
       md:flex-row "
       >
         <div className="max-w-4xl ">
-          <h1 className="flex text-4xl md:text-5xl  font-bold py-4 justify-center ">
+          <h1 className="flex text-4xl md:text-5xl  font-montserratBold py-4 justify-center ">
             Про Berehynja{" "}
           </h1>{" "}
           <div className="w-24 h-1 bg-linear-to-r from-blue-500 to-yellow-400 mx-auto mb-4"></div>
