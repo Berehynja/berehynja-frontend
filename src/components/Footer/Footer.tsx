@@ -20,10 +20,10 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="bg-blue-800 text-white font-interRegular">
+    <footer className="bg-blue-800 w-full text-white font-interRegular">
       <div className=" footerOverlay ">
         <div
-          className="min-w-80 max-w-120 mx-auto py-4 gap-1
+          className="min-w-80 max-w-120 mx-auto py-4 gap-1 bg-blue-800 w-full
            md:px-4 md:max-w-5xl md:flex md:justify-center md:items-center md:gap-8 
            lg:px-8 lg:max-w-7xl lg:gap-30
            xl:gap-40 xl:px-10 xl:max-w-360 
@@ -53,16 +53,16 @@ export const Footer = () => {
                 className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-pointer hover:text-amber-200"
                 href="tel:+4915128161383"
               >
-                <Phone />
+                <span className=" w-6 "><Phone /></span>
                 <span>+49 151 28161383</span>
               </a>
 
               <a
-                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-pointer hover:text-amber-200"
+                className=" flex items-center min-h-13 gap-3 overflow-hidden transition-colors duration-300 cursor-pointer hover:text-amber-200"
                 href="mailto:bereginia.badoeynhausen@gmail.com"
                 target="_blank"
               >
-                <Mail />
+                <span className=" w-6 "><Mail /></span>
                 <span>bereginia.badoeynhausen@gmail.com</span>
               </a>
 
@@ -119,8 +119,9 @@ export const Footer = () => {
 
           {screenWidth < 768 && <SocialMedia />}
         </div>
+
         <div
-          className=" flex flex-col justify-between items-center border-t border-gray-700 py-4 text-sm text-Green gap-2.5
+          className=" flex flex-col justify-between items-center w-full border-t border-gray-700 py-4 text-sm text-Green gap-2.5
        "
         >
           <p className=" flex flex-wrap items-center justify-center">

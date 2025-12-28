@@ -18,11 +18,11 @@ export function HomePage() {
           xl:px-10 xl:max-w-360  " 
           style={{backgroundImage: `url(${ban})`,}}>
 
-          <h1 className=" font-montserratBold  text-3xl text-white align-sub mb-4 sm:text-4xl md:text-5xl">{t("hero.welcome")}</h1>
+          <h1 className=" font-montserratBold  text-3xl text-white align-sub mb-4 sm:text-4xl md:text-5xl">{t("home.welcome")}</h1>
           
           <p className=" block w-full font-montserratRegular text-xl text-white leading-8 bg-black/50  rounded-lg 
             indent-8 p-5 sm:text-2xl md:text-3xl md:leading-10">
-            {t("hero.description")}
+            {t("home.description")}
             {/* Наша мета — створити тепле та дружнє середовище, де кожен
             почуватиметься як вдома, знайде нових друзів та отримає необхідну
             підтримку. */}

@@ -6,9 +6,18 @@
     "events": "Veranstaltungen",
     "contact": "Kontakt"
   },
-  "hero": {
+  "home": {
     "welcome": "Willkommen bei «Berehynja»!",
     "description": "«Berehynja» ist ein ukrainischer Raum in Deutschland, geschaffen für Kinder, Jugendliche und Erwachsene, die sich gezwungenermaßen fern von ihrem Zuhause wiedergefunden haben. Wir vereinen ukrainische Familien, helfen, die Sprache, Kultur und Traditionen zu bewahren und unterstützen jene, die den Weg der Anpassung und Integration in eine neue Umgebung gehen."
+  },
+  "about": {
+    "aboutUs": "Über «Berehynja»",
+    "missionDescription": "Eine gemeinnützige Organisation, die sich der Unterstützung der ukrainischen Gemeinschaft auf ihrem Weg der Anpassung und Integration in Deutschland widmet.",
+    "storyTitle": "Unsere Geschichte",
+    "storyContent": "BEREHYNJA wurde als Reaktion auf den wachsenden Unterstützungsbedarf für Ukrainer in Deutschland gegründet. Unser Name stammt vom ukrainischen Wort 'berehynja' (Beschützerin) und spiegelt unser Engagement wider, unsere Gemeinschaft zu schützen und zu betreuen. Was als kleine Gruppe von Freiwilligen begann, hat sich zu einer umfassenden Unterstützungsorganisation entwickelt, die alles von Sprachkursen über kulturelle Veranstaltungen bis hin zu rechtlicher Hilfe und Beschäftigungsberatung anbietet. Wir glauben, dass erfolgreiche Integration nicht bedeutet, die eigene Identität zu verlieren. Unsere Programme sind darauf ausgelegt, Ukrainern zu helfen, ein neues Leben in Deutschland aufzubauen und gleichzeitig die ukrainische Kultur und Traditionen zu feiern und zu bewahren.",
+    "ourTeam": "Unser Team",
+    "teamContent": "Unser Team besteht aus engagierten Freiwilligen und Fachleuten, die sich dafür einsetzen, das Leben der Ukrainer in Deutschland zu verbessern. Wir arbeiten zusammen, um ein unterstützendes Umfeld zu schaffen, in dem sich jeder wie zu Hause fühlen kann.",
+    "ourPartners": "Unsere Partner"
   },
   "footer": {
     "contacts": "Kontakte",
