@@ -3,11 +3,11 @@ import { InstagramIcon, TelegramIcon } from "../icons/SocialIcons";
 export const SocialMedia = () => {
   return (
     <div
-      className=" flex justify-start items-center px-7 gap-10 mt-8 
-         md:mt-0 md:gap-10 md:py-2.5 md:px-0 "
+      className=" flex justify-center items-center px-7 gap-8 mt-8 
+         md:mt-0 md:gap-8 md:py-2.5 md:px-0 "
     >
       <a
-        className=" block "
+        className="flex flex-col justify-center items-center w-12 h-12 rounded-full bg-blue-300"
         href="https://www.instagram.com/berehynja.de?igsh=MWRtdWpscm1vNW8yZw=="
         target="_blank"
         aria-label="Instagram"
@@ -16,7 +16,7 @@ export const SocialMedia = () => {
       </a>
 
       <a
-        className=" block "
+         className="flex flex-col justify-center items-center w-12 h-12 rounded-full bg-blue-300"
         href="https://t.me/bereginia_de"
         target="_blank"
         aria-label="Telegram"
