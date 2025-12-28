@@ -38,7 +38,7 @@ export const About = () => {
           <img
             src={about}
             alt="About Berehynja"
-            className="w-full h-130 object-cover transform scale-[1.6] origin-center"
+            className="w-full h-135 object-cover transform scale-[1.6] origin-center"
           />
         </div>
       </section>
@@ -104,6 +104,10 @@ export const About = () => {
               <p>
                 Олена Грищук <br /> Психологиня
               </p>
+            </li>
+            <li className="flex rounded-sm shadow-card p-3">
+              <img src={avatar} />
+              <p>Вікторія Грищук <br /> Психолог</p>
             </li>
           </ul>
         </div>
