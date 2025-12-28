@@ -112,6 +112,7 @@ export const About = () => {
           <h2 className="flex flex-col justify-center items-center font-montserratBold text-preset-3 py-3 xl:py-4">
             {t("about.ourPartners")}
           </h2>
+          
           <ul className="max-w-120 md:max-w-full grid  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 list-none text-preset-4 leading-5 md:leading-5 lg:leading-5.5 xl:leading-7 xl:py-5">
             <li className="flex gap-3 rounded-b-sm bg-amber-50 shadow-card p-3">
               <img className="" src={partner} width="48" height="48" alt="p" />
