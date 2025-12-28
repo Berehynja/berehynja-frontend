@@ -26,6 +26,7 @@ export const About = () => {
       </div>
 
       <section className="flex w-full flex-col md:flex-row justify-center items-center md:gap-6 lg:gap-8 py-12 ">
+        
         <div className="min-w-80 w-full max-w-120 mb-5 px-6 md:max-w-1/2 md:mb-0 ">
           <h2 className="font-montserratBold text-preset-3 py-3 xl:py-4">
             {t("about.storyTitle")}
