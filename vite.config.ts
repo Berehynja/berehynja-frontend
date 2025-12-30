@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/berehynja-frontend',
+  base: '/berehynja-frontend/',
   plugins: [react(),
     tailwindcss()],
 })
