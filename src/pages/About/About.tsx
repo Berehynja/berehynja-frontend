@@ -26,7 +26,7 @@ export const About = () => {
       </div>
 
       <section className="flex w-full flex-col md:flex-row justify-center items-center md:gap-6 lg:gap-8 py-12 ">
-        
+
         <div className="min-w-80 w-full max-w-120 mb-5 px-6 md:max-w-1/2 md:mb-0 ">
           <h2 className="font-montserratBold text-preset-3 py-3 xl:py-4">
             {t("about.storyTitle")}
@@ -58,7 +58,7 @@ export const About = () => {
           
 
           <ul className="max-w-120 md:max-w-full grid  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 list-none text-preset-4 leading-5 md:leading-5 lg:leading-5.5 xl:leading-7 xl:py-5">
-            <li className="flex rounded-b-sm shadow-card p-3">
+            <li className="flex rounded-b-sm shadow-card p-3 ">
               <img src={avatar} />
               <p>
                 Олена Іваненко <br /> Засновниця та виконавча директорка
@@ -94,7 +94,7 @@ export const About = () => {
                 Світлана Бондаренко <br /> Фінансовий менеджер
               </p>
             </li>
-            <li className="flex rounded-sm shadow-card p-3">
+            <li className="flex rounded-sm shadow-card p-3 ">
               <img src={avatar} />
               <p>
                 Тетяна Грищук <br /> Культурний куратор
