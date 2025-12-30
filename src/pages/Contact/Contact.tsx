@@ -69,7 +69,7 @@ export const Contact = () => {
             ></textarea>
           </label>
 
-          <button className=" w-full h-10 rounded-lg cursor-pointer bg-lime-600 hover:bg-lime-500" type="submit">
+          <button className=" w-full h-10 rounded-lg cursor-pointer bg-lime-600 hover:bg-lime-500 transition-colors duration-250" type="submit">
             Send message
           </button>
         </form>
@@ -88,7 +88,7 @@ export const Contact = () => {
                 <div className="flex flex-col overflow-hidden">
                   <h3 className="font-montserratMedium  ">Електронна адреса</h3>
                   <a
-                    className=" text-lime-600 hover:text-lime-500 "
+                    className=" text-lime-600 hover:text-lime-500  transition-colors duration-250"
                     href="mailto:bereginia.badoeynhausen@gmail.com"
                     target="_blank"
                   >
@@ -103,7 +103,7 @@ export const Contact = () => {
                 <div>
                   <h3 className="font-montserratMedium ">Телефон</h3>
                   <a
-                    className=" text-lime-600 hover:text-lime-500 "
+                    className=" text-lime-600 hover:text-lime-500  transition-colors duration-250"
                     href="tel:+4915128161383"
                   >
                     +49 151 28161383
@@ -117,7 +117,7 @@ export const Contact = () => {
                 <div>
                   <h3 className="font-montserratMedium ">Адреса</h3>
                   <a
-                    className="text-lime-600 hover:text-lime-500"
+                    className="text-lime-600 hover:text-lime-500  transition-colors duration-250"
                     href="https://www.google.com/maps/place/Johanniter-Mehrgenerationenhaus+Bad+Oeynhausen/@52.1979902,8.8037727,314m/data=!3m1!1e3!4m6!3m5!1s0x47ba72a07b459829:0x19fbe41cee571634!8m2!3d52.1978688!4d8.8039899!16s%2Fg%2F11c6q9n5kc?entry=ttu&g_ep=EgoyMDI1MTEwNC4xIKXMDSoASAFQAw%3D%3D"
                     target="_blank"
                     aria-label="Google Maps location"

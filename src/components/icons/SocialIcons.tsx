@@ -1,7 +1,7 @@
 
 export const InstagramIcon = () => {
   return (
-    <svg className=" transition-colors fill-white duration-300  cursor-pointer hover:fill-gray-500 "
+    <svg className=" transition-colors fill-white duration-300  cursor-pointer  "
       xmlns="http://www.w3.org/2000/svg"
       width="32"
       height="32"
@@ -34,7 +34,7 @@ export const FacebookIcon = () => {
 
 export const TelegramIcon = () => {
   return (
-    <svg className="transition-colors fill-white duration-300 cursor-pointer hover:fill-gray-500"
+    <svg className="transition-colors fill-white duration-300 cursor-pointer"
       xmlns="http://www.w3.org/2000/svg"
       width="32"
       height="32"
