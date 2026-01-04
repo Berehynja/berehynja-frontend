@@ -31,26 +31,27 @@ export const Events = () => {
       </div>
 
       <section className="flex w-full flex-col justify-center items-center gap-8 md:gap-12 ">
-        <ul className="w-full flex flex-col justify-center items-center gap-8 md:gap-12 ">
+        <ul className="w-full grid grid-cols mg:grid-cols-2 justify-center items-center gap-8 md:gap-12 ">
           {upcomingEvents.map((event) => (
             <li
               key={event.id}
-              className=" flex w-full bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+              className=" w-full bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg shadow-md transition-shadow duration-300"
             >
-              <div className="w-2/5 p-2 relative overflow-hidden">
+
+              <div className=" p-2 border-b border-gray-200">
+                <div className=" p-3">
+                  <h2 className="text-xl font-bold mb-2">{event.title}</h2>
+                  <p className="text-gray-600">{formatDate(event.date)}</p>
+                  <p className="text-gray-700">{event.description}</p>
+                </div>
+                <div className=" h-100 p-2 relative overflow-hidden">
                 <img
                   src={event.imageBanner}
                   alt={event.title}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               </div>
-              <div className="w-3/5 p-2 border-b border-gray-200">
-                <div className=" p-6">
-                  <h2 className="text-xl font-bold mb-2">{event.title}</h2>
-                  <p className="text-gray-600">{formatDate(event.date)}</p>
-                  <p className="text-gray-700">{event.description}</p>
-                </div>
-                <ImageCarousel items={[...(event.images || []), ...(event.videos || [])]} />
+                { (event.images?.length !== 0 || event.videos?.length !== 0) && <ImageCarousel items={[...(event.images || []), ...(event.videos || [])]} /> }
               </div>
             </li>
           ))}

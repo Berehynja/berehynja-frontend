@@ -10,15 +10,15 @@ export const upcomingEvents: (Event & { images?: Array<{ id: string; url: string
       description: 'Приєднайтеся до нас на спеціальне святкування Дня незалежності України з традиційною музикою, танцювальними виступами, їжею та культурною діяльністю для всієї сім\'ї.',
       imageBanner: 'https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?auto=compress&cs=tinysrgb&w=800',
       images: [
-        { id: '1', url: 'https://images.pexels.com/photos/3807517/pexels-photo-3807517.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Ukrainian flag' },
-        { id: '2', url: 'https://images.pexels.com/photos/2696063/pexels-photo-2696063.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Festival' },
-        { id: '3', url: 'https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Community gathering' },
-        { id: '4', url: 'https://images.pexels.com/photos/3769711/pexels-photo-3769711.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Traditional costumes' },
-        { id: '5', url: 'https://images.pexels.com/photos/210647/pexels-photo-210647.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Live music' },
+        // { id: '1', url: 'https://images.pexels.com/photos/3807517/pexels-photo-3807517.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Ukrainian flag' },
+        // { id: '2', url: 'https://images.pexels.com/photos/2696063/pexels-photo-2696063.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Festival' },
+        // { id: '3', url: 'https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Community gathering' },
+        // { id: '4', url: 'https://images.pexels.com/photos/3769711/pexels-photo-3769711.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Traditional costumes' },
+        // { id: '5', url: 'https://images.pexels.com/photos/210647/pexels-photo-210647.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Live music' },
       ],
       videos: [
-        { id: '1', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', type: 'video' as const, alt: 'Cultural Performances' },
-        { id: '2', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', type: 'video' as const, alt: 'Traditional Dance' },
+        // { id: '1', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', type: 'video' as const, alt: 'Cultural Performances' },
+        // { id: '2', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', type: 'video' as const, alt: 'Traditional Dance' },
       ],
     },
     {
@@ -35,7 +35,11 @@ export const upcomingEvents: (Event & { images?: Array<{ id: string; url: string
       { id: '3', url: 'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Presentations' },
       { id: '4', url: 'https://images.pexels.com/photos/1181355/pexels-photo-1181355.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Discussion' },
       { id: '5', url: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Community gathering' },
-      ]
+      ],
+      videos: [ 
+        { id: '1', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', type: 'video' as const, alt: 'Traditional Dance' }, 
+      { id: '2', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', type: 'video' as const, alt: 'Cultural Performances' },
+      ],
     },
     {
       id: '3',
@@ -64,9 +68,9 @@ export const upcomingEvents: (Event & { images?: Array<{ id: string; url: string
       images: [
         { id: '1', url: 'https://images.pexels.com/photos/1117132/pexels-photo-1117132.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Cinema event' },
         { id: '2', url: 'https://images.pexels.com/photos/274937/pexels-photo-274937.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Movie screening' },
-        { id: '3', url: 'https://images.pexels.com/photos/1117132/pexels-photo-1117132.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Film discussion' },
-        { id: '4', url: 'https://images.pexels.com/photos/274937/pexels-photo-274937.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Popcorn and drinks' },
-        { id: '5', url: 'https://images.pexels.com/photos/1117132/pexels-photo-1117132.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Cinematic experience' },
+        // { id: '3', url: 'https://images.pexels.com/photos/1117132/pexels-photo-1117132.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Film discussion' },
+        // { id: '4', url: 'https://images.pexels.com/photos/274937/pexels-photo-274937.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Popcorn and drinks' },
+        // { id: '5', url: 'https://images.pexels.com/photos/1117132/pexels-photo-1117132.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Cinematic experience' },
       ]
     },
     {
@@ -81,8 +85,8 @@ export const upcomingEvents: (Event & { images?: Array<{ id: string; url: string
         { id: '1', url: 'https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Cooking workshop' },
         { id: '2', url: 'https://images.pexels.com/photos/3535182/pexels-photo-3535182.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Traditional food' },
         { id: '3', url: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Cooking class' },
-        { id: '4', url: 'https://images.pexels.com/photos/5938/food-healthy-lunch-restaurant.jpg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Ukrainian dishes' },
-        { id: '5', url: 'https://images.pexels.com/photos/1435896/pexels-photo-1435896.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Group cooking' },
+        // { id: '4', url: 'https://images.pexels.com/photos/5938/food-healthy-lunch-restaurant.jpg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Ukrainian dishes' },
+        // { id: '5', url: 'https://images.pexels.com/photos/1435896/pexels-photo-1435896.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Group cooking' },
       ]
     },
     {
