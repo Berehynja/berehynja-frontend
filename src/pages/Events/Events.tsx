@@ -35,7 +35,7 @@ export const Events = () => {
           {upcomingEvents.map((event) => (
             <li
               key={event.id}
-              className=" w-full bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg shadow-md transition-shadow duration-300"
+              className=" w-full bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg "
             >
 
               <div className=" p-2 border-b border-gray-200">
