@@ -4,7 +4,7 @@ import { SocialMedia } from "../../components/SocialMedia/SocialMedia";
 
 export const Contact = () => {
   return (
-    <div className="w-full py-8">
+    <div className="w-full py-8 ">
       <div
         className="flex flex-col justify-center items-center gap-8 py-7 md:py-10 font-montserratBold 
       md:flex-row "
@@ -22,18 +22,18 @@ export const Contact = () => {
         </p>
       </div>
 
-      <section className="flex w-full flex-col md:flex-row justify-center items-center md:gap-6 lg:gap-8 py-12 ">
+      <section className="flex w-full flex-col md:flex-row justify-center items-start md:gap-6 lg:gap-8  ">
         <form
-          className=" flex flex-col text-preset-4 min-w-80 w-full max-w-120 p-5 gap-8 md:max-w-1/2  px-6  rounded-lg shadow-lg"
+          className=" flex flex-col text-preset-4 min-w-80 w-full max-w-120 p-5 gap-9 md:max-w-1/2  md:pb-20  rounded-lg shadow-lg"
           name="email_form"
         >
-          <h2 className="font-montserratBold text-preset-4 py-3 xl:py-4">
+          <h2 className="font-montserratBold text-preset-3 py-3 xl:py-4">
             Напишіть нам
           </h2>
           <label className=" flex flex-col gap-2">
             Full Name *
             <input
-              className="w-full h-10 p-2 border rounded-md "
+              className="w-full h-10 md:h-15 p-2 border rounded-md "
               type="name"
               name="name"
               placeholder="Your full Name"
@@ -43,7 +43,7 @@ export const Contact = () => {
           <label className=" flex flex-col gap-2">
             Email Address *
             <input
-              className="w-full h-10 p-2 border rounded-md"
+              className="w-full h-10 md:h-15 p-2 border rounded-md"
               type="email"
               name="email"
               placeholder="your@email.com"
@@ -52,7 +52,7 @@ export const Contact = () => {
           <label className=" flex flex-col gap-2">
             Telephone Number (Optional)
             <input
-              className="w-full h-10 p-2 border rounded-md"
+              className="w-full h-10 md:h-15 p-2 border rounded-md"
               type="tel"
               name="tel"
               placeholder="Your telephone number"
@@ -62,14 +62,17 @@ export const Contact = () => {
           <label className=" flex flex-col gap-2">
             Message *
             <textarea
-              className="p-2 h-30 border rounded-md"
+              className="p-2 h-30 md:h-50 border rounded-md"
               name="message"
               rows={5}
               placeholder="Enter your message here..."
             ></textarea>
           </label>
 
-          <button className=" w-full h-10 rounded-lg cursor-pointer bg-lime-600 hover:bg-lime-500" type="submit">
+          <button
+            className=" w-full h-10 rounded-lg cursor-pointer bg-lime-600 hover:bg-lime-500 transition-colors duration-250"
+            type="submit"
+          >
             Send message
           </button>
         </form>
@@ -83,12 +86,12 @@ export const Contact = () => {
             <ul className="flex flex-col gap-6 text-preset-4 ">
               <li className="flex items-center gap-3 ">
                 <span className="flex items-center justify-center w-12 h-12 p-3 rounded-full bg-yellow-100">
-                  <Mail className=" stroke-lime-600"/>
+                  <Mail className=" stroke-lime-600" />
                 </span>
                 <div className="flex flex-col overflow-hidden">
                   <h3 className="font-montserratMedium  ">Електронна адреса</h3>
                   <a
-                    className=" text-lime-600 hover:text-lime-500 "
+                    className=" text-lime-600 hover:text-lime-500  transition-colors duration-250"
                     href="mailto:bereginia.badoeynhausen@gmail.com"
                     target="_blank"
                   >
@@ -98,12 +101,12 @@ export const Contact = () => {
               </li>
               <li className="flex items-center gap-3 ">
                 <span className="flex items-center justify-center w-12 h-12 rounded-full bg-yellow-100">
-                  <Phone className=" stroke-lime-600"/>
+                  <Phone className=" stroke-lime-600" />
                 </span>
                 <div>
                   <h3 className="font-montserratMedium ">Телефон</h3>
                   <a
-                    className=" text-lime-600 hover:text-lime-500 "
+                    className=" text-lime-600 hover:text-lime-500  transition-colors duration-250"
                     href="tel:+4915128161383"
                   >
                     +49 151 28161383
@@ -112,13 +115,13 @@ export const Contact = () => {
               </li>
               <li className="flex items-center gap-3 ">
                 <span className="flex items-center justify-center w-12 h-12 rounded-full p-3 bg-yellow-100">
-                  <MapPin className=" stroke-lime-600"/>
+                  <MapPin className=" stroke-lime-600" />
                 </span>
                 <div>
                   <h3 className="font-montserratMedium ">Адреса</h3>
                   <a
-                    className="text-lime-600 hover:text-lime-500"
-                    href="https://www.google.com/maps/place/Johanniter-Mehrgenerationenhaus+Bad+Oeynhausen/@52.1979902,8.8037727,314m/data=!3m1!1e3!4m6!3m5!1s0x47ba72a07b459829:0x19fbe41cee571634!8m2!3d52.1978688!4d8.8039899!16s%2Fg%2F11c6q9n5kc?entry=ttu&g_ep=EgoyMDI1MTEwNC4xIKXMDSoASAFQAw%3D%3D"
+                    className="text-lime-600 hover:text-lime-500  transition-colors duration-250"
+                    href="https://maps.app.goo.gl/oc7SdiJtoZhcPEJJ7"
                     target="_blank"
                     aria-label="Google Maps location"
                   >
@@ -133,7 +136,7 @@ export const Contact = () => {
           </div>
 
           <div className="flex flex-col p-5 gap-4 rounded-lg bg-blue-50">
-            <h3 className="font-montserratBold text-preset-4 py-3 xl:py-4">
+            <h3 className="font-montserratBold text-preset-4 py-3 md:py-0 md:pb-4">
               Робочі години
             </h3>
             <div className="flex justify-between">
@@ -150,8 +153,18 @@ export const Contact = () => {
             </div>
           </div>
 
-          <div></div>
+        <div className="map-container  rounded-lg overflow-hidden shadow-lg">
+          <iframe
+            className="w-full h-60 border-0"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2443.342981326442!2d8.7994689!3d52.2008399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ba133a8c5e933d%3A0xc3c9f28d546222b!2sWeserstra%C3%9Fe%2024%2C%2032545%20Bad%20Oeynhausen!5e0!3m2!1sen!2sde!4v1710000000000!5m2!1sen!2sde"
+            allowFullScreen={true}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Наше местоположение"
+          ></iframe>
         </div>
+        </div>
+
       </section>
     </div>
   );

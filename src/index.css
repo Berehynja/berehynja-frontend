@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap'); */
 @import "tailwindcss";
 
 @theme {
@@ -23,12 +23,19 @@
   /* Manrope */
   --font-manrope: "Manrope", sans-serif;
 
-
   --color-Red: #DF7D84;
   --color-Cyan: #C1DDEF;
   --color-Orange: #E2CD7A;
-  --color-Blue: #2F6EBB;
+  --color-Blue: #2f6ebb;
   --color-Green: #A4C9A0;
+
+  --color-Red-2: rgba(223, 125, 132, 0.2);
+  --color-Cyan-2: rgba(193, 221, 239, 0.2);
+  --color-Orange-2: rgba(226, 205, 122, 0.2);
+  --color-Blue-2: rgba(47, 110, 187, 0.2);
+  --color-Green-2: rgba(164, 201, 160, 0.2);
+
+  
 
 /* 
 #3B6291   (раніше #31527A)
