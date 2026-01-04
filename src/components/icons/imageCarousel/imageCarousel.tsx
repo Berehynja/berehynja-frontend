@@ -126,10 +126,10 @@ function VideoPlayer({ item }: { item: CarouselItem }) {
       {/* Кнопка PLAY (только когда видео на паузе) */}
       {!isPlaying && (
         <div 
-          className="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer z-10 py-12"
+          className="absolute inset-0 flex items-center justify-center bg-black/50 cursor-pointer z-10 py-12"
           onClick={togglePlay}
         >
-          <div className="bg-white/20 p-3 rounded-full backdrop-blur-md border border-white/30 group-hover/video:scale-110 transition-transform flex items-center justify-center">
+          <div className="bg-white/10 p-3 rounded-full backdrop-blur-md border border-white/30 group-hover/video:scale-110 transition-transform duration-300 flex items-center justify-center">
             <Play size={30} className="text-white fill-white ml-1" />
           </div>
         </div>
