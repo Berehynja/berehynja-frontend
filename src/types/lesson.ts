@@ -7,13 +7,16 @@ export interface Lesson {
     title: string;
     category: LessonCategory;
     ageGroup: AgeGroupKey;
-    ageLabel: string;
-    color: LessonColor;
+    ageSubgroup?: string;
     level?: string;
-    date: string;           // ISO: YYYY-MM-DD
-    timeStart: string;      // HH:mm
-    timeEnd: string;        // HH:mm
-    room: LessonColor;
+
+
+    ageLabel?: string;
+    color?: LessonColor;
+    date?: string;           // ISO: YYYY-MM-DD
+    timeStart?: string;      // HH:mm
+    timeEnd?: string;        // HH:mm
+    room?: LessonColor;
 }
 
 export type LessonCategory = 

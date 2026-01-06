@@ -1,6 +1,6 @@
 // colors.ts
 export const COLORS = {
-  RoyalBlue: "#029dda",
+  RoyalBlue: "#01b0f1",
   Sky: "#6ED0F0",
   LightSky: "#C1DDEF",
   Sage: "#A4C9A0",
@@ -22,7 +22,7 @@ function hexToRgba(hex: string, alpha: number) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-// Версія кольорів з 20% прозорістю
+// Версія кольорів з 30% прозорістю
 export const COLORS_ALPHA_30: Record<keyof typeof COLORS, string> = Object.fromEntries(
   Object.entries(COLORS).map(([key, value]) => [key, hexToRgba(value, 0.3)])
 ) as Record<keyof typeof COLORS, string>;
