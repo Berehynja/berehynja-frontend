@@ -49,8 +49,8 @@ export function HomePage() {
       <HowWeHelp />
       <OurMission />
 
-      <div className=" flex flex-col w-full justify-center items-center mt-10 pb-10">
-        <h2 className=" flex flex-nowrap  text-preset-2 font-montserratBold py-4 mb-6 justify-center "> Чекаємо на вас на наступній події! </h2>
+      <div className=" flex flex-col w-full justify-center items-center  mt-10 pb-10">
+        <h2 className=" text-center text-preset-2 font-montserratBold py-4 mb-6 "> Чекаємо на вас на наступній події! </h2>
         {newEvent && (
           <div className=" w-full bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg ">
             <div className=" p-2">
