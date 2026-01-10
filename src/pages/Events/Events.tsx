@@ -31,11 +31,11 @@ export const Events = () => {
       </div>
 
       <section className="flex w-full flex-col justify-center items-center gap-8 md:gap-12 ">
-        <ul className=" flex flex-col-reverse w-full justify-center items-center gap-8 md:gap-12 ">
+        <ul className=" flex flex-col-reverse w-full justify-center items-center  gap-8 md:gap-12 ">
           {upcomingEvents.map((event) => (
             <li
               key={event.id}
-              className=" w-full bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg "
+              className=" w-full bg-lime-50 border border-gray-300 rounded-lg overflow-hidden shadow-lg "
             >
 
               <div className=" p-2">

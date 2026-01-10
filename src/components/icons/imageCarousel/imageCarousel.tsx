@@ -43,7 +43,7 @@ export function ImageCarousel({ items }: ImageCarouselProps) {
   }, [emblaApi, onSelect]);
 
   return (
-    <div className="relative group bg-gray-50 rounded-xl mt-2 mg:mt-4 ">
+    <div className="relative group bg-lime-50 rounded-xl mt-2 mg:mt-4 ">
       {/* Окно просмотра (Viewport) */}
       <div className="overflow-hidden" ref={emblaRef}>
         {/* Контейнер для слайдов (Canvas) */}
