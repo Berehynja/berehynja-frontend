@@ -10,15 +10,15 @@ export const upcomingEvents: (Event & { images?: Array<{ id: string; url: string
       description: 'Приєднайтеся до нас на спеціальне святкування Дня незалежності України з традиційною музикою, танцювальними виступами, їжею та культурною діяльністю для всієї сім\'ї.',
       imageBanner: 'https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?auto=compress&cs=tinysrgb&w=800',
       images: [
-        // { id: '1', url: 'https://images.pexels.com/photos/3807517/pexels-photo-3807517.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Ukrainian flag' },
-        // { id: '2', url: 'https://images.pexels.com/photos/2696063/pexels-photo-2696063.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Festival' },
-        // { id: '3', url: 'https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Community gathering' },
-        // { id: '4', url: 'https://images.pexels.com/photos/3769711/pexels-photo-3769711.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Traditional costumes' },
-        // { id: '5', url: 'https://images.pexels.com/photos/210647/pexels-photo-210647.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Live music' },
+        { id: '1', url: 'https://images.pexels.com/photos/3807517/pexels-photo-3807517.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Ukrainian flag' },
+        { id: '2', url: 'https://images.pexels.com/photos/2696063/pexels-photo-2696063.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Festival' },
+        { id: '3', url: 'https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Community gathering' },
+        { id: '4', url: 'https://images.pexels.com/photos/3769711/pexels-photo-3769711.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Traditional costumes' },
+        { id: '5', url: 'https://images.pexels.com/photos/210647/pexels-photo-210647.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Live music' },
       ],
       videos: [
-        // { id: '1', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', type: 'video' as const, alt: 'Cultural Performances' },
-        // { id: '2', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', type: 'video' as const, alt: 'Traditional Dance' },
+        { id: '1', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', type: 'video' as const, alt: 'Cultural Performances' },
+        { id: '2', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', type: 'video' as const, alt: 'Traditional Dance' },
       ],
     },
     {
@@ -98,11 +98,11 @@ export const upcomingEvents: (Event & { images?: Array<{ id: string; url: string
       description: "Спілкуйтеся з іншими українськими професіоналами, підприємцями та місцевими німецькими бізнес-представниками.",
       imageBanner: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800',
       images: [
-        { id: '1', url: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Professional networking' },
-        { id: '2', url: 'https://images.pexels.com/photos/3184295/pexels-photo-3184295.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Business meeting' },
-        { id: '3', url: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Networking event' },
-        { id: '4', url: 'https://images.pexels.com/photos/3184290/pexels-photo-3184290.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Business connections' },
-        { id: '5', url: 'https://images.pexels.com/photos/3184325/pexels-photo-3184325.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Professional gathering' },
+        // { id: '1', url: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Professional networking' },
+        // { id: '2', url: 'https://images.pexels.com/photos/3184295/pexels-photo-3184295.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Business meeting' },
+        // { id: '3', url: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Networking event' },
+        // { id: '4', url: 'https://images.pexels.com/photos/3184290/pexels-photo-3184290.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Business connections' },
+        // { id: '5', url: 'https://images.pexels.com/photos/3184325/pexels-photo-3184325.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Professional gathering' },
       ]
     }
   ];

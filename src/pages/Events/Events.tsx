@@ -31,14 +31,14 @@ export const Events = () => {
       </div>
 
       <section className="flex w-full flex-col justify-center items-center gap-8 md:gap-12 ">
-        <ul className="w-full grid grid-cols mg:grid-cols-2 justify-center items-center gap-8 md:gap-12 ">
+        <ul className=" flex flex-col-reverse w-full justify-center items-center gap-8 md:gap-12 ">
           {upcomingEvents.map((event) => (
             <li
               key={event.id}
               className=" w-full bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg "
             >
 
-              <div className=" p-2 border-b border-gray-200">
+              <div className=" p-2">
                 <div className=" p-3">
                   <h2 className="text-xl font-bold mb-2">{event.title}</h2>
                   <p className="text-gray-600">{formatDate(event.date)}</p>
@@ -48,7 +48,7 @@ export const Events = () => {
                 <img
                   src={event.imageBanner}
                   alt={event.title}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full rounded-lg object-cover"
                 />
               </div>
                 { (event.images?.length !== 0 || event.videos?.length !== 0) && <ImageCarousel items={[...(event.images || []), ...(event.videos || [])]} /> }
