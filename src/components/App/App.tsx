@@ -8,23 +8,23 @@ import {
   Contact,
   PageNotFound,
 } from "../../pages";
+import LoginPage from "../../pages/LoginPage/LoginPage.tsx";
 
 function App() {
   const location = useLocation();
 
   return (
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Layout />}>
-          <Route
-            index
-            element={<HomePage />}/>
-          <Route path="/about" element={ <About /> } />
-          <Route path="/events" element={<Events />} />
-          <Route path="/programs" element={<Programs />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Route>
-      </Routes>
+    <Routes location={location} key={location.pathname}>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/programs" element={<Programs />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Route>
+    </Routes>
   );
 }
 

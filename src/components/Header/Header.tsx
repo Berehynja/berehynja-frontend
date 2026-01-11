@@ -8,10 +8,13 @@ import { HeaderNav } from "../HeaderNav/HeaderNav";
 
 import { MobileMenu } from "../MobileMenu/MobileMenu";
 import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";
+import { useAuth } from "../../components/AuthProvider/useAuth.tsx";
+import AdminLogout from "../AdminLogOut/BtnLogOut";
 
 export function Header() {
   const [mobMenuIsOpen, setMobMenuIsOpen] = useState(false);
   const screenWidth = useWindowSize();
+  const { isAdmin } = useAuth();
 
   const ToggleMobMenu = () => {
     setMobMenuIsOpen(!mobMenuIsOpen);
@@ -31,7 +34,7 @@ export function Header() {
             </span>
           </div>
         </NavLink>
-
+        {isAdmin && <AdminLogout />}
         {screenWidth >= 1024 ? (
           <div className=" relative flex justify-center items-center  ">
             <HeaderNav />

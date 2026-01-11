@@ -17,8 +17,8 @@ export const upcomingEvents: (Event & { images?: Array<{ id: string; url: string
         { id: '5', url: 'https://images.pexels.com/photos/210647/pexels-photo-210647.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Live music' },
       ],
       videos: [
-        { id: '1', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', type: 'video' as const, alt: 'Cultural Performances' },
-        { id: '2', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', type: 'video' as const, alt: 'Traditional Dance' },
+        { id: '6', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', type: 'video' as const, alt: 'Cultural Performances' },
+        { id: '7', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', type: 'video' as const, alt: 'Traditional Dance' },
       ],
     },
     {
@@ -37,8 +37,8 @@ export const upcomingEvents: (Event & { images?: Array<{ id: string; url: string
       { id: '5', url: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800', type: 'image' as const, alt: 'Community gathering' },
       ],
       videos: [ 
-        { id: '1', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', type: 'video' as const, alt: 'Traditional Dance' }, 
-      { id: '2', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', type: 'video' as const, alt: 'Cultural Performances' },
+        { id: '6', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', type: 'video' as const, alt: 'Traditional Dance' }, 
+      { id: '7', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', type: 'video' as const, alt: 'Cultural Performances' },
       ],
     },
     {
