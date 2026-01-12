@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {  useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
@@ -10,6 +10,15 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
+  console.log("🚀 ~ isAdmin:", isAdmin)
+
+  useEffect(() => { 
+    if (isAdmin) {
+      navigate("/"); // если уже админ, редирект на главную
+    }
+  }, [isAdmin, navigate]);  
+  
+  
 
   const handleLogin = async () => {
     try {
@@ -25,10 +34,7 @@ export default function AdminLogin() {
   };
 
   // Если уже админ, редирект
-  if (isAdmin) {
-    navigate("/");
-    return null;
-  }
+  
 
   return (
     <div className="w-full h-180 flex items-center justify-center bg-gray-100">
