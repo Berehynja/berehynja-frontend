@@ -20,7 +20,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="bg-blue-800 w-full text-white font-interRegular">
+    <footer className="bg-blue-800 w-full text-white font-montserratMedium">
       <div className=" footerOverlay ">
         <div
           className="min-w-80 max-w-120 mx-auto py-4 gap-1 bg-blue-800 w-full
@@ -48,7 +48,7 @@ export const Footer = () => {
               />
             </div>
 
-            <div className=" flex flex-col flex-nowrap mt-2 text-lg md:mt-0 ">
+            <div className=" flex flex-col flex-nowrap  mt-2 text-lg md:mt-0 ">
               <a
                 className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-pointer hover:text-amber-200"
                 href="tel:+4915128161383"
@@ -71,7 +71,7 @@ export const Footer = () => {
           </div>
 
           <div
-            className={` flex flex-col pb-3.5 px-7 justify-start overflow-hidden max-w-120 border-b border-white 
+            className={` flex flex-col pb-3.5 px-7 justify-start  overflow-hidden max-w-120 border-b border-white 
             transition-all duration-700 ease ${
               isOpenAdress ? " max-h-70" : " max-h-17 "
             } 
@@ -79,7 +79,7 @@ export const Footer = () => {
             onClick={() => toggleList("АДРЕСА")}
           >
             <div className=" flex justify-between items-center">
-              <h2 className=" text-xl font-montserratMedium py-5">
+              <h2 className=" text-xl  py-5">
                 {t("footer.adress")}
               </h2>
               <ChevronUp
@@ -89,9 +89,9 @@ export const Footer = () => {
               />
             </div>
 
-            <div className=" flex flex-col flex-nowrap mt-2 text-lg md:mt-0 ">
+            <div className=" flex flex-col flex-nowrap  mt-2 text-lg md:mt-0 ">
               <a
-                className=" flex items-center min-h-13 gap-3 transition-colors duration-300 cursor-pointer hover:text-amber-200 "
+                className=" flex items-center min-h-13 gap-3  transition-colors duration-300 cursor-pointer hover:text-amber-200 "
                 href="https://www.badoeynhausen.de/startseite"
                 target="_blank"
                 aria-label="City website"

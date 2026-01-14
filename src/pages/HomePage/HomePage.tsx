@@ -54,10 +54,10 @@ export function HomePage() {
         {newEvent && (
           <div className=" w-full bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg ">
             <div className=" p-2">
-              <div className=" p-3">
-                <h2 className="text-xl font-bold mb-2">{newEvent.title}</h2>
-                <p className="text-gray-600">{formatDate(newEvent.date)}</p>
-                <p className="text-gray-700">{newEvent.description}</p>
+              <div className="flex flex-col gap-2 p-3">
+                <h2 className="text-xl font-montserratBold mb-2">{newEvent.title}</h2>
+                <p className=" font-montserratBold text-gray-600">{formatDate(newEvent.date)}</p>
+                <p className=" font-montserratRegular text-gray-700">{newEvent.description}</p>
               </div>
               <div className=" h-100 p-2 relative overflow-hidden">
                 <img
