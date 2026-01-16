@@ -32,7 +32,7 @@ useEffect(() => {
 }, [eventId]);
 
   return (
-    <div>
+    <div className="h-200">
       <h2>EventDetails Component</h2>
       {event ? (
         <pre>{JSON.stringify(event, null, 2)}</pre>
