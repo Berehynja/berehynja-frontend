@@ -24,7 +24,7 @@ export function HomePage() {
         <div
           className=" flex flex-col justify-between items-start p-5
           min-w-85 max-w-120 min-h-75 bg-no-repeat bg-cover bg-center 
-          sm:max-w-3xl  sm:min-h-125 sm:p-10
+          sm:max-w-3xl  sm:min-h-125 sm:p-10 sm:rounded-b-3xl
           md:px-4 md:max-w-5xl  md:min-h-150
           lg:px-8 lg:max-w-7xl  lg:min-h-175
           xl:px-10 xl:max-w-360  "
