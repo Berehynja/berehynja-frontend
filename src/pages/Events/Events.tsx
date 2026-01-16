@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { ImageCarousel } from "../../components/icons/imageCarousel/imageCarousel";
 import { upcomingEvents } from "../../data/eventsDate";
 import { getDocs, collection } from "firebase/firestore";
@@ -56,7 +57,7 @@ export const Events = () => {
               className=" w-full bg-lime-50 border border-gray-300 rounded-lg overflow-hidden shadow-lg "
             >
 
-              <div className=" p-2">
+              <Link to={`/events/${event.id}`} className=" p-2">
                 <div className=" p-3">
                   <h2 className="text-xl font-bold mb-2">{event.title}</h2>
                   <p className="text-gray-600">{formatDate(event.date)}</p>
@@ -70,7 +71,7 @@ export const Events = () => {
                 />
               </div>
                 { (event.images?.length !== 0 || event.videos?.length !== 0) && <ImageCarousel items={[...(event.images || []), ...(event.videos || [])]} /> }
-              </div>
+              </Link>
             </li>
           ))}
         </ul>

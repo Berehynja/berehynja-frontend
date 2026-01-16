@@ -9,6 +9,7 @@ import {
   PageNotFound,
 } from "../../pages";
 import LoginPage from "../../pages/LoginPage/LoginPage.tsx";
+import { EventDetails } from "../EventDetails/EventDetails.tsx";
 
 function App() {
   const location = useLocation();
@@ -20,6 +21,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/events" element={<Events />} />
+        <Route path="/events/:eventId" element={<EventDetails />} />
         <Route path="/programs" element={<Programs />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<PageNotFound />} />
