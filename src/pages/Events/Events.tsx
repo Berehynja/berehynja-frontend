@@ -1,34 +1,21 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { ImageCarousel } from "../../components/icons/imageCarousel/imageCarousel";
-import { upcomingEvents } from "../../data/eventsDate";
+
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "../../firebase";
+import { EventCard } from "../../components";
 
 export const Events = () => {
-
- useEffect(() => {
-  
+  useEffect(() => {
     const fetchEvents = async () => {
-    const colRef = collection(db, "events ");
+      const colRef = collection(db, "events ");
 
-    // 2. Получаем "снимок" всей коллекции
-    const querySnapshot = await getDocs(colRef);
-    const docsData = querySnapshot.docs.map((doc) => doc.data());
-    console.log("Данные всех документов в коллекции:", docsData);
-
+      // 2. Получаем "снимок" всей коллекции
+      const querySnapshot = await getDocs(colRef);
+      const docsData = querySnapshot.docs.map((doc) => doc.data());
+      console.log("Данные всех документов в коллекции:", docsData);
     };
     fetchEvents();
   }, []);
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
 
   return (
     <div className="w-full py-8">
@@ -43,42 +30,14 @@ export const Events = () => {
           <div className="w-24 h-1 bg-linear-to-r from-blue-500 to-yellow-400  mb-4"></div>
         </div>
 
-        <p className="flex justify-center items-center max-w-3xl text-preset-4 px-4 md:px-0 leading-8">
-          "Приєднайтеся до наших громадських заходів, святкування та діяльності,
-          розроблених для об'єднання людей"
+        <p className="flex justify-center items-center max-w-4xl text-preset-4 px-4 md:px-0 leading-8">
+          Приєднайтеся до наших громадських заходів, святкування та діяльності,
+          розроблених для об'єднання людей, підтримки нашої місії.
         </p>
       </div>
 
       <section className="flex w-full flex-col justify-center items-center gap-8 md:gap-12 ">
-        <ul className=" flex flex-col-reverse w-full justify-center items-center  gap-8 md:gap-12 ">
-          {upcomingEvents.map((event) => (
-            <li
-              key={event.id}
-              className=" w-full bg-lime-50 border border-gray-300 rounded-lg overflow-hidden shadow-lg "
-            >
-
-              <Link to={`/events/${event.id}`} className=" p-2">
-                <div className=" p-3">
-                  <h2 className="text-xl font-bold mb-2">{event.title}</h2>
-                  <p className="text-gray-600">{formatDate(event.date)}</p>
-                  <p className="text-gray-700">{event.description}</p>
-                </div>
-                <div className=" h-100 p-2 relative overflow-hidden">
-                <img
-                  src={event.imageBanner}
-                  alt={event.title}
-                  className="absolute inset-0 w-full h-full rounded-lg object-cover"
-                />
-              </div>
-                { (event.images?.length !== 0 || event.videos?.length !== 0) && <ImageCarousel items={[...(event.images || []), ...(event.videos || [])]} /> }
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        {/* {event.images && event.images.length > 0 && (
-                <img src={event.images[0].url} alt={event.images[0].alt} />
-              )} */}
+        <EventCard />
       </section>
     </div>
   );
