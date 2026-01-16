@@ -1,21 +1,8 @@
-import { useEffect } from "react";
 
-import { getDocs, collection } from "firebase/firestore";
-import { db } from "../../firebase";
 import { EventCard } from "../../components";
 
 export const Events = () => {
-  useEffect(() => {
-    const fetchEvents = async () => {
-      const colRef = collection(db, "events ");
-
-      // 2. Получаем "снимок" всей коллекции
-      const querySnapshot = await getDocs(colRef);
-      const docsData = querySnapshot.docs.map((doc) => doc.data());
-      console.log("Данные всех документов в коллекции:", docsData);
-    };
-    fetchEvents();
-  }, []);
+ 
 
   return (
     <div className="w-full py-8">
