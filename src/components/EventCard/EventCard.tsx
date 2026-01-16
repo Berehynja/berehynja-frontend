@@ -1,8 +1,25 @@
+import { useEffect } from "react";
+
+import { getDocs, collection } from "firebase/firestore";
+import { db } from "../../firebase";
 import { Link } from "react-router-dom";
 import { ImageCarousel } from "../../components/icons/imageCarousel/imageCarousel";
 import { upcomingEvents } from "../../data/eventsDate";
 
 export const EventCard = () => {
+
+     useEffect(() => {
+    const fetchEvents = async () => {
+      const colRef = collection(db, "events ");
+
+      // 2. Получаем "снимок" всей коллекции
+      const querySnapshot = await getDocs(colRef);
+      const docsData = querySnapshot.docs.map((doc) => doc.data());
+      console.log("Данные всех документов в коллекции:", docsData);
+    };
+    fetchEvents();
+  }, []);
+
     const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
