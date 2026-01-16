@@ -2,4 +2,8 @@
 //src/components/index.tsx
 
 export * from './Layout/Layout.tsx';
-export * from './Layout/Layout.styled.ts';
+export * from './Header/Header.tsx';
+export * from './Footer/Footer.tsx';
+export * from './icons/imageCarousel/imageCarousel.tsx';
+export * from './EventCard/EventCard.tsx';
+export * from './EventDetails/EventDetails.tsx';
