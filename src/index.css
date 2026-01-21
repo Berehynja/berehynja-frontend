@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -9,25 +10,29 @@
   --font-robotoMedium: "Roboto-Medium", sans-serif;
   --font-robotoSemiBold: "Roboto-SemiBold", sans-serif;
   --font-robotoBold: "Roboto-Bold", sans-serif;
+
   
   /* Inter */
   --font-interRegular: "Inter-Regular", sans-serif;
   --font-interMedium: "Inter-Medium", sans-serif; 
-
-
+  
+  
   /* Montserrat */
   --font-montserratRegular: "Montserrat-Regular", sans-serif;
   --font-montserratMedium: "Montserrat-Medium", sans-serif;
   --font-montserratBold: "Montserrat-Bold", sans-serif;
-
+  
   /* Caveat */
   --font-caveatRegular: "Caveat-Regular", cursive;
   --font-caveatMedium: "Caveat-Medium", cursive;
-
+  
   /* Dancing Script */
   --font-dancingRegular: "DancingScript-Regular", cursive;
   --font-dancingMedium: "DancingScript-Medium", cursive;
-
+  
+  /* Nunito */
+  --font-nunito: "Nunito", sans-serif;
+  
   /* Manrope */
   --font-manrope: "Manrope", sans-serif;
 
@@ -116,6 +121,7 @@
 --font-size-preset-3: clamp(1.5rem, 2.5vw, 2rem);    /* 24px → 32px → 32px */
 --font-size-preset-4: clamp(1rem, 1.5vw, 1.25rem);   /* 16px → 20px → 20px */
 --font-size-preset-5: clamp(0.875rem, 1.2vw, 1rem);  /* 14px → 16px → 16px */
+--font-size-preset-6: clamp(0.625rem, 2.4vw, 1rem); /* 10px → 16px */  
 
 /* Line Heights - всі 110% */
 --line-height-preset-1: 1.1;
@@ -123,6 +129,7 @@
 --line-height-preset-3: 1.1;
 --line-height-preset-4: 1.2;
 --line-height-preset-5: 1.3;
+--line-height-preset-6: 1.3;
 
 
 }
@@ -151,6 +158,10 @@
   .text-preset-5 {
     font-size: var(--font-size-preset-5);
     line-height: var(--line-height-preset-5);
+  }
+  .text-preset-6 {
+    font-size: var(--font-size-preset-6);
+    line-height: var(--line-height-preset-6);
   }
 }
 

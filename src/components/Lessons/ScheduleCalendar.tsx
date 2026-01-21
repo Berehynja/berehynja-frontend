@@ -1,6 +1,7 @@
 import React from "react";
 import { lessons } from "../../data/lessons";
 import { schedules } from "../../data/schedules";
+import { COLORS, type LessonColor } from "../../data/colors";
 
 export function ScheduleCalendar() {
     const fullSchedule = schedules.map((scheduleItem) => {
@@ -28,31 +29,35 @@ export function ScheduleCalendar() {
   return (
     <div className="my-30">
  <h2 className="text-preset-2 my-10 text-center text-gray-700 font-semibold">Графік занять {displayDate}</h2>
-   <div className="grid grid-cols-3 gap-6">
-    {Object.entries(eventsByAge).map(([ageGroup, groupLessons]) => (
-      <div key={ageGroup} className="rounded-lg shadow-lg p-6 bg-gray-50">
+   <div className="grid xl:grid-cols-3 gap-6">
+    {Object.entries(eventsByAge).map(([ageGroup, groupLessons]) => {
+      return <div key={ageGroup} className="rounded-lg shadow-lg p-6 bg-gray-50">
         <h2 className="text-preset-3 text-Blue text-center font-bold mb-4">Група {ageGroup} років</h2>
         
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-8 gap-2">
           {/* Заголовки */}
-          <div className="bg-LightSky p-2 text-center font-semibold">Час</div>
-          <div className="bg-LightSky p-2 text-center font-semibold col-span-2">Назва заняття</div>
-          <div className="bg-LightSky p-2 text-center font-semibold">Кімната</div>
+          <div className="bg-LightSky p-2 rounded-md shadow-card text-center font-semibold col-span-1 md:col-span-2">Час</div>
+          <div className="bg-LightSky p-2 rounded-md shadow-card text-center font-semibold col-span-5 xl:col-span-4">Назва заняття</div>
+          <div className="bg-LightSky p-2 rounded-md shadow-card text-center font-semibold col-span-2 md:col-span-1 xl:col-span-2">Кімната</div>
           
           {/* Заняття */}
-          {groupLessons.map(lesson => (
-              <React.Fragment key={lesson.id}>
-              <div className="bg-LightSky p-2 text-center flex flex-col justify-center">{lesson.timeStart}-{lesson.timeEnd}</div>
-              <div className="p-2 text-center flex flex-col justify-center col-span-2">{lesson.title}
+          {groupLessons.map((lesson, index) => {
+            const bgColor = COLORS[lesson.room as LessonColor]
+            return(
+
+              <React.Fragment key={index}>
+              <div className="bg-LightSky p-2 rounded-md shadow-card text-preset-6 text-center flex flex-col justify-center col-span-1 md:col-span-2">{lesson.timeStart}-{lesson.timeEnd}</div>
+              <div className="p-2 rounded-md text-preset-4 text-center flex flex-col shadow-card justify-center col-span-5 xl:col-span-4">{lesson.title}
               {lesson.level ? <p className="text-preset-5">({lesson.level})</p> : null}
 
               </div>
-              <div className={`p-2 bg-${lesson.room}`}></div>
+              <div className="p-2 rounded-md shadow-card col-span-2 md:col-span-1 xl:col-span-2" style={{backgroundColor:bgColor}}></div>
             </React.Fragment>
-          ))}
+              )
+    })}
         </div>
-      </div>
-    ))}
+      </div>;
+    })}
   </div>
    </div>
 );

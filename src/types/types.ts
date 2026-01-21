@@ -8,14 +8,14 @@ export interface Event {
   imageBanner?: string;
 }
 
-export interface Program {
-  id: string;
-  title: string;
-  day: string;
-  time: string;
-  description: string;
-  instructor?: string;
-}
+// export interface Program {
+//   id: string;
+//   title: string;
+//   day: string;
+//   time: string;
+//   description: string;
+//   instructor?: string;
+// }
 
 export type Page = 'home' | 'about' | 'programs' | 'events' | 'contact';
 
