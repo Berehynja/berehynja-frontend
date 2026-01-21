@@ -8,10 +8,11 @@ import { AVAILABLE_ICONS, type IconName } from "../../data/icons";
 interface AddLessonModalProps{
     isOpen: boolean;
     onClose: () => void;
-    onSave: (data: Omit<Program, "id">) => Promise<void>;
+    onSave: (data: Omit<Program, "id">, id?: string) => Promise<void>;
     ageGroups: AgeGroup[];
+    programToEdit?: Program | null;
 }
-export function AddLessonModal({isOpen, onClose, onSave, ageGroups}: AddLessonModalProps){
+export function AddLessonModal({isOpen, onClose, onSave, ageGroups, programToEdit}: AddLessonModalProps){
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [selectedColor, setSelectedColor] = useState<LessonColor>("RoyalBlue");
@@ -22,15 +23,25 @@ export function AddLessonModal({isOpen, onClose, onSave, ageGroups}: AddLessonMo
 // Скидання форми при відкритті
 useEffect(() => {
     if(isOpen){
-        setTitle("");
-        setDescription("");
-        setSelectedColor("RoyalBlue");
-        setSelectedAgeIds([]);
-        setIconName("sparkles");
+        if(programToEdit){
+            // === РЕЖИМ РЕДАГУВАННЯ (заповнюємо форму існуючими даними) ===
+            setTitle(programToEdit.title);
+            setDescription(programToEdit.description || "");
+            setSelectedColor(programToEdit.color);
+            setSelectedAgeIds(programToEdit.ageGroupIds);
+            setIconName(programToEdit.iconName);
+        } else {
+            // === РЕЖИМ СТВОРЕННЯ (чистимо форму) ===
+            setTitle("");
+            setDescription("");
+            setSelectedColor("RoyalBlue");
+            setSelectedAgeIds([]);
+            setIconName("sparkles");
+        }
         setIsSubmitting(false);
     }
 
-}, [isOpen]);
+}, [isOpen, programToEdit]);
 
 // Закриття на ESC
 useEffect(() => {
@@ -63,7 +74,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     try {
         await onSave({
             title, description, color: selectedColor, ageGroupIds: selectedAgeIds, iconName,
-        });
+        }, programToEdit?.id);
         onClose();
     } catch (error) {
         console.error("Помилка при збереженні програми:", error);
@@ -87,7 +98,9 @@ return (
         
         {/* --- HEADER --- */}
         <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-          <h2 className="text-xl font-bold text-gray-800">Нова програма</h2>
+          <h2 className="text-xl font-bold text-gray-800">
+            {programToEdit ? "Редагувати програму" : "Додати нову програму"}
+          </h2>
           <button 
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors text-2xl"

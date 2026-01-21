@@ -7,8 +7,6 @@ import type { Program } from "../../types/program";
 import { AddLessonModal } from "../Modals/AddLessonModal";
 
 export function LessonsGrid(){
-  
-
     const {isAdmin} = useAuth();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,6 +15,7 @@ export function LessonsGrid(){
     const [ageGroups, setAgeGroups] = useState<AgeGroup[]>([]);
     const [programs, setPrograms] = useState<Program[]>([]);
     const [isLoading, setIsLoading] = useState(true)
+    const [editingProgram, setEditingProgram] = useState<Program | null>(null);
 
     // 1. Завантаження початкових даних (Групи + Програми)
    useEffect(() => {
@@ -39,6 +38,16 @@ export function LessonsGrid(){
     loadData();
    }, []);
 
+
+   const handleOpenCreate = () => {
+    setEditingProgram(null);
+    setIsModalOpen(true);
+   }
+
+    const handleEditProgram = (program: Program) => {
+        setEditingProgram(program);
+        setIsModalOpen(true);
+    }
 
    const handleSaveProgram = async(data: Omit<Program, "id">) => {
         try {
@@ -68,9 +77,8 @@ export function LessonsGrid(){
                     {programs.map((program) => (
                         <LessonCard 
                             key={program.id} 
-                            // ⚠️ Тут може бути помилка типів, бо LessonCard чекає старий формат.
-                            // Ми це зараз виправимо.
-                            lesson={program as Program} 
+                            lesson={program} 
+                            onEdit={handleEditProgram}
                         />
                     ))}
                     
@@ -78,9 +86,9 @@ export function LessonsGrid(){
                         <p className="col-span-full text-center text-gray-400">Поки що немає доступних програм.</p>
                     )}
              {/* КНОПКА ДОДАВАННЯ */}
-                    {!isAdmin && (
+                    {isAdmin && (
                         <button
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={handleOpenCreate}
                         className="
                         group flex flex-col items-center justify-center
                         h-full w-full
@@ -103,6 +111,7 @@ export function LessonsGrid(){
                 onClose={() => setIsModalOpen(false)}
                 onSave={handleSaveProgram}
                 ageGroups={ageGroups}
+                programToEdit={editingProgram}
             />
         </div>
 

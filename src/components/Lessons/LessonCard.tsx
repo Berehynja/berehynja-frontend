@@ -3,12 +3,16 @@ import { COLOR_STYLES } from "../../constants/colorStyles";
 import { AVAILABLE_ICONS } from "../../data/icons";
 // 👇 Бажано використовувати тип Program, бо в ньому точно є iconName
 import type { Program } from "../../types/program"; 
+import { Pencil } from "lucide-react";
+import { useAuth } from "../AuthProvider/useAuth";
 
 interface LessonCardProps {
-    lesson: Program; // Якщо у вас ще Lesson, замініть на Lesson, але переконайтесь що там є iconName
+    lesson: Program;
+    onEdit?: (program: Program) => void; 
+
 }
 
-export function LessonCard({ lesson }: LessonCardProps) {
+export function LessonCard({ lesson, onEdit }: LessonCardProps) {
     // 1. Визначаємо стиль (колір)
     const style = COLOR_STYLES[lesson.color] || COLOR_STYLES.RoyalBlue;
 
@@ -16,24 +20,20 @@ export function LessonCard({ lesson }: LessonCardProps) {
     // Шукаємо в реєстрі по імені. Якщо немає — беремо Sparkles (компонент)
     const IconComponent = AVAILABLE_ICONS[lesson.iconName] || Sparkles;
 
+    const {isAdmin} = useAuth();
+
     return (
         <div 
             className={`
-                /* Розміри та форма (Квадратна картка) */
                 w-full aspect-10/9 sm:aspect-square 
                 rounded-3xl p-4
-                
-                /* Вирівнювання */
                 flex flex-col items-center justify-center gap-4
-                
-                /* Кольори та тіні з вашого файлу стилів */
                 bg-linear-to-br ${style.gradient} 
                 shadow-lg ${style.shadow}
-                
-                /* Анімація */
                 transform transition-all duration-300 
                 hover:-translate-y-1 hover:shadow-2xl hover:scale-[1.02]
                 cursor-pointer group select-none
+                relative
             `} 
         >
             {/* Кружечок під іконку */}
@@ -46,6 +46,27 @@ export function LessonCard({ lesson }: LessonCardProps) {
             ">
                 <IconComponent className="w-8 h-8 text-white" strokeWidth={2} />
             </div>
+
+{       /* КНОПКА РЕДАГУВАННЯ */}
+        {isAdmin && (
+                        <button
+                        onClick={(e) =>{
+                            e.stopPropagation();
+                            if(onEdit) onEdit(lesson);
+                        } }
+                        className="
+                        absolute top-2 right-2
+                        p-3 rounded-full
+
+                                transition-all duration-300
+                         cursor-pointer
+                                text-white hover:text-gray-300
+                                outline-1 outline-white/60 hover:outline-gray-300/70
+                        "
+                        >
+                        <Pencil size={24}/>
+                        </button>
+                    )}
 
             {/* Назва */}
             <h3 className="
