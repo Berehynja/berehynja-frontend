@@ -10,7 +10,6 @@ export const COLORS = {
   Violet: "#8E44AD",
   Sand: "#E2CD7A",
   White: "#FFFFFF",
-
 } as const;
 
 // Функція для конвертації HEX у RGBA з заданою прозорістю

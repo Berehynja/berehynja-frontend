@@ -81,5 +81,5 @@ export const lessons: Lesson[] = [
     title: "Театр",
     category: "theatre",
     ageGroup: "12-18",
-  }
+  },
 ];

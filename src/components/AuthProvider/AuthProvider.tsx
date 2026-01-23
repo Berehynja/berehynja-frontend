@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import type { User } from "firebase/auth";
@@ -10,9 +10,5 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => onAuthStateChanged(auth, setUser), []);
 
-  return (
-    <AuthContext.Provider value={{ user, isAdmin: !!user }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, isAdmin: !!user }}>{children}</AuthContext.Provider>;
 };

@@ -1,56 +1,52 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
 @import "tailwindcss";
 
 @theme {
-
-
   /* Roboto */
   --font-robotoRegular: "Roboto-Regular", sans-serif;
   --font-robotoMedium: "Roboto-Medium", sans-serif;
   --font-robotoSemiBold: "Roboto-SemiBold", sans-serif;
   --font-robotoBold: "Roboto-Bold", sans-serif;
 
-  
   /* Inter */
   --font-interRegular: "Inter-Regular", sans-serif;
-  --font-interMedium: "Inter-Medium", sans-serif; 
-  
-  
+  --font-interMedium: "Inter-Medium", sans-serif;
+
   /* Montserrat */
   --font-montserratRegular: "Montserrat-Regular", sans-serif;
   --font-montserratMedium: "Montserrat-Medium", sans-serif;
   --font-montserratBold: "Montserrat-Bold", sans-serif;
-  
+
   /* Caveat */
   --font-caveatRegular: "Caveat-Regular", cursive;
   --font-caveatMedium: "Caveat-Medium", cursive;
-  
+
   /* Dancing Script */
   --font-dancingRegular: "DancingScript-Regular", cursive;
   --font-dancingMedium: "DancingScript-Medium", cursive;
-  
+
   /* Nunito */
   --font-nunito: "Nunito", sans-serif;
-  
+
   /* Manrope */
   --font-manrope: "Manrope", sans-serif;
 
-  --color-Red: #DF7D84;
-  --color-Cyan: #C1DDEF;
-  --color-Orange: #E2CD7A;
+  --color-Red: #df7d84;
+  --color-Cyan: #c1ddef;
+  --color-Orange: #e2cd7a;
   --color-Blue: #5d96dc;
-  --color-Green: #A4C9A0;
+  --color-Green: #a4c9a0;
   --color-RoyalBlue: #01b0f1;
-  --color-Sky: #6ED0F0;
-  --color-LightSky: #C1DDEF;
-  --color-Sage: #A4C9A0;
-  --color-GreenAccent: #9ACD32;
-  --color-Rose: #DF7D84;
-  --color-Red: #FF5A5A;
-  --color-Violet: #8E44AD;
-  --color-Sand: #E2CD7A;
-  --color-White: #FFFFFF;
+  --color-Sky: #6ed0f0;
+  --color-LightSky: #c1ddef;
+  --color-Sage: #a4c9a0;
+  --color-GreenAccent: #9acd32;
+  --color-Rose: #df7d84;
+  --color-Red: #ff5a5a;
+  --color-Violet: #8e44ad;
+  --color-Sand: #e2cd7a;
+  --color-White: #ffffff;
 
   --color-Red-2: rgba(223, 125, 132, 0.2);
   --color-Cyan-2: rgba(193, 221, 239, 0.2);
@@ -58,9 +54,7 @@
   --color-Blue-2: rgba(47, 110, 187, 0.2);
   --color-Green-2: rgba(164, 201, 160, 0.2);
 
-  
-
-/* 
+  /* 
 #3B6291   (раніше #31527A)
 #E2CD7A   (раніше #D8C16A)
 #D36C73   (раніше #C65B63)
@@ -86,8 +80,7 @@
 
  */
 
-
-/*
+  /*
 #F1EFAE
 #E6D86A
 #C8BE55
@@ -110,28 +103,23 @@
 #2E241C
 */
 
-
-
-
   --shadow-card: 0 15px 30px -11px rgba(131, 166, 210, 0.5);
 
   /* Font Sizes */
---font-size-preset-1: clamp(2.5rem, 5vw, 4rem);      /* 40px → 64px → 64px */
---font-size-preset-2: clamp(1.75rem, 3vw, 2.5rem);   /* 28px → 40px → 40px */
---font-size-preset-3: clamp(1.5rem, 2.5vw, 2rem);    /* 24px → 32px → 32px */
---font-size-preset-4: clamp(1rem, 1.5vw, 1.25rem);   /* 16px → 20px → 20px */
---font-size-preset-5: clamp(0.875rem, 1.2vw, 1rem);  /* 14px → 16px → 16px */
---font-size-preset-6: clamp(0.625rem, 2.4vw, 1rem); /* 10px → 16px */  
+  --font-size-preset-1: clamp(2.5rem, 5vw, 4rem); /* 40px → 64px → 64px */
+  --font-size-preset-2: clamp(1.75rem, 3vw, 2.5rem); /* 28px → 40px → 40px */
+  --font-size-preset-3: clamp(1.5rem, 2.5vw, 2rem); /* 24px → 32px → 32px */
+  --font-size-preset-4: clamp(1rem, 1.5vw, 1.25rem); /* 16px → 20px → 20px */
+  --font-size-preset-5: clamp(0.875rem, 1.2vw, 1rem); /* 14px → 16px → 16px */
+  --font-size-preset-6: clamp(0.625rem, 2.4vw, 1rem); /* 10px → 16px */
 
-/* Line Heights - всі 110% */
---line-height-preset-1: 1.1;
---line-height-preset-2: 1.1;
---line-height-preset-3: 1.1;
---line-height-preset-4: 1.2;
---line-height-preset-5: 1.3;
---line-height-preset-6: 1.3;
-
-
+  /* Line Heights - всі 110% */
+  --line-height-preset-1: 1.1;
+  --line-height-preset-2: 1.1;
+  --line-height-preset-3: 1.1;
+  --line-height-preset-4: 1.2;
+  --line-height-preset-5: 1.3;
+  --line-height-preset-6: 1.3;
 }
 
 @layer utilities {
@@ -139,22 +127,23 @@
     font-size: var(--font-size-preset-1);
     line-height: var(--line-height-preset-1);
   }
-  
+
   .text-preset-2 {
     font-size: var(--font-size-preset-2);
     line-height: var(--line-height-preset-2);
   }
-  
+
   .text-preset-3 {
     font-size: var(--font-size-preset-3);
     line-height: var(--line-height-preset-3);
   }
-  
-  .text-preset-4 {  /* ← Перевірте цей блок */
+
+  .text-preset-4 {
+    /* ← Перевірте цей блок */
     font-size: var(--font-size-preset-4);
     line-height: var(--line-height-preset-4);
   }
-  
+
   .text-preset-5 {
     font-size: var(--font-size-preset-5);
     line-height: var(--line-height-preset-5);
@@ -169,7 +158,8 @@
 
 @font-face {
   font-family: "Roboto-Regular";
-  src: local("Roboto-Regular"),
+  src:
+    local("Roboto-Regular"),
     url("./fonts/Roboto/Roboto-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
@@ -177,7 +167,8 @@
 }
 @font-face {
   font-family: "Roboto-Medium";
-  src: local("Roboto-Medium"),
+  src:
+    local("Roboto-Medium"),
     url("./fonts/Roboto/Roboto-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
@@ -186,7 +177,8 @@
 
 @font-face {
   font-family: "Roboto-SemiBold";
-  src: local("Roboto-SemiBold"),
+  src:
+    local("Roboto-SemiBold"),
     url("./fonts/Roboto/Roboto-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
@@ -195,7 +187,8 @@
 
 @font-face {
   font-family: "Roboto-Bold";
-  src: local("Roboto-Bold"),
+  src:
+    local("Roboto-Bold"),
     url("./fonts/Roboto/Roboto-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
@@ -206,7 +199,8 @@
 
 @font-face {
   font-family: "Inter-Medium";
-  src: local("Inter-Medium"),
+  src:
+    local("Inter-Medium"),
     url("./fonts/Inter/Inter_18pt-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
@@ -214,7 +208,8 @@
 }
 @font-face {
   font-family: "Inter-Regular";
-  src: local("Inter-Regular"),
+  src:
+    local("Inter-Regular"),
     url("./fonts/Inter/Inter_18pt-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
@@ -225,7 +220,8 @@
 
 @font-face {
   font-family: "Montserrat-Regular";
-  src: local("Montserrat-Regular"),
+  src:
+    local("Montserrat-Regular"),
     url("./fonts/Montserrat/Montserrat-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
@@ -233,7 +229,8 @@
 }
 @font-face {
   font-family: "Montserrat-Medium";
-  src: local("Montserrat-Medium"),
+  src:
+    local("Montserrat-Medium"),
     url("./fonts/Montserrat/Montserrat-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
@@ -241,7 +238,8 @@
 }
 @font-face {
   font-family: "Montserrat-Bold";
-  src: local("Montserrat-Bold"),
+  src:
+    local("Montserrat-Bold"),
     url("./fonts/Montserrat/Montserrat-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
@@ -252,7 +250,8 @@
 
 @font-face {
   font-family: "Caveat-Regular";
-  src: local("Caveat-Regular"),
+  src:
+    local("Caveat-Regular"),
     url("./fonts/Caveat/Caveat-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
@@ -261,7 +260,8 @@
 
 @font-face {
   font-family: "Caveat-Medium";
-  src: local("Caveat-Medium"),
+  src:
+    local("Caveat-Medium"),
     url("./fonts/Caveat/Caveat-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
@@ -271,7 +271,8 @@
 
 @font-face {
   font-family: "DancingScript-Regular";
-  src: local("DancingScript-Regular"),
+  src:
+    local("DancingScript-Regular"),
     url("./fonts/DancingScript/DancingScript-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
@@ -280,13 +281,10 @@
 
 @font-face {
   font-family: "DancingScript-Medium";
-  src: local("DancingScript-Medium"),
+  src:
+    local("DancingScript-Medium"),
     url("./fonts/DancingScript/DancingScript-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
-
-
-
-

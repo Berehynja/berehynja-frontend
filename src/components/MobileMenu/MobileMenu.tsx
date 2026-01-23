@@ -1,9 +1,8 @@
-import { X } from 'lucide-react';
+import { X } from "lucide-react";
 // import dekor from "../../images/dek.jpg";
 import { HeaderNav } from "../HeaderNav/HeaderNav";
 import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";
-import { useEffect } from 'react';
-
+import { useEffect } from "react";
 
 interface MobileMenuProps {
   mobMenuIsOpen: boolean;
@@ -11,11 +10,11 @@ interface MobileMenuProps {
 }
 
 export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps) => {
-   useEffect(() => {
+  useEffect(() => {
     if (mobMenuIsOpen) {
-      document.body.style.overflow = "hidden";   // block scroll
+      document.body.style.overflow = "hidden"; // block scroll
     } else {
-      document.body.style.overflow = "";         // restore scroll
+      document.body.style.overflow = ""; // restore scroll
     }
 
     return () => {
@@ -24,35 +23,32 @@ export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps)
   }, [mobMenuIsOpen]);
   return (
     <>
-    {mobMenuIsOpen && (
+      {mobMenuIsOpen && (
         <div
-          className="fixed inset-0 backdrop-blur-xs bg-black/30 "
+          className="fixed inset-0 bg-black/30 backdrop-blur-xs"
           onClick={() => setMobMenuIsOpen(false)}
         />
       )}
-    <div
-    className=
-    {`fixed flex top-0 right-0 
-    w-50 h-screen bg-linear-to-br from-blue-100 via-white to-yellow-100 overflow-hidden
-    transition-transform duration-300 ease
-    ${mobMenuIsOpen ? 'translate-x-0' : 'translate-x-full'}
-    sm:w-[30vw]`}
-    
-    >
-      <button className=" absolute top-4 right-4 z-10 " onClick={()=>setMobMenuIsOpen(!mobMenuIsOpen)} aria-label='close mobile menu'>
-        <X className=' stroke-stone-600 ' size={32}/>
-      </button>
-      {/* <div 
+      <div
+        className={`ease fixed top-0 right-0 flex h-screen w-50 overflow-hidden bg-linear-to-br from-blue-100 via-white to-yellow-100 transition-transform duration-300 ${mobMenuIsOpen ? "translate-x-0" : "translate-x-full"} sm:w-[30vw]`}
+      >
+        <button
+          className="absolute top-4 right-4 z-10"
+          onClick={() => setMobMenuIsOpen(!mobMenuIsOpen)}
+          aria-label="close mobile menu"
+        >
+          <X className="stroke-stone-600" size={32} />
+        </button>
+        {/* <div 
       className=" flex flex-col bg-repeat-y bg-size-[1.5rem] w-6 h-full"
       style={{backgroundImage: `url(${dekor})`}}
       ></div> */}
 
-      <div className=" relative flex flex-col justify-start items-center w-full mx-auto py-16 ">
-       <HeaderNav />
-       <LanguageSwitcher/>
+        <div className="relative mx-auto flex w-full flex-col items-center justify-start py-16">
+          <HeaderNav />
+          <LanguageSwitcher />
+        </div>
       </div>
-      
-    </div>
     </>
   );
 };

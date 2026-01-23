@@ -31,68 +31,66 @@ export const EventDetails = () => {
   }, [eventId]);
 
   return (
-    <div className=" w-full py-8  ">
-      <div className="flex p-4 gap-6 mb-6 ">
-        <div className="w-1/2 h-90 bg-blue-500 overflow-hidden rounded-lg ">
+    <div className="w-full py-8">
+      <div className="mb-6 flex gap-6 p-4">
+        <div className="h-90 w-1/2 overflow-hidden rounded-lg bg-blue-500">
           <img src={event?.imageBanner || ""} alt="banner" />
         </div>
-        <div className="w-1/2 pl-6 flex flex-col justify-center">
-          <h2 className=" text-xl font-montserratBold mb-2 ">Titel</h2>
-          <p className=" text-lg font-montserratBold mb-2 "> {event?.title} </p>
-          <p className=" text-preset-4 mb-4 ">
+        <div className="flex w-1/2 flex-col justify-center pl-6">
+          <h2 className="font-montserratBold mb-2 text-xl">Titel</h2>
+          <p className="font-montserratBold mb-2 text-lg"> {event?.title} </p>
+          <p className="text-preset-4 mb-4">
             {" "}
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore
-            consequatur ratione minima, sed quaerat veniam a eveniet, tenetur
-            vitae velit earum ab, nostrum quae libero eligendi exercitationem
-            quas voluptas! Magnam. Lorem ipsum dolor sit amet, consectetur
-            adipisicing elit. Labore consequatur ratione minima, sed quaerat
-            veniam a eveniet, tenetur vitae velit earum ab, nostrum quae libero
-            eligendi exercitationem quas voluptas! Magnam. Lorem ipsum dolor sit
-            amet, consectetur adipisicing elit. Labore consequatur ratione
-            minima, sed quaerat veniam a eveniet, tenetur vitae velit earum ab,
-            nostrum quae libero eligendi exercitationem quas voluptas! Magnam.{" "}
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore consequatur ratione
+            minima, sed quaerat veniam a eveniet, tenetur vitae velit earum ab, nostrum quae libero
+            eligendi exercitationem quas voluptas! Magnam. Lorem ipsum dolor sit amet, consectetur
+            adipisicing elit. Labore consequatur ratione minima, sed quaerat veniam a eveniet,
+            tenetur vitae velit earum ab, nostrum quae libero eligendi exercitationem quas voluptas!
+            Magnam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore consequatur
+            ratione minima, sed quaerat veniam a eveniet, tenetur vitae velit earum ab, nostrum quae
+            libero eligendi exercitationem quas voluptas! Magnam.{" "}
           </p>
         </div>
       </div>
 
-      <div className=" w-full  ">
-        <ul className="grid grid-cols-4 w-full gap-6 ">
-          <li className=" w-full h-50 bg-yellow-200">
+      <div className="w-full">
+        <ul className="grid w-full grid-cols-4 gap-6">
+          <li className="h-50 w-full bg-yellow-200">
             <img src={event?.imageBanner || ""} alt="foto" />
           </li>
-          <li className=" w-full h-50 bg-yellow-200">
+          <li className="h-50 w-full bg-yellow-200">
             <img src={event?.imageBanner || ""} alt="foto" />
           </li>
-          <li className=" w-full h-50 bg-yellow-200">
+          <li className="h-50 w-full bg-yellow-200">
             <img src={event?.imageBanner || ""} alt="foto" />
           </li>
-          <li className=" w-full h-50 bg-yellow-200">
+          <li className="h-50 w-full bg-yellow-200">
             <img src={event?.imageBanner || ""} alt="foto" />
           </li>
-          <li className=" w-full h-50 bg-yellow-200">
+          <li className="h-50 w-full bg-yellow-200">
             <img src={event?.imageBanner || ""} alt="foto" />
           </li>
-          <li className=" w-full h-50 bg-yellow-200">
+          <li className="h-50 w-full bg-yellow-200">
             <img src={event?.imageBanner || ""} alt="foto" />
           </li>
-          <li className=" w-full h-50 bg-yellow-200">
+          <li className="h-50 w-full bg-yellow-200">
             <img src={event?.imageBanner || ""} alt="foto" />
           </li>
-          <li className=" w-full h-50 bg-yellow-200">
+          <li className="h-50 w-full bg-yellow-200">
             <img src={event?.imageBanner || ""} alt="foto" />
           </li>
-          
-          <li className=" w-full h-40 bg-gray-200" >
-            <video  src={event?.imageBanner || ""} controls width="100%"/>
+
+          <li className="h-40 w-full bg-gray-200">
+            <video src={event?.imageBanner || ""} controls width="100%" />
           </li>
-          <li className=" w-full h-40 bg-gray-200">
-            <video src={event?.imageBanner || ""} controls width="100%"/>
+          <li className="h-40 w-full bg-gray-200">
+            <video src={event?.imageBanner || ""} controls width="100%" />
           </li>
-          <li className=" w-full h-40 bg-gray-200" >
-            <video  src={event?.imageBanner || ""} controls width="100%"/>
+          <li className="h-40 w-full bg-gray-200">
+            <video src={event?.imageBanner || ""} controls width="100%" />
           </li>
-          <li className=" w-full h-40 bg-gray-200">
-            <video src={event?.imageBanner || ""} controls width="100%"/>
+          <li className="h-40 w-full bg-gray-200">
+            <video src={event?.imageBanner || ""} controls width="100%" />
           </li>
         </ul>
       </div>

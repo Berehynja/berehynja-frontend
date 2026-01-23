@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import useEmblaCarousel from 'embla-carousel-react';
-import type { EmblaCarouselType as EmblaApiType } from 'embla-carousel';
+import React, { useCallback, useEffect, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import type { EmblaCarouselType as EmblaApiType } from "embla-carousel";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { useRef } from "react";
 
@@ -21,8 +21,8 @@ interface ImageCarouselProps {
 export function ImageCarousel({ items }: ImageCarouselProps) {
   // Инициализация Embla
   const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: 'start',
-    containScroll: 'trimSnaps',
+    align: "start",
+    containScroll: "trimSnaps",
     slidesToScroll: 1,
   });
 
@@ -38,24 +38,24 @@ export function ImageCarousel({ items }: ImageCarouselProps) {
   useEffect(() => {
     if (!emblaApi) return;
     onSelect(emblaApi);
-    emblaApi.on('select', onSelect);
-    emblaApi.on('reInit', onSelect);
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
   }, [emblaApi, onSelect]);
 
   return (
-    <div className="relative group bg-lime-50 rounded-xl mt-2 mg:mt-4 ">
+    <div className="group mg:mt-4 relative mt-2 rounded-xl bg-lime-50">
       {/* Окно просмотра (Viewport) */}
       <div className="overflow-hidden" ref={emblaRef}>
         {/* Контейнер для слайдов (Canvas) */}
-        <div className="flex -ml-4"> 
+        <div className="-ml-4 flex">
           {items.map((item) => (
-            <div 
-              key={item.id} 
-              className="flex-[0_0_100%] min-w-0 pl-4 sm:flex-[0_0_50%] md:flex-[0_0_33.33%] lg:flex-[0_0_25%]"
+            <div
+              key={item.id}
+              className="min-w-0 flex-[0_0_100%] pl-4 sm:flex-[0_0_50%] md:flex-[0_0_33.33%] lg:flex-[0_0_25%]"
             >
-              <div className="relative aspect-video rounded-lg overflow-hidden shadow-md bg-black">
+              <div className="relative aspect-video overflow-hidden rounded-lg bg-black shadow-md">
                 {item.type === "image" ? (
-                  <img src={item.url} alt={item.alt} className="w-full h-full object-cover" />
+                  <img src={item.url} alt={item.alt} className="h-full w-full object-cover" />
                 ) : (
                   <VideoPlayer item={item} />
                 )}
@@ -69,7 +69,7 @@ export function ImageCarousel({ items }: ImageCarouselProps) {
       {canScrollPrev && (
         <button
           onClick={() => emblaApi?.scrollPrev()}
-          className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/90 p-2 rounded-full shadow-lg z-20 hover:bg-white transition-all"
+          className="absolute top-1/2 left-6 z-20 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white"
         >
           <ChevronLeft size={24} className="text-gray-800" />
         </button>
@@ -79,7 +79,7 @@ export function ImageCarousel({ items }: ImageCarouselProps) {
       {canScrollNext && (
         <button
           onClick={() => emblaApi?.scrollNext()}
-          className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/90 p-2 rounded-full shadow-lg z-20 hover:bg-white transition-all"
+          className="absolute top-1/2 right-6 z-20 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white"
         >
           <ChevronRight size={24} className="text-gray-800" />
         </button>
@@ -87,8 +87,6 @@ export function ImageCarousel({ items }: ImageCarouselProps) {
     </div>
   );
 }
-
-
 
 // --- КОМПОНЕНТ ВИДЕОПЛЕЕРА ---
 function VideoPlayer({ item }: { item: CarouselItem }) {
@@ -98,7 +96,7 @@ function VideoPlayer({ item }: { item: CarouselItem }) {
   const togglePlay = (e: React.MouseEvent) => {
     // Останавливаем всплытие, чтобы слайдер не переключился
     e.stopPropagation();
-    
+
     if (videoRef.current) {
       if (videoRef.current.paused) {
         videoRef.current.play();
@@ -109,28 +107,28 @@ function VideoPlayer({ item }: { item: CarouselItem }) {
   };
 
   return (
-    <div className="relative w-full h-full bg-black group/video overflow-hidden">
+    <div className="group/video relative h-full w-full overflow-hidden bg-black">
       <video
         ref={videoRef}
         src={item.url}
         poster={item.poster}
         // Оставляем контроли всегда, чтобы они были доступны
         controls
-        className="w-full h-full object-cover"
+        className="h-full w-full object-cover"
         preload="metadata"
         playsInline
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />
-      
+
       {/* Кнопка PLAY (только когда видео на паузе) */}
       {!isPlaying && (
-        <div 
-          className="absolute inset-0 flex items-center justify-center bg-black/50 cursor-pointer z-10 py-12"
+        <div
+          className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center bg-black/50 py-12"
           onClick={togglePlay}
         >
-          <div className="bg-white/10 p-3 rounded-full backdrop-blur-md border border-white/30 group-hover/video:scale-110 transition-transform duration-300 flex items-center justify-center">
-            <Play size={30} className="text-white fill-white ml-1" />
+          <div className="flex items-center justify-center rounded-full border border-white/30 bg-white/10 p-3 backdrop-blur-md transition-transform duration-300 group-hover/video:scale-110">
+            <Play size={30} className="ml-1 fill-white text-white" />
           </div>
         </div>
       )}
@@ -140,8 +138,8 @@ function VideoPlayer({ item }: { item: CarouselItem }) {
           чтобы она физически не доходила до нижней полосы управления.
       */}
       {isPlaying && (
-        <div 
-          className="absolute top-0 left-0 w-full h-[80%] cursor-pointer z-0" 
+        <div
+          className="absolute top-0 left-0 z-0 h-[80%] w-full cursor-pointer"
           onClick={togglePlay}
         />
       )}

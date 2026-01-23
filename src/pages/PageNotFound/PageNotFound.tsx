@@ -1,7 +1,6 @@
-
 export const PageNotFound = () => {
   return (
-    <div className="w-full h-screen flex flex-col justify-center font-interMedium items-center text-5xl">
+    <div className="font-interMedium flex h-screen w-full flex-col items-center justify-center text-5xl">
       <span>"</span>
       <p>Page not found...</p>
       <span>"</span>
