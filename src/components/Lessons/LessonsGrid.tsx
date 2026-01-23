@@ -55,16 +55,18 @@ export function LessonsGrid() {
         // Оновлення існуючої програми
         await programsService.updateProgram(id, data);
 
-        setPrograms((prev) => prev.map((prog) => (prog.id === id ? { ...data, id } : prog)));
-        alert("Програма успішно оновлена!");
+        setPrograms((prev) =>
+          prev.map((prog) => (prog.id === id ? { ...data, id } : prog)),
+        );
+        // alert("Програма успішно оновлена!");
       } else {
         const newProgram = await programsService.addProgram(data);
 
         setPrograms((prev) => [...prev, newProgram]);
-        alert("Програма успішно додана!");
+        // alert("Програма успішно додана!");
       }
     } catch (error) {
-      alert("Помилка при додаванні програми. Спробуйте ще раз.");
+      // alert("Помилка при додаванні програми. Спробуйте ще раз.");
       console.error("Помилка при додаванні програми:", error);
     }
   };
@@ -75,22 +77,30 @@ export function LessonsGrid() {
 
       setPrograms((prev) => prev.filter((prog) => prog.id !== id));
     } catch (error) {
-      alert("Сталася помилка при видаленні програми. Спробуйте ще раз.");
+      // alert("Сталася помилка при видаленні програми. Спробуйте ще раз.");
       console.error("Помилка при видаленні програми:", error);
     }
   };
 
   return (
     <div className="font-nunito mt-10 mb-25">
-      <h2 className="text-preset-2 my-8 text-center font-bold text-gray-700">Програми</h2>
+      <h2 className="text-preset-2 my-8 text-center font-bold text-gray-700">
+        Курси
+      </h2>
 
       {isLoading ? (
-        <div className="py-10 text-center text-gray-400">Завантаження програм...</div>
+        <div className="py-10 text-center text-gray-400">
+          Завантаження програм...
+        </div>
       ) : (
         <div className="grid auto-rows-fr grid-cols-1 gap-4 p-4 sm:grid-cols-2 md:grid-cols-4">
           {/* КАРТКИ (Виводимо реальні дані з бази) */}
           {programs.map((program) => (
-            <LessonCard key={program.id} lesson={program} onEdit={handleEditProgram} />
+            <LessonCard
+              key={program.id}
+              lesson={program}
+              onEdit={handleEditProgram}
+            />
           ))}
 
           {programs.length === 0 && !isAdmin && (

@@ -8,15 +8,17 @@ import "modern-normalize/modern-normalize.css";
 import "./index.css";
 
 import App from "./components/App/App.tsx";
+import { ToastProvider } from "./components/ui/ToastProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter basename="/berehynja-frontend/">
       <AuthProvider>
+        <ToastProvider />
         <Suspense fallback={<div>Loading...</div>}>
           <App />
         </Suspense>
       </AuthProvider>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 );
