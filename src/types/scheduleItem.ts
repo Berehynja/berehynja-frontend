@@ -1,13 +1,13 @@
 import type { LessonColor } from "../data/colors";
 
 export interface ScheduleItem {
-    id: string;
-    lessonId: string;
-    
-    date: string;
-    timeStart: string;
-    timeEnd: string;
-    room: LessonColor;
+  id: string;
+  lessonId: string;
 
-    level?: string;
+  date: string;
+  timeStart: string;
+  timeEnd: string;
+  room: LessonColor;
+
+  level?: string;
 }

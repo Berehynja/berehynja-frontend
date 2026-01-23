@@ -17,7 +17,7 @@ export interface Event {
 //   instructor?: string;
 // }
 
-export type Page = 'home' | 'about' | 'programs' | 'events' | 'contact';
+export type Page = "home" | "about" | "programs" | "events" | "contact";
 
 export interface TeamMember {
   id: string;

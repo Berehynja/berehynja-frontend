@@ -4,7 +4,7 @@ export default function AdminLogout() {
   return (
     <button
       onClick={logout}
-      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+      className="rounded bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
     >
       Выйти
     </button>

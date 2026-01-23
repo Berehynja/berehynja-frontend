@@ -1,13 +1,6 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Layout } from "../Layout/Layout.tsx";
-import {
-  HomePage,
-  Events,
-  About,
-  Programs,
-  Contact,
-  PageNotFound,
-} from "../../pages";
+import { HomePage, Events, About, Programs, Contact, PageNotFound } from "../../pages";
 import LoginPage from "../../pages/LoginPage/LoginPage.tsx";
 import { EventDetails } from "../EventDetails/EventDetails.tsx";
 

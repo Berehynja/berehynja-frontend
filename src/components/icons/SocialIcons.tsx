@@ -1,7 +1,7 @@
-
 export const InstagramIcon = () => {
   return (
-    <svg className=" transition-colors fill-white duration-300  cursor-pointer  "
+    <svg
+      className="cursor-pointer fill-white transition-colors duration-300"
       xmlns="http://www.w3.org/2000/svg"
       width="32"
       height="32"
@@ -17,13 +17,7 @@ export const InstagramIcon = () => {
 
 export const FacebookIcon = () => {
   return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg"
-      width="32"
-      height="32"
-      fill="white"
-      viewBox="0 0 32 32"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" viewBox="0 0 32 32">
       <path
         fill=""
         d="M16 4a12 12 0 1012 12A12.013 12.013 0 0016 4zm.923 22.111V18.77h2.77a.923.923 0 100-1.846h-2.77v-2.77a1.846 1.846 0 011.846-1.845h1.846a.923.923 0 000-1.847H18.77a3.692 3.692 0 00-3.692 3.693v2.77h-2.77a.923.923 0 100 1.845h2.77v7.342a10.154 10.154 0 111.846 0z"
@@ -34,7 +28,8 @@ export const FacebookIcon = () => {
 
 export const TelegramIcon = () => {
   return (
-    <svg className="transition-colors fill-white duration-300 cursor-pointer"
+    <svg
+      className="cursor-pointer fill-white transition-colors duration-300"
       xmlns="http://www.w3.org/2000/svg"
       width="32"
       height="32"

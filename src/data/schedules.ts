@@ -38,7 +38,7 @@ export const schedules: ScheduleItem[] = [
   // ==========================================
   // ГРУПА 6-11 РОКІВ (Середні рядки)
   // ==========================================
-  
+
   // --- Підгрупа 7-9 років ---
   {
     id: nanoid(6),
@@ -47,7 +47,7 @@ export const schedules: ScheduleItem[] = [
     timeStart: "13:20",
     timeEnd: "14:00",
     room: "GreenAccent" as LessonColor, // Зелений блок
-    level: "7-9 років" // Уточнення з таблиці
+    level: "7-9 років", // Уточнення з таблиці
   },
   {
     id: nanoid(6),
@@ -56,7 +56,7 @@ export const schedules: ScheduleItem[] = [
     timeStart: "14:00",
     timeEnd: "14:50",
     room: "RoyalBlue" as LessonColor, // Синій блок
-    level: "7-9 років"
+    level: "7-9 років",
   },
 
   // --- Підгрупа 8-12 років ---
@@ -67,7 +67,7 @@ export const schedules: ScheduleItem[] = [
     timeStart: "13:20",
     timeEnd: "14:00",
     room: "RoyalBlue" as LessonColor, // Синій блок
-    level: "8-12 років"
+    level: "8-12 років",
   },
   {
     id: nanoid(6),
@@ -76,7 +76,7 @@ export const schedules: ScheduleItem[] = [
     timeStart: "14:00",
     timeEnd: "14:50",
     room: "GreenAccent" as LessonColor, // Зелений блок
-    level: "8-12 років"
+    level: "8-12 років",
   },
 
   // --- Спільні заняття 6-11 років ---
@@ -123,5 +123,5 @@ export const schedules: ScheduleItem[] = [
     timeStart: "17:10",
     timeEnd: "18:00",
     room: "GreenAccent" as LessonColor, // Зелений блок
-  }
+  },
 ];

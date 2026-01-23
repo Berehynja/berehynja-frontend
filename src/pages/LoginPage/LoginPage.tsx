@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
@@ -10,15 +10,13 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { isAdmin } = useAuth();
-  console.log("🚀 ~ isAdmin:", isAdmin)
+  console.log("🚀 ~ isAdmin:", isAdmin);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (isAdmin) {
       navigate("/"); // если уже админ, редирект на главную
     }
-  }, [isAdmin, navigate]);  
-  
-  
+  }, [isAdmin, navigate]);
 
   const handleLogin = async () => {
     try {
@@ -34,21 +32,20 @@ export default function AdminLogin() {
   };
 
   // Если уже админ, редирект
-  
 
   return (
-    <div className="w-full h-180 flex items-center justify-center bg-gray-100">
-      <div className="flex flex-col bg-white p-8 rounded-lg shadow-md w-full max-w-sm gap-3">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Admin Login</h2>
+    <div className="flex h-180 w-full items-center justify-center bg-gray-100">
+      <div className="flex w-full max-w-sm flex-col gap-3 rounded-lg bg-white p-8 shadow-md">
+        <h2 className="mb-6 text-center text-2xl font-semibold">Admin Login</h2>
 
-        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+        {error && <p className="mb-4 text-center text-red-500">{error}</p>}
 
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-3 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="mb-4 w-full rounded border p-3 focus:ring-2 focus:ring-blue-400 focus:outline-none"
         />
 
         <input
@@ -56,12 +53,12 @@ export default function AdminLogin() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 mb-6 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="mb-6 w-full rounded border p-3 focus:ring-2 focus:ring-blue-400 focus:outline-none"
         />
 
         <button
           onClick={handleLogin}
-          className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition"
+          className="w-full rounded bg-blue-500 p-3 text-white transition hover:bg-blue-600"
         >
           Login
         </button>

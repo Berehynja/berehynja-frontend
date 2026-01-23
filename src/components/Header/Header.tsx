@@ -21,22 +21,20 @@ export function Header() {
   };
 
   return (
-    <header className=" sticky top-0 max-w-full z-50 bg-white shadow-2xs">
-      <div className=" flex justify-between items-center mx-auto px-5 max-w-360 h-20 sm:px-8 lg:px-8 xl:px-10 ">
-        <NavLink className=" flex justify-center decoration-0" to="/" end>
-          <div className=" flex justify-center items-center ">
+    <header className="sticky top-0 z-50 max-w-full bg-white shadow-2xs">
+      <div className="mx-auto flex h-20 max-w-360 items-center justify-between px-5 sm:px-8 lg:px-8 xl:px-10">
+        <NavLink className="flex justify-center decoration-0" to="/" end>
+          <div className="flex items-center justify-center">
             <LogoSvg />
           </div>
-          <div className=" flex flex-col whitespace-nowrap justify-center items-center ml-3 sm:ml-4 text-2xl font-interMedium ">
+          <div className="font-interMedium ml-3 flex flex-col items-center justify-center text-2xl whitespace-nowrap sm:ml-4">
             BEREHYNJA
-            <span className=" -mt-2 font-caveatMedium font-medium text-xl ">
-              український простір
-            </span>
+            <span className="font-caveatMedium -mt-2 text-xl font-medium">український простір</span>
           </div>
         </NavLink>
         {isAdmin && <AdminLogout />}
         {screenWidth >= 1024 ? (
-          <div className=" relative flex justify-center items-center  ">
+          <div className="relative flex items-center justify-center">
             <HeaderNav />
             <LanguageSwitcher />
           </div>
@@ -45,14 +43,11 @@ export function Header() {
             <button
               onClick={ToggleMobMenu}
               aria-label="Mobile menu button"
-              className=" flex justify-center items-center w-13 h-13 "
+              className="flex h-13 w-13 items-center justify-center"
             >
-              <Menu className=" w-8 h-8" />
+              <Menu className="h-8 w-8" />
             </button>
-            <MobileMenu
-              mobMenuIsOpen={mobMenuIsOpen}
-              setMobMenuIsOpen={setMobMenuIsOpen}
-            />
+            <MobileMenu mobMenuIsOpen={mobMenuIsOpen} setMobMenuIsOpen={setMobMenuIsOpen} />
           </>
         )}
       </div>

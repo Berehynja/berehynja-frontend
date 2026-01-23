@@ -3,9 +3,9 @@ import { ScheduleCalendar } from "../../components/Lessons/ScheduleCalendar";
 
 export const Programs = () => {
   return (
-    <div className="w-full font-nunito">
-     <LessonsGrid/>
-     <ScheduleCalendar/>
+    <div className="font-nunito w-full">
+      <LessonsGrid />
+      <ScheduleCalendar />
     </div>
   );
-}
+};

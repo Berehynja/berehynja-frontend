@@ -21,19 +21,13 @@ export const Layout = () => {
     <div className="layout">
       <ScrollToTop />
       <Header />
-        <main >
-          <div className=" flex flex-col justify-center items-center min-w-80 max-w-120 mx-auto 
-          sm:max-w-3xl
-          md:px-4 md:max-w-5xl
-          lg:px-8 lg:max-w-7xl
-          xl:px-10 xl:max-w-360
-
-          ">
-            <Suspense fallback={<div>Loading page....</div>}>
-              <Outlet />
-            </Suspense>
-          </div>
-        </main>
+      <main>
+        <div className="mx-auto flex max-w-120 min-w-80 flex-col items-center justify-center sm:max-w-3xl md:max-w-5xl md:px-4 lg:max-w-7xl lg:px-8 xl:max-w-360 xl:px-10">
+          <Suspense fallback={<div>Loading page....</div>}>
+            <Outlet />
+          </Suspense>
+        </div>
+      </main>
       <Footer />
     </div>
   );

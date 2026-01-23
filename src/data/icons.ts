@@ -1,7 +1,19 @@
-import { 
-  BookOpen, Music, Palette, Blocks, Smile, 
-  Drama, Users, Sparkles, Cloud, Leaf, 
-  Calculator, Globe, Microscope, Cpu, Trophy
+import {
+  BookOpen,
+  Music,
+  Palette,
+  Blocks,
+  Smile,
+  Drama,
+  Users,
+  Sparkles,
+  Cloud,
+  Leaf,
+  Calculator,
+  Globe,
+  Microscope,
+  Cpu,
+  Trophy,
 } from "lucide-react";
 
 // Реєстр доступних іконок
@@ -22,7 +34,7 @@ export const AVAILABLE_ICONS = {
   globe: Globe,
   science: Microscope,
   tech: Cpu,
-  winner: Trophy
+  winner: Trophy,
 } as const;
 
 export type IconName = keyof typeof AVAILABLE_ICONS;
