@@ -3,16 +3,18 @@ import type { AgeGroup } from "../../types/ageGroup";
 import { COLORS, type LessonColor } from "../../data/colors";
 import type { Program } from "../../types/program";
 import { AVAILABLE_ICONS, type IconName } from "../../data/icons";
+import { Trash2 } from "lucide-react";
 
 // Пропси: що модалка очікує від батьківського компонента
 interface AddLessonModalProps{
     isOpen: boolean;
     onClose: () => void;
     onSave: (data: Omit<Program, "id">, id?: string) => Promise<void>;
+    onDelete: (id: string) => Promise<void>;
     ageGroups: AgeGroup[];
     programToEdit?: Program | null;
 }
-export function AddLessonModal({isOpen, onClose, onSave, ageGroups, programToEdit}: AddLessonModalProps){
+export function AddLessonModal({isOpen, onClose, onSave, onDelete, ageGroups, programToEdit}: AddLessonModalProps){
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [selectedColor, setSelectedColor] = useState<LessonColor>("RoyalBlue");
@@ -52,8 +54,7 @@ if(isOpen) window.addEventListener("keydown", handleEsc)
     return () => window.removeEventListener("keydown", handleEsc)
 }, [isOpen, onClose])
 
-// Якщо модалка закрита - нічого не рендеримо
-  if (!isOpen) return null;
+
 
 // Обробка кліку на чекбокс
 const toggleAgeGroup = (id: string) => {
@@ -84,6 +85,32 @@ const handleSubmit = async (e: React.FormEvent) => {
         
     }
 };
+
+
+const handleDeleteClick = async () => {
+
+    if(!programToEdit?.id) return;
+
+    const isConfired = window.confirm(`Ви впевнені, що хочете видалити програму  "${programToEdit.title}"? Цю дію не можна буде скасувати.`);
+
+    if(isConfired){
+        setIsSubmitting(true);
+        try {
+            await onDelete(programToEdit.id);
+            onClose();
+        } catch (error) {
+            console.error("Помилка при видаленні програми:", error);
+            alert("Сталася помилка при видаленні програми. Спробуйте ще раз.")  
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
+};
+
+// Якщо модалка закрита - нічого не рендеримо
+  if (!isOpen) return null;
+
+
 return (
     // Overlay (фон)
     <div 
@@ -242,26 +269,63 @@ return (
               />
             </div>
           </form>
+               
         </div>
 
         {/* --- FOOTER --- */}
         <div className="p-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
+
+        {/* КНОПКА ВИДАЛЕННЯ (тільки в режимі редагування) */}
+        {programToEdit && (
+             <div>
+<button
+                                type="button"
+                                onClick={handleDeleteClick}
+                                disabled={isSubmitting}
+                                className="
+                                    flex items-center gap-2 px-4 py-2.5 rounded-xl
+                                    text-red-500 font-bold text-sm
+                                    hover:bg-red-50 hover:text-red-600 
+                                    transition-colors cursor-pointer
+                                    disabled:opacity-50
+                                "
+                            >
+                                <Trash2 size={18} />
+                                <span>Видалити</span>
+                            </button>
+                </div>
+        )}
+
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2.5 rounded-xl text-gray-600 font-bold hover:bg-gray-200 transition-colors"
+            className="px-5 py-2.5 rounded-xl text-gray-600 font-bold hover:bg-gray-200 transition-colors cursor-pointer disabled:opacity-70"
             disabled={isSubmitting}
           >
             Скасувати
           </button>
-          <button
+
+          {/* <button
             type="submit"
             form="program-form"
-            className="px-6 py-2.5 rounded-xl bg-Blue text-white font-bold shadow-lg shadow-blue-200 hover:shadow-blue-300 hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-70 disabled:cursor-wait"
+            className="px-6 py-2.5 rounded-xl bg-Blue text-white font-bold shadow-lg shadow-blue-200 cursor-pointer hover:shadow-blue-300 hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-70 disabled:cursor-wait"
             disabled={isSubmitting}
           >
             {isSubmitting ? "Створення..." : "Створити програму"}
-          </button>
+          </button> */}
+
+            <button
+        type="submit"
+        onClick={handleSubmit} // Додаємо, щоб працювало з футера
+        className="px-6 py-2.5 rounded-xl bg-blue-500 text-white font-bold shadow-lg shadow-blue-200 cursor-pointer hover:shadow-blue-300 hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-70 disabled:cursor-wait"
+        disabled={isSubmitting}
+        >
+        {/* Логіка тексту: Створення / Зберегти зміни / Створити програму */}
+        {isSubmitting 
+            ? "Збереження..." 
+            : (programToEdit ? "Зберегти зміни" : "Створити програму")
+        }
+        </button>
         </div>
 
       </div>

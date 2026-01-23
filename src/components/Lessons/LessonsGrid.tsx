@@ -47,20 +47,45 @@ export function LessonsGrid(){
     const handleEditProgram = (program: Program) => {
         setEditingProgram(program);
         setIsModalOpen(true);
-    }
+    };
 
-   const handleSaveProgram = async(data: Omit<Program, "id">) => {
+   const handleSaveProgram = async(data: Omit<Program, "id">, id?: string) => {
         try {
-            const newProgram = await programsService.addProgram(data);
+            if(id){
+                // Оновлення існуючої програми
+                await programsService.updateProgram(id, data);
 
-            setPrograms((prev) => [...prev, newProgram]);
-            alert("Програма успішно додана!");
-            
+                setPrograms((prev) => prev.map((prog)=> prog.id === id ? { ...data, id} : prog));
+                alert("Програма успішно оновлена!");
+            } else {
+                
+                const newProgram = await programsService.addProgram(data);
+    
+                setPrograms((prev) => [...prev, newProgram]);
+                alert("Програма успішно додана!");
+                
+            }
+
+
+
         } catch (error) {
             alert("Помилка при додаванні програми. Спробуйте ще раз.");
             console.error("Помилка при додаванні програми:", error);
         }
-   }
+   };
+
+    const handleDeleteProgram = async(id: string) => {
+        try {
+            await programsService.deleteProgram(id);
+
+            setPrograms((prev) => prev.filter((prog)=> prog.id !== id))
+        } catch (error) {
+            alert("Сталася помилка при видаленні програми. Спробуйте ще раз.");
+            console.error("Помилка при видаленні програми:", error);
+            
+        }
+
+    };
 
     return(
         <div className="font-nunito mt-10 mb-25">
@@ -110,6 +135,7 @@ export function LessonsGrid(){
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSave={handleSaveProgram}
+                onDelete={handleDeleteProgram}
                 ageGroups={ageGroups}
                 programToEdit={editingProgram}
             />

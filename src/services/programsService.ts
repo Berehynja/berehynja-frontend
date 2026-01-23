@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDocs, orderBy, query, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import type { AgeGroup } from "../types/ageGroup";
 import type { Program } from "../types/program";
@@ -65,6 +65,17 @@ export const programsService = {
             await updateDoc(programRef, data);
         } catch (error) {
             console.error("Помилка при оновленні програми:", error);
+            throw error;
+        }
+    },
+
+    // Видалення програми
+    deleteProgram: async(id: string): Promise<void> => {
+        try {
+            const programRef = doc(db, PROGRAMS_COLLECTION, id);
+            await deleteDoc(programRef);
+        } catch (error) {
+            console.error("Помилка при видаленні програми:", error);
             throw error;
         }
     },
