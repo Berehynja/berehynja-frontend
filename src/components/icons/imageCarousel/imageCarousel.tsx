@@ -43,47 +43,49 @@ export function ImageCarousel({ items }: ImageCarouselProps) {
   }, [emblaApi, onSelect]);
 
   return (
-    <div className="group mg:mt-4 relative mt-2 rounded-xl bg-lime-50">
-      {/* Окно просмотра (Viewport) */}
-      <div className="overflow-hidden" ref={emblaRef}>
-        {/* Контейнер для слайдов (Canvas) */}
-        <div className="-ml-4 flex">
-          {items.map((item) => (
-            <div
-              key={item.id}
-              className="min-w-0 flex-[0_0_100%] pl-4 sm:flex-[0_0_50%] lg:flex-[0_0_33.33%] "
-            >
-              <div className="relative aspect-video overflow-hidden rounded-lg bg-black shadow-md">
-                {item.type === "image" ? (
-                  <img src={item.url} alt={item.alt} className="h-full w-full object-cover" />
-                ) : (
-                  <VideoPlayer item={item} />
-                )}
+    <div className="absolute bottom-30 left-0 right-0 mx-auto w-full">
+      <div className="group relative  bg-white/70 p-2">
+        {/* Окно просмотра (Viewport) */}
+        <div className="overflow-hidden" ref={emblaRef}>
+          {/* Контейнер для слайдов (Canvas) */}
+          <div className="-ml-4 flex">
+            {items.map((item) => (
+              <div
+                key={item.id}
+                className="min-w-0 pl-4 flex-[0_0_50%] lg:flex-[0_0_33.33%]"
+              >
+                <div className="relative aspect-video overflow-hidden rounded-lg bg-black shadow-md">
+                  {item.type === "image" ? (
+                    <img src={item.url} alt={item.alt} className="h-full w-full object-cover" />
+                  ) : (
+                    <VideoPlayer item={item} />
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
+
+        {/* Кнопка НАЗАД */}
+        {canScrollPrev && (
+          <button
+            onClick={() => emblaApi?.scrollPrev()}
+            className="absolute top-1/2 left-2 z-20 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white"
+          >
+            <ChevronLeft size={24} className="text-gray-800" />
+          </button>
+        )}
+
+        {/* Кнопка ВПЕРЕД */}
+        {canScrollNext && (
+          <button
+            onClick={() => emblaApi?.scrollNext()}
+            className="absolute top-1/2 right-2 z-20 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white"
+          >
+            <ChevronRight size={24} className="text-gray-800" />
+          </button>
+        )}
       </div>
-
-      {/* Кнопка НАЗАД */}
-      {canScrollPrev && (
-        <button
-          onClick={() => emblaApi?.scrollPrev()}
-          className="absolute top-1/2 left-2 z-20 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white"
-        >
-          <ChevronLeft size={24} className="text-gray-800" />
-        </button>
-      )}
-
-      {/* Кнопка ВПЕРЕД */}
-      {canScrollNext && (
-        <button
-          onClick={() => emblaApi?.scrollNext()}
-          className="absolute top-1/2 right-2 z-20 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white"
-        >
-          <ChevronRight size={24} className="text-gray-800" />
-        </button>
-      )}
     </div>
   );
 }
