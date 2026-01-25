@@ -51,7 +51,7 @@ export function ImageCarousel({ items }: ImageCarouselProps) {
           {items.map((item) => (
             <div
               key={item.id}
-              className="min-w-0 flex-[0_0_100%] pl-4 sm:flex-[0_0_50%] md:flex-[0_0_33.33%] lg:flex-[0_0_25%]"
+              className="min-w-0 flex-[0_0_100%] pl-4 sm:flex-[0_0_50%] lg:flex-[0_0_33.33%] "
             >
               <div className="relative aspect-video overflow-hidden rounded-lg bg-black shadow-md">
                 {item.type === "image" ? (
@@ -69,7 +69,7 @@ export function ImageCarousel({ items }: ImageCarouselProps) {
       {canScrollPrev && (
         <button
           onClick={() => emblaApi?.scrollPrev()}
-          className="absolute top-1/2 left-6 z-20 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white"
+          className="absolute top-1/2 left-2 z-20 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white"
         >
           <ChevronLeft size={24} className="text-gray-800" />
         </button>
@@ -79,7 +79,7 @@ export function ImageCarousel({ items }: ImageCarouselProps) {
       {canScrollNext && (
         <button
           onClick={() => emblaApi?.scrollNext()}
-          className="absolute top-1/2 right-6 z-20 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white"
+          className="absolute top-1/2 right-2 z-20 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white"
         >
           <ChevronRight size={24} className="text-gray-800" />
         </button>

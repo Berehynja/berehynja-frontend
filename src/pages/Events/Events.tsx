@@ -1,4 +1,4 @@
-import { EventCard } from "../../components";
+import { EventList } from "../../components";
 
 export const Events = () => {
   return (
@@ -18,7 +18,7 @@ export const Events = () => {
       </div>
 
       <section className="flex w-full flex-col items-center justify-center gap-8 md:gap-12">
-        <EventCard />
+        <EventList />
       </section>
     </div>
   );
