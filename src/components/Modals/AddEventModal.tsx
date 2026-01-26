@@ -1,11 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
+type EventFormData = {
+  title: string;
+  date: string;
+  time: string;
+  location: string;
+  description: string;
+  imageBanner: string;
+  images: string[];
+  videos: string[];
+};
 
+type AddEventModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: EventFormData) => void;
+  editingEvent?: EventFormData | null;
+};
 
-
-export const AddEventModal = ({ isOpen, onClose, onSave, editingEvent = null }) => {
+export const AddEventModal = ({ isOpen, onClose, onSave, editingEvent }: AddEventModalProps) => {
   // Начальное состояние для пустой формы
-  const initialFormState = {
+  const initialFormState = useMemo<EventFormData>(() => ({
     title: "",
     date: "",
     time: "",
@@ -14,9 +29,9 @@ export const AddEventModal = ({ isOpen, onClose, onSave, editingEvent = null }) 
     imageBanner: "",
     images: [],
     videos: [],
-  };
+  }), []);
 
-  const [formData, setFormData] = useState(initialFormState);
+  const [formData, setFormData] = useState<EventFormData>(initialFormState);
 
   // Когда модалка открывается или меняется выбранное событие (editingEvent)
   useEffect(() => {
@@ -27,14 +42,16 @@ export const AddEventModal = ({ isOpen, onClose, onSave, editingEvent = null }) 
       // Если события нет — сбрасываем в пустую форму
       setFormData(initialFormState);
     }
-  }, [editingEvent, isOpen]);
+  }, [editingEvent, isOpen, initialFormState]);
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSave(formData); // Передаем данные наверх для записи в базу
     onClose();
@@ -43,8 +60,9 @@ export const AddEventModal = ({ isOpen, onClose, onSave, editingEvent = null }) 
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="font-nunito fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      onClick={onClose}>
+      <div className="w-full max-w-2xl h-150 bg-white rounded-lg p-6" onClick={e => e.stopPropagation()}>
         <header className="modal-header">
           <h2>{editingEvent ? "Редагувати подію" : "Додати нову подію"}</h2>
           <button className="close-btn" onClick={onClose}>&times;</button>

@@ -1,9 +1,6 @@
-import type { Event } from "../types/types";
+import type { Event } from "../types/event";
 
-export const upcomingEvents: (Event & {
-  images?: Array<{ id: string; url: string; type: "image"; alt: string }>;
-  videos?: Array<{ id: string; url: string; type: "video"; alt: string }>;
-})[] = [
+export const upcomingEvents: (Event)[] = [
   {
     id: "1",
     title: "Святкування Дня незалежності України",

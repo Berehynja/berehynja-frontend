@@ -1,7 +1,7 @@
 import { Pencil } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthProvider/useAuth";
-import { ImageCarousel } from "../icons/imageCarousel/imageCarousel";
+import { ImageCarousel } from "../imageCarousel/imageCarousel";
 
 
 interface EventCardProps {

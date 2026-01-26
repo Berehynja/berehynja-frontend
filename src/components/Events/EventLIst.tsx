@@ -37,24 +37,32 @@ export const EventList = () => {
     fetchEvents();
   }, [isAdmin]);
 
-  const handleCreate = () => {
-    setIsModalOpen(true); // Открываем
-  };
-
-  
+  // const handleDeleteEvent = (eventId: string) => {
+  //   // Логика удаления события по eventId
+  //   console.log("Удаление события с ID:", eventId);
+  // }
 
   return (
     <>
-      {isAdmin && <AddEvent onClick={handleCreate} />}
+      {isAdmin && <AddEvent onClick={() => setIsModalOpen(true)} />}
       <AddEventModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSave={(event: EventType) => {
+        // onDelete={handleDeleteEvent}
+        onSave={(data) => {
           // Здесь можно добавить логику сохранения события
-          console.log("Создано новое событие:", event);
+          console.log("Создано новое событие:", data);
           setIsModalOpen(false);
         }}
+        
       />
+      {/* <AddEventModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              onSave={handleSaveEvent}
+              onDelete={handleDeleteEvent}
+              editingEvent={editingEvent}
+            /> */}
       <ul className="grid grid-cols-1 items-start justify-center gap-8 md:grid-cols-2 md:gap-15">
         {revertedEvents.map((event) => (
           <EventCard

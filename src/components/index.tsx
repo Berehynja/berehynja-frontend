@@ -4,6 +4,6 @@
 export * from "./Layout/Layout.tsx";
 export * from "./Header/Header.tsx";
 export * from "./Footer/Footer.tsx";
-export * from "./icons/imageCarousel/imageCarousel.tsx";
+export * from "./imageCarousel/imageCarousel.tsx";
 export * from "./Events/EventLIst.tsx";
 export * from "./Events/EventDetails.tsx";
