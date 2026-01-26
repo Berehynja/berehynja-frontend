@@ -1,18 +1,6 @@
-import { useAuth } from "../../components/AuthProvider/useAuth";
-import { AddEvent } from "../../components/Buttons/AddEvent";
 import { EventList } from "../../components";
-import { useState } from "react";
-import type { Event } from "../../types/types";
 
 export const Events = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingProgram, setEditingProgram] = useState<Event | null>(null);
-  const { isAdmin } = useAuth();
-
-  const handleOpenCreate = () => {
-    setEditingProgram(null);
-    setIsModalOpen(true);
-  };
   return (
     <div className="w-full py-8">
       <div className="font-montserratBold flex flex-col items-center justify-center gap-8 py-7 md:flex-row md:py-10">
@@ -30,7 +18,6 @@ export const Events = () => {
       </div>
 
       <section className="flex w-full flex-col items-center justify-center gap-8 md:gap-12">
-        {isAdmin && <AddEvent onClick={handleOpenCreate} />}
         <EventList />
       </section>
     </div>

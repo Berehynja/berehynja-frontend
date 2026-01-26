@@ -5,5 +5,5 @@ export * from "./Layout/Layout.tsx";
 export * from "./Header/Header.tsx";
 export * from "./Footer/Footer.tsx";
 export * from "./icons/imageCarousel/imageCarousel.tsx";
-export * from "./EventList/EventLIst.tsx";
-export * from "./EventDetails/EventDetails.tsx";
+export * from "./Events/EventLIst.tsx";
+export * from "./Events/EventDetails.tsx";
