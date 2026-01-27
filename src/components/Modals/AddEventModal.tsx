@@ -1,28 +1,18 @@
 import { useState, useEffect, useMemo } from 'react';
-
-type EventFormData = {
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  description: string;
-  imageBanner: string;
-  images: string[];
-  videos: string[];
-};
+import type { Event } from "../../types/event";
 
 type AddEventModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (data: EventFormData) => void;
-  eventToEdit?: EventFormData | null;
+  onSave: (data: Event) => void;
+  eventToEdit?: Event| null;
   onDelete?: (eventId: string) => void;
 };
 
 export const AddEventModal = ({ isOpen, onClose, onSave, onDelete, eventToEdit }: AddEventModalProps) => {
   console.log("🚀 ~ eventToEdit:", eventToEdit)
   // Начальное состояние для пустой формы
-  const initialFormState = useMemo<EventFormData>(() => ({
+  const initialFormState = useMemo<Event>(() => ({
     title: "",
     date: "",
     time: "",
@@ -33,7 +23,7 @@ export const AddEventModal = ({ isOpen, onClose, onSave, onDelete, eventToEdit }
     videos: [],
   }), []);
 
-  const [formData, setFormData] = useState<EventFormData>(initialFormState);
+  const [formData, setFormData] = useState<Event>(initialFormState);
 
   // Когда модалка открывается или меняется выбранное событие (eventToEdit)
   useEffect(() => {
@@ -145,7 +135,7 @@ export const AddEventModal = ({ isOpen, onClose, onSave, onDelete, eventToEdit }
           )} */}
 
           <footer className=" flex justify-center gap-4 mt-6">
-            {eventToEdit && <button type="button" className="btn-secondary" onClick={() => { onDelete(eventToEdit.id) }}>Видалити</button>}
+            {eventToEdit && <button type="button" className="btn-secondary" onClick={() => { onDelete?.(eventToEdit.id!) }}>Видалити</button>}
             <button type="button" className="btn-secondary" onClick={onClose}>Скасувати</button>
             <button type="submit" className="btn-primary">
               {eventToEdit ? "Зберегти зміни" : "Створити"}

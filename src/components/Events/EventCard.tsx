@@ -2,22 +2,14 @@ import { Pencil } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthProvider/useAuth";
 import { ImageCarousel } from "../imageCarousel/imageCarousel";
+import { useEffect } from "react";
+import type { Event } from "../../types/event";
 // import { AddEventModal } from "../Modals/AddEventModal";
 
-
 interface EventCardProps {
-  event: {
-    id: string;
-    title: string;
-    date: string;
-    imageBanner?: string;
-    images?: { id: string; url: string; type: string; alt: string }[];
-    videos?: { id: string; url: string; type: string; alt: string }[];
-    description?: string;
-  };
-  onEdit: (event: EventCardProps["event"]) => void;
+  event: Event;
+  onEdit: (event: Event) => void;
 }
-    
 
 export const EventCard = ({ event, onEdit }: EventCardProps) => {
   const { isAdmin } = useAuth();
@@ -31,20 +23,11 @@ export const EventCard = ({ event, onEdit }: EventCardProps) => {
     });
   };
 
-  const items = [
-    ...(event.images || []).map((img) => ({
-      id: img.id,
-      url: img.url,
-      type: "image" as const,
-      alt: img.alt,
-    })),
-    ...(event.videos || []).map((vid) => ({
-      id: vid.id,
-      url: vid.url,
-      type: "video" as const,
-      alt: vid.alt,
-    })),
-  ];
+  useEffect(() => {
+    console.log("🚀 ~ event in EventCard:", event);
+  }, [event]);
+
+  const items = [...(event.images || []), ...(event.videos || [])];
   return (
     <>
       <li
@@ -54,7 +37,7 @@ export const EventCard = ({ event, onEdit }: EventCardProps) => {
         <Link to={`/events/${event.id}`} className="block">
           <div className="p-3">
             <h2 className="mb-2 text-xl font-bold">{event.title}</h2>
-            <p className="text-gray-600">{formatDate(event.date)}</p>
+            <p className="text-gray-600">{formatDate(event.date)} {event.time}</p>
           </div>
           <div className="relative h-90 overflow-hidden p-2">
             <img
@@ -65,12 +48,13 @@ export const EventCard = ({ event, onEdit }: EventCardProps) => {
           </div>
         </Link>
         {items.length > 0 && <ImageCarousel items={items} />}
-        <p className="min-h-30 p-4 text-gray-700">{event.description}</p>
+        <p className="mt-2 text-md px-3 text-gray-500">{event.location}</p>
+        <p className="min-h-30 p-3 text-gray-700">{event.description}</p>
 
         {/* КНОПКА РЕДАГУВАННЯ */}
         {isAdmin && (
-          <button onClick={()=> onEdit(event)}
-            
+          <button
+            onClick={() => onEdit(event)}
             className="absolute top-3.5 right-3.5 cursor-pointer rounded-full p-3 text-black/60 outline-1 outline-black/60 transition-all duration-300 hover:text-gray-300 hover:outline-gray-300/70"
           >
             <Pencil size={24} />
