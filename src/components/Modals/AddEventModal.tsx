@@ -10,7 +10,6 @@ type AddEventModalProps = {
 };
 
 export const AddEventModal = ({ isOpen, onClose, onSave, onDelete, eventToEdit }: AddEventModalProps) => {
-  console.log("🚀 ~ eventToEdit:", eventToEdit)
   // Начальное состояние для пустой формы
   const initialFormState = useMemo<Event>(() => ({
     title: "",

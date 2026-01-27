@@ -13,43 +13,53 @@ export const EventList = () => {
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
   const { isAdmin } = useAuth();
+
   const revertedEvents = [...events].reverse();
+  console.log("🚀 ~ revertedEvents:", revertedEvents)
 
   useEffect(() => {
-    if (!isAdmin) setIsModalOpen(false);
+    if (!isAdmin && isModalOpen) {
+    handleCloseModal(); // Если не админ, но модалка открыта — закрываем её
+  }
+
     const loadData = async () => {
     const [fechedEvents] = await Promise.all([fetchEvents()]);
     setEvents(fechedEvents);
   console.log("🚀 ~ docs:", fechedEvents);
     };
-    if (!editingEvent)
     loadData();
-  }, [isAdmin, editingEvent]);
+  }, [isAdmin, isModalOpen]);
 
  
-  const handleDeleteEvent = (eventId: string) => {
-    deleteEvent(eventId);
+  const handleDeleteEvent = async (eventId: string) => {
+    if (!window.confirm("Ви впевнені?")) return;
+   await deleteEvent(eventId);
+   try {
     setEvents((prevEvents) => prevEvents.filter((evt) => evt.id !== eventId));
     console.log("Удаление события с ID:", eventId);
-    // Здесь можно добавить логику удаления события из базы данных или состояния
-    setEditingEvent(null);
-    setIsModalOpen(false);
+    handleCloseModal();
+    } catch (error) {
+      console.error("Помилка видалення:", error);
+    }
   };
 
   const handleSaveEvent = async (eventData: Event) => {
+    try {
     if (editingEvent) {
       // Логика обновления существующего события
-      updateEvent(eventData.id!, eventData);
+      await updateEvent(eventData.id!, eventData);
       setEvents((prevEvents) => prevEvents.map((evt) => (evt.id === eventData.id ? eventData : evt)));
       console.log("Обновление события:", eventData);
     } else {
       // Логика создания нового события
-      const newEvent = await addEvent(eventData);
-      setEvents((prevEvents) => [...prevEvents, newEvent]);
-      console.log("Создание нового события:", newEvent);
+       await addEvent(eventData);
+      // setEvents((prevEvents) => [...prevEvents, newEvent]);
+      console.log("Создание нового события:", eventData);
     }
-    
-    setIsModalOpen(false);
+   handleCloseModal();
+    } catch (error) {
+      console.error("Помилка збереження події:", error);
+    }
   };
 
   const handleEditEvent = (event: Event) => {
@@ -58,20 +68,20 @@ export const EventList = () => {
   }
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
     setEditingEvent(null);
+    setIsModalOpen(false);
   }
 
   return (
     <>
-      {isAdmin && <AddEvent onClick={() => setIsModalOpen(true)} />}
+      {isAdmin && <AddEvent onClick={() => {setEditingEvent(null); setIsModalOpen(true);}} />}
 
       <AddEventModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSave={handleSaveEvent}
         onDelete={handleDeleteEvent}
-        eventToEdit={editingEvent!}
+        eventToEdit={editingEvent}
       />
 
       <ul className="grid grid-cols-1 items-start justify-center  md:grid-cols-2 md:gap-7">

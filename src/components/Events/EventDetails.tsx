@@ -9,12 +9,10 @@ export const EventDetails = () => {
   const { eventId } = useParams();
 
   const [event, setEvent] = useState<DocumentData | null>(null);
-  console.log("🚀 ~ event:", event)
 
   useEffect(() => {
     const getSingleEvent = async () => {
       if (!eventId) {
-        console.log("eventId is undefined!");
         return;
       }
       const eventById = await Promise.all([getEventById(eventId)]);
@@ -36,7 +34,6 @@ export const EventDetails = () => {
             {new Date(event?.date).toLocaleDateString("en-US", {
               day: "numeric",
               month: "long",
-              
               year: "numeric",
             })}
           </p>

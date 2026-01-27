@@ -2,7 +2,6 @@ import { Pencil } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthProvider/useAuth";
 import { ImageCarousel } from "../imageCarousel/imageCarousel";
-import { useEffect } from "react";
 import type { Event } from "../../types/event";
 // import { AddEventModal } from "../Modals/AddEventModal";
 
@@ -23,9 +22,6 @@ export const EventCard = ({ event, onEdit }: EventCardProps) => {
     });
   };
 
-  useEffect(() => {
-    console.log("🚀 ~ event in EventCard:", event);
-  }, [event]);
 
   const items = [...(event.images || []), ...(event.videos || [])];
   return (
