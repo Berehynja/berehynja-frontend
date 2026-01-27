@@ -2,6 +2,7 @@ import { Pencil } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthProvider/useAuth";
 import { ImageCarousel } from "../imageCarousel/imageCarousel";
+// import { AddEventModal } from "../Modals/AddEventModal";
 
 
 interface EventCardProps {
@@ -14,10 +15,11 @@ interface EventCardProps {
     videos?: { id: string; url: string; type: string; alt: string }[];
     description?: string;
   };
+  onEdit: (event: EventCardProps["event"]) => void;
 }
+    
 
-
-export const EventCard = ({ event }: EventCardProps) => {
+export const EventCard = ({ event, onEdit }: EventCardProps) => {
   const { isAdmin } = useAuth();
 
   const formatDate = (dateString: string) => {
@@ -67,7 +69,7 @@ export const EventCard = ({ event }: EventCardProps) => {
 
         {/* КНОПКА РЕДАГУВАННЯ */}
         {isAdmin && (
-          <button
+          <button onClick={()=> onEdit(event)}
             
             className="absolute top-3.5 right-3.5 cursor-pointer rounded-full p-3 text-black/60 outline-1 outline-black/60 transition-all duration-300 hover:text-gray-300 hover:outline-gray-300/70"
           >

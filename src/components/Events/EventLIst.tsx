@@ -8,18 +8,10 @@ import { upcomingEvents } from "../../data/eventsDate";
 import { AddEventModal } from "../Modals/AddEventModal";
 import { EventCard } from "./EventCard";
 
-type EventType = {
-  id: string;
-  title: string;
-  date: string;
-  imageBanner: string;
-  description: string;
-  images?: { id: string; url: string; type: "image"; alt: string }[];
-  videos?: { id: string; url: string; type: "video"; alt: string }[];
-};
 
 export const EventList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<Event | null>(null);
 
   const { isAdmin } = useAuth();
   const revertedEvents = [...upcomingEvents].reverse();
@@ -37,38 +29,49 @@ export const EventList = () => {
     fetchEvents();
   }, [isAdmin]);
 
-  // const handleDeleteEvent = (eventId: string) => {
-  //   // Логика удаления события по eventId
-  //   console.log("Удаление события с ID:", eventId);
-  // }
+ 
+  const handleDeleteEvent = (eventId: string) => {
+    console.log("Удаление события с ID:", eventId);
+    // Здесь можно добавить логику удаления события из базы данных или состояния
+    setIsModalOpen(false);
+  };
+
+  const handleSaveEvent = (eventData: Event) => {
+    if (editingEvent) {
+      // Логика обновления существующего события
+      console.log("Обновление события:", eventData);
+    } else {
+      // Логика создания нового события
+      console.log("Создание нового события:", eventData);
+    }
+    setIsModalOpen(false);
+  };
+
+  const handleEditEvent = (event: Event) => {
+    setEditingEvent(event);
+    setIsModalOpen(true);
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingEvent(null);
+  }
 
   return (
     <>
       {isAdmin && <AddEvent onClick={() => setIsModalOpen(true)} />}
+
       <AddEventModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        // onDelete={handleDeleteEvent}
-        onSave={(data) => {
-          // Здесь можно добавить логику сохранения события
-          console.log("Создано новое событие:", data);
-          setIsModalOpen(false);
-        }}
-        
+        onClose={handleCloseModal}
+        onSave={handleSaveEvent}
+        onDelete={handleDeleteEvent}
+        eventToEdit={editingEvent}
       />
-      {/* <AddEventModal
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              onSave={handleSaveEvent}
-              onDelete={handleDeleteEvent}
-              editingEvent={editingEvent}
-            /> */}
-      <ul className="grid grid-cols-1 items-start justify-center gap-8 md:grid-cols-2 md:gap-15">
+
+      <ul className="grid grid-cols-1 items-start justify-center  md:grid-cols-2 md:gap-7">
         {revertedEvents.map((event) => (
-          <EventCard
-            key={event.id}
-            event={event}
-          />
+          <EventCard key={event.id} event={event} onEdit={handleEditEvent} />
         ))}
       </ul>
     </>

@@ -15,10 +15,12 @@ type AddEventModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onSave: (data: EventFormData) => void;
-  editingEvent?: EventFormData | null;
+  eventToEdit?: EventFormData | null;
+  onDelete?: (eventId: string) => void;
 };
 
-export const AddEventModal = ({ isOpen, onClose, onSave, editingEvent }: AddEventModalProps) => {
+export const AddEventModal = ({ isOpen, onClose, onSave, onDelete, eventToEdit }: AddEventModalProps) => {
+  console.log("🚀 ~ eventToEdit:", eventToEdit)
   // Начальное состояние для пустой формы
   const initialFormState = useMemo<EventFormData>(() => ({
     title: "",
@@ -33,16 +35,16 @@ export const AddEventModal = ({ isOpen, onClose, onSave, editingEvent }: AddEven
 
   const [formData, setFormData] = useState<EventFormData>(initialFormState);
 
-  // Когда модалка открывается или меняется выбранное событие (editingEvent)
+  // Когда модалка открывается или меняется выбранное событие (eventToEdit)
   useEffect(() => {
-    if (editingEvent) {
+    if (eventToEdit) {
       // Если передали событие — заполняем форму его данными
-      setFormData(editingEvent);
+      setFormData(eventToEdit);
     } else {
       // Если события нет — сбрасываем в пустую форму
       setFormData(initialFormState);
     }
-  }, [editingEvent, isOpen, initialFormState]);
+  }, [eventToEdit, isOpen, initialFormState]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -62,16 +64,16 @@ export const AddEventModal = ({ isOpen, onClose, onSave, editingEvent }: AddEven
   return (
     <div className="font-nunito fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
       onClick={onClose}>
-      <div className="w-full max-w-2xl h-150 bg-white rounded-lg p-6" onClick={e => e.stopPropagation()}>
-        <header className="modal-header">
-          <h2>{editingEvent ? "Редагувати подію" : "Додати нову подію"}</h2>
-          <button className="close-btn" onClick={onClose}>&times;</button>
+      <div className="w-full max-w-2xl h-170 bg-white rounded-lg p-6" onClick={e => e.stopPropagation()}>
+        <header className="flex items-center justify-between mb-4">
+          <h2>{eventToEdit ? "Редагувати подію" : "Додати нову подію"}</h2>
+          <button className=" w-5 h-5" onClick={onClose}>&times;</button>
         </header>
 
-        <form onSubmit={handleSubmit} className="modal-form">
-          <div className="field">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <div className="flex flex-col">
             <label>Назва заходу</label>
-            <input 
+            <input className='border border-gray-300 rounded px-3 py-2'
               name="title" 
               value={formData.title} 
               onChange={handleChange} 
@@ -80,10 +82,11 @@ export const AddEventModal = ({ isOpen, onClose, onSave, editingEvent }: AddEven
             />
           </div>
 
-          <div className="form-row">
-            <div className="field">
-              <label>Дата</label>
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col">
+              <label className="mb-2">Дата</label>
               <input 
+                className='border border-gray-300 rounded px-3 py-2'
                 name="date" 
                 type="date" 
                 value={formData.date} 
@@ -91,9 +94,10 @@ export const AddEventModal = ({ isOpen, onClose, onSave, editingEvent }: AddEven
                 required 
               />
             </div>
-            <div className="field">
+
+            <div className="flex flex-col">
               <label>Час</label>
-              <input 
+              <input className='border border-gray-300 rounded px-3 py-2'
                 name="time" 
                 placeholder="14:00 - 20:00" 
                 value={formData.time} 
@@ -102,9 +106,9 @@ export const AddEventModal = ({ isOpen, onClose, onSave, editingEvent }: AddEven
             </div>
           </div>
 
-          <div className="field">
+          <div className="flex flex-col">
             <label>Локація</label>
-            <input 
+            <input className='border border-gray-300 rounded px-3 py-2'
               name="location" 
               value={formData.location} 
               onChange={handleChange} 
@@ -112,19 +116,9 @@ export const AddEventModal = ({ isOpen, onClose, onSave, editingEvent }: AddEven
             />
           </div>
 
-          <div className="field">
-            <label>Опис</label>
-            <textarea 
-              name="description" 
-              rows={4} 
-              value={formData.description} 
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="field">
+          <div className="flex flex-col">
             <label>URL головного баннера</label>
-            <input 
+            <input className='border border-gray-300 rounded px-3 py-2'
               name="imageBanner" 
               value={formData.imageBanner} 
               onChange={handleChange} 
@@ -132,16 +126,29 @@ export const AddEventModal = ({ isOpen, onClose, onSave, editingEvent }: AddEven
             />
           </div>
 
-          {editingEvent && (
+          <div className="flex flex-col">
+            <label>Опис</label>
+            <textarea className='border border-gray-300 rounded px-3 py-2'
+              name="description" 
+              rows={4} 
+              value={formData.description} 
+              onChange={handleChange}
+            />
+          </div>
+
+          
+
+          {/* {eventToEdit && (
             <p className="media-note">
               📷 Фото та відео ({formData.images.length + formData.videos.length}) редагуються в окремому вікні.
             </p>
-          )}
+          )} */}
 
-          <footer className="modal-footer">
+          <footer className=" flex justify-center gap-4 mt-6">
+            {eventToEdit && <button type="button" className="btn-secondary" onClick={() => { onDelete(eventToEdit.id) }}>Видалити</button>}
             <button type="button" className="btn-secondary" onClick={onClose}>Скасувати</button>
             <button type="submit" className="btn-primary">
-              {editingEvent ? "Зберегти зміни" : "Створити"}
+              {eventToEdit ? "Зберегти зміни" : "Створити"}
             </button>
           </footer>
         </form>
