@@ -7,37 +7,40 @@ import { EventCard } from "./EventCard";
 import type { Event } from "../../types/event";
 import { addEvent, deleteEvent, fetchEvents, updateEvent } from "../../services/eventsService";
 
-
 export const EventList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { isAdmin } = useAuth();
 
   const revertedEvents = [...events].reverse();
-  console.log("🚀 ~ revertedEvents:", revertedEvents)
 
   useEffect(() => {
     if (!isAdmin && isModalOpen) {
-    handleCloseModal(); // Если не админ, но модалка открыта — закрываем её
-  }
-
+      handleCloseModal(); // Если не админ, но модалка открыта — закрываем её
+    }
+    setIsLoading(true);
     const loadData = async () => {
-    const [fechedEvents] = await Promise.all([fetchEvents()]);
-    setEvents(fechedEvents);
-  console.log("🚀 ~ docs:", fechedEvents);
+      try {
+        const [fechedEvents] = await Promise.all([fetchEvents()]);
+        setEvents(fechedEvents);
+      } catch (error) {
+        console.error("Помилка при завантаженні подій:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     loadData();
   }, [isAdmin, isModalOpen]);
 
- 
   const handleDeleteEvent = async (eventId: string) => {
     if (!window.confirm("Ви впевнені?")) return;
-   await deleteEvent(eventId);
-   try {
-    setEvents((prevEvents) => prevEvents.filter((evt) => evt.id !== eventId));
-    console.log("Удаление события с ID:", eventId);
-    handleCloseModal();
+    await deleteEvent(eventId);
+    try {
+      setEvents((prevEvents) => prevEvents.filter((evt) => evt.id !== eventId));
+      console.log("Удаление события с ID:", eventId);
+      handleCloseModal();
     } catch (error) {
       console.error("Помилка видалення:", error);
     }
@@ -45,18 +48,20 @@ export const EventList = () => {
 
   const handleSaveEvent = async (eventData: Event) => {
     try {
-    if (editingEvent) {
-      // Логика обновления существующего события
-      await updateEvent(eventData.id!, eventData);
-      setEvents((prevEvents) => prevEvents.map((evt) => (evt.id === eventData.id ? eventData : evt)));
-      console.log("Обновление события:", eventData);
-    } else {
-      // Логика создания нового события
-       await addEvent(eventData);
-      // setEvents((prevEvents) => [...prevEvents, newEvent]);
-      console.log("Создание нового события:", eventData);
-    }
-   handleCloseModal();
+      if (editingEvent) {
+        // Логика обновления существующего события
+        await updateEvent(eventData.id!, eventData);
+        setEvents((prevEvents) =>
+          prevEvents.map((evt) => (evt.id === eventData.id ? eventData : evt))
+        );
+        console.log("Обновление события:", eventData);
+      } else {
+        // Логика создания нового события
+        await addEvent(eventData);
+        // setEvents((prevEvents) => [...prevEvents, newEvent]);
+        console.log("Создание нового события:", eventData);
+      }
+      handleCloseModal();
     } catch (error) {
       console.error("Помилка збереження події:", error);
     }
@@ -65,16 +70,23 @@ export const EventList = () => {
   const handleEditEvent = (event: Event) => {
     setEditingEvent(event);
     setIsModalOpen(true);
-  }
+  };
 
   const handleCloseModal = () => {
     setEditingEvent(null);
     setIsModalOpen(false);
-  }
+  };
 
   return (
     <>
-      {isAdmin && <AddEvent onClick={() => {setEditingEvent(null); setIsModalOpen(true);}} />}
+      {isAdmin && (
+        <AddEvent
+          onClick={() => {
+            setEditingEvent(null);
+            setIsModalOpen(true);
+          }}
+        />
+      )}
 
       <AddEventModal
         isOpen={isModalOpen}
@@ -83,12 +95,15 @@ export const EventList = () => {
         onDelete={handleDeleteEvent}
         eventToEdit={editingEvent}
       />
-
-      <ul className="grid grid-cols-1 items-start justify-center  md:grid-cols-2 md:gap-7">
-        {revertedEvents.map((event) => (
-          <EventCard key={event.id} event={event} onEdit={handleEditEvent} />
-        ))}
-      </ul>
+      {isLoading ? (
+        <div className="h-10"> Loading... </div>
+      ) : (
+        <ul className="grid grid-cols-1 items-start justify-center md:grid-cols-2 md:gap-7">
+          {revertedEvents.map((event) => (
+            <EventCard key={event.id} event={event} onEdit={handleEditEvent} />
+          ))}
+        </ul>
+      )}
     </>
   );
 };
