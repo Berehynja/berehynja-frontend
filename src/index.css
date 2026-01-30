@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
 @import "tailwindcss";
+/* @config "../tailwind.config.js"; */
 
 @theme {
   /* Roboto */
@@ -32,76 +33,38 @@
   /* Manrope */
   --font-manrope: "Manrope", sans-serif;
 
-  --color-Red: #df7d84;
-  --color-Cyan: #c1ddef;
-  --color-Orange: #e2cd7a;
-  --color-Blue: #5d96dc;
-  --color-Green: #a4c9a0;
-  --color-RoyalBlue: #01b0f1;
+  /* Colors */
+
+  /* Sky: "#6ED0F0",
+  RoyalBlue: "#01b0f1",
+  Blue: "#2b7fff",
+  LightSky: "#C1DDEF",
+  Rose: "#DF7D84",
+  Red: "#FF5A5A",
+  Violet: "#8E44AD",
+  Green: "#2ECC71",
+  GreenAccent: "#9ACD32",
+  Pink: "#FF66B2",
+  Orange: "#FF9F43",
+  Yellow: "#F1C40F", */
   --color-Sky: #6ed0f0;
+  --color-RoyalBlue: #01b0f1;
+  --color-Blue: #2b7fff;
   --color-LightSky: #c1ddef;
-  --color-Sage: #a4c9a0;
-  --color-GreenAccent: #9acd32;
   --color-Rose: #df7d84;
   --color-Red: #ff5a5a;
   --color-Violet: #8e44ad;
-  --color-Sand: #e2cd7a;
-  --color-White: #ffffff;
+  --color-Green: #2ecc71;
+  --color-Pink: #ff66b2;
+  --color-GreenAccent: #9acd32;
+  --color-Orange: #ff9f43;
+  --color-Yellow: #f1c40f;
 
   --color-Red-2: rgba(223, 125, 132, 0.2);
   --color-Cyan-2: rgba(193, 221, 239, 0.2);
   --color-Orange-2: rgba(226, 205, 122, 0.2);
   --color-Blue-2: rgba(47, 110, 187, 0.2);
   --color-Green-2: rgba(164, 201, 160, 0.2);
-
-  /* 
-#3B6291   (раніше #31527A)
-#E2CD7A   (раніше #D8C16A)
-#D36C73   (раніше #C65B63)
-#96B88F   (раніше #86A57E)
-#B4D1E5   (раніше #A8C5D9)
-#EDC4D2   (раніше #E4B8C6)
-#8A77AF   (раніше #7A689C)
-#FBF9F7   (раніше #F7F6F4)
-#333943   (раніше #2C3038)
-
-#2F6EBB   (новий український синій – глибокий, але живіший)
-#ECD887
-#DF7D84
-#A4C9A0
-#C1DDEF
-#F1CEDA
-#9987BE
-#FEFCFB
-#3A404B
-
-
-
-
- */
-
-  /*
-#F1EFAE
-#E6D86A
-#C8BE55
-#8FAF4C
-#64873A
-#3F5C28
-#A7C8D2
-#8AC5E2
-#6BA8CC
-#A8D4E1
-#CFE3ED
-#F2D3CE
-#E6B7B1
-#D9A39E
-#C18F88
-#A8796F
-#8E6B5A
-#6E4F3B
-#4A3B2E
-#2E241C
-*/
 
   --shadow-card: 0 15px 30px -11px rgba(131, 166, 210, 0.5);
 

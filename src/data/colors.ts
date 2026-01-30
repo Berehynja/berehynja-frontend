@@ -1,15 +1,17 @@
 // colors.ts
 export const COLORS = {
-  RoyalBlue: "#01b0f1",
   Sky: "#6ED0F0",
+  RoyalBlue: "#01b0f1",
+  Blue: "#2b7fff",
   LightSky: "#C1DDEF",
-  Sage: "#A4C9A0",
-  GreenAccent: "#9ACD32",
   Rose: "#DF7D84",
   Red: "#FF5A5A",
   Violet: "#8E44AD",
-  Sand: "#E2CD7A",
-  White: "#FFFFFF",
+  Green: "#2ECC71",
+  GreenAccent: "#9ACD32",
+  Pink: "#FF66B2",
+  Orange: "#FF9F43",
+  Yellow: "#F1C40F", // Сонячний жовтий (бо Sand трохи блідий)
 } as const;
 
 // Функція для конвертації HEX у RGBA з заданою прозорістю
@@ -22,8 +24,9 @@ function hexToRgba(hex: string, alpha: number) {
 }
 
 // Версія кольорів з 30% прозорістю
-export const COLORS_ALPHA_30: Record<keyof typeof COLORS, string> = Object.fromEntries(
-  Object.entries(COLORS).map(([key, value]) => [key, hexToRgba(value, 0.3)])
-) as Record<keyof typeof COLORS, string>;
+export const COLORS_ALPHA_30: Record<keyof typeof COLORS, string> =
+  Object.fromEntries(
+    Object.entries(COLORS).map(([key, value]) => [key, hexToRgba(value, 0.3)]),
+  ) as Record<keyof typeof COLORS, string>;
 
 export type LessonColor = keyof typeof COLORS;
