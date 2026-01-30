@@ -3,9 +3,10 @@ import type { AgeGroup } from "../../types/ageGroup";
 import { COLORS, type LessonColor } from "../../data/colors";
 import type { Program } from "../../types/program";
 import { AVAILABLE_ICONS, type IconName } from "../../data/icons";
-import { Trash2, X } from "lucide-react";
+import { Trash2, X, CircleAlert } from "lucide-react";
 import toast from "react-hot-toast";
 import { ConfirmModal } from "./ConfirmModal";
+import { Button } from "../Buttons/Button";
 
 // Пропси: що модалка очікує від батьківського компонента
 interface AddLessonModalProps {
@@ -31,6 +32,8 @@ export function AddLessonModal({
   const [iconName, setIconName] = useState<IconName>("sparkles");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const isFormValid = title.trim().length > 0 && selectedAgeIds.length > 0;
 
   // Скидання форми при відкритті
   useEffect(() => {
@@ -138,7 +141,7 @@ export function AddLessonModal({
     >
       {/* Modal Window */}
       <div
-        className="animate-in fade-in zoom-in flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl bg-white shadow-2xl duration-200"
+        className="animate-in fade-in zoom-in flex max-h-[90vh] w-full max-w-xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* --- HEADER --- */}
@@ -148,7 +151,7 @@ export function AddLessonModal({
           </h2>
           <button
             onClick={onClose}
-            className="flex absolute right-4 h-8 w-8 items-center justify-center rounded-full text-2xl text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
+            className="cursor-pointer flex absolute right-4 h-8 w-8 items-center justify-center rounded-full text-2xl text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
           >
             <X size={20} />
           </button>
@@ -159,8 +162,9 @@ export function AddLessonModal({
           <form id="program-form" onSubmit={handleSubmit} className="space-y-6">
             {/* 1. Назва */}
             <div className="space-y-1">
-              <label className="ml-1 text-sm font-bold text-gray-700">
+              <label className="ml-1 flex items-center gap-1 text-sm font-bold text-gray-700">
                 Назва заняття
+                <CircleAlert size={16} className="text-Red" />
               </label>
               <input
                 type="text"
@@ -177,13 +181,13 @@ export function AddLessonModal({
               <label className="ml-1 text-sm font-bold text-gray-700">
                 Колір картки
               </label>
-              <div className="flex flex-wrap gap-2 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+              <div className="flex justify-between flex-wrap gap-2 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
                 {Object.entries(COLORS).map(([name, hex]) => (
                   <button
                     key={name}
                     type="button"
                     onClick={() => setSelectedColor(name as LessonColor)}
-                    className={`h-8 w-8 rounded-full border-2 transition-transform ${
+                    className={`cursor-pointer h-8 w-8 rounded-full border-2 transition-transform ${
                       selectedColor === name
                         ? "scale-110 border-gray-600 shadow-md ring-2 ring-gray-200"
                         : "border-transparent hover:scale-110"
@@ -193,12 +197,12 @@ export function AddLessonModal({
                   />
                 ))}
               </div>
-              <div className="ml-1 text-xs text-gray-400">
+              {/* <div className="ml-1 text-xs text-gray-400">
                 Обрано:{" "}
                 <span className="font-medium text-gray-600">
                   {selectedColor}
                 </span>
-              </div>
+              </div> */}
             </div>
 
             {/* 3. Вибір Іконки */}
@@ -216,7 +220,7 @@ export function AddLessonModal({
                       type="button"
                       // При кліку записуємо ім'я іконки в стейт
                       onClick={() => setIconName(name as IconName)}
-                      className={`flex h-10 w-10 items-center justify-center rounded-lg border-2 transition-all duration-200 ${
+                      className={`cursor-pointer flex h-10 w-10 items-center justify-center rounded-lg border-2 transition-all duration-200  ${
                         iconName === name
                           ? // Стиль, якщо іконка вибрана (синя рамка, синій фон)
                             "scale-110 border-blue-500 bg-blue-50 text-blue-600 shadow-sm"
@@ -233,16 +237,17 @@ export function AddLessonModal({
               </div>
 
               {/* Підпис, що саме обрано */}
-              <div className="ml-1 text-xs text-gray-400">
+              {/* <div className="ml-1 text-xs text-gray-400">
                 Обрана іконка:{" "}
                 <span className="font-medium text-gray-600">{iconName}</span>
-              </div>
+              </div> */}
             </div>
 
             {/* 3. Вікові групи */}
             <div className="space-y-2">
-              <label className="ml-1 text-sm font-bold text-gray-700">
+              <label className="ml-1 text-sm flex items-center gap-1 font-bold text-gray-700">
                 Для кого це заняття?
+                <CircleAlert size={16} className="text-Red" />
               </label>
               <div className="grid grid-cols-1 gap-2">
                 {ageGroups.length === 0 ? (
@@ -330,40 +335,27 @@ export function AddLessonModal({
           {/* КНОПКА ВИДАЛЕННЯ (тільки в режимі редагування) */}
           {programToEdit && (
             <div>
-              <button
-                type="button"
+              <Button
+                variant="danger"
                 onClick={handleDeleteClick}
                 disabled={isSubmitting}
-                className="flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold text-red-500 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
               >
                 <Trash2 size={18} />
                 <span>Видалити</span>
-              </button>
+              </Button>
             </div>
           )}
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="cursor-pointer rounded-xl px-5 py-2.5 font-bold text-gray-600 transition-colors hover:bg-gray-200 disabled:opacity-70"
-            disabled={isSubmitting}
-          >
+          <Button variant="secondary" onClick={onClose} disabled={isSubmitting}>
             Скасувати
-          </button>
+          </Button>
 
-          <button
-            type="submit"
-            onClick={handleSubmit} // Додаємо, щоб працювало з футера
-            className="cursor-pointer rounded-xl bg-blue-500 px-6 py-2.5 font-bold text-white shadow-lg shadow-blue-200 transition-all hover:-translate-y-0.5 hover:shadow-blue-300 active:translate-y-0 disabled:cursor-wait disabled:opacity-70"
-            disabled={isSubmitting}
+          <Button
+            onClick={handleSubmit}
+            disabled={isSubmitting || !isFormValid}
           >
-            {/* Логіка тексту: Створення / Зберегти зміни / Створити програму */}
-            {isSubmitting
-              ? "Збереження..."
-              : programToEdit
-                ? "Зберегти зміни"
-                : "Створити програму"}
-          </button>
+            {programToEdit ? "Зберегти зміни" : "Створити програму"}
+          </Button>
         </div>
       </div>
       <ConfirmModal
