@@ -1,7 +1,8 @@
 export interface TeamMember {
-  id: string;
   name: string;
   role: string;
-  bio: string;
-  photoUrl?: string;
+  description: string;
+  skills: string[];
+  education: string;
+  image?: string; // Опциональное поле для будущего
 }
