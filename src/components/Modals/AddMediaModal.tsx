@@ -53,7 +53,7 @@ export const AddMediaModal = ({ isOpen, onClose, onUpload, type, title, subFolde
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-2xl">
         <h2 className="mb-4 text-xl font-bold text-gray-800">
-          Додати {type === "image" ? "фото" : "відео"} до "{title}"
+          Додати {type === "image" ? "фото" : "відео"} події "{title}"
         </h2>
 
         {type === "image" ? (
@@ -68,7 +68,7 @@ export const AddMediaModal = ({ isOpen, onClose, onUpload, type, title, subFolde
           </div>
         ) : (
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-600">Посилання на YouTube:</label>
+            <label className="text-sm font-medium text-gray-600">Посилання на відео:</label>
             <input
               type="text"
               placeholder="https://www.youtube.com/watch?v=..."

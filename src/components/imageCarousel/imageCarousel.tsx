@@ -57,9 +57,11 @@ export function ImageCarousel({ items }: ImageCarouselProps) {
                 <div className="relative aspect-video overflow-hidden rounded-lg bg-black shadow-md">
                   {item.type === "image" ? (
                     <img src={item.url} alt={item.alt} className="h-full w-full object-cover" />
-                  ) : (
+                  ) 
+                  : (
                     <VideoPlayer item={item} />
-                  )}
+                  )
+                  }
                 </div>
               </div>
             ))}

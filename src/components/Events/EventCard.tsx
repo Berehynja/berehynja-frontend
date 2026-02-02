@@ -1,7 +1,7 @@
 import { Pencil } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthProvider/useAuth";
-import { ImageCarousel } from "../imageCarousel/imageCarousel";
+// import { ImageCarousel } from "../imageCarousel/imageCarousel";
 import type { Event } from "../../types/event";
 import { useTranslation } from 'react-i18next';
 // import { AddEventModal } from "../Modals/AddEventModal";
@@ -24,7 +24,7 @@ const { i18n } = useTranslation();
     });
   };
 
-  const items = [...(event.images || []), ...(event.videos || [])];
+  // const items = [...(event.images || []), ...(event.videos || [])];
   return (
     <>
       <li
@@ -46,7 +46,9 @@ const { i18n } = useTranslation();
             />
           </div>
         </Link>
-        {items.length > 0 && <ImageCarousel items={items} />}
+
+        {/* {items.length > 0 && <ImageCarousel items={items} />} */}
+
         <p className="text-md mt-2 px-3 text-gray-500">{event.location}</p>
         <p className="min-h-30 p-3 text-gray-700">{event.description}</p>
 
