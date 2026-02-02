@@ -167,6 +167,7 @@ export const EventDetails = () => {
         onUpload={handleAddMedia}
         type={mediaType}
         title={mediaType === "image" ? "Додати Фото" : "Додати Відео"}
+        subFolder={event?.title || ""}
       />
     </div>
   );
