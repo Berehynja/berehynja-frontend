@@ -60,7 +60,6 @@ export const EventCard = ({ event, onEdit }: EventCardProps) => {
           </div>
         </div>
 
-        {/* КОНТЕНТ */}
        {/* КОНТЕНТ */}
 <div className="flex flex-col grow p-6">
   <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
@@ -91,15 +90,15 @@ export const EventCard = ({ event, onEdit }: EventCardProps) => {
 
   {/* КНОПКА "ЧИТАТИ БІЛЬШЕ" — як у попередньому варіанті */}
   <div className="mt-auto pt-2">
-    <Link 
-      to={`/events/${event.id}`}
+    <div
+      
       className="group/btn inline-flex items-center text-sm font-bold text-blue-600 hover:text-blue-800 transition-all uppercase tracking-wider"
     >
       Читати більше
       <span className="ml-2 transition-transform duration-300 group-hover/btn:translate-x-1">
         →
       </span>
-    </Link>
+    </div>
   </div>
 </div>
       </Link>
