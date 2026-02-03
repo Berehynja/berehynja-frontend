@@ -1,21 +1,23 @@
 import { useTranslation } from "react-i18next";
-import { FileText, Users2, Handshake } from "lucide-react";
+import { FileText, User, Handshake } from "lucide-react";
 import about from "../../images/bereg-about22.jpg";
-// import avatar from "../../images/icons8-avatar-3d-fluency/icons8-avatar-100.png";
+
 import partner from "../../images/icons8-penguin-color/icons8-penguin-48.png";
 import { useState } from "react";
 import { MemberModal } from "../../components/Modals/MemberModal";
 import type { TeamMember } from "../../types/teamMember";
 import { teamData } from "../../data/teamData";
 
+const PhotoPlaceholder = () => (
+  <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-gray-50 to-gray-200 text-gray-400">
+    <User size={80} strokeWidth={1} className="opacity-40" />
+  </div>
+);
+
 export const About = () => {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const { t } = useTranslation();
-  const PhotoPlaceholder = () => (
-  <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-gray-50 to-gray-200 text-gray-400">
-    <Users2 size={80} strokeWidth={1} className="opacity-40" />
-  </div>
-);
+  
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-12">
@@ -57,7 +59,7 @@ export const About = () => {
       <section className="py-16">
         <div className="mb-12 text-center">
           <h2 className="font-montserratBold text-3xl mb-4 flex items-center justify-center gap-3">
-            <Users2 className="text-blue-500" size={32} /> Наша команда
+            <User className="text-blue-500" size={32} /> Наша команда
           </h2>
           <div className="mx-auto h-1 w-20 bg-blue-500 rounded-full mb-6"></div>
 
