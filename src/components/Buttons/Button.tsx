@@ -25,7 +25,7 @@ export function Button({
     primary:
       "bg-blue-500 text-white shadow-lg shadow-blue-200 hover:shadow-blue-300 hover:cursor-pointer hover:-translate-y-0.5 active:translate-y-0 ",
     secondary: "text-gray-600 hover:bg-gray-200 hover:cursor-pointer",
-    danger: "text-red-500 hover:bg-red-50 hover:text-red-600",
+    danger: "text-red-500 hover:bg-red-50 hover:text-red-600 hover:cursor-pointer",
   };
 
   return (
