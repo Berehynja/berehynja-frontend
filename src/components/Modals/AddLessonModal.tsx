@@ -3,7 +3,7 @@ import type { AgeGroup } from "../../types/ageGroup";
 import { COLORS, type LessonColor } from "../../data/colors";
 import type { Program } from "../../types/program";
 import { AVAILABLE_ICONS, type IconName } from "../../data/icons";
-import { Trash2, X, CircleAlert } from "lucide-react";
+import { Trash2, CircleAlert } from "lucide-react";
 import toast from "react-hot-toast";
 import { ConfirmModal } from "./ConfirmModal";
 import { Button } from "../Buttons/Button";
@@ -69,7 +69,7 @@ export function AddLessonModal({
   // Обробка кліку на чекбокс
   const toggleAgeGroup = (id: string) => {
     setSelectedAgeIds((prev) =>
-      prev.includes(id) ? prev.filter((ageId) => ageId !== id) : [...prev, id],
+      prev.includes(id) ? prev.filter((ageId) => ageId !== id) : [...prev, id]
     );
   };
 
@@ -78,8 +78,7 @@ export function AddLessonModal({
     e.preventDefault();
 
     // Валідація
-    if (!title.trim())
-      return toast.error("Будь ласка, введіть назву програми.");
+    if (!title.trim()) return toast.error("Будь ласка, введіть назву програми.");
     if (selectedAgeIds.length === 0)
       return toast.error("Будь ласка, оберіть хоча б одну вікову групу.");
 
@@ -93,14 +92,10 @@ export function AddLessonModal({
           ageGroupIds: selectedAgeIds,
           iconName,
         },
-        programToEdit?.id,
+        programToEdit?.id
       );
       onClose();
-      toast.success(
-        programToEdit
-          ? "Програма успішно оновлена!"
-          : "Програма успішно додана!",
-      );
+      toast.success(programToEdit ? "Програма успішно оновлена!" : "Програма успішно додана!");
     } catch (error) {
       console.error("Помилка при збереженні програми:", error);
       toast.error("Сталася помилка при збереженні програми. Спробуйте ще раз.");
@@ -145,16 +140,10 @@ export function AddLessonModal({
         onClick={(e) => e.stopPropagation()}
       >
         {/* --- HEADER --- */}
-        <div className="flex items-center justify-center relative border-b border-gray-100 bg-gray-50/50 px-6 py-4">
+        <div className="relative flex items-center justify-center border-b border-gray-100 bg-gray-50/50 px-6 py-4">
           <h2 className="text-preset-3 px-4 font-bold text-gray-800">
             {programToEdit ? "Редагувати програму" : "Додати нову програму"}
           </h2>
-          <button
-            onClick={onClose}
-            className="cursor-pointer flex absolute right-4 h-8 w-8 items-center justify-center rounded-full text-2xl text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
-          >
-            <X size={20} />
-          </button>
         </div>
 
         {/* --- BODY (Scrollable) --- */}
@@ -162,11 +151,22 @@ export function AddLessonModal({
           <form id="program-form" onSubmit={handleSubmit} className="space-y-6">
             {/* 1. Назва */}
             <div className="space-y-1">
-              <label className="ml-1 flex items-center gap-1 text-sm font-bold text-gray-700">
-                Назва заняття
-                <CircleAlert size={16} className="text-Red" />
-              </label>
+              <div className="ml-1 flex items-center gap-2">
+                <label
+                  htmlFor="program-title"
+                  className="ml-1 flex items-center gap-1 text-sm font-bold text-gray-700"
+                >
+                  Назва заняття
+                </label>
+                <div className="group relative flex items-center">
+                  <CircleAlert size={16} className="text-Red" />
+                  <div className="pointer-events-none absolute top-1/2 left-full z-50 ml-2 hidden w-48 -translate-y-1/2 rounded-lg bg-gray-100 px-3 py-2 text-center text-xs font-medium opacity-0 shadow-lg transition-opacity group-hover:block group-hover:opacity-100">
+                    Це поле обов'язкове
+                  </div>
+                </div>
+              </div>
               <input
+                id="program-title"
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -178,16 +178,14 @@ export function AddLessonModal({
 
             {/* 2. Колір */}
             <div className="space-y-2">
-              <label className="ml-1 text-sm font-bold text-gray-700">
-                Колір картки
-              </label>
-              <div className="flex justify-between flex-wrap gap-2 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+              <label className="ml-1 text-sm font-bold text-gray-700">Колір картки</label>
+              <div className="flex flex-wrap justify-between gap-2 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
                 {Object.entries(COLORS).map(([name, hex]) => (
                   <button
                     key={name}
                     type="button"
                     onClick={() => setSelectedColor(name as LessonColor)}
-                    className={`cursor-pointer h-8 w-8 rounded-full border-2 transition-transform ${
+                    className={`h-8 w-8 cursor-pointer rounded-full border-2 transition-transform ${
                       selectedColor === name
                         ? "scale-110 border-gray-600 shadow-md ring-2 ring-gray-200"
                         : "border-transparent hover:scale-110"
@@ -207,33 +205,29 @@ export function AddLessonModal({
 
             {/* 3. Вибір Іконки */}
             <div className="space-y-2">
-              <label className="ml-1 text-sm font-bold text-gray-700">
-                Оберіть іконку
-              </label>
+              <label className="ml-1 text-sm font-bold text-gray-700">Оберіть іконку</label>
 
               {/* Контейнер для сітки іконок */}
               <div className="custom-scrollbar flex max-h-48 flex-wrap gap-2 overflow-y-auto rounded-xl border border-gray-100 bg-gray-50/30 p-3">
-                {Object.entries(AVAILABLE_ICONS).map(
-                  ([name, IconComponent]) => (
-                    <button
-                      key={name}
-                      type="button"
-                      // При кліку записуємо ім'я іконки в стейт
-                      onClick={() => setIconName(name as IconName)}
-                      className={`cursor-pointer flex h-10 w-10 items-center justify-center rounded-lg border-2 transition-all duration-200  ${
-                        iconName === name
-                          ? // Стиль, якщо іконка вибрана (синя рамка, синій фон)
-                            "scale-110 border-blue-500 bg-blue-50 text-blue-600 shadow-sm"
-                          : // Стиль звичайної іконки (сіра, білий фон)
-                            "border-transparent bg-white text-gray-400 hover:scale-105 hover:bg-gray-100 hover:text-gray-600"
-                      } `}
-                      title={name} // Показує назву при наведенні мишки
-                    >
-                      {/* Рендеримо компонент іконки */}
-                      <IconComponent className="h-5 w-5" strokeWidth={2} />
-                    </button>
-                  ),
-                )}
+                {Object.entries(AVAILABLE_ICONS).map(([name, IconComponent]) => (
+                  <button
+                    key={name}
+                    type="button"
+                    // При кліку записуємо ім'я іконки в стейт
+                    onClick={() => setIconName(name as IconName)}
+                    className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border-2 transition-all duration-200 ${
+                      iconName === name
+                        ? // Стиль, якщо іконка вибрана (синя рамка, синій фон)
+                          "scale-110 border-blue-500 bg-blue-50 text-blue-600 shadow-sm"
+                        : // Стиль звичайної іконки (сіра, білий фон)
+                          "border-transparent bg-white text-gray-400 hover:scale-105 hover:bg-gray-100 hover:text-gray-600"
+                    } `}
+                    title={name} // Показує назву при наведенні мишки
+                  >
+                    {/* Рендеримо компонент іконки */}
+                    <IconComponent className="h-5 w-5" strokeWidth={2} />
+                  </button>
+                ))}
               </div>
 
               {/* Підпис, що саме обрано */}
@@ -245,15 +239,18 @@ export function AddLessonModal({
 
             {/* 3. Вікові групи */}
             <div className="space-y-2">
-              <label className="ml-1 text-sm flex items-center gap-1 font-bold text-gray-700">
+              <label className="ml-1 flex items-center gap-1 text-sm font-bold text-gray-700">
                 Для кого це заняття?
-                <CircleAlert size={16} className="text-Red" />
+                <div className="group relative flex items-center">
+                  <CircleAlert size={16} className="text-Red" />
+                  <div className="pointer-events-none absolute top-1/2 left-full z-50 ml-2 hidden w-48 -translate-y-1/2 rounded-lg bg-gray-100 px-3 py-2 text-center text-xs font-medium opacity-0 shadow-lg transition-opacity group-hover:block group-hover:opacity-100">
+                    Це поле обов'язкове
+                  </div>
+                </div>
               </label>
               <div className="grid grid-cols-1 gap-2">
                 {ageGroups.length === 0 ? (
-                  <p className="p-2 text-sm text-gray-400 italic">
-                    Завантаження груп...
-                  </p>
+                  <p className="p-2 text-sm text-gray-400 italic">Завантаження груп...</p>
                 ) : (
                   ageGroups.map((group) => {
                     const isChecked = selectedAgeIds.includes(group.id);
@@ -268,9 +265,7 @@ export function AddLessonModal({
                       >
                         <div
                           className={`flex h-5 w-5 items-center justify-center rounded border transition-colors ${
-                            isChecked
-                              ? "bg-Blue border-Blue"
-                              : "border-gray-300 bg-white"
+                            isChecked ? "bg-Blue border-Blue" : "border-gray-300 bg-white"
                           }`}
                         >
                           {isChecked && (
@@ -302,9 +297,7 @@ export function AddLessonModal({
                             {group.label}
                           </span>
                           {group.subLabel && (
-                            <span className="text-xs text-gray-400">
-                              {group.subLabel}
-                            </span>
+                            <span className="text-xs text-gray-400">{group.subLabel}</span>
                           )}
                         </div>
                       </label>
@@ -316,9 +309,7 @@ export function AddLessonModal({
 
             {/* 4. Опис */}
             <div className="space-y-1">
-              <label className="ml-1 text-sm font-bold text-gray-700">
-                Опис (необов'язково)
-              </label>
+              <label className="ml-1 text-sm font-bold text-gray-700">Опис (необов'язково)</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -335,11 +326,7 @@ export function AddLessonModal({
           {/* КНОПКА ВИДАЛЕННЯ (тільки в режимі редагування) */}
           {programToEdit && (
             <div>
-              <Button
-                variant="danger"
-                onClick={handleDeleteClick}
-                disabled={isSubmitting}
-              >
+              <Button variant="danger" onClick={handleDeleteClick} disabled={isSubmitting}>
                 <Trash2 size={18} />
                 <span>Видалити</span>
               </Button>
@@ -350,10 +337,7 @@ export function AddLessonModal({
             Скасувати
           </Button>
 
-          <Button
-            onClick={handleSubmit}
-            disabled={isSubmitting || !isFormValid}
-          >
+          <Button onClick={handleSubmit} disabled={isSubmitting || !isFormValid}>
             {programToEdit ? "Зберегти зміни" : "Створити програму"}
           </Button>
         </div>

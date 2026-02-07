@@ -55,9 +55,7 @@ export function LessonsGrid() {
         // Оновлення існуючої програми
         await programsService.updateProgram(id, data);
 
-        setPrograms((prev) =>
-          prev.map((prog) => (prog.id === id ? { ...data, id } : prog)),
-        );
+        setPrograms((prev) => prev.map((prog) => (prog.id === id ? { ...data, id } : prog)));
         // alert("Програма успішно оновлена!");
       } else {
         const newProgram = await programsService.addProgram(data);
@@ -84,23 +82,13 @@ export function LessonsGrid() {
 
   return (
     <div className="font-nunito mt-10 mb-25">
-      <h2 className="text-preset-2 my-8 text-center font-bold text-gray-700">
-        Курси
-      </h2>
-
       {isLoading ? (
-        <div className="py-10 text-center text-gray-400">
-          Завантаження програм...
-        </div>
+        <div className="py-10 text-center text-gray-400">Завантаження програм...</div>
       ) : (
         <div className="grid auto-rows-fr grid-cols-1 gap-4 p-4 sm:grid-cols-2 md:grid-cols-4">
           {/* КАРТКИ (Виводимо реальні дані з бази) */}
           {programs.map((program) => (
-            <LessonCard
-              key={program.id}
-              lesson={program}
-              onEdit={handleEditProgram}
-            />
+            <LessonCard key={program.id} lesson={program} onEdit={handleEditProgram} />
           ))}
 
           {programs.length === 0 && !isAdmin && (
