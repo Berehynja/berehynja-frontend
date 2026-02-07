@@ -49,7 +49,7 @@ export default function OurMission() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.15 }} // Почнеться, коли видно 15% секції
-        className="mx-auto mt-10 grid max-w-[375px] gap-8 md:grid md:max-w-full md:grid-cols-2 xl:grid-cols-4 xl:gap-y-6"
+        className="mx-auto my-10 grid max-w-[375px] gap-8 md:grid md:max-w-full md:grid-cols-2 xl:grid-cols-4 xl:gap-y-6"
       >
         {/* 1. Головний блок (З'явиться першим) */}
         <motion.aside
