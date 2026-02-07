@@ -21,7 +21,7 @@ export const Layout = () => {
     <div className="layout">
       <ScrollToTop />
       <Header />
-      <main>
+      <main className="font-nunito">
         <div className="mx-auto flex max-w-120 min-w-80 flex-col items-center justify-center md:max-w-5xl md:px-4 lg:max-w-7xl lg:px-8 xl:max-w-360 xl:px-10">
           <Suspense fallback={<div>Loading page....</div>}>
             <Outlet />
