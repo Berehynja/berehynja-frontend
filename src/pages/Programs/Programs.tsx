@@ -9,7 +9,7 @@ export const Programs = () => {
           <h2 className="text-preset-2 flex flex-nowrap justify-center pb-4 font-bold">
             Програми для дітей
           </h2>
-          <div className="mb-4 h-1 w-24 bg-linear-to-r from-blue-500 to-yellow-400"></div>
+          <div className="mb-4 h-1 w-full bg-linear-to-r from-blue-500 to-yellow-400"></div>
         </div>
 
         <p className="text-preset-4 flex max-w-4xl items-center justify-center px-4 leading-8 font-semibold md:px-0">
