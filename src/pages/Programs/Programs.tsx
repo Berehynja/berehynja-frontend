@@ -6,7 +6,9 @@ export const Programs = () => {
     <div className="font-nunito w-full py-8">
       <div className="flex flex-col items-center justify-center gap-8 py-7 md:flex-row md:py-10">
         <div className="flex flex-col items-center justify-center text-nowrap">
-          <h2 className="text-preset-2 flex flex-nowrap justify-center pb-4 font-bold">Курси</h2>
+          <h2 className="text-preset-2 flex flex-nowrap justify-center pb-4 font-bold">
+            Програми для дітей
+          </h2>
           <div className="mb-4 h-1 w-24 bg-linear-to-r from-blue-500 to-yellow-400"></div>
         </div>
 
