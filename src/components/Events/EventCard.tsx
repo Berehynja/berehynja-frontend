@@ -76,7 +76,7 @@ export const EventCard = ({ event, onEdit }: EventCardProps) => {
           </div>
 
           {/* БЛОК ОПИСУ: 4 рядки та градієнтне затухання */}
-          <div className="relative mb-4">
+          <div className="relative ">
             <p className="min-h-23 overflow-hidden text-sm text-gray-600">{event.description}</p>
 
             {/* Градієнтне затухання (туман) */}
@@ -84,14 +84,14 @@ export const EventCard = ({ event, onEdit }: EventCardProps) => {
           </div>
 
           {/* КНОПКА "ЧИТАТИ БІЛЬШЕ" — як у попередньому варіанті */}
-          <div className="mt-auto pt-2">
+          
             <div className="group/btn inline-flex items-center text-sm font-bold tracking-wider text-blue-600 uppercase transition-all hover:text-blue-800">
               Читати більше
               <span className="ml-2 transition-transform duration-300 group-hover/btn:translate-x-1">
                 →
               </span>
             </div>
-          </div>
+          
         </div>
       </Link>
     </li>

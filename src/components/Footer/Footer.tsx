@@ -4,6 +4,7 @@ import { useWindowSize } from "../../hooks/useWindowSize";
 
 import { Heart, Phone, Mail, MapPin, ChevronUp } from "lucide-react";
 import { SocialMedia } from "../SocialMedia/SocialMedia";
+import { NavLink } from "react-router-dom";
 
 export const Footer = () => {
   const [isOpenContacts, setIsOpenContacts] = useState(false);
@@ -106,7 +107,15 @@ export const Footer = () => {
             {t("footer.madeWith")} <Heart size={16} className="mx-2 text-red-500" /> for the
             Ukrainian community
           </p>
-          <p className="">Berehynja 2025</p>
+          <div className="flex gap-6 text-sm font-medium">
+            <p className="">© Berehynja 2025</p>
+            <NavLink to="/impressum" className="transition-colors hover:text-yellow-400">
+              Impressum
+            </NavLink>
+            <NavLink to="/privacy" className="transition-colors hover:text-yellow-400">
+              Datenschutz
+            </NavLink>
+          </div>
         </div>
       </div>
     </footer>

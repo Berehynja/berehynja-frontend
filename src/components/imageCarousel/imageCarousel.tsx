@@ -18,7 +18,7 @@ interface ImageCarouselProps {
 }
 
 // --- ОСНОВНОЙ КОМПОНЕНТ ---
-export function ImageCarousel({ items }: ImageCarouselProps) {
+export const ImageCarousel = ({ items }: ImageCarouselProps) => {
   // Инициализация Embla
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",

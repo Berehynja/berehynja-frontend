@@ -15,6 +15,7 @@ const EVENTS_COLLECTION = "events";
           id: doc.id,
           ...doc.data(),
         })) as Event[];
+        console.log("🚀 ~ events:", events)
         
         return events;  
       } catch (error) {
