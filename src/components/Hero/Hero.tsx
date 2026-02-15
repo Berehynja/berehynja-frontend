@@ -33,18 +33,18 @@ export const Hero = () => {
         <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:gap-6 w-full sm:w-auto">
           <button
             onClick={() => setIsDonationOpen(true)}
-            className="group flex items-center justify-center gap-4 rounded-8 bg-yellow-400 px-10 py-5 font-montserratBold text-sm uppercase tracking-widest text-gray-900 transition-all hover:scale-105 hover:bg-yellow-500 shadow-xl cursor-pointer md:text-base"
+            className="group flex items-center justify-center gap-4 rounded-2xl bg-yellow-400 px-10 py-5 font-montserratBold text-sm uppercase tracking-widest text-gray-900 transition-all hover:scale-105 hover:bg-yellow-500 shadow-xl cursor-pointer md:text-base"
           >
             <Heart size={20} className="fill-current group-hover:animate-pulse" />
-            <span>Spenden</span>
+            <span>Благодійність</span>
           </button>
 
           <button
             onClick={() => setIsJoinOpen(true)}
-            className="group flex items-center justify-center gap-4 rounded-8 bg-white/10 px-10 py-5 font-montserratBold text-sm uppercase tracking-widest text-white backdrop-blur-md border border-white/30 transition-all hover:bg-white hover:text-blue-900 cursor-pointer md:text-base"
+            className="group flex items-center justify-center gap-4 rounded-2xl bg-white/10 px-10 py-5 font-montserratBold text-sm uppercase tracking-widest text-white backdrop-blur-md border border-white/30 transition-all hover:bg-white hover:text-blue-900 cursor-pointer md:text-base"
           >
             <UserPlus size={20} />
-            <span>Beitreten</span>
+            <span>Приєднатися</span>
             <ArrowRight size={20} className="opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
           </button>
         </div>
