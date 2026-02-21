@@ -11,9 +11,12 @@ export const Hero = () => {
   const [isJoinOpen, setIsJoinOpen] = useState(false);
 
   return (
-    <section className="flex w-full justify-center bg-gray-900 overflow-hidden">
+    <section className="flex w-full justify-center bg-gray-900 overflow-hidden rounded-b-3xl">
       <div
-        className="flex min-h-75 max-w-120 min-w-85 flex-col items-start justify-between bg-cover bg-center bg-no-repeat p-5  md:min-h-150 md:max-w-5xl md:px-4 lg:min-h-190 lg:max-w-7xl lg:px-8 xl:w-390 xl:px-10"
+        className="flex min-h-75 max-w-120 min-w-85 flex-col items-start justify-between bg-cover bg-center bg-no-repeat p-5  
+        md:min-h-150 md:max-w-5xl md:px-4 
+        lg:min-h-190 lg:max-w-7xl lg:px-8 
+        xl:max-w-360  xl:px-10"
         style={{ backgroundImage: `url(${ban})` }}
       >
         {/* Контентна частина */}
