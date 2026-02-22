@@ -147,10 +147,10 @@ export const AddEventModal = ({ isOpen, onClose, onSave, onDelete, eventToEdit }
                   key={lang}
                   type="button"
                   onClick={() => setActiveLang(lang)}
-                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold uppercase transition-all duration-200 ${
+                  className={`flex-1 flex items-center justify-center cursor-pointer gap-2 py-2.5 rounded-lg text-xs font-bold uppercase transition-all duration-200 ${
                     activeLang === lang 
                       ? 'bg-white shadow text-blue-700' 
-                      : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
+                      : 'text-slate-500 hover:text-slate-700 hover:bg-gray-200'
                   }`}
                 >
                   {lang}
@@ -209,7 +209,7 @@ export const AddEventModal = ({ isOpen, onClose, onSave, onDelete, eventToEdit }
                 <div className="p-2 bg-white rounded-full shadow-sm group-hover:scale-110 transition-transform">
                   {isUploading ? <Clock className="animate-spin text-blue-600" size={18} /> : <Plus className="text-blue-600" size={18} />}
                 </div>
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest group-hover:text-blue-600">
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest group-hover:text-blue-600 cursor-pointer">
                   {isUploading ? "Завантаження..." : "Натисніть, щоб додати фото"}
                 </span>
                 <input type="file" accept="image/*" onChange={handleBannerUpload} className="hidden" disabled={isUploading} />
@@ -224,7 +224,7 @@ export const AddEventModal = ({ isOpen, onClose, onSave, onDelete, eventToEdit }
                 <button 
                   type="button" 
                   onClick={() => onDelete?.(eventToEdit.id!)}
-                  className="text-[10px] font-bold text-red-500 uppercase tracking-widest hover:text-red-700 underline underline-offset-4 transition-colors"
+                  className="text-[10px] font-bold text-red-500 uppercase tracking-widest hover:text-red-700  transition-colors cursor-pointer"
                 >
                   Видалити подію
                 </button>
@@ -234,14 +234,14 @@ export const AddEventModal = ({ isOpen, onClose, onSave, onDelete, eventToEdit }
               <button 
                 type="button" 
                 onClick={onClose}
-                className="px-6 py-3 rounded-xl text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-100 transition-all"
+                className="px-6 py-3 rounded-xl text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-100 transition-all cursor-pointer"
               >
                 Скасувати
               </button>
               <button 
                 type="submit" 
                 disabled={isUploading}
-                className="px-10 py-3 bg-blue-600 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-blue-700 active:scale-95 disabled:bg-slate-300 transition-all shadow-md shadow-blue-200"
+                className="px-10 py-3 bg-blue-600 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-blue-700 active:scale-95 disabled:bg-slate-300 transition-all shadow-md shadow-blue-200 cursor-pointer"
               >
                 {eventToEdit ? "Зберегти зміни" : "Опублікувати"}
               </button>
