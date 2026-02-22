@@ -92,7 +92,7 @@ export const AddEventModal = ({ isOpen, onClose, onSave, onDelete, eventToEdit }
             <h2 className="text-2xl font-montserratBold text-slate-900 uppercase tracking-tight">
               {eventToEdit ? "Редагування події" : "Створення події"}
             </h2>
-            <p className="text-[10px] font-bold text-blue-600 uppercase tracking-[0.2em] mt-1">Berehynja e.V. Admin</p>
+            <p className="text-[10px] font-bold text-blue-600 uppercase tracking-[0.2em] mt-1">Berehynja Admin</p>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-all text-slate-400 hover:text-slate-900">
             <X size={24} />
