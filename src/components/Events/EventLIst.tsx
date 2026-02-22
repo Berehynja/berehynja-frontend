@@ -98,11 +98,16 @@ export const EventList = () => {
       {isLoading ? (
         <div className="h-10"> Loading... </div>
       ) : (
-        <ul className="grid grid-cols-1 items-start justify-center md:grid-cols-2 md:gap-7">
-          {revertedEvents.map((event) => (
-            <EventCard key={event.id} event={event} onEdit={handleEditEvent} />
-          ))}
-        </ul>
+        revertedEvents.length > 0 ? 
+
+          <ul className="grid grid-cols-1 items-start justify-center md:grid-cols-2 md:gap-7">
+            {revertedEvents.map((event) => (
+              <EventCard key={event.id} event={event} onEdit={handleEditEvent} />
+            ))}
+          </ul>
+         : 
+          <p className="text-center text-gray-500">Немає подій</p>
+        
       )}
     </>
   );
