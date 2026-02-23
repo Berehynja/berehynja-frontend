@@ -30,7 +30,7 @@ export const Footer = () => {
     // щоб випадкові кліки протягом дня не сумувалися
     setTimeout(() => {
       setClickCount(0);
-    }, 2000);
+    }, 3000);
   };
 
   const toggleList = (value: string) => {
