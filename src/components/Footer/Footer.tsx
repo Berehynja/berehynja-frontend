@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import { useAuth } from "../AuthProvider/useAuth";
 
 import { Heart, Phone, Mail, MapPin, ChevronUp } from "lucide-react";
 import { SocialMedia } from "../SocialMedia/SocialMedia";
@@ -12,10 +13,14 @@ export const Footer = () => {
    const [clickCount, setClickCount] = useState(0);
   const screenWidth = useWindowSize();
   const { t } = useTranslation();
+  const { isAdmin } = useAuth();
 
   const navigate = useNavigate();
 
   const handleHeartClick = () => {
+    if (isAdmin) {
+      return;
+    }
     // Збільшуємо лічильник на 1
     const newCount = clickCount + 1;
     setClickCount(newCount);
