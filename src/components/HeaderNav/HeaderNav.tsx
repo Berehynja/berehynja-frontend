@@ -5,7 +5,7 @@ import { ChevronDown } from "lucide-react";
 
 export const HeaderNav = () => {
   const { t } = useTranslation();
-  // Стан для відкриття меню кліком (для мобілки)
+  
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const linkStyles = "relative before:absolute before:-bottom-2 before:left-1/2 before:h-0.5 before:w-0 before:-translate-x-1/2 before:bg-blue-500 before:transition-all hover:text-blue-500 hover:before:w-full hover:before:transition-all hover:before:duration-300 [.active>&]:text-blue-500 [.active>&]:before:w-full [.active>&]:before:transition-none [.active>&]:before:duration-300";
@@ -31,7 +31,7 @@ export const HeaderNav = () => {
         onMouseLeave={() => setIsMobileMenuOpen(false)}
       >
         <div className="flex items-center gap-1 py-2 group-hover:text-blue-500 transition-colors">
-          <span className="relative font-interRegular">{t("header.programs.title")}</span>
+          <span className="relative">{t("header.programs.title")}</span>
           <ChevronDown 
             size={18} 
             className={`transition-transform duration-300 lg:group-hover:rotate-180 ${isMobileMenuOpen ? 'rotate-180 text-blue-500' : ''}`} 
