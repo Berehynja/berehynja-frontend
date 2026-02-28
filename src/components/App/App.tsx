@@ -5,7 +5,8 @@ import LoginPage from "../../pages/LoginPage/LoginPage.tsx";
 import { EventDetails } from "../Events/EventDetails.tsx";
 import { Impressum } from "../../pages/Impressum/Impressum.tsx";
 import { Privacy } from "../../pages/Privacy/Privacy.tsx";
-import { ProgramsAdults } from "../../pages/Programs/ProgramsAdults.tsx";
+import { AdultPrograms } from "../../pages/Programs/AdultPrograms.tsx";
+import { ProgramDetail } from "../Programs/ProgramDetail.tsx";
 
 function App() {
   const location = useLocation();
@@ -19,7 +20,8 @@ function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/events/:eventId" element={<EventDetails />} />
         <Route path="/programs/kids" element={<ProgramsKids />} />
-        <Route path="/programs/adults" element={<ProgramsAdults />} />
+        <Route path="/programs/adults" element={<AdultPrograms />} />
+        <Route path="/programs/adults/:id" element={<ProgramDetail />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/privacy" element={<Privacy />} />
