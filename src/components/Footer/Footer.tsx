@@ -18,6 +18,7 @@ export const Footer = () => {
   const navigate = useNavigate();
 
   const handleHeartClick = () => {
+    // Якщо вже адмін — нічого не робимо
     if (isAdmin) {
       return;
     }
