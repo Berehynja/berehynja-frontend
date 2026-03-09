@@ -32,7 +32,7 @@ export const uploadMedia = async (
     programs: "program_photos",
     partners: "partner_photos",
     banners: "banner_photos",
-
+    
   };
 
   formData.append("upload_preset", presets[category]);
