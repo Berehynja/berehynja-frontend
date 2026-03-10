@@ -1,16 +1,44 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import { useAuth } from "../AuthProvider/useAuth";
 
 import { Heart, Phone, Mail, MapPin, ChevronUp } from "lucide-react";
 import { SocialMedia } from "../SocialMedia/SocialMedia";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export const Footer = () => {
   const [isOpenContacts, setIsOpenContacts] = useState(false);
   const [isOpenAdress, setIsOpenAdress] = useState(false);
+   const [clickCount, setClickCount] = useState(0);
   const screenWidth = useWindowSize();
   const { t } = useTranslation();
+  const { isAdmin } = useAuth();
+
+  const navigate = useNavigate();
+
+  const handleHeartClick = () => {
+    // Якщо вже адмін — нічого не робимо
+    if (isAdmin) {
+      return;
+    }
+    // Збільшуємо лічильник на 1
+    const newCount = clickCount + 1;
+    setClickCount(newCount);
+
+    // Якщо клікнули 5 разів — перекидаємо на логін
+    if (newCount === 5) {
+      navigate('/login');
+      setClickCount(0); // Скидаємо лічильник після переходу
+    }
+
+    // Додатково: скидаємо лічильник через 2 секунди бездіяльності, 
+    // щоб випадкові кліки протягом дня не сумувалися
+    setTimeout(() => {
+      setClickCount(0);
+    }, 3000);
+  };
+
   const toggleList = (value: string) => {
     if (value === "КОНТАКТИ") {
       setIsOpenContacts(!isOpenContacts);
@@ -104,7 +132,7 @@ export const Footer = () => {
 
         <div className="text-Green flex w-full flex-col items-center justify-between gap-2.5 border-t border-gray-700 py-4 text-sm">
           <p className="flex flex-wrap items-center justify-center">
-            {t("footer.madeWith")} <Heart size={16} className="mx-2 text-red-500" /> for the
+            {t("footer.madeWith")} <Heart size={16} onClick={()=>handleHeartClick()} className="mx-2 text-red-500" /> for the
             Ukrainian community
           </p>
           <div className="flex gap-6 text-sm font-medium">

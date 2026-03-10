@@ -76,7 +76,7 @@ export const EventDetails = () => {
       id: autoId,
       url: url,
       type: mediaType,
-      alt: event.title || "media content",
+      alt: event.titles[i18n.language as keyof typeof event.titles] || "media content",
     };
 
     await updateDoc(eventRef, { [category]: arrayUnion(newItem) });
@@ -113,7 +113,7 @@ export const EventDetails = () => {
           )}
         </div>
         <div className="flex w-full flex-col justify-center md:w-1/2">
-          <h2 className="font-montserratBold mb-3 text-3xl text-gray-900">{event?.title}</h2>
+          <h2 className="font-montserratBold mb-3 text-3xl text-gray-900">{event?.titles[i18n.language as keyof typeof event.titles]}</h2>
           <p className="mb-2 font-semibold text-blue-600">
             {event?.date &&
               new Date(event.date).toLocaleDateString(i18n.language === "ua" ? "uk-UA" : "en-US", {
@@ -126,7 +126,7 @@ export const EventDetails = () => {
             {event?.time} | {event?.location}
           </p>
           <p className="font-montserratBold text-lg leading-relaxed text-gray-800">
-            {event?.description}
+            {event?.descriptions[i18n.language as keyof typeof event.descriptions]}
           </p>
         </div>
       </div>
@@ -261,8 +261,8 @@ export const EventDetails = () => {
         onClose={() => setIsModalOpen(false)}
         onUpload={handleAddMedia}
         type={mediaType}
-        title={event?.title || "media"}
-        subFolder={event?.title || "general"}
+        title={event?.titles[i18n.language as keyof typeof event.titles] || "media"}
+        subFolder={event?.titles[i18n.language as keyof typeof event.titles] || "general"}
       />
     </div>
   );

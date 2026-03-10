@@ -2,7 +2,11 @@
   "header": {
     "home": "Startseite",
     "about": "Über uns",
-    "programs": "Programme",
+    "programs": {
+      "title": "Programme",
+      "kids": "Programme für Kinder",
+      "adults": "Programme für Erwachsene"
+    },
     "events": "Veranstaltungen",
     "contact": "Kontakt"
   },
@@ -18,6 +22,16 @@
     "ourTeam": "Unser Team",
     "teamContent": "Unser Team besteht aus engagierten Freiwilligen und Fachleuten, die sich dafür einsetzen, das Leben der Ukrainer in Deutschland zu verbessern. Wir arbeiten zusammen, um ein unterstützendes Umfeld zu schaffen, in dem sich jeder wie zu Hause fühlen kann.",
     "ourPartners": "Unsere Partner"
+  },
+  "programs": {
+    "kids": {
+      "title": "Programme für Kinder",
+      "description": "Entfalte dein Potenzial durch eine Vielzahl von Kursen und Workshops, die darauf ausgelegt sind, zu inspirieren, neue Fähigkeiten zu vermitteln und deine Fähigkeiten zu verbessern."
+    },
+    "adults": {
+      "title": "Programme für Erwachsene",
+      "description": "Kurzfristige Kurse und Intensivprogramme, die auf schnelle Anpassung, Spracherwerb und berufliche Entwicklung in einer neuen Umgebung abzielen."
+    }
   },
   "footer": {
     "contacts": "Kontakte",

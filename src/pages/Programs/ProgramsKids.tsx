@@ -1,7 +1,7 @@
 import { LessonsGrid } from "../../components/Lessons/LessonsGrid";
 import { ScheduleCalendar } from "../../components/Lessons/ScheduleCalendar";
 
-export const Programs = () => {
+export const ProgramsKids = () => {
   return (
     <div className="font-nunito w-full py-8">
       <div className="flex flex-col items-center justify-center gap-8 py-7 md:flex-row md:py-10">

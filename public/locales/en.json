@@ -2,7 +2,11 @@
   "header": {
     "home": "Home",
     "about": "About Us",
-    "programs": "Programs",
+    "programs": {
+      "title": "Programs",
+      "kids": "Programs for Kids",
+      "adults": "Programs for Adults"
+    },
     "events": "Events",
     "contact": "Contact"
   },
@@ -18,6 +22,16 @@
     "ourTeam": "Our Team",
     "teamContent": "Our team consists of dedicated volunteers and professionals who are committed to making a difference in the lives of Ukrainians in Germany. We work together to create a supportive environment where everyone can feel at home.",
     "ourPartners": "Our Partners"
+  },
+  "programs": {
+    "kids": {
+      "title": "Programs for Kids",
+      "description": "Unlock your potential through a variety of courses and workshops designed to inspire, teach new skills, and enhance your abilities."
+    },
+    "adults": {
+      "title": "Programs for Adults",
+      "description": "Short-term courses and intensives aimed at quick adaptation, language learning, and professional development in a new environment."
+    }
   },
   "footer": {
     "contacts": "Contacts",

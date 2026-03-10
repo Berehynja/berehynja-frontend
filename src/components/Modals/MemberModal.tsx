@@ -1,15 +1,8 @@
 import { X, Award, Briefcase, GraduationCap, User2 } from "lucide-react";
 import { useEffect } from "react";
+import type { TeamMember } from "../../types/team";
 
 // Використовуємо той самий інтерфейс, що і в основному файлі
-interface TeamMember {
-  name: string;
-  role: string;
-  description: string;
-  skills: string[];
-  education: string;
-  image?: string;
-}
 
 interface MemberModalProps {
   member: TeamMember | null;

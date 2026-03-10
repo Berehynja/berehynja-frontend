@@ -44,7 +44,7 @@ export const EventCard = ({ event, onEdit }: EventCardProps) => {
         <div className="relative h-64 overflow-hidden">
           <img
             src={event.imageBanner}
-            alt={event.title}
+            alt={event.titles[i18n.language as keyof typeof event.titles]}
             className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           />
           {/* Градієнт поверх фото для глибини */}
@@ -60,7 +60,7 @@ export const EventCard = ({ event, onEdit }: EventCardProps) => {
         {/* КОНТЕНТ */}
         <div className="flex grow flex-col p-6">
           <h2 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 transition-colors duration-300 group-hover:text-blue-600">
-            {event.title}
+            {event.titles[i18n.language as keyof typeof event.titles]}
           </h2>
 
           {/* Інфо-панель */}
@@ -77,7 +77,7 @@ export const EventCard = ({ event, onEdit }: EventCardProps) => {
 
           {/* БЛОК ОПИСУ: 4 рядки та градієнтне затухання */}
           <div className="relative ">
-            <p className="min-h-23 overflow-hidden text-sm text-gray-600">{event.description}</p>
+            <p className="min-h-23 overflow-hidden text-sm text-gray-600">{event.descriptions[i18n.language as keyof typeof event.descriptions]}</p>
 
             {/* Градієнтне затухання (туман) */}
             <div className="pointer-events-none absolute bottom-0 left-0 h-8 w-full bg-linear-to-t from-white via-white/90 to-transparent" />
