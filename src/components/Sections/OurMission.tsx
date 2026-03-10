@@ -4,6 +4,7 @@ import { EditTextModal, type FieldConfig } from "../Modals/EditTextModal";
 import { useState } from "react";
 import { useFirebaseContent } from "../../hooks/useFirebaseContent";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../AuthProvider/useAuth";
 
 // 1. Налаштування анімації контейнера (керує чергою)
 const containerVariants: Variants = {
@@ -70,6 +71,7 @@ export default function OurMission() {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const { getText, isLoading, data } = useFirebaseContent("home");
   const { t } = useTranslation();
+  const { isAdmin } = useAuth();
 
   const mainTitle = getText("ourMission.title", t("ourMission.title"));
 
@@ -102,12 +104,14 @@ export default function OurMission() {
         className="text-center"
       >
         {/* 👇 Кнопка-олівець для адміна */}
-        <button
-          onClick={() => setIsEditOpen(true)}
-          className="absolute top-4 right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white shadow-xl backdrop-blur-md transition-all hover:scale-110 hover:bg-blue-600"
-        >
-          <Pencil size={20} />
-        </button>
+        {isAdmin && (
+          <button
+            onClick={() => setIsEditOpen(true)}
+            className="absolute top-2 right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-xl transition-all hover:scale-110 hover:bg-blue-600 hover:text-white"
+          >
+            <Pencil size={20} />
+          </button>
+        )}
         <h2 className="text-preset-2 font-semibold">{mainTitle}</h2>
       </motion.div>
 

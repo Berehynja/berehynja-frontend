@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useFirebaseContent } from "../../hooks/useFirebaseContent";
 import { EditTextModal, type FieldConfig } from "../Modals/EditTextModal";
+import { useAuth } from "../AuthProvider/useAuth";
 
 // 1. Конфігурація карток (тільки ID, іконки та стилі)
 const featuresConfig = [
@@ -64,6 +65,7 @@ export function HowWeHelp() {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const { getText, isLoading, data } = useFirebaseContent("home");
   const { t } = useTranslation();
+  const { isAdmin } = useAuth();
 
   // Дістаємо головний заголовок
   const mainTitle = getText("howWeHelp.title", t("howWeHelp.title"));
@@ -93,12 +95,14 @@ export function HowWeHelp() {
           className="relative text-center"
         >
           {/* 👇 Кнопка-олівець для адміна */}
-          <button
-            onClick={() => setIsEditOpen(true)}
-            className="absolute -top-2 right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-xl transition-all hover:scale-110 hover:bg-blue-600 hover:text-white"
-          >
-            <Pencil size={20} />
-          </button>
+          {isAdmin && (
+            <button
+              onClick={() => setIsEditOpen(true)}
+              className="absolute top-2 right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-xl transition-all hover:scale-110 hover:bg-blue-600 hover:text-white"
+            >
+              <Pencil size={20} />
+            </button>
+          )}
 
           <h2 className="text-preset-2 mt-0.5 font-semibold xl:mt-2.5">
             {isLoading ? "..." : mainTitle}

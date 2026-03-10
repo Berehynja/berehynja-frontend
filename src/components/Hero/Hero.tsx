@@ -6,9 +6,11 @@ import { JoinModal } from "../Modals/JoinModal";
 import ban from "../../images/children.jpg";
 import { useFirebaseContent } from "../../hooks/useFirebaseContent";
 import { EditTextModal, type FieldConfig } from "../Modals/EditTextModal";
+import { useAuth } from "../AuthProvider/useAuth";
 
 export const Hero = () => {
   const { t } = useTranslation();
+  const { isAdmin } = useAuth();
   const [isDonationOpen, setIsDonationOpen] = useState(false);
   const [isJoinOpen, setIsJoinOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -30,12 +32,14 @@ export const Hero = () => {
     >
       <div className="relative flex max-w-120 min-w-85 flex-col items-start justify-between p-5 md:max-w-5xl md:p-6 lg:min-h-190 lg:max-w-7xl lg:p-8 xl:max-w-full xl:p-10">
         {/* 👇 Кнопка-олівець для адміна */}
-        <button
-          onClick={() => setIsEditOpen(true)}
-          className="absolute top-4 right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white shadow-xl backdrop-blur-md transition-all hover:scale-110 hover:bg-blue-600"
-        >
-          <Pencil size={20} />
-        </button>
+        {isAdmin && (
+          <button
+            onClick={() => setIsEditOpen(true)}
+            className="absolute top-2 right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-xl transition-all hover:scale-110 hover:bg-blue-600 hover:text-white"
+          >
+            <Pencil size={20} />
+          </button>
+        )}
 
         {/* Контентна частина */}
 
