@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase"; // Ваш шлях
 import { CheckCircle2, X, Loader2 } from "lucide-react";
@@ -12,20 +12,32 @@ type MultilingualText = {
   en: string;
 };
 
-// В майбутньому сюди можна буде легко додавати нові поля (наприклад, subtitle, buttonText)
-type SectionFormData = {
-  title: MultilingualText;
-  description: MultilingualText;
+export type FieldConfig = {
+  key: string;
+  label: string;
+  type: "input" | "textarea";
 };
 
 interface EditTextModalProps {
   isOpen: boolean;
   onClose: () => void;
-  documentName: string; // Назва документа в БД (наприклад, "home")
-  sectionName: string; // Назва секції в БД (наприклад, "hero")
-  modalTitle?: string; // Заголовок самої модалки (опціонально)
-  initialData: Partial<SectionFormData> | null; // Об'єкт з даними саме цієї секції
+  documentName: string; // Назва документа в БД
+  sectionName: string; // Назва секції в БД
+  modalTitle?: string; // Заголовок самої модалки
+  initialData?: Record<string, unknown> | null;
+  fields: FieldConfig[];
 }
+
+// Helper для діставання даних з вкладених об'єктів
+const getNestedValue = (obj: Record<string, unknown> | null | undefined, path: string): unknown => {
+  if (!obj) return null;
+  return path.split(".").reduce<unknown>((acc, part) => {
+    if (acc && typeof acc === "object" && acc !== null && part in acc) {
+      return (acc as Record<string, unknown>)[part];
+    }
+    return undefined;
+  }, obj);
+};
 
 export const EditTextModal = ({
   isOpen,
@@ -34,66 +46,60 @@ export const EditTextModal = ({
   sectionName,
   modalTitle = "Редагування секції",
   initialData,
+  fields,
 }: EditTextModalProps) => {
   const [activeLang, setActiveLang] = useState<LangKey>("ua");
   const [isSaving, setIsSaving] = useState(false);
+  const [formData, setFormData] = useState<Record<string, MultilingualText>>({});
 
-  const initialFormState = useMemo<SectionFormData>(
-    () => ({
-      title: { ua: "", de: "", en: "" },
-      description: { ua: "", de: "", en: "" },
-    }),
-    []
-  );
-
-  const [formData, setFormData] = useState<SectionFormData>(initialFormState);
-
-  // Підтягуємо дані
   useEffect(() => {
-    if (isOpen && initialData) {
-      setFormData({
-        title: {
-          ua: initialData?.title?.ua || "",
-          de: initialData?.title?.de || "",
-          en: initialData?.title?.en || "",
-        },
-        description: {
-          ua: initialData?.description?.ua || "",
-          de: initialData?.description?.de || "",
-          en: initialData?.description?.en || "",
-        },
+    if (isOpen) {
+      const newState: Record<string, MultilingualText> = {};
+      fields.forEach((field) => {
+        const fieldData =
+          (getNestedValue(initialData, field.key) as Partial<MultilingualText>) || {};
+        newState[field.key] = {
+          ua: fieldData.ua || "",
+          de: fieldData.de || "",
+          en: fieldData.en || "",
+        };
       });
-    }
-  }, [isOpen, initialData]);
 
-  const handleLangChange = (field: keyof SectionFormData, value: string) => {
+      setFormData(newState);
+    }
+  }, [isOpen, initialData, fields]);
+
+  const handleLangChange = (field: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [field]: { ...prev[field], [activeLang]: value },
     }));
   };
 
-  const isLangFilled = (lang: LangKey) =>
-    formData.title[lang].trim().length > 2 && formData.description[lang].trim().length > 2;
+  const isLangFilled = (lang: LangKey) => {
+    if (Object.keys(formData).length === 0) return false;
+    // Виправлення №3: додано безпечну перевірку field[lang]
+    return Object.values(formData).every((field) => field[lang] && field[lang].trim().length > 2);
+  };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
 
     try {
-      // 1. Звертаємось до правильного документа
       const docRef = doc(db, "pages", documentName);
+      const updatePayload: Record<string, string> = {};
 
-      // 2. Динамічно формуємо шляхи для оновлення (наприклад, "hero.title.ua" або "about.title.ua")
-      await updateDoc(docRef, {
-        [`${sectionName}.title.ua`]: formData.title.ua,
-        [`${sectionName}.title.en`]: formData.title.en,
-        [`${sectionName}.title.de`]: formData.title.de,
-        [`${sectionName}.description.ua`]: formData.description.ua,
-        [`${sectionName}.description.en`]: formData.description.en,
-        [`${sectionName}.description.de`]: formData.description.de,
+      fields.forEach((field) => {
+        const data = formData[field.key];
+
+        // Виправлення №1: Додано фігурні дужки навколо sectionName
+        updatePayload[`${sectionName}.${field.key}.ua`] = data.ua;
+        updatePayload[`${sectionName}.${field.key}.en`] = data.en;
+        updatePayload[`${sectionName}.${field.key}.de`] = data.de;
       });
 
+      await updateDoc(docRef, updatePayload);
       toast.success("Дані успішно оновлено!");
       onClose();
     } catch (error) {
@@ -118,7 +124,7 @@ export const EditTextModal = ({
         <header className="flex items-center justify-between border-b border-slate-100 px-8 pt-8 pb-4">
           <div>
             <h2 className="text-2xl font-black tracking-tight text-slate-900 uppercase">
-              {modalTitle} {/* Динамічний заголовок модалки */}
+              {modalTitle}
             </h2>
             <p className="mt-1 text-left text-[10px] font-bold tracking-[0.2em] text-blue-600 uppercase">
               Berehynja Admin ({documentName} ➔ {sectionName})
@@ -151,30 +157,31 @@ export const EditTextModal = ({
           </div>
 
           <div className="space-y-5">
-            <div className="flex flex-col gap-1.5 text-left">
-              <label className="ml-1 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
-                Заголовок ({activeLang})
-              </label>
-              <input
-                value={formData.title[activeLang]}
-                onChange={(e) => handleLangChange("title", e.target.value)}
-                className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-lg font-bold shadow-sm transition-all outline-none focus:border-blue-500"
-                required
-              />
-            </div>
+            {/* Виправлення №2: Динамічний рендер полів з масиву fields */}
+            {fields.map((field) => (
+              <div key={field.key} className="flex flex-col gap-1.5 text-left">
+                <label className="ml-1 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+                  {field.label} ({activeLang})
+                </label>
 
-            <div className="flex flex-col gap-1.5 text-left">
-              <label className="ml-1 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
-                Опис ({activeLang})
-              </label>
-              <textarea
-                rows={5}
-                value={formData.description[activeLang]}
-                onChange={(e) => handleLangChange("description", e.target.value)}
-                className="w-full resize-none rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-sm leading-relaxed font-medium shadow-sm transition-all outline-none focus:border-blue-500"
-                required
-              />
-            </div>
+                {field.type === "input" ? (
+                  <input
+                    value={formData[field.key]?.[activeLang] || ""}
+                    onChange={(e) => handleLangChange(field.key, e.target.value)}
+                    className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-lg font-bold shadow-sm transition-all outline-none focus:border-blue-500"
+                    required
+                  />
+                ) : (
+                  <textarea
+                    rows={4}
+                    value={formData[field.key]?.[activeLang] || ""}
+                    onChange={(e) => handleLangChange(field.key, e.target.value)}
+                    className="w-full resize-none rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-sm leading-relaxed font-medium shadow-sm transition-all outline-none focus:border-blue-500"
+                    required
+                  />
+                )}
+              </div>
+            ))}
           </div>
 
           <footer className="mt-4 flex items-center justify-end border-t border-slate-100 pt-6">

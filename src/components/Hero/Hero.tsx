@@ -5,7 +5,7 @@ import { DonationModal } from "../Modals/DonationModal/DonationModal";
 import { JoinModal } from "../Modals/JoinModal";
 import ban from "../../images/children.jpg";
 import { useFirebaseContent } from "../../hooks/useFirebaseContent";
-import { EditTextModal } from "../Modals/EditTextModal";
+import { EditTextModal, type FieldConfig } from "../Modals/EditTextModal";
 
 export const Hero = () => {
   const { t } = useTranslation();
@@ -18,13 +18,18 @@ export const Hero = () => {
   const title = getText("hero.title", t("home.welcome"));
   const description = getText("hero.description", t("home.description"));
 
+  const heroFields: FieldConfig[] = [
+    { key: "title", label: "Головний заголовок", type: "input" },
+    { key: "description", label: "Опис під заголовком", type: "textarea" },
+  ];
+
   return (
     <section
       className="flex min-h-[90vh] w-full justify-center overflow-hidden rounded-b-3xl bg-gray-900 bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${ban})` }}
     >
       <div className="relative flex max-w-120 min-w-85 flex-col items-start justify-between p-5 md:max-w-5xl md:p-6 lg:min-h-190 lg:max-w-7xl lg:p-8 xl:max-w-full xl:p-10">
-        {/* 👇 4. Кнопка-олівець для адміна */}
+        {/* 👇 Кнопка-олівець для адміна */}
         <button
           onClick={() => setIsEditOpen(true)}
           className="absolute top-4 right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white shadow-xl backdrop-blur-md transition-all hover:scale-110 hover:bg-blue-600"
@@ -79,7 +84,8 @@ export const Hero = () => {
         documentName="home" // 👈 Вказуємо документ
         sectionName="hero" // 👈 Вказуємо секцію
         modalTitle="Редагування Hero" // 👈 Гарний заголовок
-        initialData={data?.hero} // 👈 Передаємо шматочок даних з хука
+        initialData={data?.hero as Record<string, unknown>}
+        fields={heroFields}
       />
     </section>
   );
