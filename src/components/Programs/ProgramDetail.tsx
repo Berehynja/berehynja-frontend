@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useAuth } from "../AuthProvider/useAuth";
 import { getProgramAdultsById, updateProgramAdults } from "../../services/programsAdultsService";
 import { useTranslation } from "react-i18next";
 import type { ProgramAdults } from "../../types/program";
@@ -25,7 +26,7 @@ export const ProgramDetail = () => {
 
   const { id } = useParams();
   const { i18n } = useTranslation();
-
+  const { isAdmin } = useAuth();
   const lang = (i18n.language as LangKey) || "ua";
 
   useEffect(() => {
@@ -88,6 +89,7 @@ export const ProgramDetail = () => {
               <h3 className="flex items-center gap-3 text-2xl font-bold">
                 <Info className="text-blue-500" /> Про програму
               </h3>
+              {isAdmin && (
               <button
                 onClick={() => {
                   setIsEditing(!isEditing);
@@ -105,6 +107,8 @@ export const ProgramDetail = () => {
                   </>
                 )}
               </button>
+              )}
+
             </div>
 
             {isEditing && (
@@ -126,12 +130,9 @@ export const ProgramDetail = () => {
                 className="h-64 w-full rounded-3xl border-2 border-slate-100 bg-slate-50 p-6 font-medium outline-none focus:border-blue-500"
                 value={program.fullDescription?.[editLang] || ""}
                 onChange={(e) =>
-                  setProgram((prev) =>
-                    prev
-                      ? {...prev, fullDescription: {...prev.fullDescription!, [editLang]: e.target.value,}, }
-                      : prev
-                  )
-                }
+                  setProgram((prev) => prev 
+                  ? {...prev, fullDescription: {...prev.fullDescription!, [editLang]: e.target.value }} 
+                  : prev )}
               />
             ) : (
               <p className="text-lg leading-8 font-medium whitespace-pre-line text-gray-600">
@@ -162,17 +163,9 @@ export const ProgramDetail = () => {
                           const newArray = [...(program.features?.[editLang] || [""])];
                           newArray[index] = e.target.value;
 
-                          setProgram((prev) =>
-                            prev
-                              ? {
-                                  ...prev,
-                                  features: {
-                                    ...prev.features!,
-                                    [editLang]: newArray,
-                                  },
-                                }
-                              : prev
-                          );
+                          setProgram((prev) => prev
+                          ? {...prev, features: {...prev.features!, [editLang]: newArray } } 
+                          : prev );
                         }}
                       />
                     ) : (
@@ -193,15 +186,8 @@ export const ProgramDetail = () => {
                   onClick={() => {
                     setProgram((prev) =>
                       prev
-                        ? {
-                            ...prev,
-                            features: {
-                              ...prev.features!,
-                              [editLang]: [...(prev.features?.[editLang] || []), ""],
-                            },
-                          }
-                        : prev
-                    );
+                        ? {...prev, features: {...prev.features!, [editLang]: [...(prev.features?.[editLang] || []), ""]}} 
+                        : prev );
                   }}
                   className="mt-3 font-bold text-blue-500"
                 >
@@ -219,18 +205,7 @@ export const ProgramDetail = () => {
                   className="w-full rounded-2xl border-2 border-blue-100 bg-white p-3 font-semibold text-blue-800 outline-none focus:border-blue-500"
                   value={program.target?.[editLang] || ""}
                   onChange={(e) =>
-                    setProgram((prev) =>
-                      prev
-                        ? {
-                            ...prev,
-                            target: {
-                              ...prev.target,
-                              [editLang]: e.target.value,
-                            },
-                          }
-                        : prev
-                    )
-                  }
+                    setProgram((prev) => prev ? {...prev, target: {...prev.target, [editLang]: e.target.value }} : prev)}
                 />
               ) : (
                 <p className="font-semibold text-blue-800">{program.target[lang]}</p>
