@@ -103,7 +103,7 @@ export const Contact = () => {
                 Контакти
               </h2>
 
-              <ul className="flex flex-col gap-10">
+              <ul className="flex flex-col gap-8">
                 {/* EMAIL */}
                 <li className="group flex cursor-pointer items-center gap-6">
                   <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-blue-900 text-white shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-blue-700 group-hover:shadow-blue-200">
@@ -156,7 +156,7 @@ export const Contact = () => {
                 </li>
 
                 {/* SOCIALS */}
-                <li className="mt-4 flex flex-col items-center gap-6 border-t border-gray-100 pt-10 md:items-start">
+                <li className="mt-4 flex flex-col items-center gap-6 border-t border-gray-100  md:items-start">
                   <span className="text-xs font-black tracking-widest text-gray-400 uppercase">
                     Ми в мережах:
                   </span>
