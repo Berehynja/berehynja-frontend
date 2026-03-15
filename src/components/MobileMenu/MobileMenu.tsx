@@ -30,7 +30,7 @@ export const MobileMenu = ({ mobMenuIsOpen, setMobMenuIsOpen }: MobileMenuProps)
         />
       )}
       <div
-        className={`ease fixed top-0 right-0 flex h-screen w-50 overflow-hidden bg-linear-to-br from-blue-100 via-white to-yellow-100 transition-transform duration-300 ${mobMenuIsOpen ? "translate-x-0" : "translate-x-full"} sm:w-[30vw]`}
+        className={`ease fixed top-0 px-5 right-0 flex h-screen w-50 overflow-hidden bg-linear-to-br from-blue-100 via-white to-yellow-100 transition-transform duration-400 ${mobMenuIsOpen ? "translate-x-0" : "translate-x-full"} sm:w-[30vw]`}
       >
         <button
           className="absolute top-4 right-4 z-10"

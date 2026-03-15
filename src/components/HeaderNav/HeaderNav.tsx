@@ -44,13 +44,13 @@ export const HeaderNav = () => {
           transition-all duration-300 w-full lg:w-auto
           ${isMobileMenuOpen ? 'flex opacity-100 visible translate-y-0 h-auto mt-2' : 'hidden lg:flex h-0 lg:h-auto overflow-hidden'}
         `}>
-          <div className="bg-white border border-stone-100 shadow-xl lg:shadow-[0_10px_30px_rgba(0,0,0,0.1)] rounded-3xl p-3 flex flex-col min-w-40 w-full lg:w-60">
+          <div className="bg-white border border-stone-100 shadow-xl lg:shadow-[0_10px_30px_rgba(0,0,0,0.1)] rounded-3xl p-4 flex flex-col min-w-40 w-full lg:w-60">
             
             <NavLink 
               to="/programs/kids" 
               onClick={(e) => e.stopPropagation()} // Щоб клік по лінку не закривав меню миттєво до переходу
               className={({ isActive }) => `
-                flex items-center px-6 lg:px-4 py-4 lg:py-3 rounded-xl transition-all
+                flex items-center  lg:px-4 py-4 lg:py-3 rounded-xl transition-all
                 ${isActive ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-slate-50 text-stone-600 hover:text-blue-500'}
               `}
             >
@@ -65,7 +65,7 @@ export const HeaderNav = () => {
               to="/programs/adults" 
               onClick={(e) => e.stopPropagation()}
               className={({ isActive }) => `
-                flex items-center px-6 lg:px-4 py-4 lg:py-3 rounded-xl transition-all
+                flex items-center  lg:px-4 py-4 lg:py-3 rounded-xl transition-all
                 ${isActive ? 'bg-blue-50 text-blue-600 font-bold' : 'hover:bg-slate-50 text-stone-600 hover:text-blue-500'}
               `}
             >
