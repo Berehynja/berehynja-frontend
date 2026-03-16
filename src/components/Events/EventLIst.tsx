@@ -100,7 +100,7 @@ export const EventList = () => {
       ) : (
         revertedEvents.length > 0 ? 
 
-          <ul className="grid grid-cols-1 items-start justify-center md:grid-cols-2 md:gap-7">
+          <ul className="grid grid-cols-1 items-start justify-center md:grid-cols-2 md:gap-7 xl:gap-10 xl:grid-cols-3">
             {revertedEvents.map((event) => (
               <EventCard key={event.id} event={event} onEdit={handleEditEvent} />
             ))}
