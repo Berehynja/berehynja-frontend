@@ -1,7 +1,7 @@
 import { db } from "../../firebase";
 import { doc, collection, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { getEventById } from "../../services/eventsService";
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,7 @@ import { useAuth } from "../AuthProvider/useAuth";
 
 import type { Event } from "../../types/event";
 import { AddMediaModal } from "../Modals/AddMediaModal";
+import { ArrowLeft } from "lucide-react";
 
 interface MediaItem {
   id: string;
@@ -100,10 +101,17 @@ export const EventDetails = () => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-8">
-      
+    <div className=" w-full  px-4 py-8">
+      <div className="mx-auto  px-4 py-8">
+        <Link
+          to="/events"
+          className="flex items-center gap-2 font-bold text-blue-500 transition-colors hover:text-blue-700"
+        >
+          <ArrowLeft size={20} /> Повернутися до списку
+        </Link>
+      </div>
       <div className="mb-10 flex flex-col gap-8 md:flex-row">
-        <div className="w-full overflow-hidden rounded-xl bg-gray-100 shadow-md md:w-1/2">
+        <div className="w-full overflow-hidden rounded-[2.5rem] bg-gray-100 shadow-md md:w-1/2">
           {event?.imageBanner && (
             <img
               src={event.imageBanner}
@@ -113,7 +121,9 @@ export const EventDetails = () => {
           )}
         </div>
         <div className="flex w-full flex-col justify-center md:w-1/2">
-          <h2 className="font-montserratBold mb-3 text-3xl text-gray-900">{event?.titles[i18n.language as keyof typeof event.titles]}</h2>
+          <h2 className="font-montserratBold mb-3 text-3xl text-gray-900">
+            {event?.titles[i18n.language as keyof typeof event.titles]}
+          </h2>
           <p className="mb-2 font-semibold text-blue-600">
             {event?.date &&
               new Date(event.date).toLocaleDateString(i18n.language === "ua" ? "uk-UA" : "en-US", {
@@ -125,7 +135,7 @@ export const EventDetails = () => {
           <p className="font-montserratItalic mb-4 text-gray-600">
             {event?.time} | {event?.location}
           </p>
-          <p className="font-montserratBold text-lg leading-relaxed text-gray-800">
+          <p className="text-lg leading-relaxed wrap-break-word whitespace-pre-wrap text-gray-800">
             {event?.descriptions[i18n.language as keyof typeof event.descriptions]}
           </p>
         </div>
@@ -266,5 +276,4 @@ export const EventDetails = () => {
       />
     </div>
   );
-
 };
