@@ -171,8 +171,8 @@ export const ProgramDetail = () => {
                       size={24} 
                       className="text-red-500"
                       onClick={()=> setProgram((prev) => {const newArray = [...(prev?.features?.[editLang] || [])];
-newArray.splice(index, 1);
-return prev ? {...prev, features: {...prev.features!, [editLang]: newArray }} : prev;})}
+                      newArray.splice(index, 1);
+                      return prev ? {...prev, features: {...prev.features!, [editLang]: newArray }} : prev;})}
                       /></div>
                     ) : (
                       <li

@@ -68,7 +68,7 @@ export const LanguageSwitcher = () => {
           >
             <Flag
               className="mr-1.5 h-3.5 w-5 rounded-xs"
-              countryCode={lng === "EN" ? "gb" : lng}
+              countryCode={lng === "en" ? "gb" : lng}
               svg
               alt="flag"
             />
