@@ -31,8 +31,7 @@ export const AddProgramModal = ({ isOpen, onClose, onSave, onDelete, programToEd
   const initialFormState = useMemo<ProgramAdults>(() => ({
     id: "",
     title: { ua: "", de: "", en: "" },
-    descriptions: { ua: "", de: "", en: "" },
-    fullDescription: { ua: "", de: "", en: "" },
+    description: { ua: "", de: "", en: "" },
     dateRange: "",
     duration: { ua: "", de: "", en: "" },
     intensity: { ua: "", de: "", en: "" },
@@ -183,8 +182,8 @@ export const AddProgramModal = ({ isOpen, onClose, onSave, onDelete, programToEd
             <div className="flex flex-col gap-1.5 text-left">
               <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">Опис ({activeLang})</label>
               <textarea 
-                rows={3} value={formData.descriptions[activeLang]} 
-                onChange={(e) => handleLangChange('descriptions', e.target.value)}
+                rows={3} value={formData.description[activeLang]} 
+                onChange={(e) => handleLangChange('description', e.target.value)}
                 className="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-blue-500 outline-none transition-all shadow-sm resize-none"
               />
             </div>

@@ -141,7 +141,7 @@ export const ProgramsList = () => {
               </h3>
 
               <p className="mb-6 line-clamp-3 text-sm leading-relaxed text-gray-500">
-                {program.descriptions[currentLang]}
+                {program.description[currentLang]}
               </p>
 
               {/* Деталі з іконками */}

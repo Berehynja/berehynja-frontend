@@ -128,15 +128,15 @@ export const ProgramDetail = () => {
             {isEditing ? (
               <textarea
                 className="h-64 w-full rounded-3xl border-2 border-slate-100 bg-slate-50 p-6 font-medium outline-none focus:border-blue-500"
-                value={program.fullDescription?.[editLang] || ""}
+                value={program.description[editLang] || ""}
                 onChange={(e) =>
                   setProgram((prev) => prev 
-                  ? {...prev, fullDescription: {...prev.fullDescription!, [editLang]: e.target.value }} 
+                  ? {...prev, description: {...prev.description!, [editLang]: e.target.value }} 
                   : prev )}
               />
             ) : (
               <p className="text-lg leading-8 font-medium whitespace-pre-line text-gray-600">
-                {program.fullDescription?.[lang] || program.descriptions[lang]}
+                {program.description[lang]}
               </p>
             )}
           </div>
@@ -154,8 +154,8 @@ export const ProgramDetail = () => {
                   .filter((f: string) => (isEditing ? true : f.trim() !== ""))
                   .map((feature: string, index: number) =>
                     isEditing ? (
+                      <div key={`${editLang}-${index}`} className="flex items-center gap-1">
                       <input
-                        key={`${editLang}-${index}`}
                         type="text"
                         className="mb-2 w-full rounded-xl border-2 border-slate-200 bg-white p-3 text-sm font-semibold shadow-sm outline-none focus:border-blue-500"
                         value={feature}
@@ -167,7 +167,13 @@ export const ProgramDetail = () => {
                           ? {...prev, features: {...prev.features!, [editLang]: newArray } } 
                           : prev );
                         }}
-                      />
+                      /><X 
+                      size={24} 
+                      className="text-red-500"
+                      onClick={()=> setProgram((prev) => {const newArray = [...(prev?.features?.[editLang] || [])];
+newArray.splice(index, 1);
+return prev ? {...prev, features: {...prev.features!, [editLang]: newArray }} : prev;})}
+                      /></div>
                     ) : (
                       <li
                         key={index}
@@ -189,7 +195,7 @@ export const ProgramDetail = () => {
                         ? {...prev, features: {...prev.features!, [editLang]: [...(prev.features?.[editLang] || []), ""]}} 
                         : prev );
                   }}
-                  className="mt-3 font-bold text-blue-500"
+                  className="pt-4 font-bold text-blue-500"
                 >
                   + Додати пункт
                 </button>

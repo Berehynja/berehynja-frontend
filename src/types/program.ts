@@ -25,13 +25,7 @@ export interface ProgramAdults {
     en: string;
   };
   // Короткий опис для картки
-  descriptions: {
-    ua: string;
-    de: string;
-    en: string;
-  };
-  // Повний опис для детальної сторінки
-  fullDescription?: {
+  description: {
     ua: string;
     de: string;
     en: string;
