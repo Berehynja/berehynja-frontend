@@ -12,7 +12,7 @@ export const About = () => {
   
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-12">
+    <div className=" w-full ">
       {/* HEADER SECTION - Твій оригінальний стиль */}
       <div className="font-montserratBold flex flex-col items-center justify-center gap-8 py-7 md:flex-row md:py-10">
         <div className="flex flex-col items-center justify-center text-nowrap">
@@ -22,7 +22,7 @@ export const About = () => {
           <div className="mx-auto mb-4 h-1.5 w-24 rounded-full bg-linear-to-r from-blue-500 to-yellow-400"></div>
         </div>
 
-        <p className="text-preset-4 flex max-w-3xl items-center justify-center px-4 leading-8 text-gray-600 italic md:px-0 md:text-left">
+        <p className="text-preset-4 flex max-w-5xl items-center justify-center px-4 leading-8 text-gray-600 italic md:px-0 md:text-left">
           {t("about.missionDescription")}
         </p>
       </div>

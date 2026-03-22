@@ -11,7 +11,7 @@ export const Events = () => {
           <div className="mb-4 h-1 w-24 bg-linear-to-r from-blue-500 to-yellow-400"></div>
         </div>
 
-        <p className="text-preset-4 flex max-w-4xl items-center justify-center px-4 leading-8 md:px-0">
+        <p className="text-preset-4 flex max-w-5xl items-center justify-center px-4 leading-8 md:px-0">
           Приєднайтеся до наших громадських заходів, святкування та діяльності, розроблених для
           об'єднання людей, підтримки нашої місії.
         </p>

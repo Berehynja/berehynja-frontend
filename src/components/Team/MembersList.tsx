@@ -1,4 +1,3 @@
-
 import { User } from "lucide-react";
 import { useState } from "react";
 import { MemberModal } from "./MemberModal";
@@ -19,7 +18,7 @@ export const MembersList = () => {
         <div className="mx-auto mb-6 h-1 w-20 rounded-full bg-blue-500"></div>
       </div>
 
-      <ul className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <ul className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {teamData.map((member, index) => (
           <MemberCard key={index} member={member} setSelectedMember={setSelectedMember}/>
         ))}

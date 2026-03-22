@@ -56,7 +56,7 @@ export const Hero = () => {
         </div>
 
         {/* Секція кнопок */}
-        <div className="mt-8 flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:gap-6">
+        <div className="mt-8 flex w-full flex-col gap-4 md:w-auto md:flex-row md:gap-6">
           <button
             onClick={() => setIsDonationOpen(true)}
             className="group font-montserratBold flex cursor-pointer items-center justify-center gap-4 rounded-2xl bg-yellow-400 px-10 py-5 text-sm tracking-widest text-gray-900 uppercase shadow-xl transition-all hover:scale-105 hover:bg-yellow-500 md:text-base"
