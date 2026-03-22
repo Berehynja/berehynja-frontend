@@ -45,7 +45,7 @@ export const LanguageSwitcher = () => {
       >
         <Flag
           className="mr-1.5 h-3.5 w-5 rounded-xs"
-          countryCode={i18n.language === "en" ? "gb" : i18n.language}
+          countryCode={i18n.language === "en" ? "GB" : i18n.language}
           svg
           alt="flag"
           aria-label="current language"
@@ -68,7 +68,7 @@ export const LanguageSwitcher = () => {
           >
             <Flag
               className="mr-1.5 h-3.5 w-5 rounded-xs"
-              countryCode={lng === "en" ? "gb" : lng}
+              countryCode={lng === "EN" ? "GB" : lng}
               svg
               alt="flag"
             />

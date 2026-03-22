@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import type { Event } from "../../types/event";
 import { uploadMedia } from '../../services/cloudinaryService';
 import { Calendar, Clock, MapPin, CheckCircle2, X, Plus } from 'lucide-react';
+import type { LangKey } from '../../types/types';
 
 type AddEventModalProps = {
   isOpen: boolean;
@@ -11,7 +12,7 @@ type AddEventModalProps = {
   onDelete?: (eventId: string) => void;
 };
 
-type LangKey = 'ua' | 'de' | 'en';
+
 
 export const AddEventModal = ({ isOpen, onClose, onSave, onDelete, eventToEdit }: AddEventModalProps) => {
   const [activeLang, setActiveLang] = useState<LangKey>('ua');

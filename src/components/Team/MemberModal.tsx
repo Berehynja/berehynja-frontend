@@ -1,26 +1,28 @@
 import { X, Award, Briefcase, GraduationCap, User2 } from "lucide-react";
 import { useEffect } from "react";
-import type { TeamMember } from "../../types/team";
+import type { TeamMember } from "../../types/teamMember";
+import { useTranslation } from "react-i18next";
 
 // Використовуємо той самий інтерфейс, що і в основному файлі
 
 interface MemberModalProps {
-  member: TeamMember | null;
+  memberTeam: TeamMember | null;
   onClose: () => void;
 }
 
-export const MemberModal = ({ member, onClose }: MemberModalProps) => {
+export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
+  const { i18n } = useTranslation();
   // Блокування скролу фону при відкритій модалці
   useEffect(() => {
-    if (member) {
+    if (memberTeam) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
     return () => { document.body.style.overflow = "unset"; };
-  }, [member]);
+  }, [memberTeam]);
 
-  if (!member) return null;
+  if (!memberTeam) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6">
@@ -45,10 +47,10 @@ export const MemberModal = ({ member, onClose }: MemberModalProps) => {
           
           {/* ЛІВА ЧАСТИНА: Велике фото або заглушка */}
           <div className="relative w-full md:w-[45%] h-[350px] md:h-auto bg-gray-100 overflow-hidden">
-            {member.image ? (
+            {memberTeam.image ? (
               <img 
-                src={member.image} 
-                alt={member.name}
+                src={memberTeam.image} 
+                alt={memberTeam.name[i18n.language as keyof typeof memberTeam.name]}
                 className="h-full w-full object-cover"
               />
             ) : (
@@ -68,11 +70,11 @@ export const MemberModal = ({ member, onClose }: MemberModalProps) => {
               <div className="flex items-center gap-2 mb-2">
                 <span className="h-px w-8 bg-blue-500"></span>
                 <span className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600">
-                  {member.role}
+                  {memberTeam.role[i18n.language as keyof typeof memberTeam.role]}
                 </span>
               </div>
               <h2 className="text-3xl md:text-4xl font-montserratBold text-gray-900 leading-tight">
-                {member.name}
+                {memberTeam.name[i18n.language as keyof typeof memberTeam.name]}
               </h2>
               {/* Та сама декоративна лінія, як на головній */}
               <div className="mt-5 h-1.5 w-24 bg-linear-to-r from-blue-500 to-yellow-400 rounded-full" />
@@ -88,7 +90,7 @@ export const MemberModal = ({ member, onClose }: MemberModalProps) => {
                   <h3 className="font-bold text-lg">Професійні навички</h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {member.skills.map((skill, idx) => (
+                  {memberTeam.skills[i18n.language as keyof typeof memberTeam.skills].map((skill, idx) => (
                     <span 
                       key={idx} 
                       className="rounded-xl bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 border border-gray-100 shadow-sm"
@@ -110,7 +112,7 @@ export const MemberModal = ({ member, onClose }: MemberModalProps) => {
                 <div className="relative">
                   <span className="absolute -top-2 -left-4 text-6xl text-gray-100 font-serif leading-none select-none">“</span>
                   <p className="relative text-gray-600 leading-relaxed italic text-lg pl-2">
-                    {member.description}
+                    {memberTeam.description[i18n.language as keyof typeof memberTeam.description]}
                   </p>
                 </div>
               </section>
@@ -122,7 +124,7 @@ export const MemberModal = ({ member, onClose }: MemberModalProps) => {
                   <h3 className="text-sm font-semibold uppercase tracking-wider">Освіта</h3>
                 </div>
                 <p className="text-gray-500 ml-8">
-                  {member.education}
+                  {memberTeam.education[i18n.language as keyof typeof memberTeam.education]}
                 </p>
               </section>
             </div>

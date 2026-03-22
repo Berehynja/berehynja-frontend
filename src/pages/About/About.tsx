@@ -1,21 +1,13 @@
 import { useTranslation } from "react-i18next";
-import { FileText, User, Handshake } from "lucide-react";
+import { FileText, Handshake } from "lucide-react";
 import about from "../../images/bereg-about22.jpg";
 
 import partner from "../../images/icons8-penguin-color/icons8-penguin-48.png";
-import { useState } from "react";
-import { MemberModal } from "../../components/Modals/MemberModal";
-import type { TeamMember } from "../../types/teamMember";
-import { teamData } from "../../data/teamData";
+import { MembersList } from "../../components/Team/MembersList";
 
-const PhotoPlaceholder = () => (
-  <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-gray-50 to-gray-200 text-gray-400">
-    <User size={80} strokeWidth={1} className="opacity-40" />
-  </div>
-);
 
 export const About = () => {
-  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  
   const { t } = useTranslation();
   
 
@@ -57,60 +49,8 @@ export const About = () => {
 
       {/* TEAM SECTION - Великі сучасні картки */}
       <section className="py-16">
-        <div className="mb-12 text-center">
-          <h2 className="font-montserratBold text-3xl mb-4 flex items-center justify-center gap-3">
-            <User className="text-blue-500" size={32} /> Наша команда
-          </h2>
-          <div className="mx-auto h-1 w-20 bg-blue-500 rounded-full mb-6"></div>
-
-        </div>
-
-        <ul className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {teamData.map((member, index) => (
-            <li 
-              key={index} 
-              onClick={() => setSelectedMember(member)} 
-              className="group relative flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2 cursor-pointer"
-            >
-              {/* ДЕКОРАТИВНЫЙ КОНТЕЙНЕР ФОТО */}
-              <div className="relative mb-6 h-80 w-full overflow-hidden rounded-[2.5rem] bg-white shadow-xl border-4 border-white transition-all duration-500 group-hover:shadow-2xl group-hover:border-blue-50">
-                {member.image ? (
-                  <img 
-                    src={member.image} 
-                    alt={member.name} 
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                  />
-                ) : (
-                  <PhotoPlaceholder />
-                )}
-                
-                {/* Легкий градиент-наложение при наведении */}
-                <div className="absolute inset-0 bg-linear-to-t from-blue-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
-
-              {/* ТЕКСТОВЫЙ БЛОК С ДЕКОРОМ */}
-              <div className="px-4">
-                <h3 className="font-montserratBold text-xl text-gray-900 mb-1">
-                  {member.name}
-                </h3>
-                
-                {/* Та самая динамическая желтая линия */}
-                <div className="mx-auto mb-3 h-1 w-10 bg-yellow-400 transition-all duration-300 group-hover:w-20 rounded-full"></div>
-                
-                <p className="text-sm font-bold uppercase tracking-[0.15em] text-blue-600 opacity-80 group-hover:opacity-100 transition-opacity">
-                  {member.role}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <MembersList />
       </section>
-
-      {/* Модалка */}
-      <MemberModal 
-        member={selectedMember} 
-        onClose={() => setSelectedMember(null)} 
-      />
 
       {/* PARTNERS SECTION - У стилі карток команди */}
       <section className="py-20">
