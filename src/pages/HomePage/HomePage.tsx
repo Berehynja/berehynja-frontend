@@ -5,9 +5,11 @@ import { upcomingEvents } from "../../data/eventsDate";
 
 import OurMission from "../../components/Sections/OurMission";
 import { Hero } from "../../components/Hero/Hero";
+import { useTranslation } from "react-i18next";
 
 export function HomePage() {
 
+  const { i18n } = useTranslation();
   const newEvent = upcomingEvents.at(-1);
 
   const formatDate = (dateString: string) => {
@@ -35,14 +37,14 @@ export function HomePage() {
           <div className="w-full overflow-hidden rounded-lg border border-gray-300 bg-white shadow-lg">
             <div className="p-2">
               <div className="flex flex-col gap-2 p-3">
-                <h2 className="font-montserratBold mb-2 text-xl">{newEvent.title}</h2>
+                <h2 className="font-montserratBold mb-2 text-xl">{newEvent.titles[i18n.language as keyof typeof newEvent.titles]}</h2>
                 <p className="font-montserratBold text-gray-600">{formatDate(newEvent.date)}</p>
-                <p className="font-montserratRegular text-gray-700">{newEvent.description}</p>
+                <p className="font-montserratRegular text-gray-700">{newEvent.descriptions[i18n.language as keyof typeof newEvent.descriptions]}</p>
               </div>
               <div className="relative h-100 overflow-hidden p-2">
                 <img
                   src={newEvent.imageBanner}
-                  alt={newEvent.title}
+                  alt={newEvent.titles[i18n.language as keyof typeof newEvent.titles]}
                   className="absolute inset-0 h-full w-full rounded-lg object-cover"
                 />
               </div>

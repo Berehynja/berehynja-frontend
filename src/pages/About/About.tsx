@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { FileText, Handshake } from "lucide-react";
-import about from "../../images/bereg-about22.jpg";
+import about from "../../images/about.png";
 
 import partner from "../../images/icons8-penguin-color/icons8-penguin-48.png";
 import { MembersList } from "../../components/Team/MembersList";

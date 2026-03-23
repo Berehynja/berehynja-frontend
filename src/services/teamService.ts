@@ -1,6 +1,6 @@
 import { getDocs, collection, addDoc, doc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import type { TeamMember } from "../types/team";
+import type { TeamMember } from "../types/teamMember";
 
 export const TEAM_COLLECTION = "team";
 
