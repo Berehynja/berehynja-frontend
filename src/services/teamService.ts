@@ -23,13 +23,16 @@ export const fetchTeamMembers = async (): Promise<TeamMember[]> => {
 // Додати нового члена команди
 export const addTeamMember = async (memberData: Omit<TeamMember, "id">): Promise<TeamMember> => {
   try {
+    // Ми не передаємо ID, Firebase створить його сам
     const docRef = await addDoc(collection(db, TEAM_COLLECTION), memberData);
+    
+    // Повертаємо об'єкт з тим ID, який щойно створила база
     return {
       id: docRef.id,
       ...memberData,
-    };
+    } as TeamMember;
   } catch (error) {
-    console.error("Помилка при створенні члена команди:", error);
+    console.error("Помилка при створенні:", error);
     throw error;
   }
 };
