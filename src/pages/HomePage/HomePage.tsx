@@ -37,14 +37,14 @@ export function HomePage() {
           <div className="w-full overflow-hidden rounded-lg border border-gray-300 bg-white shadow-lg">
             <div className="p-2">
               <div className="flex flex-col gap-2 p-3">
-                <h2 className="font-montserratBold mb-2 text-xl">{newEvent.titles[i18n.language as keyof typeof newEvent.titles]}</h2>
+                <h2 className="font-montserratBold mb-2 text-xl">{newEvent.titles}</h2>
                 <p className="font-montserratBold text-gray-600">{formatDate(newEvent.date)}</p>
-                <p className="font-montserratRegular text-gray-700">{newEvent.descriptions[i18n.language as keyof typeof newEvent.descriptions]}</p>
+                <p className="font-montserratRegular text-gray-700">{newEvent.descriptions}</p>
               </div>
               <div className="relative h-100 overflow-hidden p-2">
                 <img
                   src={newEvent.imageBanner}
-                  alt={newEvent.titles[i18n.language as keyof typeof newEvent.titles]}
+                  alt='Подія'
                   className="absolute inset-0 h-full w-full rounded-lg object-cover"
                 />
               </div>
