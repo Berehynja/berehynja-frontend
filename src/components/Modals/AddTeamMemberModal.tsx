@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Plus, Trash2, Camera, CheckCircle2, User, Briefcase, GraduationCap, Award, Wrench } from "lucide-react";
 import { uploadMedia } from '../../services/cloudinaryService';
 import type { TeamMember } from "../../types/teamMember";
@@ -16,25 +16,28 @@ export const AddTeamMemberModal = ({ isOpen, onClose, onSave, onDelete, memberTo
   const [activeLang, setActiveLang] = useState<LangKey>('ua');
   const [isUploading, setIsUploading] = useState(false);
 
-  const initialFormState = useMemo<TeamMember>(() => ({
-    id: crypto.randomUUID(),
+  // Функція для створення порожнього стану (як у модалці подій)
+  const getEmptyFormState = (): TeamMember => ({
     name: { ua: "", en: "", de: "" },
     role: { ua: "", en: "", de: "" },
     description: { ua: "", en: "", de: "" },
     skills: { ua: [], en: [], de: [] },
     education: { ua: "", en: "", de: "" },
     image: "",
-  }), []);
+  });
 
-  const [formData, setFormData] = useState<TeamMember>(initialFormState);
+  const [formData, setFormData] = useState<TeamMember>(getEmptyFormState());
 
+  // Синхронізація зі станом редагування
   useEffect(() => {
-    if (memberToEdit) {
-      setFormData({ ...initialFormState, ...memberToEdit });
-    } else {
-      setFormData({ ...initialFormState, id: crypto.randomUUID() });
+    if (isOpen) {
+      if (memberToEdit) {
+        setFormData({ ...memberToEdit });
+      } else {
+        setFormData(getEmptyFormState());
+      }
     }
-  }, [memberToEdit, isOpen, initialFormState]);
+  }, [memberToEdit, isOpen]);
 
   const handleTextChange = (field: keyof Omit<TeamMember, 'id' | 'skills' | 'image'>, value: string) => {
     setFormData(prev => ({
@@ -47,7 +50,10 @@ export const AddTeamMemberModal = ({ isOpen, onClose, onSave, onDelete, memberTo
     if (formData.skills[activeLang].length >= 6) return;
     setFormData(prev => ({
       ...prev,
-      skills: { ...prev.skills, [activeLang]: [...prev.skills[activeLang], ""] }
+      skills: { 
+        ...prev.skills, 
+        [activeLang]: [...(prev.skills[activeLang] || []), ""] 
+      }
     }));
   };
 
@@ -63,7 +69,10 @@ export const AddTeamMemberModal = ({ isOpen, onClose, onSave, onDelete, memberTo
   const removeSkill = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      skills: { ...prev.skills, [activeLang]: prev.skills[activeLang].filter((_, i) => i !== index) }
+      skills: { 
+        ...prev.skills, 
+        [activeLang]: prev.skills[activeLang].filter((_, i) => i !== index) 
+      }
     }));
   };
 
@@ -74,7 +83,17 @@ export const AddTeamMemberModal = ({ isOpen, onClose, onSave, onDelete, memberTo
     try {
       const result = await uploadMedia(file, 'team', formData.name.ua || 'member');
       setFormData(prev => ({ ...prev, image: result.url }));
-    } catch (error) { console.error(error); } finally { setIsUploading(false); }
+    } catch (error) {
+      console.error("Upload error:", error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSave(formData); // Відправляємо об'єкт (з id якщо редагуємо, без - якщо новий)
+    onClose();
   };
 
   if (!isOpen) return null;
@@ -82,32 +101,29 @@ export const AddTeamMemberModal = ({ isOpen, onClose, onSave, onDelete, memberTo
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-3" onClick={onClose}>
       <div 
-        className="w-full max-w-3xl min-w-[350px] bg-white rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[92vh]"
+        className="w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[92vh]"
         onClick={e => e.stopPropagation()}
       >
-        {/* Header */}
-        <header className="px-5 py-4 sm:px-8 sm:py-5 bg-slate-50 border-b border-slate-100 flex items-center justify-between shrink-0">
-          <h2 className="text-base sm:text-xl font-bold text-slate-800 uppercase tracking-tight truncate mr-2">
-            {memberToEdit ? "Редагування" : "Додати в команду"}
+        <header className="px-6 py-5 bg-slate-50 border-b border-slate-100 flex items-center justify-between shrink-0">
+          <h2 className="text-xl font-bold text-slate-800 uppercase tracking-tight">
+            {memberToEdit ? "Редагування профілю" : "Новий фахівець"}
           </h2>
-          <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full transition-colors text-slate-400 shrink-0">
+          <button type="button" onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full transition-colors text-slate-400">
             <X size={20} />
           </button>
         </header>
 
-        <form 
-          onSubmit={(e) => { e.preventDefault(); onSave(formData); onClose(); }} 
-          className="p-4 sm:p-8 overflow-y-auto space-y-6 sm:space-y-8 custom-scrollbar wrap-break-words"
-        >
-          {/* 1. Фото та мови */}
-          <div className="flex flex-col md:flex-row gap-6 items-center md:items-start border-b border-slate-50 pb-6 sm:pb-8">
-            <div className="relative w-28 h-36 sm:w-32 sm:h-40 rounded-2xl bg-slate-100 border-2 border-dashed border-slate-200 overflow-hidden shrink-0 group">
+        <form onSubmit={handleSubmit} className="p-6 sm:p-8 overflow-y-auto space-y-6 custom-scrollbar">
+          
+          {/* Фото та перемикач мов */}
+          <div className="flex flex-col md:flex-row gap-6 items-center md:items-start border-b border-slate-50 pb-6">
+            <div className="relative w-32 h-40 rounded-2xl bg-slate-100 border-2 border-dashed border-slate-200 overflow-hidden shrink-0 group">
               {formData.image ? (
                 <img src={formData.image} className="w-full h-full object-cover" alt="Preview" />
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 gap-1">
+                <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 gap-1 text-center px-2">
                   <Camera size={20} />
-                  <span className="text-[9px] font-bold uppercase text-center px-2">Завантажити</span>
+                  <span className="text-[9px] font-bold uppercase">Фото</span>
                 </div>
               )}
               <label className="absolute inset-0 cursor-pointer bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
@@ -117,12 +133,12 @@ export const AddTeamMemberModal = ({ isOpen, onClose, onSave, onDelete, memberTo
             </div>
 
             <div className="flex-1 w-full space-y-3">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block text-center md:text-left">Мова заповнення:</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Мова заповнення:</label>
               <div className="flex p-1 bg-slate-100 rounded-xl gap-1">
                 {(['ua', 'de', 'en'] as const).map((lang) => (
                   <button
                     key={lang} type="button" onClick={() => setActiveLang(lang)}
-                    className={`flex-1 py-2 rounded-lg text-[10px] sm:text-xs font-bold uppercase transition-all ${
+                    className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase transition-all ${
                       activeLang === lang ? 'bg-white shadow text-blue-600' : 'text-slate-500'
                     }`}
                   >
@@ -133,14 +149,14 @@ export const AddTeamMemberModal = ({ isOpen, onClose, onSave, onDelete, memberTo
             </div>
           </div>
 
-          {/* 2. Основні дані */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          {/* Поля вводу */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase"><User size={12} className="text-blue-500"/> Ім'я ({activeLang})</label>
               <input 
                 required value={formData.name[activeLang]} 
                 onChange={(e) => handleTextChange('name', e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 outline-none text-sm font-medium"
+                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm"
               />
             </div>
             <div className="space-y-2">
@@ -148,7 +164,7 @@ export const AddTeamMemberModal = ({ isOpen, onClose, onSave, onDelete, memberTo
               <input 
                 required value={formData.role[activeLang]} 
                 onChange={(e) => handleTextChange('role', e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 outline-none text-sm font-medium"
+                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm"
               />
             </div>
           </div>
@@ -158,12 +174,12 @@ export const AddTeamMemberModal = ({ isOpen, onClose, onSave, onDelete, memberTo
             <input 
               value={formData.education[activeLang]} 
               onChange={(e) => handleTextChange('education', e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 outline-none text-sm font-medium"
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm"
             />
           </div>
 
-          {/* 3. Навички */}
-          <div className="space-y-4 bg-slate-50 p-4 sm:p-6 rounded-2xl border border-slate-100">
+          {/* Навички */}
+          <div className="space-y-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase"><Wrench size={12} className="text-blue-500"/> Навички</label>
               <button 
@@ -173,46 +189,50 @@ export const AddTeamMemberModal = ({ isOpen, onClose, onSave, onDelete, memberTo
                 <Plus size={10} /> Додати
               </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-              {formData.skills[activeLang].map((skill, index) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {formData.skills[activeLang]?.map((skill, index) => (
                 <div key={index} className="flex gap-2">
                   <input 
                     value={skill} onChange={(e) => updateSkill(index, e.target.value)}
                     className="flex-1 px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs outline-none focus:border-blue-400"
-                    placeholder="Навичка"
                   />
-                  <button type="button" onClick={() => removeSkill(index)} className="p-1.5 text-slate-300 hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
+                  <button type="button" onClick={() => removeSkill(index)} className="p-1.5 text-slate-300 hover:text-red-500 transition-colors">
+                    <Trash2 size={14} />
+                  </button>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* 4. Опис */}
-          <div className="space-y-2 pb-2">
+          <div className="space-y-2">
             <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase"><Award size={12} className="text-blue-500"/> Досвід ({activeLang})</label>
             <textarea 
               rows={3} value={formData.description[activeLang]} 
               onChange={(e) => handleTextChange('description', e.target.value)}
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 outline-none text-sm font-medium resize-none"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm resize-none"
             />
           </div>
 
-          {/* Footer */}
-          <footer className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-slate-100 gap-4 bg-white shrink-0">
+          {/* Кнопки */}
+          <footer className="flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-slate-100 gap-4 mt-4">
             {memberToEdit && (
-              <button type="button" onClick={() => onDelete?.(memberToEdit.id)} className="text-[9px] font-bold text-red-400 uppercase tracking-widest hover:text-red-600 transition-colors">
+              <button 
+                type="button" 
+                onClick={() => onDelete?.(memberToEdit.id!)} 
+                className="text-[9px] font-bold text-red-400 uppercase tracking-widest hover:text-red-600 transition-colors"
+              >
                 Видалити профіль
               </button>
             )}
             <div className="flex gap-2 w-full sm:w-auto sm:ml-auto">
-              <button type="button" onClick={onClose} className="flex-1 sm:flex-none px-4 py-2 text-[10px] font-bold uppercase text-slate-400 hover:text-slate-600">
+              <button type="button" onClick={onClose} className="flex-1 sm:flex-none px-6 py-2 text-[10px] font-bold uppercase text-slate-400 hover:text-slate-600">
                 Скасувати
               </button>
               <button 
                 type="submit" disabled={isUploading}
-                className="flex-1 sm:flex-none px-6 py-3 bg-blue-600 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-lg shadow-blue-100"
+                className="flex-1 sm:flex-none px-8 py-3 bg-blue-600 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 disabled:bg-slate-300"
               >
-                Зберегти
+                {isUploading ? "Завантаження..." : "Зберегти"}
               </button>
             </div>
           </footer>

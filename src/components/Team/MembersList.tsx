@@ -45,7 +45,7 @@ export const MembersList = () => {
       if (editingMember) {
         // Логіка оновлення в Firebase
         const memberId = editingMember.id;
-        await updateTeamMember(memberId, data);
+        await updateTeamMember(memberId!, data);
         
         // Оновлюємо локальний стейт
         setTeam(prev => prev.map(m => m.id === memberId ? { ...m, ...data } : m));
