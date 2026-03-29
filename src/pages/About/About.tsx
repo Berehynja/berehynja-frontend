@@ -52,8 +52,8 @@ export const About = () => {
     try {
       await updateAboutContent({ story: content.story });
       setIsEditing(false);
-    } catch (e) {
-      alert("Помилка збереження");
+    } catch (error) {
+      alert("Помилка збереження: " + error);
     }
   };
 
