@@ -157,7 +157,7 @@ export const About = () => {
             className={`h-full w-full object-cover transition-all duration-700 ${isUploading ? 'opacity-50 blur-sm' : ''}`} 
           />
           {isAdmin && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/40 transition-opacity">
               <label className="bg-white px-6 py-3 rounded-2xl font-bold text-sm cursor-pointer hover:bg-blue-600 hover:text-white transition-all flex items-center gap-2 shadow-xl">
                 <ImageIcon size={18}/> {isUploading ? "Завантаження..." : "Змінити банер"}
                 <input type="file" className="hidden" onChange={handlePhotoUpdate} accept="image/*" disabled={isUploading} />
