@@ -17,14 +17,14 @@ export const Partners = () => {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const currentLang = (i18n.language as LangKey);
+  const currentLang = i18n.language as LangKey;
 
   useEffect(() => {
     const unsubscribe = subscribeToPartners(setPartners);
     return () => unsubscribe();
   }, []);
 
-  const handleAddPartner = async (newPartner: Omit<Partner, 'id'>) => {
+  const handleAddPartner = async (newPartner: Omit<Partner, "id">) => {
     try {
       await addPartner(newPartner);
     } catch (error) {
@@ -44,7 +44,7 @@ export const Partners = () => {
 
   return (
     <>
-      <div className="mb-12 text-center relative">
+      <div className="relative mb-12 text-center">
         <h2 className="font-montserratBold mb-4 flex items-center justify-center gap-3 text-3xl uppercase">
           <Handshake className="text-blue-500" size={32} /> {t("about.ourPartners")}
         </h2>
@@ -54,34 +54,35 @@ export const Partners = () => {
       <ul className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
         {partners.map((partnerItem) => {
           // Визначаємо, чи буде елемент посиланням
-          const Tag = partnerItem.link ? 'a' : 'div';
-          
+          const Tag = partnerItem.link ? "a" : "div";
+
           return (
             <li key={partnerItem.id} className="group relative flex flex-col items-center">
               {isAdmin && partnerItem.id && (
-                <button 
+                <button
                   onClick={() => handleDelete(partnerItem.id!)}
-                  className="absolute -top-2 right-5 z-20 p-2 bg-white text-red-500 rounded-full shadow-md transition-opacity hover:bg-red-50 cursor-pointer border border-slate-100"
+                  className="absolute -top-2 right-5 z-20 cursor-pointer rounded-full border border-slate-100 bg-white p-2 text-red-500 shadow-md transition-opacity hover:bg-red-50"
                 >
                   <Trash2 size={14} />
                 </button>
               )}
 
-              <Tag 
-                href={partnerItem.link} 
+              <Tag
+                href={partnerItem.link}
                 target={partnerItem.link ? "_blank" : undefined}
                 rel={partnerItem.link ? "noopener noreferrer" : undefined}
-                className={`flex flex-col items-center ${partnerItem.link ? 'cursor-pointer' : ''}`}
+                className={`flex flex-col items-center ${partnerItem.link ? "cursor-pointer" : ""}`}
               >
-                <div className="mb-4 flex h-32 w-32 items-center justify-center rounded-[2.5rem] border border-slate-100 bg-white shadow-sm transition-all duration-300 group-hover:-translate-y-2 group-hover:border-blue-100 group-hover:shadow-xl overflow-hidden p-4">
+                <div className="mb-4 flex h-32 w-32 items-center justify-center overflow-hidden rounded-[2.5rem] border border-slate-100 bg-white p-4 shadow-sm transition-all duration-300 group-hover:-translate-y-2 group-hover:border-blue-100 group-hover:shadow-xl">
                   <img
                     src={partnerItem.logo || defaultPartnerLogo}
                     alt={partnerItem.name[currentLang]}
-                    className="max-h-full max-w-full object-contain opacity-70 transition-all duration-500 group-hover:scale-110 group-hover:opacity-100"
+                    className="max-h-full max-w-full object-contain opacity-100 transition-all duration-500 group-hover:scale-110"
+                    
                   />
                 </div>
 
-                <p className="px-2 text-center text-[12px] font-bold tracking-wider text-slate-400 uppercase transition-colors group-hover:text-blue-600 leading-tight">
+                <p className="px-2 text-center text-[12px] leading-tight font-bold tracking-wider text-slate-400 uppercase transition-colors group-hover:text-blue-600">
                   {partnerItem.name[currentLang] || partnerItem.name["ua"]}
                 </p>
               </Tag>
@@ -91,15 +92,15 @@ export const Partners = () => {
 
         {isAdmin && (
           <li className="flex items-center justify-center">
-             <AddEvent onClick={() => setIsModalOpen(true)}/>
+            <AddEvent onClick={() => setIsModalOpen(true)} />
           </li>
         )}
       </ul>
 
-      <AddPartnerModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        onSave={handleAddPartner} 
+      <AddPartnerModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleAddPartner}
       />
     </>
   );
