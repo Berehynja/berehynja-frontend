@@ -2,7 +2,7 @@ const CLOUD_NAME = "dhyjsid8j";
 const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
 
 // Типы для категорий, чтобы не ошибиться в буквах
-export type MediaCategory = 'events' | 'team' | 'programs' | 'partners' | 'banners';
+export type MediaCategory = 'events' | 'team' | 'programs' | 'partners' | 'banners'; // Добавляем string для гибкости, если нужно будет расширить
 
 interface UploadResponse {
   url: string;
