@@ -137,7 +137,7 @@ export const About = () => {
                 <button onClick={handleSaveText} className="flex-1 flex items-center justify-center gap-1 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold cursor-pointer hover:bg-blue-700 transition-all shadow-lg">
                   <Check size={18}/> Зберегти все
                 </button>
-                <button onClick={() => setIsEditing(false)} className="flex gap-1 px-6 py-3 bg-white text-slate-400 rounded-xl font-bold cursor-pointer hover:text-slate-600 border border-slate-100">
+                <button onClick={() => setIsEditing(false)} className="flex gap-1 px-6 py-3 items-center justify-center  bg-white text-slate-400 rounded-xl font-bold cursor-pointer hover:text-slate-600 border border-slate-100">
                   <X size={18}/> Скасувати
                 </button>
               </div>
