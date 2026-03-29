@@ -117,8 +117,7 @@ export const MembersList = () => {
           className="absolute top-4 right-4 z-10 p-3 
                      bg-white/90 backdrop-blur-sm rounded-full shadow-lg 
                      text-slate-600 border border-slate-100
-                     opacity-0 group-hover:opacity-100 
-                     hover:bg-blue-600 hover:text-white hover:scale-110
+                     hover:bg-blue-600 hover:text-white 
                      transition-all duration-300 ease-in-out cursor-pointer"
           title="Редагувати профіль"
         >
