@@ -1,10 +1,10 @@
 // import { Baner, BanerText, BannerTitele, Hero, HomeContainer } from "./HomePage.styled";
 
-import { HowWeHelp } from "../../components/Sections/HowWeHelp";
+import { HowWeHelp } from "../../components/HomePage/Sections/HowWeHelp";
 import { upcomingEvents } from "../../data/eventsDate";
 
-import OurMission from "../../components/Sections/OurMission";
-import { Hero } from "../../components/Hero/Hero";
+import OurMission from "../../components/HomePage/Sections/OurMission";
+import { Hero } from "../../components/HomePage/Hero/Hero";
 import { useTranslation } from "react-i18next";
 
 export function HomePage() {

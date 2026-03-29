@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 
 import { LogoSvg } from "../icons/Logo";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { HeaderNav } from "../HeaderNav/HeaderNav";
+import { HeaderNav } from "./HeaderNav.tsx";
 
 import { MobileMenu } from "../MobileMenu/MobileMenu";
 import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";

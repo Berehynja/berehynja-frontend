@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Heart, UserPlus, ArrowRight, Pencil } from "lucide-react";
-import { DonationModal } from "../Modals/DonationModal/DonationModal";
-import { JoinModal } from "../Modals/JoinModal";
-import ban from "../../images/children.jpg";
-import { useFirebaseContent } from "../../hooks/useFirebaseContent";
-import { EditTextModal, type FieldConfig } from "../Modals/EditTextModal";
-import { useAuth } from "../AuthProvider/useAuth";
+import { DonationModal } from "../DonationModal/DonationModal";
+import { JoinModal } from "../JoinModal";
+import ban from "../../../images/children.jpg";
+import { useFirebaseContent } from "../../../hooks/useFirebaseContent";
+import { EditTextModal, type FieldConfig } from "../../Modals/EditTextModal";
+import { useAuth } from "../../AuthProvider/useAuth";
 
 export const Hero = () => {
   const { t } = useTranslation();

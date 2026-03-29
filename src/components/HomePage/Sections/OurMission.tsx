@@ -1,10 +1,10 @@
 import { Briefcase, Heart, HouseHeart, Pencil, School, Users } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
-import { EditTextModal, type FieldConfig } from "../Modals/EditTextModal";
+import { EditTextModal, type FieldConfig } from "../../Modals/EditTextModal";
 import { useState } from "react";
-import { useFirebaseContent } from "../../hooks/useFirebaseContent";
+import { useFirebaseContent } from "../../../hooks/useFirebaseContent";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../AuthProvider/useAuth";
+import { useAuth } from "../../AuthProvider/useAuth";
 
 // 1. Налаштування анімації контейнера (керує чергою)
 const containerVariants: Variants = {

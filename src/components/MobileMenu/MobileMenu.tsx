@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 // import dekor from "../../images/dek.jpg";
-import { HeaderNav } from "../HeaderNav/HeaderNav";
+import { HeaderNav } from "../Header/HeaderNav";
 import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";
 import { useEffect } from "react";
 

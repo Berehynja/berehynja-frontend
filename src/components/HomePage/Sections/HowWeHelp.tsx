@@ -2,9 +2,9 @@ import { Heart, Users, BookOpen, Calendar, Pencil } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useFirebaseContent } from "../../hooks/useFirebaseContent";
-import { EditTextModal, type FieldConfig } from "../Modals/EditTextModal";
-import { useAuth } from "../AuthProvider/useAuth";
+import { useFirebaseContent } from "../../../hooks/useFirebaseContent";
+import { EditTextModal, type FieldConfig } from "../../Modals/EditTextModal";
+import { useAuth } from "../../AuthProvider/useAuth";
 
 // 1. Конфігурація карток (тільки ID, іконки та стилі)
 const featuresConfig = [
