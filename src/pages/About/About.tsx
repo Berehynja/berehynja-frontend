@@ -93,7 +93,7 @@ export const About = () => {
       <section className="my-16 grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
         <div className="order-2 lg:order-1">
           <div className="mb-6 flex items-center gap-4">
-            <h2 className="font-montserratBold border-l-4 border-blue-500 pl-4 text-3xl text-gray-900 uppercase">
+            <h2 className="font-montserratBold border-l-4 border-blue-500 pl-4 text-3xl text-gray-900 ">
               {t("about.storyTitle")}
             </h2>
             {isAdmin && !isEditing && (
