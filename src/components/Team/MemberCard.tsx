@@ -13,7 +13,7 @@ export const MemberCard = ({ member, setSelectedMember }: { member: TeamMember; 
 
   return (
    
-          <li
+          <div
             
             onClick={() => setSelectedMember(member)}
             className="group relative flex cursor-pointer flex-col items-center text-center transition-all duration-300 hover:-translate-y-2"
@@ -45,7 +45,7 @@ export const MemberCard = ({ member, setSelectedMember }: { member: TeamMember; 
                 {member.role[i18n.language as keyof typeof member.role]}
               </p>
             </div>
-          </li>
+          </div>
         
   );
 }

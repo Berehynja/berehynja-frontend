@@ -97,7 +97,7 @@ export const MembersList = () => {
         <div className="mx-auto mb-6 h-1 w-20 rounded-full bg-blue-500"></div>
       </div>
       
-      <ul className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
   {team.map((member) => (
     /* Замінюємо <li> на <div>, щоб не було вкладеності списків */
     <div key={member.id} className="relative group">
@@ -129,7 +129,7 @@ export const MembersList = () => {
 
   {/* Кнопка "Додати" залишається як <li>, бо вона не містить MemberCard */}
   {isAdmin && (
-    <li 
+    <div
       onClick={openAddModal}
       className="group flex min-h-[400px] cursor-pointer flex-col items-center justify-center 
                  rounded-[3rem] border-2 border-dashed border-slate-200 
@@ -143,9 +143,9 @@ export const MembersList = () => {
         <Plus size={32} />
       </div>
       <span className="font-montserratBold text-xs uppercase tracking-[0.2em]">Додати фахівця</span>
-    </li>
+    </div>
   )}
-</ul>
+</div>
 
       <MemberModal memberTeam={viewingMember} onClose={() => setViewingMember(null)} />
       
