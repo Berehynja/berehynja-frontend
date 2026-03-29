@@ -22,7 +22,10 @@ export const Layout = () => {
       <ScrollToTop />
       <Header />
       <main className="font-nunito">
-        <div className="xl:max-w- xl:max-full mx-auto flex max-w-120 min-w-80 flex-col items-center justify-center md:max-w-5xl md:px-4 lg:max-w-7xl lg:px-8 xl:max-h-full xl:max-w-360 xl:px-10">
+        <div className=" mx-auto flex max-w-120 min-w-80 flex-col items-center justify-center px-3
+        md:max-w-5xl md:px-4 
+        lg:max-w-7xl lg:px-8 
+        xl:max-w- xl:max-full xl:max-h-full xl:max-w-360 xl:px-10">
           <Suspense fallback={<div>Loading page....</div>}>
             <Outlet />
           </Suspense>
