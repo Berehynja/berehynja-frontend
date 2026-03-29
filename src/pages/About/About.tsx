@@ -1,11 +1,8 @@
 import { useTranslation } from "react-i18next";
-import { FileText, Handshake } from "lucide-react";
-import { MembersList } from "../../components/About/Team/MembersList";
-
-
-
-import partner from "../../images/icons8-penguin-color/icons8-penguin-48.png";
+import { FileText } from "lucide-react";
 import { OurStory } from "../../components/About/OurStory/OurStory";
+import { MembersList } from "../../components/About/Team/MembersList";
+import { Partners } from "../../components/About/Partners/Partners";
 
 
 
@@ -40,38 +37,7 @@ export const About = () => {
 
       {/* PARTNERS SECTION */}
       <section className="py-20">
-        <div className="mb-12 text-center">
-          <h2 className="font-montserratBold mb-4 flex items-center justify-center gap-3 text-3xl uppercase">
-            <Handshake className="text-yellow-500" size={32} /> {t("about.ourPartners")}
-          </h2>
-          <div className="mx-auto mb-6 h-1.5 w-24 rounded-full bg-linear-to-r from-yellow-400 to-blue-500"></div>
-        </div>
-        <ul className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-          {[
-            { name: "Генеральне консульство України", id: 1 },
-            { name: "МЗС України", id: 2 },
-            { name: "Integrationamt Bad Oeynhausen", id: 3 },
-            { name: "Plast – Німеччина", id: 4 },
-            { name: "Українська школа в Гамбурзі", id: 5 },
-            { name: "Фонд «Відродження»", id: 6 },
-          ].map((partnerItem) => (
-            <li key={partnerItem.id} className="group relative flex flex-col items-center">
-              {/* КОНТЕЙНЕР ЛОГОТИПА */}
-              <div className="mb-4 flex h-32 w-32 items-center justify-center rounded-[2.5rem] border border-slate-100 bg-white shadow-sm transition-all duration-300 group-hover:-translate-y-2 group-hover:border-blue-100 group-hover:shadow-xl">
-                <img
-                  src={partner}
-                  alt={partnerItem.name}
-                  className="h-16 w-16 object-contain opacity-60 transition-transform duration-500 group-hover:scale-110 group-hover:opacity-100"
-                />
-              </div>
-
-              {/* НАЗВА ПАРТНЕРА */}
-              <p className="px-2 text-center text-[14px] font-bold tracking-wider text-slate-400 uppercase transition-colors group-hover:text-blue-600 leading-tight">
-                {partnerItem.name}
-              </p>
-            </li>
-          ))}
-        </ul>
+        <Partners />
       </section>
 
       {/* STATUT */}
