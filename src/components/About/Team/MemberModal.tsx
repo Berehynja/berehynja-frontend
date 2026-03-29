@@ -1,6 +1,6 @@
 import { X, Award, Briefcase, GraduationCap, User2 } from "lucide-react";
 import { useEffect } from "react";
-import type { TeamMember } from "../../types/teamMember";
+import type { TeamMember } from "../../../types/teamMember";
 import { useTranslation } from "react-i18next";
 
 // Використовуємо той самий інтерфейс, що і в основному файлі

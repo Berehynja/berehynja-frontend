@@ -1,17 +1,17 @@
 import { User, Plus, Pencil } from "lucide-react";
 import { useState, useEffect } from "react";
 import { MemberModal } from "./MemberModal";
-import { AddTeamMemberModal } from "../Modals/AddTeamMemberModal";
+import { AddTeamMemberModal } from "../../Modals/AddTeamMemberModal";
 // Імпортуємо твої сервіси Firebase
 import { 
   fetchTeamMembers, 
   addTeamMember, 
   updateTeamMember, 
   deleteTeamMember 
-} from "../../services/teamService"; 
-import type { TeamMember } from "../../types/teamMember";
+} from "../../../services/teamService"; 
+import type { TeamMember } from "../../../types/teamMember";
 import { MemberCard } from "./MemberCard";
-import { useAuth } from "../AuthProvider/useAuth";
+import { useAuth } from "../../AuthProvider/useAuth";
 
 export const MembersList = () => {
   const { isAdmin } = useAuth();

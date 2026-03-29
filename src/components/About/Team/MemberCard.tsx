@@ -1,5 +1,5 @@
 import { User } from "lucide-react";
-import type { TeamMember } from "../../types/teamMember";
+import type { TeamMember } from "../../../types/teamMember";
 import { useTranslation } from "react-i18next";
 
 const PhotoPlaceholder = () => (
