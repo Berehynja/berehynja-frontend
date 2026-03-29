@@ -63,7 +63,7 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
           </div>
 
           {/* ПРАВА ЧАСТИНА: Інформація */}
-          <div className="flex w-full md:w-[55%] flex-col p-8 md:p-14 overflow-y-auto max-h-[55vh] md:max-h-[90vh]">
+          <div className="flex w-full md:w-[55%] flex-col p-8 md:p-14 overflow-y-auto max-h-[50vh] md:max-h-[90vh]">
             
             {/* Шапка модалки */}
             <div className="mb-10">
