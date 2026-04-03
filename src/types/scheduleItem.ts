@@ -4,12 +4,14 @@ export interface ScheduleItem {
   id: string;
   lessonId: string;
   ageGroupId: string;
+  subGroupId?: string | null;
+  title?: string;
 
   date: string;
   timeStart: string;
   timeEnd: string;
   room: LessonColor;
 
-  level?: string;   
+  level?: string;
   teacher?: string;
 }
