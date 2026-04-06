@@ -49,7 +49,7 @@ export const WorkingHours = () => {
       id: crypto.randomUUID(),
       days: { ua: "Новий період", en: "New period", de: "Zeitraum" },
       label: { ua: "Опис", en: "Description", de: "Beschreibung" },
-      time: "09:00 — 18:00",
+      time: "09:00 - 18:00",
       isClosed: false,
     };
     setItems([...items, newItem]);
@@ -177,14 +177,14 @@ export const WorkingHours = () => {
                     }
                     placeholder="Період..."
                   />
-                  <input
+                  {/* <input
                     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-bold text-white transition-all outline-none focus:border-blue-500"
                     value={item.label[editLang]}
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
                       handleLangUpdate(item.id, "label", e.target.value)
                     }
                     placeholder="Опис..."
-                  />
+                  /> */}
                 </div>
               ) : (
                 <div className="flex flex-col">
