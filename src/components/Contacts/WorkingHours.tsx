@@ -206,7 +206,7 @@ export const WorkingHours = () => {
             <div className="flex min-h-9.5 items-center ">
               {/* min-h-[44px] відповідає висоті інпуту, щоб рядок не "стрибав" за висотою */}
               {item.isClosed ? (
-                <span className="inline-flex h-[26px] min-w-[100px] items-center justify-center rounded-full border border-red-400/50 bg-red-500/20 px-3 pb-[1px] text-[10px] leading-none font-black tracking-widest text-red-400 uppercase">
+                <span className="inline-flex h-[26px] min-w-[100px] items-center justify-center rounded-full border border-red-400/50 bg-red-500/20 px-3  text-[10px] leading-none font-black tracking-widest text-red-400 uppercase">
                   {statusLabels[currentLang]}
                 </span>
               ) : isAdmin ? (

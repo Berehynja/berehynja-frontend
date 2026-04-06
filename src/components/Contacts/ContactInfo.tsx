@@ -15,13 +15,13 @@ export const ContactInfo = () => {
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-blue-900 text-white shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-blue-700 group-hover:shadow-blue-200">
               <Mail size={24} />
             </div>
-            <div>
+            <div className="flex min-w-0 flex-col">
               <p className="mb-1 text-xs font-black tracking-widest text-gray-400 uppercase transition-colors group-hover:text-blue-600">
                 Напишіть нам
               </p>
               <a
                 href="mailto:bereginia.badoeynhausen@gmail.com"
-                className="text-lg font-bold text-gray-800 transition-colors group-hover:text-blue-600"
+                className="block w-full truncate text-lg font-bold text-gray-800 transition-colors group-hover:text-blue-600"
               >
                 bereginia.badoeynhausen@gmail.com
               </a>
