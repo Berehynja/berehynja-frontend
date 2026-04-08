@@ -46,11 +46,11 @@ export const Impressum = () => {
     setIsEditing(false);
   };
 
-  // Единый стиль для всех полей ввода
+  // Однотипный стиль для всех инпутов
   const inputStyles = "w-full p-2 bg-white/90 border border-gray-300 rounded-xl text-gray-900 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-sans italic text-sm";
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-8 relative">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 relative font-montserrat">
       
       {/* КНОПКА АДМИНА */}
       {isAdmin && (
@@ -86,7 +86,7 @@ export const Impressum = () => {
               className={`${inputStyles} h-24`}
             />
           ) : (
-            <p className="text-preset-4 px-4 leading-8 text-gray-600 md:px-0 md:text-left italic">
+            <p className="text-preset-4 px-4 leading-8 text-gray-600 md:px-0 md:text-left">
               {legalData.headerDescription}
             </p>
           )}
@@ -156,19 +156,11 @@ export const Impressum = () => {
             <div className="grid grid-cols-2 gap-4 relative z-10">
               <div className="flex flex-col">
                 <p className="text-[10px] uppercase font-bold text-blue-200 mb-1">Gericht</p>
-                {isEditing ? (
-                  <input name="registerCourt" value={legalData.registerCourt} onChange={handleChange} className={inputStyles} />
-                ) : (
-                  <p className="font-bold border-b border-white/10 pb-1">{legalData.registerCourt}</p>
-                )}
+                {isEditing ? <input name="registerCourt" value={legalData.registerCourt} onChange={handleChange} className={inputStyles} /> : <p className="font-bold">{legalData.registerCourt}</p>}
               </div>
               <div className="flex flex-col">
                 <p className="text-[10px] uppercase font-bold text-blue-200 mb-1">Nummer</p>
-                {isEditing ? (
-                  <input name="registerNumber" value={legalData.registerNumber} onChange={handleChange} className={inputStyles} />
-                ) : (
-                  <p className="font-bold border-b border-white/10 pb-1">{legalData.registerNumber}</p>
-                )}
+                {isEditing ? <input name="registerNumber" value={legalData.registerNumber} onChange={handleChange} className={inputStyles} /> : <p className="font-bold">{legalData.registerNumber}</p>}
               </div>
             </div>
           </div>
@@ -200,26 +192,26 @@ export const Impressum = () => {
             </div>
           </div>
 
-          {/* Haftung & Legal */}
+          {/* Haftung & Legal - ТЕКСТЫ ВОССТАНОВЛЕНЫ */}
           <div className="rounded-[2.5rem] bg-gray-50 p-8 border border-gray-100 flex flex-col gap-6 text-gray-500 text-sm italic">
             <div className="flex gap-4">
               <ShieldAlert className="text-red-400 shrink-0" size={20} />
-              <p><strong>Haftung für Inhalte:</strong> Gemäß § 7 Abs.1 TMG.</p>
+              <p><strong>Haftung для Inhalte:</strong> Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte verantwortlich.</p>
             </div>
             <div className="flex gap-4">
               <ExternalLink className="text-blue-400 shrink-0" size={20} />
-              <p><strong>Haftung für Links:</strong> Wir haften nicht für externe Webseiten.</p>
+              <p><strong>Haftung для Links:</strong> Wir haben keinen Einfluss auf die Inhalte externer Webseiten Dritter.</p>
             </div>
             <div className="flex gap-4">
               <Copyright className="text-orange-400 shrink-0" size={20} />
-              <p><strong>Urheberrecht:</strong> Alle Inhalte sind urheberrechtlich geschützt.</p>
+              <p><strong>Urheberrecht:</strong> Die Inhalte auf diesen Seiten unterliegen dem deutschen Urheberrecht.</p>
             </div>
             
             <div className="mt-4 pt-6 border-t border-gray-200">
               <div className="flex items-start gap-3 mb-3">
                 <Info className="text-blue-600 shrink-0" size={18} />
                 <p className="text-xs font-bold not-italic text-gray-400 uppercase tracking-tighter">
-                  Verantwortlich für Inhalt:
+                  Verantwortlich для Inhalt:
                 </p>
               </div>
               {isEditing ? (
