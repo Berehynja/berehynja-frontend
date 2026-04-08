@@ -2,7 +2,7 @@ import { useState, useEffect, type ChangeEvent } from "react";
 import { Clock, Trash2, Plus, Save, Ban, CheckCircle2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../AuthProvider/useAuth";
-import { subscribeToSchedule, saveSchedule } from "../../services/SheduleService";
+import { subscribeToSchedule, saveSchedule } from "../../services/workingSheduleService";
 import type { WorkingSchedule } from "../../types/workingSchedule";
 import type { LangKey } from "../../types/types";
 
@@ -229,7 +229,7 @@ export const WorkingHours = () => {
       </div>
 
       {/* FOOTER */}
-      <p className="mt-8 text-center text-[10px] font-medium text-white/30 italic">
+      <p className="mt-8 text-center text-[14px] font-medium text-white/50 italic">
         * {t("schedule.disclaimer") || "Графік може змінюватися у святкові дні"}
       </p>
     </div>

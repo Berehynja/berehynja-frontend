@@ -3,4 +3,7 @@ export interface ContactData {
   phone: string;
   address: string;
   city: string;
+  instagram: string;
+  telegram: string;
+  mapUrl?: string; // Додаємо це поле
 }
