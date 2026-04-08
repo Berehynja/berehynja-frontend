@@ -139,7 +139,7 @@ export const WorkingHours = () => {
         {items.map((item, index) => (
           <div
             key={item.id}
-            className={`flex items-start gap-4 pb-4 ${
+            className={`flex gap-4 pb-4 ${
               index !== items.length - 1 ? "border-b border-white/5" : ""
             }`}
           >
@@ -177,19 +177,19 @@ export const WorkingHours = () => {
                     }
                     placeholder="Період..."
                   />
-                  {/* <input
+                  <input
                     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-bold text-white transition-all outline-none focus:border-blue-500"
                     value={item.label[editLang]}
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
                       handleLangUpdate(item.id, "label", e.target.value)
                     }
                     placeholder="Опис..."
-                  /> */}
+                  />
                 </div>
               ) : (
-                <div className="flex flex-col">
+                <div className="flex flex-col  gap-1">
                   <span
-                    className={`text-[11px] font-black tracking-widest uppercase ${item.isClosed ? "text-white/30" : "text-blue-400"}`}
+                    className={`text-[15px] font-black pt-1 tracking-widest uppercase ${item.isClosed ? "text-white/50" : "text-blue-400"}`}
                   >
                     {item.days[currentLang] || item.days["ua"]}
                   </span>
@@ -203,10 +203,10 @@ export const WorkingHours = () => {
             </div>
 
             {/* Time / Status (Right side) */}
-            <div className="flex min-h-9.5 items-center ">
+            <div className="flex min-h-9.5 items-start ">
               {/* min-h-[44px] відповідає висоті інпуту, щоб рядок не "стрибав" за висотою */}
               {item.isClosed ? (
-                <span className="inline-flex h-[26px] min-w-[100px] items-center justify-center rounded-full border border-red-400/50 bg-red-500/20 px-3  text-[10px] leading-none font-black tracking-widest text-red-400 uppercase">
+                <span className="inline-flex h-6 min-w-[100px] items-center justify-center rounded-full border border-red-400/50 bg-red-500/20 px-3  text-[10px] leading-none font-black tracking-widest text-red-400 uppercase">
                   {statusLabels[currentLang]}
                 </span>
               ) : isAdmin ? (
