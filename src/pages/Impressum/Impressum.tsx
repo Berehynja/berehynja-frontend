@@ -147,7 +147,7 @@ export const Impressum = () => {
           </div>
 
           {/* Register Card */}
-          <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-blue-600 to-blue-700 p-8 text-white shadow-xl">
+          <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-blue-500 to-blue-700 p-8 text-white shadow-xl">
             <FileBadge size={140} className="absolute -right-10 -bottom-10 opacity-10 rotate-12" />
             <div className="flex items-center gap-3 mb-6 relative z-10">
               <FileBadge size={28} className="text-yellow-400" />
@@ -169,7 +169,7 @@ export const Impressum = () => {
         {/* ПРАВАЯ КОЛОНКА */}
         <div className="flex flex-col gap-8">
           {/* Contact Card */}
-          <div className="relative overflow-hidden rounded-[2.5rem] bg-gray-200 p-8 shadow-2xl text-black">
+          <div className="relative overflow-hidden rounded-[2.5rem] bg-linear-to-br from-gray-200 to-gray-400 p-8 shadow-2xl text-black">
             <Globe2 size={150} className="absolute -right-20 -top-20 opacity-5" />
             <h2 className="font-montserratBold text-xl mb-8 text-yellow-600 uppercase tracking-widest relative z-10">Kontakt</h2>
             <div className="space-y-6 relative z-10">
