@@ -107,7 +107,7 @@ export const Impressum = () => {
             </div>
             
             <div className="space-y-4">
-              <p className="text-2xl font-montserratBold text-gray-900 uppercase tracking-tighter">Berehynja e.V.</p>
+              <p className="text-2xl font-montserratBold text-gray-900 uppercase tracking-tighter">Berehynja</p>
               <div className="flex items-start gap-3 text-gray-600">
                 <MapPin className="text-yellow-500 mt-1 shrink-0" size={20} />
                 <p className="text-lg leading-relaxed italic">
@@ -169,9 +169,9 @@ export const Impressum = () => {
         {/* ПРАВАЯ КОЛОНКА */}
         <div className="flex flex-col gap-8">
           {/* Contact Card */}
-          <div className="relative overflow-hidden rounded-[2.5rem] bg-gray-900 p-8 shadow-2xl text-white">
+          <div className="relative overflow-hidden rounded-[2.5rem] bg-gray-200 p-8 shadow-2xl text-black">
             <Globe2 size={150} className="absolute -right-20 -top-20 opacity-5" />
-            <h2 className="font-montserratBold text-xl mb-8 text-yellow-400 uppercase tracking-widest relative z-10">Kontakt</h2>
+            <h2 className="font-montserratBold text-xl mb-8 text-yellow-600 uppercase tracking-widest relative z-10">Kontakt</h2>
             <div className="space-y-6 relative z-10">
               <div className="flex items-center gap-4">
                 <Mail className="text-blue-400" size={24} />
@@ -181,7 +181,7 @@ export const Impressum = () => {
                 <Phone className="text-green-400" size={24} />
                 <p className="font-medium">{contacts?.phone || "+49 151 28161383"}</p>
               </div>
-              <div className="flex items-center gap-4 pt-4 border-t border-white/10">
+              <div className="flex items-center gap-4 border-t border-white/10">
                 <Globe className="text-yellow-400" size={24} />
                 {isEditing ? (
                   <input name="website" value={legalData.website} onChange={handleChange} className={inputStyles} />
