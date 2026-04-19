@@ -64,7 +64,7 @@ export function LessonCard({ lesson, onEdit }: LessonCardProps) {
               e.stopPropagation();
               if (onEdit) onEdit(lesson);
             }}
-            className="absolute top-5 right-5 z-20 cursor-pointer rounded-full bg-black/30 p-2.5 text-white shadow-lg backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-white hover:text-gray-900"
+            className="absolute top-5 right-5 z-20 cursor-pointer rounded-full bg-black/30 p-2.5 text-white shadow-lg backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-blue-500 hover:text-white"
           >
             <Pencil size={18} />
           </button>
