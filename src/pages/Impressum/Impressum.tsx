@@ -11,13 +11,13 @@ import type { ContactData } from "../../types/contactData";
 import type { ImpressumData } from "../../types/impressumData";
 
 const initialData: ImpressumData = {
-  representative: "Olena Ivanenko",
-  position: "1. Vorsitzende",
-  registerCourt: "Bad Oeynhausen",
-  registerNumber: "VR 12345",
-  responsiblePerson: "Olena Ivanenko, 32545 Weserstraße 24, Bad-Oeynhausen.",
-  headerDescription: "Юридична інформація про організацію Berehynja e.V. відповідно до параграфа § 5 TMG. Тут ви знайдете наші реєстраційні дані та офіційних представників.",
-  website: "www.berehynja.de"
+  representative: "",
+  position: "",
+  registerCourt: "",
+  registerNumber: "",
+  responsiblePerson: "",
+  headerDescription: "",
+  website: ""
 };
 
 export const Impressum = () => {
@@ -27,12 +27,15 @@ export const Impressum = () => {
   const [contacts, setContacts] = useState<ContactData | null>(null);
 
   useEffect(() => {
+
     const unsubImpressum = subscribeToImpressum((data) => {
       if (data) setLegalData(data as ImpressumData);
     });
+
     const unsubContacts = subscribeToContacts((data) => {
       if (data) setContacts(data);
     });
+
     return () => { unsubImpressum(); unsubContacts(); };
   }, []);
 
@@ -57,7 +60,7 @@ export const Impressum = () => {
         <button
           onClick={isEditing ? onSave : () => setIsEditing(true)}
           className={`fixed bottom-10 right-10 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-2xl transition-all ${
-            isEditing ? "bg-green-500 text-white" : "bg-blue-600 text-white hover:scale-110"
+            isEditing ? "bg-green-500 text-white" : "bg-blue-900 text-white hover:scale-110"
           }`}
         >
           {isEditing ? <Save size={24} /> : <Edit2 size={24} />}
@@ -148,7 +151,7 @@ export const Impressum = () => {
 
           {/* Register Card */}
           <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-blue-500 to-blue-700 p-8 text-white shadow-xl">
-            <FileBadge size={140} className="absolute -right-10 -bottom-10 opacity-10 rotate-12" />
+            <FileBadge size={140} className="absolute -right-5 -bottom-5 opacity-10 rotate-12" />
             <div className="flex items-center gap-3 mb-6 relative z-10">
               <FileBadge size={28} className="text-yellow-400" />
               <h3 className="font-montserratBold text-xl uppercase tracking-widest">Registereintrag</h3>
@@ -170,7 +173,7 @@ export const Impressum = () => {
         <div className="flex flex-col gap-8">
           {/* Contact Card */}
           <div className="relative overflow-hidden rounded-[2.5rem] bg-linear-to-br from-gray-200 to-gray-400 p-8 shadow-2xl text-black">
-            <Globe2 size={150} className="absolute -right-20 -top-20 opacity-5" />
+            <Globe2 size={150} className="absolute -right-10 -top-10 opacity-5" />
             <h2 className="font-montserratBold text-xl mb-8 text-yellow-600 uppercase tracking-widest relative z-10">Kontakt</h2>
             <div className="space-y-6 relative z-10">
               <div className="flex items-center gap-4">
