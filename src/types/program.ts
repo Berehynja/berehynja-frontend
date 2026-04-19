@@ -6,7 +6,7 @@ export interface Program {
   title: string;
   description?: string;
   color: LessonColor;
-
+  image: string;
   // Зв'язок з віковими групами (зберігаємо тільки ID)
   ageGroupIds: string[];
 

@@ -4,6 +4,6 @@
 export * from "./HomePage/HomePage.tsx";
 export * from "./Events/Events.tsx";
 export * from "./About/About.tsx";
-export * from "./Programs/ProgramsKids.tsx";
+export * from "./Programs/KidsPrograms.tsx";
 export * from "./Contact/Contact.tsx";
 export * from "./PageNotFound/PageNotFound.tsx";

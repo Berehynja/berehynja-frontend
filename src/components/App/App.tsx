@@ -6,7 +6,7 @@ import { EventDetails } from "../Events/EventDetails.tsx";
 import { Impressum } from "../../pages/Impressum/Impressum.tsx";
 import { Privacy } from "../../pages/Privacy/Privacy.tsx";
 import { AdultPrograms } from "../../pages/Programs/AdultPrograms.tsx";
-import { ProgramDetail } from "../Programs/ProgramDetail.tsx";
+import { ProgramDetail } from "../Programs/AdultProgramms/ProgramDetail.tsx";
 
 function App() {
   const location = useLocation();

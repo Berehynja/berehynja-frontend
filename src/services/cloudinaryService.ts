@@ -1,62 +1,57 @@
 const CLOUD_NAME = "dhyjsid8j";
 const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
 
-// Типы для категорий, чтобы не ошибиться в буквах
-export type MediaCategory = 'events' | 'team' | 'programs' | 'partners' | 'banners'; // Добавляем string для гибкости, если нужно будет расширить
+export type MediaCategory = 'events' | 'team' | 'programs' | 'partners' | 'banners';
 
 interface UploadResponse {
   url: string;
   public_id: string;
 }
 
-/**
- * 1. ДОБАВЛЕНИЕ (ЗАГРУЗКА)
- * @param file - Файл из input
- * @param category - Категория (для выбора пресета)
- * @param subFolder - Дополнительная папка (например, eventId)
- */
 export const uploadMedia = async (
   file: File, 
   category: MediaCategory, 
   subFolder?: string
 ): Promise<UploadResponse> => {
-  console.log("🚀 ~ subFolder:", subFolder)
   
   const formData = new FormData();
   formData.append("file", file);
 
-  // Названия пресетов из твоей админки Cloudinary
+  // Названия пресетов должны точно совпадать с теми, что в Cloudinary Settings -> Upload
   const presets: Record<MediaCategory, string> = {
-    events: "event_photos", // замени на свои реальные имена
+    events: "event_photos",
     team: "team_photos",
-    programs: "program_photos",
+    programs: "program_photos", 
     partners: "partner_photos",
     banners: "banner_photos",
-    
   };
 
   formData.append("upload_preset", presets[category]);
 
-  // Если передали subFolder, строим путь: category/subFolder
+  // Формируем папку: например "programs/math_course"
   const path = subFolder ? `${category}/${subFolder}` : category;
-  console.log("🚀 ~ path:", path)
   formData.append("folder", path);
 
-  const response = await fetch(UPLOAD_URL, {
-    method: "POST",
-    body: formData,
-  });
+  try {
+    const response = await fetch(UPLOAD_URL, {
+      method: "POST",
+      body: formData,
+    });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error?.message || "Upload failed");
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error?.message || "Ошибка при загрузке в Cloudinary");
+    }
+
+    const data = await response.json();
+    
+    return {
+      url: data.secure_url,
+      public_id: data.public_id
+    };
+  } catch (error) {
+    console.error("Cloudinary Upload Error:", error);
+    throw error;
   }
-
-  const data = await response.json();
-  
-  return {
-    url: data.secure_url,
-    public_id: data.public_id // Важно сохранить его для удаления!
-  };
 };
 

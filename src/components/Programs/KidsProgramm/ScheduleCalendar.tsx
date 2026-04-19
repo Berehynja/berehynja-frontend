@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../AuthProvider/useAuth";
-import { COLORS, type LessonColor } from "../../data/colors";
-import type { Program } from "../../types/program";
-import type { AgeGroup } from "../../types/ageGroup";
-import type { ScheduleItem } from "../../types/scheduleItem";
-import { scheduleService } from "../../services/scheduleService";
-import { getNextSundayDate } from "../../utils/dateUtils";
+import { useAuth } from "../../AuthProvider/useAuth";
+import { COLORS, type LessonColor } from "../../../data/colors";
+import type { Program } from "../../../types/program";
+import type { AgeGroup } from "../../../types/ageGroup";
+import type { ScheduleItem } from "../../../types/scheduleItem";
+import { scheduleService } from "../../../services/scheduleService";
+import { getNextSundayDate } from "../../../utils/dateUtils";
 import { Loader2, Pencil, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 

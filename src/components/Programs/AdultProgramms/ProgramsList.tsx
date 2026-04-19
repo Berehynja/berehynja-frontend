@@ -8,19 +8,19 @@ import {
   Loader2, 
   MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
-import type { LangKey } from "../../types/types";
+import type { LangKey } from "../../../types/types";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../AuthProvider/useAuth";
-import type { ProgramAdults } from "../../types/program";
-import { AddEvent } from "../Buttons/AddEvent";
-import { AddProgramModal } from "../Modals/AddAdultProgramsModal";
+import { useAuth } from "../../AuthProvider/useAuth";
+import type { ProgramAdults } from "../../../types/program";
+import { AddEvent } from "../../Buttons/AddEvent";
+import { AddProgramModal } from "../../Modals/AddAdultProgramsModal";
 import {
   fetchProgramsAdults,
   updateProgramAdults,
   addProgramAdults,
   deleteProgramAdults,
-} from "../../services/programsAdultsService";
+} from "../../../services/programsAdultsService";
 
 export const ProgramsList = () => {
   const { isAdmin } = useAuth();

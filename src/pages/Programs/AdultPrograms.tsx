@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { ProgramsList } from "../../components/Programs/ProgramsList";
+import { ProgramsList } from "../../components/Programs/AdultProgramms/ProgramsList";
 
 
 export const AdultPrograms = () => {

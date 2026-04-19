@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { LessonsGrid } from "../../components/Lessons/LessonsGrid";
-import { ScheduleCalendar } from "../../components/Lessons/ScheduleCalendar";
+import { LessonsGrid } from "../../components/Programs/KidsProgramm/LessonsGrid";
+import { ScheduleCalendar } from "../../components/Programs/KidsProgramm/ScheduleCalendar";
 import type { AgeGroup } from "../../types/ageGroup";
 import type { Program } from "../../types/program";
 import { programsService } from "../../services/programsService";

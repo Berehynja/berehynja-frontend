@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { LessonCard } from "./LessonCard";
-import { useAuth } from "../AuthProvider/useAuth";
-import type { AgeGroup } from "../../types/ageGroup";
-import type { Program } from "../../types/program";
-import { programsService } from "../../services/programsService";
-import { AddLessonModal } from "../Modals/AddLessonModal";
-import { AddEvent } from "../Buttons/AddEvent";
+import { useAuth } from "../../AuthProvider/useAuth";
+import type { AgeGroup } from "../../../types/ageGroup";
+import type { Program } from "../../../types/program";
+import { programsService } from "../../../services/programsService";
+import { AddLessonModal } from "../../Modals/AddLessonModal";
+import { AddEvent } from "../../Buttons/AddEvent";
 
 interface LessonsGridProps {
   programs: Program[];
@@ -61,7 +61,7 @@ export function LessonsGrid({ programs, ageGroups, setPrograms }: LessonsGridPro
 
   return (
     <div className="font-nunito mt-10 mb-25">
-      <div className="grid auto-rows-fr grid-cols-1 gap-4 p-4 sm:grid-cols-2 md:grid-cols-4">
+      <div className="grid auto-rows-fr grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {/* КАРТКИ (Виводимо реальні дані з бази) */}
         {programs.map((program) => (
           <LessonCard key={program.id} lesson={program} onEdit={handleEditProgram} />

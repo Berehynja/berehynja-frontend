@@ -13,11 +13,11 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useAuth } from "../AuthProvider/useAuth";
-import { getProgramAdultsById, updateProgramAdults } from "../../services/programsAdultsService";
+import { useAuth } from "../../AuthProvider/useAuth";
+import { getProgramAdultsById, updateProgramAdults } from "../../../services/programsAdultsService";
 import { useTranslation } from "react-i18next";
-import type { ProgramAdults } from "../../types/program";
-import type { LangKey } from "../../types/types";
+import type { ProgramAdults } from "../../../types/program";
+import type { LangKey } from "../../../types/types";
 
 export const ProgramDetail = () => {
   const [program, setProgram] = useState<ProgramAdults | null>(null);
