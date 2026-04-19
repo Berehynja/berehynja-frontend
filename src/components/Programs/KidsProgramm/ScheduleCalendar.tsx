@@ -345,7 +345,7 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
   if (ageGroups.length === 0) return null;
 
   return (
-    <div className="font-nunito my-30">
+    <div className="font-nunito">
       <h2 className="text-preset-2 my-10 text-center font-semibold text-gray-700">
         Графік занять {displayDate}
       </h2>

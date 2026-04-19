@@ -52,7 +52,7 @@ export const ProgramsKids = () => {
           <Loader2 className="h-10 w-10 animate-spin text-blue-500" />
         </div>
       ) : (
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-20">
           {/* Передаємо дані далі */}
           <ScheduleCalendar programs={programs} ageGroups={ageGroups} />
           <LessonsGrid programs={programs} ageGroups={ageGroups} setPrograms={setPrograms} />

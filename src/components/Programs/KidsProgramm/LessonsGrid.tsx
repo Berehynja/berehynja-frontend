@@ -60,8 +60,11 @@ export function LessonsGrid({ programs, ageGroups, setPrograms }: LessonsGridPro
   };
 
   return (
-    <div className="font-nunito mt-10 mb-25">
-      <div className="grid auto-rows-fr grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="font-nunito mb-25">
+      <h3 className="text-preset-2 mb-10 text-center font-semibold text-gray-700">
+        Всі програми
+      </h3>
+      <div className="grid auto-rows-fr grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {/* КАРТКИ (Виводимо реальні дані з бази) */}
         {programs.map((program) => (
           <LessonCard key={program.id} lesson={program} onEdit={handleEditProgram} />
