@@ -133,12 +133,12 @@ export function AddLessonModal({
               </div>
               <div 
                 onClick={() => fileInputRef.current?.click()}
-                className="group relative flex h-40 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 transition-all hover:border-blue-400 hover:bg-blue-50"
+                className=" relative flex h-40 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 transition-all hover:border-blue-400 hover:bg-blue-50"
               >
                 {imageUrl ? (
                   <>
                     <img src={imageUrl} className="h-full w-full object-cover" alt="Background" />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute flex items-center w-15 h-15 rounded-full justify-center bg-black/70">
                       <Upload className="text-white" />
                     </div>
                   </>
