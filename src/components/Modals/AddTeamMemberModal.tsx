@@ -81,7 +81,7 @@ export const AddTeamMemberModal = ({ isOpen, onClose, onSave, onDelete, memberTo
     if (!file) return;
     setIsUploading(true);
     try {
-      const result = await uploadMedia(file, 'team', formData.name.ua || 'member');
+      const result = await uploadMedia(file, 'team', formData.name[activeLang]?.trim() || 'member');
       setFormData(prev => ({ ...prev, image: result.url }));
     } catch (error) {
       console.error("Upload error:", error);
