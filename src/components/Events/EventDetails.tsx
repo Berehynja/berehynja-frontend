@@ -101,8 +101,8 @@ export const EventDetails = () => {
   };
 
   return (
-    <div className=" w-full  px-4 py-8">
-      <div className="mx-auto  px-4 py-8">
+    <div className="w-full px-4 py-8">
+      <div className="mx-auto px-4 py-8">
         <Link
           to="/events"
           className="flex items-center gap-2 font-bold text-blue-500 transition-colors hover:text-blue-700"
@@ -121,7 +121,7 @@ export const EventDetails = () => {
           )}
         </div>
         <div className="flex w-full flex-col justify-center md:w-1/2">
-          <h2 className="font-montserratBold mb-3 text-3xl text-gray-900">
+          <h2 className="font-nunito mb-3 text-3xl text-gray-900">
             {event?.titles[i18n.language as keyof typeof event.titles]}
           </h2>
           <p className="mb-2 font-semibold text-blue-600">

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../../AuthProvider/useAuth";
 import { COLORS, type LessonColor } from "../../../data/colors";
 import type { Program } from "../../../types/program";
@@ -234,6 +235,7 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
   const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
   const [isLoadingSchedules, setIsLoadingSchedules] = useState(true);
   const { isAdmin } = useAuth();
+  const { t } = useTranslation();
 
   const [addingForGroup, setAddingForGroup] = useState<string | null>(null);
   const [editingScheduleId, setEditingScheduleId] = useState<string | null>(null);
@@ -347,7 +349,7 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
   return (
     <div className="font-nunito">
       <h2 className="text-preset-2 my-10 text-center font-semibold text-gray-700">
-        Графік занять {displayDate}
+        {t("programs.kids.schedule")} {displayDate}
       </h2>
 
       <div className="grid gap-6 xl:grid-cols-4">
@@ -377,31 +379,31 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
               }`}
             >
               <h2 className="text-preset-3 text-Blue mb-4 text-center font-bold">
-                Група {groupName}
+                {t("programs.kids.groups")} {groupName}
               </h2>
 
               <div className={`grid gap-2 ${hasSubGroups ? "grid-cols-10" : "grid-cols-6"} `}>
                 <div className="bg-LightSky shadow-card col-span-2 flex flex-col justify-center rounded-md p-2 text-center font-semibold">
-                  Час
+                  {t("programs.kids.time")}
                 </div>
 
                 {hasSubGroups ? (
                   <div className="col-span-8 gap-2">
                     <div className="bg-LightSky shadow-card col-span-4 rounded-md p-2 text-center font-semibold">
-                      Назва заняття
+                      {t("programs.kids.lessonName")}
                     </div>
                     <div className="mt-2 grid grid-cols-2 gap-2">
                       <div className="bg-LightSky shadow-card rounded-md p-2 text-center font-semibold">
-                        Початковий {subGroups[0]?.subLabel || "Підгрупа 1"}
+                        {t("programs.kids.initial1")} {subGroups[0]?.subLabel || "Підгрупа 1"}
                       </div>
                       <div className="bg-LightSky shadow-card rounded-md p-2 text-center font-semibold">
-                        Середній {subGroups[1]?.subLabel || "Підгрупа 2"}
+                        {t("programs.kids.initial2")} {subGroups[1]?.subLabel || "Підгрупа 2"}
                       </div>
                     </div>
                   </div>
                 ) : (
                   <div className="bg-LightSky shadow-card col-span-4 rounded-md p-2 text-center font-semibold">
-                    Назва заняття
+                    {t("programs.kids.lessonName")}
                   </div>
                 )}
 
@@ -475,7 +477,7 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
                                     </span>
                                   )}
                                   {lesson.teacher && (
-                                    <span className="text-preset-5 mt-1 w-full pt-1 text-gray-700">
+                                    <span className="text-preset-5 mt-1 w-full pt-1 text-gray-100">
                                       {lesson.teacher}
                                     </span>
                                   )}
