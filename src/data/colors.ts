@@ -6,7 +6,7 @@ export const COLORS = {
   LightSky: "#C1DDEF",
   Rose: "#DF7D84",
   Red: "#FF5A5A",
-  Violet: "#8E44AD",
+  Violet: "#cd7eee",
   Green: "#2ECC71",
   GreenAccent: "#9ACD32",
   Pink: "#FF66B2",
@@ -24,9 +24,8 @@ function hexToRgba(hex: string, alpha: number) {
 }
 
 // Версія кольорів з 30% прозорістю
-export const COLORS_ALPHA_30: Record<keyof typeof COLORS, string> =
-  Object.fromEntries(
-    Object.entries(COLORS).map(([key, value]) => [key, hexToRgba(value, 0.3)]),
-  ) as Record<keyof typeof COLORS, string>;
+export const COLORS_ALPHA_30: Record<keyof typeof COLORS, string> = Object.fromEntries(
+  Object.entries(COLORS).map(([key, value]) => [key, hexToRgba(value, 0.3)])
+) as Record<keyof typeof COLORS, string>;
 
 export type LessonColor = keyof typeof COLORS;
