@@ -74,7 +74,7 @@ export const OurStory = () => {
     <>
       <div className="order-2 lg:order-1">
         <div className="mb-6 flex items-center gap-4">
-          <h2 className="font-montserratBold border-l-4 border-blue-500 pl-4 text-3xl text-gray-900">
+          <h2 className="font-nunito border-l-4 border-blue-500 pl-4 text-3xl text-gray-900">
             {t("about.storyTitle")}
           </h2>
           {isAdmin && !isEditing && (
