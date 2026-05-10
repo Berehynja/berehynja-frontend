@@ -25,7 +25,13 @@
   "programs": {
     "kids": {
       "title": "Programs for Kids",
-      "description": "Unlock your potential through a variety of courses and workshops designed to inspire, teach new skills, and enhance your abilities."
+      "description": "Unlock your potential through a variety of courses and workshops designed to inspire, teach new skills, and enhance your abilities.",
+      "schedule": "Class Schedule",
+      "groups": "Group",
+      "initial1": "Initial",
+      "initial2": "Intermediate",
+      "time": "Time",
+      "lessonName": "Lesson Name"
     },
     "adults": {
       "title": "Programs for Adults",
