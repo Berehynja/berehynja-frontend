@@ -45,7 +45,7 @@ export const Partners = () => {
   return (
     <>
       <div className="relative mb-12 text-center">
-        <h2 className="font-montserratBold mb-4 flex items-center justify-center gap-3 text-3xl uppercase">
+        <h2 className="font-nunito mb-4 flex items-center justify-center gap-3 text-3xl uppercase">
           <Handshake className="text-blue-500" size={32} /> {t("about.ourPartners")}
         </h2>
         <div className="mx-auto mb-6 h-1.5 w-24 rounded-full bg-linear-to-r from-blue-500 to-yellow-400"></div>
@@ -78,7 +78,6 @@ export const Partners = () => {
                     src={partnerItem.logo || defaultPartnerLogo}
                     alt={partnerItem.name[currentLang]}
                     className="max-h-full max-w-full object-contain opacity-100 transition-all duration-500 group-hover:scale-110"
-                    
                   />
                 </div>
 

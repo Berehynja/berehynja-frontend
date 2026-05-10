@@ -35,7 +35,7 @@ export const LanguageSwitcher = () => {
 
   return (
     <div
-      className={`font-interMedium ease flex w-22 flex-col gap-3 overflow-hidden rounded-sm bg-white px-2.5 py-1.5 transition-all duration-400 lg:absolute lg:top-2 lg:right-0 lg:w-23 ${isOpenBurger ? "max-h-45" : "max-h-7.5"}`}
+      className={`font-nunito ease flex w-22 flex-col gap-3 overflow-hidden rounded-sm bg-white px-2.5 py-1.5 transition-all duration-400 lg:absolute lg:top-2 lg:right-0 lg:w-23 ${isOpenBurger ? "max-h-45" : "max-h-7.5"}`}
       tabIndex={0}
       onBlur={onBlurHandler}
     >

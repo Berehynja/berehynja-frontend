@@ -59,7 +59,7 @@ export const Hero = () => {
         <div className="mt-8 flex w-full flex-col gap-4 md:w-auto md:flex-row md:gap-6">
           <button
             onClick={() => setIsDonationOpen(true)}
-            className="group font-montserratBold flex cursor-pointer items-center justify-center gap-4 rounded-2xl bg-yellow-400 px-10 py-5 text-sm tracking-widest text-gray-900 uppercase shadow-xl transition-all hover:scale-105 hover:bg-yellow-500 md:text-base"
+            className="group font-nunito flex cursor-pointer items-center justify-center gap-4 rounded-2xl bg-yellow-400 px-10 py-5 text-sm tracking-widest text-gray-900 uppercase shadow-xl transition-all hover:scale-105 hover:bg-yellow-500 md:text-base"
           >
             <Heart size={20} className="fill-current group-hover:animate-pulse" />
             <span>Благодійність</span>
@@ -67,7 +67,7 @@ export const Hero = () => {
 
           <button
             onClick={() => setIsJoinOpen(true)}
-            className="group font-montserratBold flex cursor-pointer items-center justify-center gap-4 rounded-2xl border border-white/30 bg-white/10 px-10 py-5 text-sm tracking-widest text-white uppercase backdrop-blur-md transition-all hover:bg-white hover:text-blue-900 md:text-base"
+            className="group font-nunito flex cursor-pointer items-center justify-center gap-4 rounded-2xl border border-white/30 bg-white/10 px-10 py-5 text-sm tracking-widest text-white uppercase backdrop-blur-md transition-all hover:bg-white hover:text-blue-900 md:text-base"
           >
             <UserPlus size={20} />
             <span>Приєднатися</span>
