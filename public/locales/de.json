@@ -25,7 +25,13 @@
   "programs": {
     "kids": {
       "title": "Programme für Kinder",
-      "description": "Entfalte dein Potenzial durch eine Vielzahl von Kursen und Workshops, die darauf ausgelegt sind, zu inspirieren, neue Fähigkeiten zu vermitteln und deine Fähigkeiten zu verbessern."
+      "description": "Entfalte dein Potenzial durch eine Vielzahl von Kursen und Workshops, die darauf ausgelegt sind, zu inspirieren, neue Fähigkeiten zu vermitteln und deine Fähigkeiten zu verbessern.",
+      "schedule": "Kursplan",
+      "groups": "Gruppe",
+      "initial1": "Anfänger",
+      "initial2": "Mittelstufe",
+      "time": "Zeit",
+      "lessonName": "Lektion Name"
     },
     "adults": {
       "title": "Programme für Erwachsene",

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { LessonsGrid } from "../../components/Programs/KidsProgramm/LessonsGrid";
 import { ScheduleCalendar } from "../../components/Programs/KidsProgramm/ScheduleCalendar";
 import type { AgeGroup } from "../../types/ageGroup";
@@ -7,6 +8,7 @@ import { programsService } from "../../services/programsService";
 import { Loader2 } from "lucide-react";
 
 export const ProgramsKids = () => {
+  const { t } = useTranslation();
   const [ageGroups, setAgeGroups] = useState<AgeGroup[]>([]);
   const [programs, setPrograms] = useState<Program[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,14 +38,13 @@ export const ProgramsKids = () => {
       <div className="flex flex-col items-center justify-center gap-8 py-7 md:flex-row md:py-10">
         <div className="flex flex-col items-center justify-center text-nowrap">
           <h2 className="text-preset-2 flex flex-nowrap justify-center pb-4 font-bold">
-            Програми для дітей
+            {t("programs.kids.title")}
           </h2>
           <div className="mb-4 h-1 w-full bg-linear-to-r from-blue-500 to-yellow-400"></div>
         </div>
 
         <p className="text-preset-4 flex max-w-4xl items-center justify-center px-4 leading-8 font-semibold md:px-0">
-          Розкрийте свій потенціал через різноманітні курси та тренінги, створені для натхнення,
-          навчання новому та вдосконалення ваших здібностей.
+          {t("programs.kids.description")}
         </p>
       </div>
       {/* 👇 Показуємо лоадер або самі компоненти з переданими пропсами */}
