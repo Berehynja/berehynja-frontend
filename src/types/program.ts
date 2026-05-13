@@ -3,8 +3,16 @@ import type { IconName } from "../data/icons";
 
 export interface Program {
   id: string;
-  title: string;
-  description?: string;
+  title: {
+    ua: string;
+    de: string;
+    en: string;
+  };
+  description?: {
+    ua: string;
+    de: string;
+    en: string;
+  };
   color: LessonColor;
   image: string;
   // Зв'язок з віковими групами (зберігаємо тільки ID)

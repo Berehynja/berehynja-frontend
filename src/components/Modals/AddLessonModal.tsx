@@ -3,11 +3,13 @@ import type { AgeGroup } from "../../types/ageGroup";
 import { COLORS, type LessonColor } from "../../data/colors";
 import type { Program } from "../../types/program";
 import { AVAILABLE_ICONS, type IconName } from "../../data/icons";
-import { Trash2, Upload, Loader2 } from "lucide-react";
+import { Trash2, Upload, Loader2, CheckCircle2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { ConfirmModal } from "./ConfirmModal";
 import { Button } from "../Buttons/Button";
-import { uploadMedia } from "../../services/cloudinaryService"; 
+import { uploadMedia } from "../../services/cloudinaryService";
+import type { LangKey } from "../../types/types";
+
 interface AddLessonModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -25,13 +27,18 @@ export function AddLessonModal({
   ageGroups,
   programToEdit,
 }: AddLessonModalProps) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState(""); 
+  // Додаємо стейт мови
+  const [activeLang, setActiveLang] = useState<LangKey>("ua");
+
+  // Стейт тепер тримає об'єкти для мов
+  const [title, setTitle] = useState<Record<LangKey, string>>({ ua: "", en: "", de: "" });
+  const [description, setDescription] = useState<Record<LangKey, string>>({ ua: "", en: "", de: "" });
+  
+  const [imageUrl, setImageUrl] = useState("");
   const [selectedColor, setSelectedColor] = useState<LessonColor>("RoyalBlue");
   const [selectedAgeIds, setSelectedAgeIds] = useState<string[]>([]);
   const [iconName, setIconName] = useState<IconName>("sparkles");
-  
+
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -41,22 +48,22 @@ export function AddLessonModal({
   useEffect(() => {
     if (isOpen) {
       if (programToEdit) {
-        setTitle(programToEdit.title);
-        setDescription(programToEdit.description || "");
+        // Якщо редагуємо, розгортаємо існуючі дані або ставимо порожні рядки
+        setTitle(typeof programToEdit.title === 'object' ? programToEdit.title : { ua: programToEdit.title, en: "", de: "" });
+        setDescription(typeof programToEdit.description === 'object' ? programToEdit.description : { ua: programToEdit.description || "", en: "", de: "" });
         setImageUrl(programToEdit.image || "");
         setSelectedColor(programToEdit.color);
         setSelectedAgeIds(programToEdit.ageGroupIds);
         setIconName(programToEdit.iconName);
-      }
-       else {
-        setTitle("");
-        setDescription("");
+      } else {
+        setTitle({ ua: "", en: "", de: "" });
+        setDescription({ ua: "", en: "", de: "" });
         setImageUrl("");
         setSelectedColor("RoyalBlue");
         setSelectedAgeIds([]);
         setIconName("sparkles");
       }
-
+      
     }
   }, [isOpen, programToEdit]);
 
@@ -69,13 +76,17 @@ export function AddLessonModal({
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    // Очищаємо ім'я для папки Cloudinary, щоб не було помилок з пробілами
+    const folderName = title[activeLang]?.trim() || "programs";
+
     setIsUploading(true);
     try {
-      const res = await uploadMedia(file, "programs");
+      const res = await uploadMedia(file, "programs", folderName);
       setImageUrl(res.url);
       toast.success("Фото завантажено!");
-    } catch (error) {
-      toast.error("Помилка завантаження фото" + (error instanceof Error ? error.message : ""));
+    } catch {
+      toast.error("Помилка завантаження фото");
     } finally {
       setIsUploading(false);
     }
@@ -83,16 +94,17 @@ export function AddLessonModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || selectedAgeIds.length === 0) {
-        return toast.error("Заповніть обов'язкові поля");
+    // Перевірка головної мови (UA)
+    if (!title.ua.trim() || selectedAgeIds.length === 0) {
+      return toast.error("Заповніть назву (UA) та виберіть вікову групу");
     }
 
     setIsSubmitting(true);
     try {
       await onSave(
         {
-          title,
-          description,
+          title, 
+          description, 
           image: imageUrl,
           color: selectedColor,
           ageGroupIds: selectedAgeIds,
@@ -101,9 +113,9 @@ export function AddLessonModal({
         programToEdit?.id
       );
       onClose();
-      toast.success("Програма збережена!");
-    } catch (error) {
-      toast.error("Помилка збереження" + (error instanceof Error ? error.message : ""));
+      toast.success("Програму збережено!");
+    } catch {
+      toast.error("Помилка збереження");
     } finally {
       setIsSubmitting(false);
     }
@@ -125,20 +137,39 @@ export function AddLessonModal({
         <div className="custom-scrollbar overflow-y-auto p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             
+            {/* ПЕРЕМИКАЧ МОВ ТА ЧЕКПОІНТИ */}
+            <div className="space-y-3">
+              <label className="ml-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">Мова заповнення:</label>
+              <div className="flex gap-1 rounded-xl bg-slate-100 p-1">
+                {(["ua", "de", "en"] as const).map((lang) => (
+                  <button
+                    key={lang}
+                    type="button"
+                    onClick={() => setActiveLang(lang)}
+                    className={`flex-1 rounded-lg py-2 text-xs font-bold uppercase transition-all ${
+                      activeLang === lang ? "bg-white text-blue-600 shadow" : "text-slate-500"
+                    }`}
+                  >
+                    {lang} {title[lang]?.trim() && <CheckCircle2 size={12} className="ml-1 inline text-green-500" />}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* ФОТО */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <label className="ml-1 text-sm font-bold text-gray-700">Ілюстрація програми</label>
-                <span className="text-xs text-blue-500 font-bold italic">(обов'язково)</span>
+                <span className="text-xs font-bold italic text-blue-500">(обов'язково)</span>
               </div>
               <div 
                 onClick={() => fileInputRef.current?.click()}
-                className=" relative flex h-40 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 transition-all hover:border-blue-400 hover:bg-blue-50"
+                className="relative flex h-40 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 transition-all hover:border-blue-400 hover:bg-blue-50"
               >
                 {imageUrl ? (
                   <>
                     <img src={imageUrl} className="h-full w-full object-cover" alt="Background" />
-                    <div className="absolute flex items-center w-15 h-15 rounded-full justify-center bg-black/70">
+                    <div className="absolute flex h-12 w-12 items-center justify-center rounded-full bg-black/70">
                       <Upload className="text-white" />
                     </div>
                   </>
@@ -155,13 +186,13 @@ export function AddLessonModal({
             {/* НАЗВА */}
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <label className="ml-1 text-sm font-bold text-gray-700">Назва заняття</label>
-                <span className="text-xs text-blue-500 font-bold italic">(обов'язково)</span>
+                <label className="ml-1 text-sm font-bold text-gray-700">Назва заняття ({activeLang})</label>
+                {activeLang === 'ua' && <span className="text-xs font-bold italic text-blue-500">(обов'язково)</span>}
               </div>
               <input
                 type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                value={title[activeLang]}
+                onChange={(e) => setTitle({ ...title, [activeLang]: e.target.value })}
                 placeholder="Математика, Малювання..."
                 className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500/20"
               />
@@ -169,10 +200,10 @@ export function AddLessonModal({
 
             {/* ОПИС */}
             <div className="space-y-1">
-              <label className="ml-1 text-sm font-bold text-gray-700 font-italic">Опис програми</label>
+              <label className="ml-1 text-sm font-bold text-gray-700">Опис програми ({activeLang})</label>
               <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={description[activeLang]}
+                onChange={(e) => setDescription({ ...description, [activeLang]: e.target.value })}
                 placeholder="Короткий опис заняття..."
                 rows={3}
                 className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500/20"
@@ -197,7 +228,7 @@ export function AddLessonModal({
 
             {/* ІКОНКА */}
             <div className="space-y-2">
-              <label className="ml-1 text-sm font-bold text-gray-700 font-italic">Виберіть іконку (для карток)</label>
+              <label className="ml-1 text-sm font-bold text-gray-700">Виберіть іконку</label>
               <div className="custom-scrollbar flex max-h-32 flex-wrap gap-2 overflow-y-auto rounded-xl border border-gray-100 bg-gray-50 p-3">
                 {Object.entries(AVAILABLE_ICONS).map(([name, IconComp]) => (
                   <button
@@ -216,7 +247,7 @@ export function AddLessonModal({
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <label className="ml-1 text-sm font-bold text-gray-700 italic">Цільові групи</label>
-                <span className="text-xs text-blue-500 font-bold italic">(мінімум одна)</span>
+                <span className="text-xs font-bold italic text-blue-500">(мінімум одна)</span>
               </div>
               <div className="flex flex-wrap gap-3">
                 {ageGroups.map((group) => (
@@ -246,9 +277,9 @@ export function AddLessonModal({
               <Trash2 size={18} />
             </Button>
           )}
-          <div className="flex gap-2 w-full justify-end">
+          <div className="flex w-full justify-end gap-2">
             <Button variant="secondary" onClick={onClose}>Скасувати</Button>
-            <Button onClick={handleSubmit} disabled={isSubmitting || isUploading || !title.trim() || selectedAgeIds.length === 0}>
+            <Button onClick={handleSubmit} disabled={isSubmitting || isUploading || !title.ua.trim() || selectedAgeIds.length === 0}>
               {isSubmitting ? <Loader2 className="animate-spin" /> : (programToEdit ? "Зберегти" : "Створити")}
             </Button>
           </div>
@@ -263,7 +294,7 @@ export function AddLessonModal({
           onClose();
         }}
         title="Видалення"
-        message={`Видалити програму "${title}"?`}
+        message={`Видалити програму "${title.ua}"?`}
       />
     </div>
   );
