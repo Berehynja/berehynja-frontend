@@ -46,5 +46,13 @@
   },
   "languageSwitcher": {
     "lang": "EN"
+  },
+  "cookie": {
+    "title": "Privacy & Security",
+    "description": "We use only technical cookies. They are completely anonymous, do not collect any personal data, do not track your location, and are not used for advertising purposes.",
+    "necessary_title": "Strictly Necessary",
+    "necessary_desc": "This data does not identify you personally. It is used solely for stable interface performance: remembering language preferences and protecting the site from spam or attacks.",
+    "button": "Accept and Continue",
+    "only_essential": "No personal data collected"
   }
 }
