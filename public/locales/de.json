@@ -46,5 +46,13 @@
   },
   "languageSwitcher": {
     "lang": "DE"
+  },
+  "cookie": {
+    "title": "Privatsphäre & Sicherheit",
+    "description": "Wir verwenden ausschließlich technische Cookies. Diese sind vollständig anonym, sammeln keine personenbezogenen Daten, verfolgen nicht Ihren Standort und werden nicht für Werbezwecke verwendet.",
+    "necessary_title": "Technisch notwendig",
+    "necessary_desc": "Diese Daten identifizieren Sie nicht persönlich. Sie dienen ausschließlich der stabilen Schnittstellenleistung: Speichern der Sprachwahl und Schutz der Website vor Spam oder Angriffen.",
+    "button": "Akzeptieren & Weiter",
+    "only_essential": "Keine Datenerfassung"
   }
 }

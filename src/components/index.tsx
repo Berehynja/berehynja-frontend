@@ -1,9 +1,9 @@
 /* eslint-disable react-refresh/only-export-components*/
 //src/components/index.tsx
 
-export * from "./Layout/Layout.tsx";
-export * from "./Header/Header.tsx";
-export * from "./Footer/Footer.tsx";
-export * from "./imageCarousel/imageCarousel.tsx";
-export * from "./Events/EventLIst.tsx";
-export * from "./Events/EventDetails.tsx";
+export {Layout} from "./Layout/Layout.tsx";
+export {Header} from "./Header/Header.tsx";
+export {Footer} from "./Footer/Footer.tsx";
+export {ImageCarousel} from "./imageCarousel/imageCarousel.tsx";
+export {EventList} from "./Events/EventLIst.tsx";
+export {EventDetails} from "./Events/EventDetails.tsx";

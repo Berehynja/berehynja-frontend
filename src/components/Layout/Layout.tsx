@@ -4,6 +4,7 @@ import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
 import { ScrollToTop } from "../ScrollToTop/ScrollToTop";
 import { useTranslation } from "react-i18next";
+import { CookieConsent } from "../ui/CookieConsent";
 
 export const Layout = () => {
   const { i18n } = useTranslation();
@@ -32,6 +33,7 @@ export const Layout = () => {
         </div>
       </main>
       <Footer />
+      <CookieConsent />
     </div>
   );
 };
