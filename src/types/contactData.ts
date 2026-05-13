@@ -5,5 +5,7 @@ export interface ContactData {
   city: string;
   instagram: string;
   telegram: string;
+  facebook: string;
+  youtube: string;
   mapUrl?: string; // Додаємо це поле
 }
