@@ -44,7 +44,7 @@ export const Hero = () => {
         {/* Контентна частина */}
 
         <div className="mt-auto mb-auto w-full sm:mt-0">
-          <h1 className="text-preset-1 mb-6 align-sub font-bold tracking-tighter text-white uppercase drop-shadow-2xl md:text-4xl lg:text-5xl">
+          <h1 className="text-preset-1 mb-6 align-sub font-nunito tracking-tighter text-white uppercase drop-shadow-2xl md:text-4xl lg:text-5xl">
             {isLoading ? "..." : title}
           </h1>
         </div>
