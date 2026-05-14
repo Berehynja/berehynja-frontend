@@ -58,6 +58,7 @@ function InlineScheduleForm({
 
   const subGroups = ageGroups.filter((g) => g.parentId === groupId);
   const [subGroupId, setSubGroupId] = useState<string>(initialData?.subGroupId || "");
+  const { i18n } = useTranslation();
 
   const handleSubmit = () => {
     if (!lessonId) return toast.error("Будь ласка, оберіть програму!");
@@ -127,7 +128,9 @@ function InlineScheduleForm({
             )
             .map((prog) => (
               <option key={prog.id} value={prog.id}>
-                {prog.title}
+                {typeof prog.title === "string"
+                  ? prog.title
+                  : prog.title[i18n.language as keyof typeof prog.title] || prog.title.ua}
               </option>
             ))}
         </select>
@@ -202,7 +205,12 @@ function InlineScheduleForm({
             <button
               onClick={() => {
                 const programTitle = programs.find((p) => p.id === lessonId)?.title || "це заняття";
-                onDelete(initialData.id, programTitle);
+                onDelete(
+                  initialData.id,
+                  typeof programTitle === "string"
+                    ? programTitle
+                    : programTitle[i18n.language as keyof typeof programTitle] || programTitle.ua
+                );
               }}
               className="cursor-pointer rounded-lg px-3 py-2 text-sm font-bold text-red-600 transition-colors hover:bg-red-50"
             >
@@ -235,8 +243,7 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
   const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
   const [isLoadingSchedules, setIsLoadingSchedules] = useState(true);
   const { isAdmin } = useAuth();
-  const { t } = useTranslation();
-
+  const { t, i18n } = useTranslation();
   const [addingForGroup, setAddingForGroup] = useState<string | null>(null);
   const [editingScheduleId, setEditingScheduleId] = useState<string | null>(null);
 
@@ -468,9 +475,9 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
                                 style={{ backgroundColor: bgColor }}
                               >
                                 <div className="flex w-full flex-col items-center justify-center text-center">
-                                  <span className="text-preset-4 leading-tight font-bold">
-                                    {lesson.title}
-                                  </span>
+                                  <span className="text-preset-4 font-nunito leading-tight font-bold">
+                                    {(lesson.title as keyof typeof lesson.title)[i18n.language]}
+                                  </span>{" "}
                                   {lesson.level && (
                                     <span className="text-preset-5 text-gray-800">
                                       ({lesson.level})

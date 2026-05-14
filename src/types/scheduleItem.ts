@@ -5,7 +5,7 @@ export interface ScheduleItem {
   lessonId: string;
   ageGroupId: string;
   subGroupId?: string | null;
-  title?: string;
+  title?: { [lang: string]: string };
 
   date: string;
   timeStart: string;
