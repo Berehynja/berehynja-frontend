@@ -96,8 +96,10 @@ export const ProgramsSection = () => {
                   {nextProgramAdult.description[currentLang]}
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-1">
-                  <div className="flex items-center gap-3 rounded-2xl bg-white/90 p-3 border border-emerald-100/40 shadow-sm">
+                {/* ВИПРАВЛЕНА СІТКА ДЕТАЛЕЙ: на ноутбуках grid-cols-1, на великих екранах xl:grid-cols-2 */}
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 mt-1 w-full">
+                  
+                  <div className="flex items-center gap-3 rounded-2xl bg-white/90 p-3 border border-emerald-100/40 shadow-sm w-full min-w-0">
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
                       <MapPin size={16} />
                     </div>
@@ -107,7 +109,7 @@ export const ProgramsSection = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 rounded-2xl bg-white/90 p-3 border border-emerald-100/40 shadow-sm">
+                  <div className="flex items-center gap-3 rounded-2xl bg-white/90 p-3 border border-emerald-100/40 shadow-sm w-full min-w-0">
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
                       <Users size={16} />
                     </div>
@@ -116,14 +118,15 @@ export const ProgramsSection = () => {
                       <span className="text-sm font-bold text-slate-700 truncate leading-tight">{nextProgramAdult.capacity[currentLang]}</span>
                     </div>
                   </div>
+
                 </div>
               </>
             )}
           </div>
 
-          {/* ФОТО КУРСА: Добавлен минимальный верхний паддинг и скругление углов */}
+          {/* ФОТО КУРСА */}
           {nextProgramAdult && (
-            <div className="relative w-full h-56 lg:h-auto lg:w-[280px] shrink-0 overflow-hidden order-first lg:order-none pt-4 pb-2 px-4 lg:pt-3 lg:pb-3 lg:pl-0 lg:pr-4 flex items-stretch">
+            <div className="relative w-full h-56 md:h-[23rem] lg:h-auto lg:w-[280px] shrink-0 overflow-hidden order-first lg:order-none pt-4 pb-2 px-4 lg:pt-3 lg:pb-3 lg:pl-0 lg:pr-4 flex items-stretch">
               {nextProgramAdult.image ? (
                 <img 
                   src={nextProgramAdult.image} 
@@ -169,7 +172,7 @@ export const ProgramsSection = () => {
                   key={prog.id} 
                   className="flex items-center gap-3 rounded-2xl bg-white p-2.5 border border-amber-100/40 shadow-sm min-w-0"
                 >
-                   {/* МИНИАТЮРА ФОТО: Оставили мягкое аккуратное скругление rounded-md */}
+                   {/* МИНИАТЮРА ФОТО */}
                    <div className="h-9 w-9 shrink-0 overflow-hidden rounded-md border border-slate-100 bg-slate-100 shadow-sm p-0">
                      {prog.image ? (
                        <img src={prog.image} alt="" className="h-full w-full object-cover" />

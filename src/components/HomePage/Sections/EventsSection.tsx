@@ -102,8 +102,8 @@ export const EventsSection = () => {
                 </p>
               </div>
 
-              {/* ИЗОБРАЖЕНИЕ СОБЫТИЯ: добавлен минимальный верхний паддинг и скругление углов */}
-              <div className="relative w-full h-56 lg:h-auto lg:w-[280px] shrink-0 overflow-hidden order-first lg:order-none pt-4 pb-2 px-4 lg:pt-3 lg:pb-3 lg:pl-0 lg:pr-4 flex items-stretch">
+              {/* ИЗОБРАЖЕНИЕ СОБЫТИЯ: висоту для планшетів збільшено за допомогою md:h-80 */}
+              <div className="relative w-full h-56 md:h-100 lg:h-auto lg:w-[280px] shrink-0 overflow-hidden order-first lg:order-none pt-4 pb-2 px-4 lg:pt-3 lg:pb-3 lg:pl-0 lg:pr-4 flex items-stretch">
                 <img 
                   src={event.imageBanner} 
                   className="h-full w-full object-cover rounded-2xl border border-slate-200/40 shadow-sm" 
