@@ -62,7 +62,7 @@ export const EventsSection = () => {
   return (
     <section className="w-full mb-20 font-nunito">
       <div className="mb-12 flex items-center justify-between text-center">
-        <h2 className="text-3xl md:text-4xl w-full text-preset-2 font-nunito text-gray-900 font-extrabold uppercase tracking-tight">
+        <h2 className="text-3xl md:text-4xl w-full text-preset-2 font-nunito text-gray-900 font-semibold tracking-tight">
           {texts.sectionTitle[currentLang]}
         </h2>
       </div>
