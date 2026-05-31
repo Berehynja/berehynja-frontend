@@ -56,7 +56,7 @@ export const ProgramsSection = () => {
   );
 
   return (
-    <section className="w-full px-4 md:px-8 mb-20 font-nunito">
+    <section className="w-full mb-20 font-nunito">
       
       {/* ГОЛОВНИЙ ЗАГОЛОВОК СЕКЦІЇ */}
       <div className="mb-12 flex items-center justify-between text-center">
