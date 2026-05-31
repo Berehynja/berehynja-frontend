@@ -4,6 +4,7 @@ import { COLOR_STYLES } from "../../../constants/colorStyles";
 import { AVAILABLE_ICONS } from "../../../data/icons";
 import type { Program } from "../../../types/program";
 import { useAuth } from "../../AuthProvider/useAuth";
+import i18n from "../../../i18n";
 
 interface LessonCardProps {
   lesson: Program;
@@ -29,7 +30,7 @@ export function LessonCard({ lesson, onEdit }: LessonCardProps) {
         {lesson.image ? (
           <img 
             src={lesson.image} 
-            alt={lesson.title}
+            alt={lesson.title[i18n.language as keyof typeof lesson.title]}
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
@@ -51,7 +52,7 @@ export function LessonCard({ lesson, onEdit }: LessonCardProps) {
           <div className="w-[85%]">
             <div className="w-full rounded-2xl bg-black/40 py-3 px-4 backdrop-blur-lg border border-white/10 shadow-2xl transition-all group-hover:bg-black/60">
               <h3 className="text-center text-sm font-black uppercase tracking-wider text-white drop-shadow-md md:text-base">
-                {lesson.title}
+                {lesson.title[i18n.language as keyof typeof lesson.title]}
               </h3>
             </div>
           </div>
@@ -91,14 +92,14 @@ export function LessonCard({ lesson, onEdit }: LessonCardProps) {
             <div className="flex flex-col">
               <div className="relative h-72 w-full sm:h-96">
                 {lesson.image ? (
-                  <img src={lesson.image} alt={lesson.title} className="h-full w-full object-cover" />
+                  <img src={lesson.image} alt={lesson.title[i18n.language as keyof typeof lesson.title]} className="h-full w-full object-cover" />
                 ) : (
                   <div className={`h-full w-full bg-linear-to-br ${style.gradient}`} />
                 )}
                 <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
                 <div className="absolute bottom-8 left-8 right-8">
                    <h2 className="text-3xl font-black uppercase tracking-tight text-white drop-shadow-2xl sm:text-4xl">
-                    {lesson.title}
+                    {lesson.title[i18n.language as keyof typeof lesson.title]}
                   </h2>
                 </div>
               </div>
@@ -110,7 +111,7 @@ export function LessonCard({ lesson, onEdit }: LessonCardProps) {
                   <span className="text-xs font-black uppercase tracking-[0.2em]">Детальніше</span>
                 </div>
                 <p className="text-xl leading-relaxed text-gray-700 font-medium">
-                  {lesson.description || "Опис для цієї програми скоро з'явиться. Слідкуйте за оновленнями!"}
+                  {lesson.description?.[i18n.language as keyof typeof lesson.description] || "Опис для цієї програми скоро з'явиться. Слідкуйте за оновленнями!"}
                 </p>
                 <div className="mt-10 flex justify-end">
                    <button 

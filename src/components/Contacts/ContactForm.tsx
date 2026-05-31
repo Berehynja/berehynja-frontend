@@ -1,16 +1,61 @@
+import { useState } from "react";
 import { Send } from "lucide-react";
+
 export const ContactForm = () => {
+  // 1. Стейты для каждого поля
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // 2. Складываем всё в один объект
+    const payload = {
+      name,
+      email,
+      phone,
+      message,
+      submittedAt: new Date().toLocaleString(),
+      source: "Berehynja Website"
+    };
+
+    try {
+      // 3. Отправляем в n8n
+      const response = await fetch('http://localhost:5678/webhook/fb37b4e0-056d-4c54-9576-30d1e0c84c65', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        alert("Повідомлення відправлено!");
+        // Очищаем форму
+        setName("");
+        setEmail("");
+        setPhone("");
+        setMessage("");
+      }
+    } catch (error) {
+      console.error("Помилка відправки:", error);
+      alert("Сталася помилка при відправці.");
+    }
+  };
+
   return (
     <div className="relative overflow-hidden rounded-[2.5rem] border border-gray-100 bg-white p-8 shadow-[0_20px_50px_rgba(0,0,0,0.1)] md:p-12">
       <h2 className="font-nunito mb-10 border-l-4 border-blue-600 pl-4 text-3xl font-black text-gray-900">
         Напишіть нам
       </h2>
 
-      <form className="relative flex flex-col gap-8" name="email_form">
+      <form className="relative flex flex-col gap-8" name="email_form" onSubmit={submitHandler}>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {/* FULL NAME */}
           <label className="flex flex-col gap-3">
-            {/* Зробив текст темнішим (text-gray-700) та додав трохи розміру */}
+
             <span className="ml-1 text-[13px] font-black tracking-wider text-gray-700 uppercase">
               Повне ім'я *
             </span>
@@ -19,6 +64,9 @@ export const ContactForm = () => {
               type="text"
               name="name"
               placeholder="Ваше ім'я"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
             />
           </label>
 
@@ -32,6 +80,9 @@ export const ContactForm = () => {
               type="email"
               name="email"
               placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </label>
         </div>
@@ -45,6 +96,8 @@ export const ContactForm = () => {
             className="w-full rounded-2xl border-2 border-gray-100 bg-gray-50 p-4 font-bold text-gray-900 transition-all duration-300 outline-none placeholder:font-normal placeholder:text-gray-400 focus:border-blue-600 focus:bg-white focus:shadow-lg focus:shadow-blue-500/10"
             type="tel"
             placeholder="+49..."
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
           />
         </label>
 
@@ -58,6 +111,9 @@ export const ContactForm = () => {
             name="message"
             rows={4}
             placeholder="Текст повідомлення..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            required
           ></textarea>
         </label>
 

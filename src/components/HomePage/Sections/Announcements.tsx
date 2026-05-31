@@ -174,7 +174,7 @@ export const Announcements = () => {
                 <div key={prog.id} className="flex items-center gap-3 rounded-xl bg-white/10 p-3 border border-white/10 transition-colors hover:bg-white/20">
                    <div className="h-2 w-2 rounded-full bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.6)]" />
                    <span className="text-sm font-bold truncate leading-none">
-                     {prog.title}
+                     {prog.title[currentLang]}
                    </span>
                 </div>
               ))}
