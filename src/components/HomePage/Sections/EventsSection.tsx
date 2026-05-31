@@ -15,8 +15,12 @@ export const EventsSection = () => {
 
   const texts = {
     sectionTitle: { ua: "Анонси та події", de: "Ankündigungen & Events", en: "Announcements & Events" },
-    upcomingBadge: { ua: "Найближчий захід", de: "Nächste Veranstaltung", en: "Upcoming Event" },
-    pastBadge: { ua: "Минула подія", de: "Vergangene Veranstaltung", en: "Past Event" },
+    
+    // Три рівні майбутніх подій (виправлено на "подія"):
+    upcomingBadge: { ua: "Найближча подія", de: "Nächste Veranstaltung", en: "Upcoming Event" },
+    soonBadge: { ua: "Незабаром", de: "Demnächst", en: "Soon" },
+    futureBadge: { ua: "Майбутня подія", de: "Kommendes Event", en: "Future Event" },
+    
     detailsBtn: { ua: "Детальніше", de: "Details", en: "Details" }
   };
 
@@ -32,16 +36,13 @@ export const EventsSection = () => {
         const eventsData: Event[] = await fetchEvents();
 
         if (eventsData?.length > 0) {
-          const upcoming = eventsData
+          // Фільтруємо ТІЛЬКИ майбутні події, щоб минулі зникали автоматично
+          const upcomingEvents = eventsData
             .filter((e) => new Date(e.date).getTime() >= today.getTime())
             .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-          
-          const past = eventsData
-            .filter((e) => new Date(e.date).getTime() < today.getTime())
-            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-          const combinedEvents = [...upcoming, ...past].slice(0, 3);
-          setEventsList(combinedEvents);
+          // Відображаємо перші 3 штуки
+          setEventsList(upcomingEvents.slice(0, 3));
         }
       } catch (error) {
         console.error("Помилка завантаження подій:", error);
@@ -61,6 +62,8 @@ export const EventsSection = () => {
 
   return (
     <section className="w-full mb-20 font-nunito">
+      
+      {/* ГОЛОВНИЙ ЗАГОЛОВОК */}
       <div className="mb-12 flex items-center justify-between text-center">
         <h2 className="text-3xl md:text-4xl w-full text-preset-2 font-nunito text-gray-900 font-semibold tracking-tight">
           {texts.sectionTitle[currentLang]}
@@ -68,16 +71,21 @@ export const EventsSection = () => {
       </div>
 
       <div className="flex flex-col gap-8 w-full font-nunito">
-        {eventsList.map((event) => {
-          const isUpcoming = new Date(event.date).getTime() >= new Date().setHours(0,0,0,0);
+        {eventsList.map((event, index) => {
+          
+          // Динамічний розподіл назв бейджів за індексом черги
+          let badgeText = texts.futureBadge[currentLang]; // Для 3-ї картки (індекс 2)
+          if (index === 0) badgeText = texts.upcomingBadge[currentLang]; // Для 1-ї картки
+          else if (index === 1) badgeText = texts.soonBadge[currentLang]; // Для 2-ї картки
 
           return (
             <div 
               key={event.id} 
               className="relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-slate-200/60 bg-slate-50/50 shadow-xl transition-all duration-300 hover:bg-slate-100/40"
             >
-              {/* Левая часть: Дата */}
-              <div className="flex flex-row lg:flex-col items-center justify-center text-center gap-4 lg:w-[200px] shrink-0 border-b lg:border-b-0 lg:border-r border-slate-100/60 p-6 md:p-8">
+              
+              {/* Ліва частина: Дата (ТІЛЬКИ ДЛЯ ДЕСКТОПУ LG) */}
+              <div className="hidden lg:flex lg:flex-col items-center justify-center text-center gap-4 lg:w-[200px] shrink-0 lg:border-r border-slate-100/60 lg:p-8">
                 <div className="flex flex-col items-center justify-center rounded-2xl bg-white p-3 shadow-md border border-slate-100 min-w-[75px] h-16">
                   <span className="text-blue-600 font-black uppercase text-[11px] tracking-widest leading-none translate-y-[1px]">
                     {new Date(event.date).toLocaleDateString(dateLocale, { month: 'short' })}
@@ -86,13 +94,13 @@ export const EventsSection = () => {
                 </div>
                 <div className="flex items-center gap-1.5 text-blue-600 font-black uppercase text-[10px] tracking-wider bg-white px-2.5 py-1.5 rounded-xl border border-slate-100 shadow-sm">
                   <CalendarDays size={14} />
-                  <span className="translate-y-[0.5px] leading-none">
-                    {isUpcoming ? texts.upcomingBadge[currentLang] : texts.pastBadge[currentLang]}
+                  <span className="translate-y-[0.5px] leading-none text-center">
+                    {badgeText}
                   </span>
                 </div>
               </div>
 
-              {/* Центральная часть: Текст */}
+              {/* Центральна частина: Текст */}
               <div className="flex-1 flex flex-col justify-center gap-2 p-6 md:p-8 py-6 lg:py-6 min-w-0">
                 <h3 className="text-xl md:text-2xl font-black text-slate-800 leading-tight tracking-tight">
                   {event.titles[currentLang]}
@@ -102,16 +110,35 @@ export const EventsSection = () => {
                 </p>
               </div>
 
-              {/* ИЗОБРАЖЕНИЕ СОБЫТИЯ: висоту для планшетів збільшено за допомогою md:h-80 */}
-              <div className="relative w-full h-56 md:h-100 lg:h-auto lg:w-[280px] shrink-0 overflow-hidden order-first lg:order-none pt-4 pb-2 px-4 lg:pt-3 lg:pb-3 lg:pl-0 lg:pr-4 flex items-stretch">
+              {/* ЗОБРАЖЕННЯ З АБСОЛЮТНИМИ ПЛАШКАМИ ДЛЯ МОБІЛЬНИХ ТА ПЛАНШЕТІВ */}
+              <div className="relative w-full h-56 md:h-[23rem] lg:h-auto lg:w-[280px] shrink-0 overflow-hidden order-first lg:order-none pt-4 pb-2 px-4 lg:pt-3 lg:pb-3 lg:pl-0 lg:pr-4 lg:self-center flex">
                 <img 
                   src={event.imageBanner} 
-                  className="h-full w-full object-cover rounded-2xl border border-slate-200/40 shadow-sm" 
+                  className="w-full h-full object-cover rounded-2xl border border-slate-200/40 shadow-sm" 
                   alt="" 
                 />
+
+                {/* АБСОЛЮТНИЙ КОНТЕЙНЕР (Прихований на десктопах lg) */}
+                <div className="absolute top-8 left-8 flex flex-col items-start gap-2 lg:hidden z-10">
+                  <div className="flex flex-col items-center justify-center rounded-2xl bg-white p-2.5 shadow-md border border-slate-100 min-w-[70px] h-14">
+                    <span className="text-blue-600 font-black uppercase text-[10px] tracking-widest leading-none">
+                      {new Date(event.date).toLocaleDateString(dateLocale, { month: 'short' })}
+                    </span>
+                    <span className="text-xl font-black text-gray-900 leading-none mt-0.5">
+                      {new Date(event.date).getDate()}
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center gap-1.5 text-blue-600 font-black uppercase text-[9px] tracking-wider bg-white px-2.5 py-1.5 rounded-xl border border-slate-100 shadow-sm">
+                    <CalendarDays size={12} />
+                    <span className="translate-y-[0.5px] leading-none">
+                      {badgeText}
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              {/* Правая часть: Кнопка */}
+              {/* Права частина: Кнопка */}
               <div className="flex items-center justify-center lg:w-[220px] shrink-0 p-6 md:p-8 lg:p-0 mx-auto lg:mx-0 w-full max-w-md lg:max-w-none border-t lg:border-t-0 border-slate-100/40 lg:border-l">
                 <Link 
                   to={`/events/${event.id}`} 
