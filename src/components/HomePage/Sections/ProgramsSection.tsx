@@ -18,7 +18,7 @@ export const ProgramsSection = () => {
     sectionTitle: { ua: "Наші програми та курси", de: "Unsere Programme & Kurse", en: "Our Programs & Courses" },
     adultsTitle: { ua: "Для дорослих", de: "Für Erwachsene", en: "For Adults" },
     kidsTitle: { ua: "Для дітей", de: "Für Kinder", en: "For Kids" },
-    allCoursesBtn: { ua: "Всі програми", de: "Alle Programme", en: "All Programs" },
+    allCoursesBtn: { ua: "Всі курси", de: "Alle Kurse", en: "All Courses" },
     allProgramsBtn: { ua: "Всі програми", de: "Alle Programme", en: "All Programs" }
   };
 
@@ -58,20 +58,18 @@ export const ProgramsSection = () => {
   return (
     <section className="w-full mb-20 font-nunito">
       
-      {/* ГОЛОВНИЙ ЗАГОЛОВОК СЕКЦІЇ */}
       <div className="mb-12 flex items-center justify-between text-center">
         <h2 className="text-3xl md:text-4xl w-full text-preset-2 font-nunito text-gray-900 font-extrabold uppercase tracking-tight">
           {texts.sectionTitle[currentLang]}
         </h2>
       </div>
 
-      {/* ГЛОБАЛЬНИЙ КОНТЕЙНЕР КАРТОК */}
       <div className="flex flex-col gap-8 w-full font-nunito">
         
-        {/* 1. КАРТКА: ДЛЯ ДОРОСЛИХ */}
+        {/* 1. КАРТОЧКА: ДЛЯ ВЗРОСЛЫХ */}
         <div className="relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-emerald-200/50 bg-emerald-50/50 shadow-xl transition-all duration-300 hover:bg-emerald-100/40">
           
-          {/* Ліва частина: ЗАГОЛОВОК БЛОКУ */}
+          {/* Левая часть */}
           <div className="flex flex-row lg:flex-col items-center justify-center text-center gap-4 lg:w-[200px] shrink-0 border-b lg:border-b-0 lg:border-r border-emerald-100/40 p-6 md:p-8">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-emerald-600 shadow-sm border border-emerald-100">
               <GraduationCap size={26} />
@@ -81,7 +79,7 @@ export const ProgramsSection = () => {
             </h3>
           </div>
 
-          {/* Центральна частина: Контент */}
+          {/* Центральная часть */}
           <div className="flex-1 flex flex-col justify-center gap-4 p-6 md:p-8 py-6 lg:py-6 min-w-0">
             {nextProgramAdult && (
               <>
@@ -123,20 +121,24 @@ export const ProgramsSection = () => {
             )}
           </div>
 
-          {/* ЗОБРАЖЕННЯ КУРСУ */}
+          {/* ФОТО КУРСА: Добавлен минимальный верхний паддинг и скругление углов */}
           {nextProgramAdult && (
-            <div className="relative w-full h-56 lg:h-auto lg:w-[280px] shrink-0 overflow-hidden bg-slate-100 order-first lg:order-none border-b lg:border-b-0 lg:border-l border-emerald-100/30">
+            <div className="relative w-full h-56 lg:h-auto lg:w-[280px] shrink-0 overflow-hidden order-first lg:order-none pt-4 pb-2 px-4 lg:pt-3 lg:pb-3 lg:pl-0 lg:pr-4 flex items-stretch">
               {nextProgramAdult.image ? (
-                <img src={nextProgramAdult.image} alt="" className="h-full w-full object-cover" />
+                <img 
+                  src={nextProgramAdult.image} 
+                  alt="" 
+                  className="h-full w-full object-cover rounded-2xl border border-emerald-200/40 shadow-sm" 
+                />
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-white text-emerald-600 min-h-[160px]">
+                <div className="flex h-full w-full items-center justify-center bg-white text-emerald-600 min-h-[160px] rounded-2xl border border-emerald-200/40 w-full">
                   <GraduationCap size={32} />
                 </div>
               )}
             </div>
           )}
 
-          {/* Права частина: КНОПКА ВИРІВНЯНА ЦЕНТРОВАНО ВЕРТИКАЛЬНО Й ГОРИЗОНТАЛЬНО */}
+          {/* Правая часть */}
           <div className="flex items-center justify-center lg:w-[220px] shrink-0 p-6 md:p-8 lg:p-0 mx-auto lg:mx-0 w-full max-w-md lg:max-w-none border-t lg:border-t-0 border-emerald-100/40 lg:border-l border-emerald-100/20">
             <Link to="/programs/adults" className="w-full lg:w-auto mx-6 lg:mx-0 flex items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-slate-800 transition-all duration-300 active:scale-[0.97] shadow-md text-center whitespace-nowrap shrink-0">
               <span className="translate-y-[1px] leading-none">{texts.allCoursesBtn[currentLang]}</span>
@@ -146,10 +148,10 @@ export const ProgramsSection = () => {
         </div>
 
 
-        {/* 2. КАРТКА: ДЛЯ ДІТЕЙ */}
+        {/* 2. КАРТОЧКА: ДЛЯ ДЕТЕЙ */}
         <div className="relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-amber-200/50 bg-amber-50/50 shadow-xl transition-all duration-300 hover:bg-amber-100/40">
           
-          {/* Ліва частина: ЗАГОЛОВОК БЛОКУ */}
+          {/* Левая часть */}
           <div className="flex flex-row lg:flex-col items-center justify-center text-center gap-4 lg:w-[200px] shrink-0 border-b lg:border-b-0 lg:border-r border-amber-100/60 p-6 md:p-8">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-amber-600 shadow-md border border-amber-100">
               <Baby size={24} />
@@ -159,7 +161,7 @@ export const ProgramsSection = () => {
             </h3>
           </div>
 
-          {/* Центральна частина: Список програм (СТАТИЧНИЙ) */}
+          {/* Центральная часть: Список программ */}
           <div className="flex-1 flex flex-col justify-center p-6 md:p-8 py-6 lg:py-6 min-w-0">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {kidsPrograms.map((prog) => (
@@ -167,8 +169,8 @@ export const ProgramsSection = () => {
                   key={prog.id} 
                   className="flex items-center gap-3 rounded-2xl bg-white p-2.5 border border-amber-100/40 shadow-sm min-w-0"
                 >
-                   {/* Фото */}
-                   <div className="h-9 w-9 shrink-0 overflow-hidden rounded-xl border border-slate-100 bg-slate-100 shadow-sm">
+                   {/* МИНИАТЮРА ФОТО: Оставили мягкое аккуратное скругление rounded-md */}
+                   <div className="h-9 w-9 shrink-0 overflow-hidden rounded-md border border-slate-100 bg-slate-100 shadow-sm p-0">
                      {prog.image ? (
                        <img src={prog.image} alt="" className="h-full w-full object-cover" />
                      ) : (
@@ -185,7 +187,7 @@ export const ProgramsSection = () => {
             </div>
           </div>
 
-          {/* Права частина: КНОПКА ВИРІВНЯНА ЦЕНТРОВАНО ВЕРТИКАЛЬНО Й ГОРИЗОНТАЛЬНО */}
+          {/* Правая часть */}
           <div className="flex items-center justify-center lg:w-[220px] shrink-0 p-6 md:p-8 lg:p-0 mx-auto lg:mx-0 w-full max-w-md lg:max-w-none border-t lg:border-t-0 border-amber-100/20 lg:border-l">
             <Link to="/programs/kids" className="w-full lg:w-auto mx-6 lg:mx-0 flex items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-slate-800 transition-all duration-300 active:scale-[0.97] shadow-md text-center whitespace-nowrap shrink-0">
               <span className="translate-y-[1px] leading-none">{texts.allProgramsBtn[currentLang]}</span>

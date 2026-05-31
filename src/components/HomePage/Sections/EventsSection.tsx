@@ -76,7 +76,7 @@ export const EventsSection = () => {
               key={event.id} 
               className="relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-slate-200/60 bg-slate-50/50 shadow-xl transition-all duration-300 hover:bg-slate-100/40"
             >
-              {/* Ліва частина */}
+              {/* Левая часть: Дата */}
               <div className="flex flex-row lg:flex-col items-center justify-center text-center gap-4 lg:w-[200px] shrink-0 border-b lg:border-b-0 lg:border-r border-slate-100/60 p-6 md:p-8">
                 <div className="flex flex-col items-center justify-center rounded-2xl bg-white p-3 shadow-md border border-slate-100 min-w-[75px] h-16">
                   <span className="text-blue-600 font-black uppercase text-[11px] tracking-widest leading-none translate-y-[1px]">
@@ -92,7 +92,7 @@ export const EventsSection = () => {
                 </div>
               </div>
 
-              {/* Центральна частина */}
+              {/* Центральная часть: Текст */}
               <div className="flex-1 flex flex-col justify-center gap-2 p-6 md:p-8 py-6 lg:py-6 min-w-0">
                 <h3 className="text-xl md:text-2xl font-black text-slate-800 leading-tight tracking-tight">
                   {event.titles[currentLang]}
@@ -102,12 +102,16 @@ export const EventsSection = () => {
                 </p>
               </div>
 
-              {/* ЗОБРАЖЕННЯ ПОДІЇ */}
-              <div className="relative w-full h-52 lg:h-auto lg:w-[280px] shrink-0 overflow-hidden bg-slate-100 order-first lg:order-none border-b lg:border-b-0 lg:border-l border-slate-100/30">
-                <img src={event.imageBanner} className="h-full w-full object-cover" alt="" />
+              {/* ИЗОБРАЖЕНИЕ СОБЫТИЯ: добавлен минимальный верхний паддинг и скругление углов */}
+              <div className="relative w-full h-56 lg:h-auto lg:w-[280px] shrink-0 overflow-hidden order-first lg:order-none pt-4 pb-2 px-4 lg:pt-3 lg:pb-3 lg:pl-0 lg:pr-4 flex items-stretch">
+                <img 
+                  src={event.imageBanner} 
+                  className="h-full w-full object-cover rounded-2xl border border-slate-200/40 shadow-sm" 
+                  alt="" 
+                />
               </div>
 
-              {/* Права частина: ВИРІВНЯНО ПО ЦЕНТРУ ВЕРТИКАЛЬНО Й ГОРИЗОНТАЛЬНО */}
+              {/* Правая часть: Кнопка */}
               <div className="flex items-center justify-center lg:w-[220px] shrink-0 p-6 md:p-8 lg:p-0 mx-auto lg:mx-0 w-full max-w-md lg:max-w-none border-t lg:border-t-0 border-slate-100/40 lg:border-l">
                 <Link 
                   to={`/events/${event.id}`} 
