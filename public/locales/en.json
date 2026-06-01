@@ -54,5 +54,54 @@
     "necessary_desc": "This data does not identify you personally. It is used solely for stable interface performance: remembering language preferences and protecting the site from spam or attacks.",
     "button": "Accept and Continue",
     "only_essential": "No personal data collected"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "subtitle": "Protecting your data is our priority. We handle information confidentially and strictly in accordance with GDPR and BDSG requirements.",
+    "controller": {
+      "title": "Controller",
+      "desc": "Berehynja is responsible for data processing on this website. Detailed contact information can be found in our Impressum."
+    },
+    "infrastructure": {
+      "title": "Infrastruktur & Hosting",
+      "desc": "All text content, links, and website logic are processed via Firebase (Google Ireland Ltd). Data is stored exclusively on servers within the EU according to the highest security standards.",
+      "encryption": "End-to-End Encryption"
+    },
+    "cookies": {
+      "title": "Cookies & Tracking",
+      "desc": "We only use technically necessary Cookies (Session Storage) to save your language preference. No marketing or analytics trackers are used on this website."
+    },
+    "rights": {
+      "title": "Ihre Rechte (Your Rights)",
+      "info": {
+        "label": "Auskunft (Information)",
+        "desc": "You have the right to request information about whether your data is being processed, what data is stored, and the purpose of the processing."
+      },
+      "correction": {
+        "label": "Berichtigung (Correction)",
+        "desc": "You have the right to request the immediate correction of any inaccurate or incomplete personal data."
+      },
+      "deletion": {
+        "label": "Löschung (Deletion)",
+        "desc": "You have the right to request the deletion of your data if it is no longer necessary for the purposes for which it was collected."
+      },
+      "objection": {
+        "label": "Widerspruch (Objection)",
+        "desc": "You have the right to object to the processing of your data if we use it based on legitimate interests."
+      }
+    },
+    "media": {
+      "title": "Externe Medien",
+      "cloudinaryDesc": "Used as a CDN exclusively for the secure storage and fast delivery of images.",
+      "youtubeDesc": "Videos from channels are embedded in enhanced privacy mode (erweiterter Datenschutzmodus)."
+    },
+    "complaint": {
+      "title": "Beschwerderecht (Art. 77 DSGVO)",
+      "desc": "You have the right to lodge a complaint with the competent data protection supervisory authority."
+    },
+    "modal": {
+      "close": "Understood"
+    }
   }
+  
 }

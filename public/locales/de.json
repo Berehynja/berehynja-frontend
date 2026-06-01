@@ -54,5 +54,53 @@
     "necessary_desc": "Diese Daten identifizieren Sie nicht persönlich. Sie dienen ausschließlich der stabilen Schnittstellenleistung: Speichern der Sprachwahl und Schutz der Website vor Spam oder Angriffen.",
     "button": "Akzeptieren & Weiter",
     "only_essential": "Keine Datenerfassung"
+  },
+  "privacy": {
+    "title": "Datenschutz",
+    "subtitle": "Der Schutz Ihrer Daten ist unsere Priorität. Wir behandeln Informationen vertraulich und streng nach den Vorgaben der DSGVO und des BDSG.",
+    "controller": {
+      "title": "Verantwortlicher",
+      "desc": "Verantwortlich für die Datenverarbeitung auf dieser Website ist der Berehynja Detaillierte Kontaktdaten finden Sie in unserem Impressum."
+    },
+    "infrastructure": {
+      "title": "Infrastruktur & Hosting",
+      "desc": "Alle Textinhalte, Links und die Website-Logik werden über Firebase (Google Ireland Ltd) verarbeitet. Die Daten werden ausschließlich auf Servern innerhalb der EU nach höchsten Sicherheitsstandards gespeichert.",
+      "encryption": "End-to-End Encryption"
+    },
+    "cookies": {
+      "title": "Cookies & Tracking",
+      "desc": "Wir verwenden nur technisch notwendige Cookies (Session Storage), um Ihre Sprachauswahl zu speichern. Auf dieser Website werden keine Marketing- oder Analyse-Tracker eingesetzt."
+    },
+    "rights": {
+      "title": "Ihre Rechte",
+      "info": {
+        "label": "Auskunft",
+        "desc": "Sie haben das Recht, Auskunft darüber zu erhalten, ob Ihre Daten verarbeitet werden, welche Daten gespeichert sind und zu welchem Zweck sie verarbeitet werden."
+      },
+      "correction": {
+        "label": "Berichtigung",
+        "desc": "Sie haben das Recht, die unverzügliche Berichtigung unrichtiger oder unvollständiger personenbezogener Daten zu verlangen."
+      },
+      "deletion": {
+        "label": "Löschung",
+        "desc": "Sie haben das Recht, die Löschung Ihrer Daten zu verlangen, wenn diese für die Zwecke, für die sie erhoben wurden, nicht mehr erforderlich sind."
+      },
+      "objection": {
+        "label": "Widerspruch",
+        "desc": "Sie haben das Recht, der Verarbeitung Ihrer Daten zu widersprechen, wenn wir diese auf Grundlage berechtigter Interessen verarbeiten."
+      }
+    },
+    "media": {
+      "title": "Externe Medien",
+      "cloudinaryDesc": "Wird als CDN ausschließlich für die sichere Speicherung und schnelle Bereitstellung von Bildern verwendet.",
+      "youtubeDesc": "Videos aus unseren Kanälen werden im erweiterten Datenschutzmodus eingebettet."
+    },
+    "complaint": {
+      "title": "Beschwerderecht (Art. 77 DSGVO)",
+      "desc": "Sie haben das Recht, sich bei der zuständigen Datenschutzaufsichtsbehörde zu beschwerden."
+    },
+    "modal": {
+      "close": "Verstanden"
+    }
   }
 }
