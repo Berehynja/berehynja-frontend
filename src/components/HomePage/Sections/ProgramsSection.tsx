@@ -56,7 +56,7 @@ export const ProgramsSection = () => {
   );
 
   return (
-    <section className="w-full mb-20 font-nunito">
+    <section className="w-full  mb-20 md:p-4 font-nunito">
       
       <div className="mb-12 flex items-center justify-between text-center">
         <h2 className="text-3xl md:text-4xl w-full text-preset-2 font-nunito text-gray-900 font-semibold tracking-tight">
@@ -67,7 +67,7 @@ export const ProgramsSection = () => {
       <div className="flex flex-col gap-8 w-full font-nunito">
         
         {/* 1. КАРТОЧКА: ДЛЯ ВЗРОСЛЫХ */}
-        <div className="relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-emerald-200/50 bg-emerald-50/50 shadow-xl transition-all duration-300 hover:bg-emerald-100/40">
+        <div className="group relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-emerald-200/50 bg-emerald-50/50 shadow-xl transition-all duration-300 hover:bg-emerald-100/40 hover:-translate-y-1">
           
           {/* Левая часть */}
           <div className="flex flex-row lg:flex-col items-center justify-center text-center gap-4 lg:w-[200px] shrink-0 border-b lg:border-b-0 lg:border-r border-emerald-100/40 p-6 md:p-8">
@@ -88,7 +88,7 @@ export const ProgramsSection = () => {
                   <span className="translate-y-[1px] leading-none">{nextProgramAdult.dateRange}</span>
                 </div>
 
-                <h4 className="text-xl md:text-2xl font-black text-slate-800 leading-tight tracking-tight">
+                <h4 className="text-xl md:text-2xl font-black text-slate-800 leading-tight tracking-tight transition-colors duration-300 group-hover:text-emerald-700">
                   {nextProgramAdult.title[currentLang]}
                 </h4>
 
@@ -96,7 +96,6 @@ export const ProgramsSection = () => {
                   {nextProgramAdult.description[currentLang]}
                 </p>
 
-                {/* ВИПРАВЛЕНА СІТКА ДЕТАЛЕЙ: на ноутбуках grid-cols-1, на великих екранах xl:grid-cols-2 */}
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 mt-1 w-full">
                   
                   <div className="flex items-center gap-3 rounded-2xl bg-white/90 p-3 border border-emerald-100/40 shadow-sm w-full min-w-0">
@@ -124,18 +123,21 @@ export const ProgramsSection = () => {
             )}
           </div>
 
-          {/* ФОТО КУРСА */}
+          {/* ФОТО КУРСА (ОНОВЛЕНО: без падінгів, на повну ширину/висоту) */}
           {nextProgramAdult && (
-            <div className="relative w-full h-56 md:h-[23rem] lg:h-auto lg:w-[280px] shrink-0 overflow-hidden order-first lg:order-none pt-4 pb-2 px-4 lg:pt-3 lg:pb-3 lg:pl-0 lg:pr-4 flex items-stretch">
+            <div className="relative w-full h-64 md:h-[26rem] lg:h-auto lg:w-[320px] shrink-0 order-first lg:order-none overflow-hidden border-b lg:border-b-0 border-emerald-100/40">
               {nextProgramAdult.image ? (
-                <img 
-                  src={nextProgramAdult.image} 
-                  alt="" 
-                  className="h-full w-full object-cover rounded-2xl border border-emerald-200/40 shadow-sm" 
-                />
+                <>
+                  <img 
+                    src={nextProgramAdult.image} 
+                    alt="" 
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-80" />
+                </>
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-white text-emerald-600 min-h-[160px] rounded-2xl border border-emerald-200/40 w-full">
-                  <GraduationCap size={32} />
+                <div className="absolute inset-0 flex items-center justify-center bg-emerald-100/50 text-emerald-600">
+                  <GraduationCap size={40} />
                 </div>
               )}
             </div>
@@ -143,16 +145,16 @@ export const ProgramsSection = () => {
 
           {/* Правая часть */}
           <div className="flex items-center justify-center lg:w-[220px] shrink-0 p-6 md:p-8 lg:p-0 mx-auto lg:mx-0 w-full max-w-md lg:max-w-none border-t lg:border-t-0 border-emerald-100/40 lg:border-l border-emerald-100/20">
-            <Link to="/programs/adults" className="w-full lg:w-auto mx-6 lg:mx-0 flex items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-slate-800 transition-all duration-300 active:scale-[0.97] shadow-md text-center whitespace-nowrap shrink-0">
+            <Link to="/programs/adults" className="w-full lg:w-auto mx-6 lg:mx-0 flex items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-emerald-600 transition-all duration-300 active:scale-[0.97] shadow-md text-center whitespace-nowrap shrink-0">
               <span className="translate-y-[1px] leading-none">{texts.allCoursesBtn[currentLang]}</span>
-              <ArrowRight size={16} className="shrink-0" />
+              <ArrowRight size={16} className="shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
         </div>
 
 
         {/* 2. КАРТОЧКА: ДЛЯ ДЕТЕЙ */}
-        <div className="relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-amber-200/50 bg-amber-50/50 shadow-xl transition-all duration-300 hover:bg-amber-100/40">
+        <div className="group relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-amber-200/50 bg-amber-50/50 shadow-xl transition-all duration-300 hover:bg-amber-100/40 hover:-translate-y-1">
           
           {/* Левая часть */}
           <div className="flex flex-row lg:flex-col items-center justify-center text-center gap-4 lg:w-[200px] shrink-0 border-b lg:border-b-0 lg:border-r border-amber-100/60 p-6 md:p-8">
@@ -170,7 +172,7 @@ export const ProgramsSection = () => {
               {kidsPrograms.map((prog) => (
                 <div 
                   key={prog.id} 
-                  className="flex items-center gap-3 rounded-2xl bg-white p-2.5 border border-amber-100/40 shadow-sm min-w-0"
+                  className="flex items-center gap-3 rounded-2xl bg-white p-2.5 border border-amber-100/40 shadow-sm min-w-0 transition-all"
                 >
                    {/* МИНИАТЮРА ФОТО */}
                    <div className="h-9 w-9 shrink-0 overflow-hidden rounded-md border border-slate-100 bg-slate-100 shadow-sm p-0">
@@ -192,9 +194,9 @@ export const ProgramsSection = () => {
 
           {/* Правая часть */}
           <div className="flex items-center justify-center lg:w-[220px] shrink-0 p-6 md:p-8 lg:p-0 mx-auto lg:mx-0 w-full max-w-md lg:max-w-none border-t lg:border-t-0 border-amber-100/20 lg:border-l">
-            <Link to="/programs/kids" className="w-full lg:w-auto mx-6 lg:mx-0 flex items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-slate-800 transition-all duration-300 active:scale-[0.97] shadow-md text-center whitespace-nowrap shrink-0">
+            <Link to="/programs/kids" className="w-full lg:w-auto mx-6 lg:mx-0 flex items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-amber-600 transition-all duration-300 active:scale-[0.97] shadow-md text-center whitespace-nowrap shrink-0">
               <span className="translate-y-[1px] leading-none">{texts.allProgramsBtn[currentLang]}</span>
-              <ArrowRight size={16} className="shrink-0" />
+              <ArrowRight size={16} className="shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
         </div>

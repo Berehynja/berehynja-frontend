@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Heart, UserPlus, ArrowRight, Pencil } from "lucide-react";
 import { DonationModal } from "../DonationModal/DonationModal";
 import { JoinModal } from "../JoinModal";
-import ban from "../../../images/children.jpg";
+import ban from "../../../images/children.jpg"; // Залишаємо як дефолтну картинку
 import { useFirebaseContent } from "../../../hooks/useFirebaseContent";
 import { EditTextModal, type FieldConfig } from "../../Modals/EditTextModal";
 import { useAuth } from "../../AuthProvider/useAuth";
@@ -16,22 +16,36 @@ export const Hero = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const { getText, isLoading, data } = useFirebaseContent("home");
 
-  // Перший аргумент - шлях у базі, другий - запасний текст з локального JSON
+  // Тексти з Firebase
   const title = getText("hero.title", t("home.welcome"));
   const description = getText("hero.description", t("home.description"));
 
+  // 1. Дістаємо URL картинки з Firebase. Якщо бази ще немає — беремо локальну ban
+  const currentBanner = (data?.hero as Record<string, string>)?.bannerImage || ban;
+
+  // 2. Додаємо поле "image" у конфігурацію модалки
   const heroFields: FieldConfig[] = [
+    // Cast to unknown to allow extra property `mediaCategory` that our upload
+    // logic will read, while keeping the array type as FieldConfig[].
+    ({
+      key: "bannerImage",
+      label: "Фонове зображення",
+      type: "image" as unknown as FieldConfig["type"],
+      mediaCategory: "banners",
+    } as unknown) as FieldConfig,
     { key: "title", label: "Головний заголовок", type: "input" },
     { key: "description", label: "Опис під заголовком", type: "textarea" },
   ];
 
   return (
     <section
-      className="flex min-h-[90vh] w-full justify-center overflow-hidden rounded-b-3xl bg-gray-900 bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url(${ban})` }}
+      className="flex min-h-[90vh] w-full justify-center overflow-hidden rounded-b-3xl bg-gray-900 bg-cover bg-center bg-no-repeat transition-all duration-700"
+      // 3. Підставляємо динамічну картинку замість жорстко закодованої
+      style={{ backgroundImage: `url(${currentBanner})` }}
     >
       <div className="relative flex max-w-120 min-w-85 flex-col items-start justify-between p-5 md:max-w-5xl md:p-6 lg:min-h-190 lg:max-w-7xl lg:p-8 xl:max-w-full xl:p-10">
-        {/* 👇 Кнопка-олівець для адміна */}
+        
+        {/* Кнопка-олівець для адміна */}
         {isAdmin && (
           <button
             onClick={() => setIsEditOpen(true)}
@@ -42,7 +56,6 @@ export const Hero = () => {
         )}
 
         {/* Контентна частина */}
-
         <div className="mt-auto mb-auto w-full sm:mt-0">
           <h1 className="text-preset-1 mb-6 align-sub font-nunito tracking-tighter text-white uppercase drop-shadow-2xl md:text-4xl lg:text-5xl">
             {isLoading ? "..." : title}
@@ -82,12 +95,14 @@ export const Hero = () => {
       {/* Підключені Модалки */}
       <DonationModal isOpen={isDonationOpen} onClose={() => setIsDonationOpen(false)} />
       <JoinModal isOpen={isJoinOpen} onClose={() => setIsJoinOpen(false)} />
+      
+      {/* Модалка редагування */}
       <EditTextModal
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
-        documentName="home" // 👈 Вказуємо документ
-        sectionName="hero" // 👈 Вказуємо секцію
-        modalTitle="Редагування Hero" // 👈 Гарний заголовок
+        documentName="home"
+        sectionName="hero"
+        modalTitle="Редагування Головного Екрану"
         initialData={data?.hero as Record<string, unknown>}
         fields={heroFields}
       />

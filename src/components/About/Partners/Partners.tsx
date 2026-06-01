@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Handshake, Trash2 } from "lucide-react";
+import {  Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../AuthProvider/useAuth";
 import { AddPartnerModal } from "../../Modals/AddPartnersModal";
@@ -43,27 +43,29 @@ export const Partners = () => {
   };
 
   return (
-    <>
-      <div className="relative mb-12 text-center">
-        <h2 className="font-nunito mb-4 flex items-center justify-center gap-3 text-3xl uppercase">
-          <Handshake className="text-blue-500" size={32} /> {t("about.ourPartners")}
+    <section className="w-full mb-20">
+      {/* Заголовок секції */}
+      <div className="mb-12 flex items-center justify-between text-center">
+        <h2 className="text-3xl md:text-4xl w-full text-preset-2 font-nunito text-gray-900 font-semibold tracking-tight">
+          {t("about.ourPartners")}
         </h2>
-        <div className="mx-auto mb-6 h-1.5 w-24 rounded-full bg-linear-to-r from-blue-500 to-yellow-400"></div>
       </div>
 
-      <ul className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+      <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8 md:gap-12 items-center justify-items-center">
         {partners.map((partnerItem) => {
-          // Визначаємо, чи буде елемент посиланням
           const Tag = partnerItem.link ? "a" : "div";
 
           return (
-            <li key={partnerItem.id} className="group relative flex flex-col items-center">
+            <li 
+              key={partnerItem.id} 
+              className="group relative flex h-24 w-full items-center justify-center"
+            >
               {isAdmin && partnerItem.id && (
                 <button
                   onClick={() => handleDelete(partnerItem.id!)}
-                  className="absolute -top-2 right-5 z-20 cursor-pointer rounded-full border border-slate-100 bg-white p-2 text-red-500 shadow-md transition-opacity hover:bg-red-50"
+                  className="absolute -top-4 -right-4 z-20 opacity-0 transition-opacity duration-300 group-hover:opacity-100 cursor-pointer rounded-full bg-white p-1.5 text-red-500 shadow-md hover:bg-red-500 hover:text-white"
                 >
-                  <Trash2 size={14} />
+                  <Trash2 size={16} />
                 </button>
               )}
 
@@ -71,26 +73,21 @@ export const Partners = () => {
                 href={partnerItem.link}
                 target={partnerItem.link ? "_blank" : undefined}
                 rel={partnerItem.link ? "noopener noreferrer" : undefined}
-                className={`flex flex-col items-center ${partnerItem.link ? "cursor-pointer" : ""}`}
+                title={partnerItem.name[currentLang] || partnerItem.name["ua"]}
+                className={`flex h-full w-full items-center justify-center p-2 outline-none ${partnerItem.link ? "cursor-pointer" : ""}`}
               >
-                <div className="mb-4 flex h-32 w-32 items-center justify-center overflow-hidden rounded-[2.5rem] border border-slate-100 bg-white p-4 shadow-sm transition-all duration-300 group-hover:-translate-y-2 group-hover:border-blue-100 group-hover:shadow-xl">
-                  <img
-                    src={partnerItem.logo || defaultPartnerLogo}
-                    alt={partnerItem.name[currentLang]}
-                    className="max-h-full max-w-full object-contain opacity-100 transition-all duration-500 group-hover:scale-110"
-                  />
-                </div>
-
-                <p className="px-2 text-center text-[12px] leading-tight font-bold tracking-wider text-slate-400 uppercase transition-colors group-hover:text-blue-600">
-                  {partnerItem.name[currentLang] || partnerItem.name["ua"]}
-                </p>
+                <img
+                  src={partnerItem.logo || defaultPartnerLogo}
+                  alt={partnerItem.name[currentLang]}
+                  className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-110"
+                />
               </Tag>
             </li>
           );
         })}
 
         {isAdmin && (
-          <li className="flex items-center justify-center">
+          <li className="flex h-24 w-full items-center justify-center">
             <AddEvent onClick={() => setIsModalOpen(true)} />
           </li>
         )}
@@ -101,6 +98,6 @@ export const Partners = () => {
         onClose={() => setIsModalOpen(false)}
         onSave={handleAddPartner}
       />
-    </>
+    </section>
   );
 };

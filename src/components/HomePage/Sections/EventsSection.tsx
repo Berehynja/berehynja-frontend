@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { ArrowRight, CalendarDays, Loader2 } from "lucide-react";
+import { CalendarDays, Loader2, Clock, MapPin } from "lucide-react";
 
 import { fetchEvents } from "../../../services/eventsService";
 import type { Event } from "../../../types/event";
@@ -16,7 +16,7 @@ export const EventsSection = () => {
   const texts = {
     sectionTitle: { ua: "Анонси та події", de: "Ankündigungen & Events", en: "Announcements & Events" },
     
-    // Три рівні майбутніх подій (виправлено на "подія"):
+    // Три рівні майбутніх подій
     upcomingBadge: { ua: "Найближча подія", de: "Nächste Veranstaltung", en: "Upcoming Event" },
     soonBadge: { ua: "Незабаром", de: "Demnächst", en: "Soon" },
     futureBadge: { ua: "Майбутня подія", de: "Kommendes Event", en: "Future Event" },
@@ -61,7 +61,7 @@ export const EventsSection = () => {
   if (eventsList.length === 0) return null;
 
   return (
-    <section className="w-full mb-20 font-nunito">
+    <section className="w-full md:p-4 mb-20 font-nunito">
       
       {/* ГОЛОВНИЙ ЗАГОЛОВОК */}
       <div className="mb-12 flex items-center justify-between text-center">
@@ -70,7 +70,8 @@ export const EventsSection = () => {
         </h2>
       </div>
 
-      <div className="flex flex-col gap-8 w-full font-nunito">
+      {/* СІТКА КАРТОК (як у EventCard) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full font-nunito">
         {eventsList.map((event, index) => {
           
           // Динамічний розподіл назв бейджів за індексом черги
@@ -81,71 +82,71 @@ export const EventsSection = () => {
           return (
             <div 
               key={event.id} 
-              className="relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-slate-200/60 bg-slate-50/50 shadow-xl transition-all duration-300 hover:bg-slate-100/40"
+              className="group relative flex w-full flex-col overflow-hidden rounded-[2rem] border border-gray-100 bg-white transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
             >
               
-              {/* Ліва частина: Дата (ТІЛЬКИ ДЛЯ ДЕСКТОПУ LG) */}
-              <div className="hidden lg:flex lg:flex-col items-center justify-center text-center gap-4 lg:w-[200px] shrink-0 lg:border-r border-slate-100/60 lg:p-8">
-                <div className="flex flex-col items-center justify-center rounded-2xl bg-white p-3 shadow-md border border-slate-100 min-w-[75px] h-16">
-                  <span className="text-blue-600 font-black uppercase text-[11px] tracking-widest leading-none translate-y-[1px]">
-                    {new Date(event.date).toLocaleDateString(dateLocale, { month: 'short' })}
-                  </span>
-                  <span className="text-2xl font-black text-gray-900">{new Date(event.date).getDate()}</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-blue-600 font-black uppercase text-[10px] tracking-wider bg-white px-2.5 py-1.5 rounded-xl border border-slate-100 shadow-sm">
-                  <CalendarDays size={14} />
-                  <span className="translate-y-[0.5px] leading-none text-center">
+              {/* КОНТЕЙНЕР ЗОБРАЖЕННЯ */}
+              <div className="relative h-64 overflow-hidden shrink-0">
+                <img
+                  src={event.imageBanner}
+                  alt={event.titles[currentLang]}
+                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                />
+                {/* Градієнт поверх фото для глибини */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-60" />
+
+                {/* Бейджі поверх фото */}
+                <div className="absolute bottom-4 left-4 flex flex-col items-start gap-2">
+                  <div className="flex items-center gap-1.5 rounded-lg bg-blue-600 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
                     {badgeText}
-                  </span>
+                  </div>
+                  <div className="flex items-center gap-2 rounded-xl border border-white/30 bg-black/40 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-md">
+                    <CalendarDays size={14} />
+                    {new Date(event.date).toLocaleDateString(dateLocale, {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </div>
                 </div>
               </div>
 
-              {/* Центральна частина: Текст */}
-              <div className="flex-1 flex flex-col justify-center gap-2 p-6 md:p-8 py-6 lg:py-6 min-w-0">
-                <h3 className="text-xl md:text-2xl font-black text-slate-800 leading-tight tracking-tight">
+              {/* КОНТЕНТ */}
+              <div className="flex grow flex-col p-6">
+                <h3 className="mb-3 text-2xl font-bold tracking-tight text-gray-900 transition-colors duration-300 group-hover:text-blue-600">
                   {event.titles[currentLang]}
                 </h3>
-                <p className="line-clamp-2 text-[15px] text-slate-600 font-medium italic leading-relaxed">
-                  {event.descriptions[currentLang]}
-                </p>
-              </div>
 
-              {/* ЗОБРАЖЕННЯ З АБСОЛЮТНИМИ ПЛАШКАМИ ДЛЯ МОБІЛЬНИХ ТА ПЛАНШЕТІВ */}
-              <div className="relative w-full h-56 md:h-[23rem] lg:h-auto lg:w-[280px] shrink-0 overflow-hidden order-first lg:order-none pt-4 pb-2 px-4 lg:pt-3 lg:pb-3 lg:pl-0 lg:pr-4 lg:self-center flex">
-                <img 
-                  src={event.imageBanner} 
-                  className="w-full h-full object-cover rounded-2xl border border-slate-200/40 shadow-sm" 
-                  alt="" 
-                />
-
-                {/* АБСОЛЮТНИЙ КОНТЕЙНЕР (Прихований на десктопах lg) */}
-                <div className="absolute top-8 left-8 flex flex-col items-start gap-2 lg:hidden z-10">
-                  <div className="flex flex-col items-center justify-center rounded-2xl bg-white p-2.5 shadow-md border border-slate-100 min-w-[70px] h-14">
-                    <span className="text-blue-600 font-black uppercase text-[10px] tracking-widest leading-none">
-                      {new Date(event.date).toLocaleDateString(dateLocale, { month: 'short' })}
-                    </span>
-                    <span className="text-xl font-black text-gray-900 leading-none mt-0.5">
-                      {new Date(event.date).getDate()}
-                    </span>
+                {/* Інфо-панель */}
+                <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm font-medium text-gray-500">
+                  <div className="flex items-center gap-1.5">
+                    <Clock size={16} className="text-blue-500" />
+                    {event.time}
                   </div>
-                  
-                  <div className="flex items-center gap-1.5 text-blue-600 font-black uppercase text-[9px] tracking-wider bg-white px-2.5 py-1.5 rounded-xl border border-slate-100 shadow-sm">
-                    <CalendarDays size={12} />
-                    <span className="translate-y-[0.5px] leading-none">
-                      {badgeText}
-                    </span>
+                  <div className="flex items-center gap-1.5">
+                    <MapPin size={16} className="text-red-500" />
+                    <span className="max-w-[150px] truncate">{event.location}</span>
                   </div>
                 </div>
-              </div>
 
-              {/* Права частина: Кнопка */}
-              <div className="flex items-center justify-center lg:w-[220px] shrink-0 p-6 md:p-8 lg:p-0 mx-auto lg:mx-0 w-full max-w-md lg:max-w-none border-t lg:border-t-0 border-slate-100/40 lg:border-l">
+                {/* БЛОК ОПИСУ */}
+                <div className="relative mb-6">
+                  <p className="min-h-[5.5rem] line-clamp-4 text-sm text-gray-500">
+                    {event.descriptions[currentLang]}
+                  </p>
+                </div>
+
+                {/* КНОПКА "ЧИТАТИ БІЛЬШЕ" */}
                 <Link 
                   to={`/events/${event.id}`} 
-                  className="w-full lg:w-auto mx-6 lg:mx-0 flex items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-slate-800 transition-all duration-300 active:scale-[0.97] shadow-md text-center whitespace-nowrap shrink-0"
+                  className="mt-auto group/btn flex items-center justify-center gap-3 rounded-2xl bg-gray-900 px-6 py-4 text-sm font-bold text-white transition-all hover:bg-blue-600 hover:shadow-lg active:scale-95"
                 >
-                  <span className="translate-y-[1px] leading-none">{texts.detailsBtn[currentLang]}</span>
-                  <ArrowRight size={16} className="shrink-0" />
+                  <div className="inline-flex items-center text-sm font-bold tracking-wider text-white uppercase">
+                    {texts.detailsBtn[currentLang]}
+                    <span className="ml-2 transition-transform duration-300 group-hover/btn:translate-x-1">
+                      →
+                    </span>
+                  </div>
                 </Link>
               </div>
 
