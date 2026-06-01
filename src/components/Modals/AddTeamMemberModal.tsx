@@ -16,7 +16,7 @@ export const AddTeamMemberModal = ({ isOpen, onClose, onSave, onDelete, memberTo
   const [activeLang, setActiveLang] = useState<LangKey>('ua');
   const [isUploading, setIsUploading] = useState(false);
 
-  // Функція для створення порожнього стану (як у модалці подій)
+  // Функція для створення порожнього стану
   const getEmptyFormState = (): TeamMember => ({
     name: { ua: "", en: "", de: "" },
     role: { ua: "", en: "", de: "" },
@@ -90,13 +90,43 @@ export const AddTeamMemberModal = ({ isOpen, onClose, onSave, onDelete, memberTo
     }
   };
 
+  // Функція для очищення фотографії або заглушки
+  const handleRemovePhoto = () => {
+    setFormData(prev => ({ ...prev, image: "" }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData); // Відправляємо об'єкт (з id якщо редагуємо, без - якщо новий)
+    onSave(formData);
     onClose();
   };
 
   if (!isOpen) return null;
+
+  // Допоміжна функція для рендеру прев'ю фото
+  const renderImagePreview = () => {
+    // Якщо вибрано універсальну заглушку
+    if (formData.image === "placeholder") {
+       return (
+         <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-400">
+             <User size={64} className="opacity-50"/>
+         </div>
+       )
+    }
+
+    // Якщо є реальне фото
+    if (formData.image) {
+      return <img src={formData.image} className="w-full h-full object-cover" alt="Preview" />;
+    }
+
+    // Порожній стан (без фото і без заглушки)
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 gap-1 text-center px-2">
+        <Camera size={20} />
+        <span className="text-[9px] font-bold uppercase">Фото</span>
+      </div>
+    );
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-3" onClick={onClose}>
@@ -115,21 +145,45 @@ export const AddTeamMemberModal = ({ isOpen, onClose, onSave, onDelete, memberTo
 
         <form onSubmit={handleSubmit} className="p-6 sm:p-8 overflow-y-auto space-y-6 custom-scrollbar">
           
-          {/* Фото та перемикач мов */}
+          {/* Фото, заглушки та перемикач мов */}
           <div className="flex flex-col md:flex-row gap-6 items-center md:items-start border-b border-slate-50 pb-6">
-            <div className="relative w-32 h-40 rounded-2xl bg-slate-100 border-2 border-dashed border-slate-200 overflow-hidden shrink-0 group">
-              {formData.image ? (
-                <img src={formData.image} className="w-full h-full object-cover" alt="Preview" />
-              ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 gap-1 text-center px-2">
-                  <Camera size={20} />
-                  <span className="text-[9px] font-bold uppercase">Фото</span>
-                </div>
-              )}
-              <label className="absolute inset-0 cursor-pointer bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
-                <Plus className="text-white" size={24} />
-                <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
-              </label>
+            
+            {/* Блок з фотографією та елементами керування */}
+            <div className="flex gap-3 items-center md:items-start shrink-0">
+              <div className="relative w-32 h-40 rounded-2xl bg-slate-100 border-2 border-dashed border-slate-200 overflow-hidden group">
+                
+                {renderImagePreview()}
+
+                <label className="absolute inset-0 cursor-pointer bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
+                  <Plus className="text-white" size={24} />
+                  <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
+                </label>
+              </div>
+
+              {/* Кнопки керування (видалення або встановлення заглушки) */}
+              <div className="flex flex-col gap-2 justify-center">
+                {formData.image ? (
+                  // Якщо є фото або заглушка - показуємо кнопку видалення
+                  <button 
+                    type="button" 
+                    onClick={handleRemovePhoto}
+                    className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 text-red-500 hover:bg-red-100 transition-colors"
+                    title="Видалити фотографію/заглушку"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                ) : (
+                  // Якщо пусто - показуємо ОДНУ УНІВЕРСАЛЬНУ кнопку заглушки
+                  <button 
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, image: "placeholder" }))}
+                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-500 hover:border-blue-200 hover:bg-blue-50 transition-all shadow-sm"
+                    title="Встановити універсальну заглушку"
+                  >
+                    <User size={20} />
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="flex-1 w-full space-y-3">
