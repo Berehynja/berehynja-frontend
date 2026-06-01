@@ -84,17 +84,18 @@ export const Impressum = () => {
 
       {/* HEADER SECTION */}
       <div className="mb-12 pb-8">
-        <div className="flex flex-col gap-4 mb-6">
+        {/* Контейнер w-fit динамічно обтягує контент */}
+        <div className="flex flex-col w-fit gap-3 mb-6">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-700 shadow-sm border border-slate-200/60">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700 shadow-sm border border-slate-200/60">
               <Scale size={24} />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 uppercase">
               Impressum
             </h1>
           </div>
-          {/* Акуратний синьо-жовтий акцент */}
-          <div className="h-1 w-67 rounded-full bg-linear-to-r from-blue-500 to-yellow-400"></div>
+          {/* Лінія на 100% ширини заголовка (w-full) */}
+          <div className="h-1 w-full rounded-full bg-gradient-to-r from-blue-500 to-yellow-400"></div>
         </div>
         
         {isEditing ? (
