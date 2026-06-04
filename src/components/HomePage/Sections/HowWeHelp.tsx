@@ -1,10 +1,14 @@
-import { Heart, Users, BookOpen, Calendar, Pencil } from "lucide-react";
+import { Heart, Users, BookOpen, Calendar } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useFirebaseContent } from "../../../hooks/useFirebaseContent";
-import { EditTextModal, type FieldConfig } from "../../Modals/EditTextModal";
+import {
+  EditTextModal,
+  // type FieldConfig
+} from "../../Modals/EditTextModal";
 import { useAuth } from "../../AuthProvider/useAuth";
+import EditButton from "../../Buttons/EditButton";
 
 // 1. Конфігурація карток (тільки ID, іконки та стилі)
 const featuresConfig = [
@@ -62,7 +66,20 @@ const cardVariants: Variants = {
 };
 
 export function HowWeHelp() {
-  const [isEditOpen, setIsEditOpen] = useState(false);
+  // const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isTitleOpen, setIsTitleOpen] = useState(false);
+  const [activeCard, setActiveCard] = useState<string | null>(null);
+
+  const openTitleEditor = () => setIsTitleOpen(true);
+  const closeTitleEditor = () => setIsTitleOpen(false);
+
+  const openCardEditor = (cardId: string) => {
+    setActiveCard(cardId);
+  };
+  const closeCardEditor = () => {
+    setActiveCard(null);
+  };
+
   const { getText, isLoading, data } = useFirebaseContent("home");
   const { t } = useTranslation();
   const { isAdmin } = useAuth();
@@ -70,18 +87,22 @@ export function HowWeHelp() {
   // Дістаємо головний заголовок
   const mainTitle = getText("howWeHelp.title", t("howWeHelp.title"));
 
-  // 3. Динамічно генеруємо поля для модалки (Заголовок + 4 картки по 2 поля)
-  const helpFields: FieldConfig[] = [
-    { key: "title", label: "Головний заголовок секції", type: "input" },
-    ...featuresConfig.flatMap((card) => [
-      { key: `cards.${card.id}.title`, label: `Заголовок (${card.id})`, type: "input" as const },
-      {
-        key: `cards.${card.id}.description`,
-        label: `Опис (${card.id})`,
-        type: "textarea" as const,
-      },
-    ]),
-  ];
+  // // 3. Динамічно генеруємо поля для модалки (Заголовок + 4 картки по 2 поля)
+  // const helpFields: FieldConfig[] = [
+  //   { key: "title", label: "Головний заголовок секції", type: "input" },
+  //   ...featuresConfig.flatMap((card) => [
+  //     { key: `cards.${card.id}.title`, label: `Заголовок (${card.id})`, type: "input" as const },
+  //     {
+  //       key: `cards.${card.id}.description`,
+  //       label: `Опис (${card.id})`,
+  //       type: "textarea" as const,
+  //     },
+  //   ]),
+  // ];
+
+  const selectedCard = activeCard ? data?.howWeHelp?.cards?.[activeCard] : null;
+
+  console.log(data?.howWeHelp?.title);
 
   return (
     <section className="relative my-6 overflow-hidden">
@@ -94,19 +115,19 @@ export function HowWeHelp() {
           transition={{ duration: 0.6 }}
           className="relative text-center"
         >
-          {/* 👇 Кнопка-олівець для адміна */}
-          {isAdmin && (
-            <button
-              onClick={() => setIsEditOpen(true)}
-              className="absolute top-2 right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-xl transition-all hover:scale-110 hover:bg-blue-600 hover:text-white"
-            >
-              <Pencil size={20} />
-            </button>
-          )}
+          <div className="relative inline-flex">
+            <h2 className="text-preset-2 mt-0.5 font-semibold xl:mt-2.5">
+              {isLoading ? "..." : mainTitle}
 
-          <h2 className="text-preset-2 mt-0.5 font-semibold xl:mt-2.5">
-            {isLoading ? "..." : mainTitle}
-          </h2>
+              {isAdmin && (
+                <EditButton
+                  onClick={openTitleEditor}
+                  className="top-4 -right-1/4 h-8 w-8 border border-gray-200 bg-white text-gray-700 shadow hover:scale-110 hover:bg-blue-600 hover:text-white"
+                  size={36}
+                />
+              )}
+            </h2>
+          </div>
         </motion.div>
 
         {/* Контейнер карток з анімацією */}
@@ -141,6 +162,14 @@ export function HowWeHelp() {
                 >
                   <item.Icon className="h-6 w-6" />
                 </div>
+
+                {isAdmin && (
+                  <EditButton
+                    onClick={() => openCardEditor(item.id)}
+                    className="top-4 right-4 h-12 w-12 border border-gray-200 bg-white text-gray-700 shadow-xl hover:scale-110 hover:bg-blue-600 hover:text-white"
+                    size={36}
+                  />
+                )}
               </motion.div>
             );
           })}
@@ -148,7 +177,7 @@ export function HowWeHelp() {
       </div>
 
       {/* 👇 Підключаємо універсальну модалку */}
-      <EditTextModal
+      {/* <EditTextModal
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         documentName="home"
@@ -156,6 +185,31 @@ export function HowWeHelp() {
         modalTitle="Редагування 'Як ми допомагаємо'"
         initialData={data?.howWeHelp as Record<string, unknown>}
         fields={helpFields}
+      /> */}
+
+      <EditTextModal
+        isOpen={!!activeCard}
+        onClose={closeCardEditor}
+        documentName="home"
+        sectionName={`howWeHelp.cards.${activeCard}`}
+        modalTitle="Редагування картки"
+        initialData={selectedCard ?? {}}
+        fields={[
+          { key: "title", label: "Заголовок", type: "input" },
+          { key: "description", label: "Опис", type: "textarea" },
+        ]}
+      />
+
+      <EditTextModal
+        isOpen={isTitleOpen}
+        onClose={closeTitleEditor}
+        documentName="home"
+        sectionName="howWeHelp"
+        modalTitle="Редагування заголовку"
+        initialData={{
+          text: data?.howWeHelp?.title ?? "",
+        }}
+        fields={[{ key: "text", label: "Заголовок", type: "input" }]}
       />
     </section>
   );

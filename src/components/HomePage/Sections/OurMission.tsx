@@ -1,10 +1,11 @@
-import { Briefcase, Heart, HouseHeart, Pencil, School, Users } from "lucide-react";
+import { Briefcase, Heart, HouseHeart, School, Users } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 import { EditTextModal, type FieldConfig } from "../../Modals/EditTextModal";
 import { useState } from "react";
 import { useFirebaseContent } from "../../../hooks/useFirebaseContent";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../AuthProvider/useAuth";
+import EditButton from "../../Buttons/EditButton";
 
 // 1. Налаштування анімації контейнера (керує чергою)
 const containerVariants: Variants = {
@@ -105,12 +106,10 @@ export default function OurMission() {
       >
         {/* 👇 Кнопка-олівець для адміна */}
         {isAdmin && (
-          <button
+          <EditButton
             onClick={() => setIsEditOpen(true)}
-            className="absolute top-2 right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-xl transition-all hover:scale-110 hover:bg-blue-600 hover:text-white"
-          >
-            <Pencil size={20} />
-          </button>
+            className="top-2 right-4 h-12 w-12 border border-gray-200 bg-white text-gray-700 shadow-xl hover:scale-110 hover:bg-blue-600 hover:text-white"
+          />
         )}
         <h2 className="text-preset-2 font-semibold">{mainTitle}</h2>
       </motion.div>
