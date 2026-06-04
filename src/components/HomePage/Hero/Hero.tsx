@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Heart, UserPlus, ArrowRight, Pencil } from "lucide-react";
+import { Heart, UserPlus, ArrowRight } from "lucide-react";
 import { DonationModal } from "../DonationModal/DonationModal";
 import { JoinModal } from "../JoinModal";
 import ban from "../../../images/children.jpg"; // Залишаємо як дефолтну картинку
 import { useFirebaseContent } from "../../../hooks/useFirebaseContent";
 import { EditTextModal, type FieldConfig } from "../../Modals/EditTextModal";
 import { useAuth } from "../../AuthProvider/useAuth";
+import EditButton from "../../Buttons/EditButton";
 
 export const Hero = () => {
   const { t } = useTranslation();
@@ -27,12 +28,12 @@ export const Hero = () => {
   const heroFields: FieldConfig[] = [
     // Cast to unknown to allow extra property `mediaCategory` that our upload
     // logic will read, while keeping the array type as FieldConfig[].
-    ({
+    {
       key: "bannerImage",
       label: "Фонове зображення",
       type: "image" as unknown as FieldConfig["type"],
       mediaCategory: "banners",
-    } as unknown) as FieldConfig,
+    } as unknown as FieldConfig,
     { key: "title", label: "Головний заголовок", type: "input" },
     { key: "description", label: "Опис під заголовком", type: "textarea" },
   ];
@@ -44,20 +45,17 @@ export const Hero = () => {
       style={{ backgroundImage: `url(${currentBanner})` }}
     >
       <div className="relative flex max-w-120 min-w-85 flex-col items-start justify-between p-5 md:max-w-5xl md:p-6 lg:min-h-190 lg:max-w-7xl lg:p-8 xl:max-w-full xl:p-10">
-        
         {/* Кнопка-олівець для адміна */}
         {isAdmin && (
-          <button
+          <EditButton
             onClick={() => setIsEditOpen(true)}
-            className="absolute top-2 right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 shadow-xl transition-all hover:scale-110 hover:bg-blue-600 hover:text-white"
-          >
-            <Pencil size={20} />
-          </button>
+            className="top-2 right-4 h-12 w-12 border border-gray-200 bg-white text-gray-700 shadow-xl hover:scale-110 hover:bg-blue-600 hover:text-white"
+          />
         )}
 
         {/* Контентна частина */}
         <div className="mt-auto mb-auto w-full sm:mt-0">
-          <h1 className="text-preset-1 mb-6 align-sub font-nunito tracking-tighter text-white uppercase drop-shadow-2xl md:text-4xl lg:text-5xl">
+          <h1 className="text-preset-1 font-nunito mb-6 align-sub tracking-tighter text-white uppercase drop-shadow-2xl md:text-4xl lg:text-5xl">
             {isLoading ? "..." : title}
           </h1>
         </div>
@@ -95,7 +93,7 @@ export const Hero = () => {
       {/* Підключені Модалки */}
       <DonationModal isOpen={isDonationOpen} onClose={() => setIsDonationOpen(false)} />
       <JoinModal isOpen={isJoinOpen} onClose={() => setIsJoinOpen(false)} />
-      
+
       {/* Модалка редагування */}
       <EditTextModal
         isOpen={isEditOpen}
