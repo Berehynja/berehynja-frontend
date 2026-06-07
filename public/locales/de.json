@@ -28,7 +28,10 @@
       "change": "Ändern",
       "upload": "Hochladen",
       "uploadError": "Die Datei konnte nicht hochgeladen werden.",
-      "errorLog": "Fehler beim Hochladen:"
+      "errorLog": "Fehler beim Hochladen:",
+      "delete": "Löschen",
+"confirmDelete": "Sind Sie sicher, dass Sie diese Datei entfernen möchten?",
+"deleteError": "Datei konnte nicht gelöscht werden."
     }
   },
   "programs": {
