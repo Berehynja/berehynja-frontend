@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { FileText, FileDown, Upload, Loader2, Trash2 } from "lucide-react"; // Добавили Trash2
+import { FileText, FileDown, Upload, Loader2, Trash2 } from "lucide-react"; 
 import { useAuth } from "../../AuthProvider/useAuth"; 
 import { uploadMedia } from "../../../services/cloudinaryService"; 
 import { subscribeToStatute, updateStatuteDoc } from "../../../services/statuteService"; 
@@ -24,7 +24,7 @@ export const StatuteManager = () => {
 
     setLoading(true);
     try {
-      // Добавили .pdf для корректного отображения в браузере!
+      // Загружаем файл как обычно
       const uniqueFileName = `official_statute_${Date.now()}.pdf`;
       const result = await uploadMedia(file, "documents", "", "raw", uniqueFileName);
 
@@ -44,7 +44,6 @@ export const StatuteManager = () => {
 
     setLoading(true);
     try {
-      // Просто затираем данные в Firebase
       await updateStatuteDoc({ url: null, publicId: null });
       setStatuteUrl(null);
     } catch (err) {
@@ -68,11 +67,11 @@ export const StatuteManager = () => {
               {t("about.statute.title")}
             </h4>
             {statuteUrl ? (
+              // СТАНДАРТНАЯ ССЫЛКА: открывает PDF в новой вкладке (target="_blank")
               <a 
                 href={statuteUrl} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                download="Statute_Berehynja.pdf"
                 className="text-blue-600 flex items-center gap-1 hover:underline text-sm font-medium mt-1"
               >
                 {t("about.statute.download")} <FileDown size={14} />
