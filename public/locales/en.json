@@ -20,7 +20,16 @@
     "storyTitle": "Our Story",
     "ourTeam": "Our Team",
     "teamContent": "Our team consists of dedicated volunteers and professionals who are committed to making a difference in the lives of Ukrainians in Germany. We work together to create a supportive environment where everyone can feel at home.",
-    "ourPartners": "Our Partners"
+    "ourPartners": "Our Partners",
+    "statute": {
+      "title": "Organization Statute",
+      "download": "Download PDF",
+      "notUploaded": "File not uploaded yet",
+      "change": "Change",
+      "upload": "Upload",
+      "uploadError": "Failed to upload the file.",
+      "errorLog": "Upload error:"
+    }
   },
   "programs": {
     "kids": {
@@ -103,5 +112,4 @@
       "close": "Understood"
     }
   }
-  
 }

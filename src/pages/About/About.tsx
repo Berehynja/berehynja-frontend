@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
-import { FileText } from "lucide-react";
 import { OurStory } from "../../components/About/OurStory/OurStory";
 import { MembersList } from "../../components/About/Team/MembersList";
 import { Partners } from "../../components/About/Partners/Partners";
+import { StatuteManager } from "../../components/About/StatutManager/StatutManager";
 
 export const About = () => {
   const { t } = useTranslation();
@@ -22,6 +22,8 @@ export const About = () => {
         </p>
       </div>
 
+      <StatuteManager />
+
       {/* STORY & BANNER SECTION */}
       <section className="my-16 grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
         <OurStory />
@@ -36,19 +38,6 @@ export const About = () => {
       <section className="py-20">
         <Partners />
       </section>
-
-      {/* STATUT */}
-      <div className="mt-20 flex justify-center pb-20">
-        <a
-          href="#"
-          className="group flex items-center gap-3 rounded-2xl bg-gray-900 px-8 py-4 text-white shadow-xl transition-all hover:bg-blue-600"
-        >
-          <FileText size={24} />
-          <span className="text-sm font-bold tracking-wider uppercase">
-            Статут Організації (PDF)
-          </span>
-        </a>
-      </div>
     </div>
   );
 };
