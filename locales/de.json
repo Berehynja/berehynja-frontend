@@ -20,7 +20,16 @@
     "storyTitle": "Unsere Geschichte",
     "ourTeam": "Unser Team",
     "teamContent": "Unser Team besteht aus engagierten Freiwilligen und Fachleuten, die sich dafür einsetzen, das Leben der Ukrainer in Deutschland zu verbessern. Wir arbeiten zusammen, um ein unterstützendes Umfeld zu schaffen, in dem sich jeder wie zu Hause fühlen kann.",
-    "ourPartners": "Unsere Partner"
+    "ourPartners": "Unsere Partner",
+    "statute": {
+      "title": "Vereinssatzung",
+      "download": "PDF herunterladen",
+      "notUploaded": "Noch keine Datei hochgeladen",
+      "change": "Ändern",
+      "upload": "Hochladen",
+      "uploadError": "Die Datei konnte nicht hochgeladen werden.",
+      "errorLog": "Fehler beim Hochladen:"
+    }
   },
   "programs": {
     "kids": {
