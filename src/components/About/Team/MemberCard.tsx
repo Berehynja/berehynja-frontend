@@ -1,7 +1,9 @@
 import { User } from "lucide-react";
 import type { TeamMember } from "../../../types/teamMember";
 import { useTranslation } from "react-i18next";
+import type { LangKey } from "../../../types/types";
 
+// Универсальный заглушка-силуэт, если нет фото
 const PhotoPlaceholder = () => (
   <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-gray-50 to-gray-200 text-gray-400">
     <User size={80} strokeWidth={1} className="opacity-40" />
@@ -16,6 +18,13 @@ export const MemberCard = ({
   setSelectedMember: (member: TeamMember) => void;
 }) => {
   const { i18n } = useTranslation();
+  const currentLang = i18n.language as LangKey;
+
+  // Логика определения, показывать ли реальное фото или заглушку
+  // Заглушка показывается, если:
+  // 1. Поля image вообще нет (или оно пустое)
+  // 2. Или если поле image содержит специальный маркер "placeholder"
+  const showImage = member.image && member.image !== "placeholder";
 
   return (
     <div
@@ -24,13 +33,15 @@ export const MemberCard = ({
     >
       {/* ДЕКОРАТИВНЫЙ КОНТЕЙНЕР ФОТО */}
       <div className="relative mb-6 h-80 w-full overflow-hidden rounded-[2.5rem] border-4 border-white bg-white shadow-xl transition-all duration-500 group-hover:border-blue-50 group-hover:shadow-2xl">
-        {member.image ? (
+        {showImage ? (
           <img
             src={member.image}
-            alt={member.name[i18n.language as keyof typeof member.name]}
+            // Выбираем имя на текущем языке,fallback на UA
+            alt={member.name[currentLang] || member.name["ua"]}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
         ) : (
+          // Показываем заглушку, если сработала логика showImage
           <PhotoPlaceholder />
         )}
 
@@ -41,14 +52,14 @@ export const MemberCard = ({
       {/* ТЕКСТОВЫЙ БЛОК С ДЕКОРОМ */}
       <div className="px-4">
         <h3 className="font-nunito mb-1 text-xl text-gray-900">
-          {member.name[i18n.language as keyof typeof member.name]}
+          {member.name[currentLang] || member.name["ua"]}
         </h3>
 
-        {/* Та самая динамическая желтая линия */}
+        {/* Динамическая желтая линия */}
         <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-yellow-400 transition-all duration-300 group-hover:w-20"></div>
 
         <p className="text-sm font-bold tracking-[0.15em] text-blue-600 uppercase opacity-80 transition-opacity group-hover:opacity-100">
-          {member.role[i18n.language as keyof typeof member.role]}
+          {member.role[currentLang] || member.role["ua"]}
         </p>
       </div>
     </div>
