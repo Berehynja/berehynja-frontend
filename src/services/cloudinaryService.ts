@@ -12,8 +12,7 @@ export const uploadMedia = async (
   file: File, 
   category: MediaCategory, 
   subFolder?: string,
-  resourceType: 'image' | 'raw' = 'image',
-  customPublicId?: string // <-- Добавили этот параметр
+  resourceType: 'image' | 'raw' = 'image' // По умолчанию теперь image
 ): Promise<UploadResponse> => {
   
   const formData = new FormData();
@@ -30,13 +29,9 @@ export const uploadMedia = async (
 
   formData.append("upload_preset", presets[category]);
 
+  // Снова спокойно передаем папку из кода
   const path = subFolder ? `${category}/${subFolder}` : category;
   formData.append("folder", path);
-
-  // Если передано жесткое имя, заставляем Cloudinary использовать его
-  if (customPublicId) {
-    formData.append("public_id", customPublicId);
-  }
 
   const url = `${UPLOAD_BASE_URL}/${resourceType}/upload`;
 
@@ -52,6 +47,7 @@ export const uploadMedia = async (
     }
 
     const data = await response.json();
+    console.log("🚀 ~ data:", data)
     return {
       url: data.secure_url,
       public_id: data.public_id
