@@ -13,121 +13,153 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
   const { i18n } = useTranslation();
   const currentLang = i18n.language as LangKey;
 
-  // Блокування скролу фону при відкритій модалці
   useEffect(() => {
-    if (memberTeam) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    if (!memberTeam) return;
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleEscape);
+
     return () => {
       document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleEscape);
     };
-  }, [memberTeam]);
+  }, [memberTeam, onClose]);
 
   if (!memberTeam) return null;
 
-  // Перевірка: чи є реальне фото, чи це наш маркер "placeholder"
-  const hasRealImage = memberTeam.image && memberTeam.image !== "placeholder";
+  const memberImage = memberTeam.image;
+
+  const hasRealImage =
+    typeof memberImage === "string" && memberImage.trim() !== "" && memberImage !== "placeholder";
+
+  const name = memberTeam.name[currentLang] || memberTeam.name.ua;
+  const role = memberTeam.role[currentLang] || memberTeam.role.ua;
+
+  const description = memberTeam.description[currentLang] || memberTeam.description.ua;
+
+  const education = memberTeam.education[currentLang] || memberTeam.education.ua;
+
+  const skills =
+    memberTeam.skills[currentLang]?.length > 0
+      ? memberTeam.skills[currentLang]
+      : memberTeam.skills.ua;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6">
-      {/* Задній фон (Backdrop) */}
-      <div
-        className="absolute inset-0 bg-gray-900/40 backdrop-blur-md transition-opacity"
-        onClick={onClose}
-      />
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="absolute inset-0 bg-slate-950/45 backdrop-blur-sm" onClick={onClose} />
 
-      {/* Контент Модалки */}
-      <div className="animate-in fade-in zoom-in relative w-full max-w-5xl overflow-hidden rounded-[3rem] bg-white shadow-2xl duration-300">
+      <div className="relative flex max-h-[92dvh] w-full max-w-[480px] flex-col overflow-y-auto rounded-[1.75rem] bg-white shadow-[0_28px_80px_rgba(15,23,42,0.28)] [-ms-overflow-style:none] [scrollbar-width:none] md:grid md:max-w-5xl md:grid-cols-[0.78fr_1.22fr] md:overflow-hidden md:rounded-[2.25rem] lg:grid-cols-[0.85fr_1.15fr] [&::-webkit-scrollbar]:hidden">
         <button
+          type="button"
           onClick={onClose}
-          className="absolute top-6 right-6 z-20 rounded-full bg-white/80 p-2 text-gray-500 shadow-sm backdrop-blur-md transition-all hover:bg-red-50 hover:text-red-500"
+          aria-label="Закрити"
+          className="absolute top-3 right-3 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-slate-500 shadow-sm backdrop-blur transition hover:bg-red-50 hover:text-red-500 md:top-5 md:right-5 md:h-11 md:w-11"
         >
-          <X size={24} />
+          <X size={21} />
         </button>
 
-        <div className="flex flex-col md:flex-row">
-          {/* ЛІВА ЧАСТИНА: Фото або заглушка */}
-          <div className="relative h-[350px] w-full overflow-hidden bg-gray-100 md:h-auto md:w-[45%]">
-            {hasRealImage ? (
-              <img
-                src={memberTeam.image}
-                alt={memberTeam.name[currentLang] || memberTeam.name["ua"]}
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-gray-50 to-gray-200 text-gray-300">
-                <User2 size={120} strokeWidth={0.5} />
+        <div className="relative aspect-[4/5] w-full shrink-0 overflow-hidden bg-slate-100 md:aspect-auto md:max-h-[92dvh] md:min-h-[520px]">
+          {hasRealImage ? (
+            <img
+              src={memberImage}
+              alt={name}
+              className="h-full w-full object-cover object-center"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-slate-50 to-slate-200 text-slate-300">
+              <User2 size={110} strokeWidth={0.7} />
+            </div>
+          )}
+
+          <div className="absolute inset-0 bg-linear-to-t from-slate-950/20 via-transparent to-transparent md:hidden" />
+        </div>
+
+        <div className="min-h-0 px-5 py-6 [-ms-overflow-style:none] [scrollbar-width:none] md:max-h-[92dvh] md:overflow-y-auto md:px-9 md:py-10 lg:px-12 [&::-webkit-scrollbar]:hidden">
+          <div className="mb-8">
+            {role && (
+              <div className="mb-3 flex items-center gap-3">
+                <span className="h-px w-9 bg-blue-500" />
+
+                <p className="text-[11px] font-bold tracking-[0.2em] text-blue-600 uppercase">
+                  {role}
+                </p>
               </div>
             )}
-            <div className="absolute inset-0 bg-linear-to-t from-black/20 via-transparent to-transparent md:hidden" />
+
+            <h2 className="font-nunito text-2xl leading-tight text-slate-950 md:text-4xl">
+              {name}
+            </h2>
+
+            <div className="mt-4 h-1 w-16 rounded-full bg-linear-to-r from-blue-500 to-yellow-400" />
           </div>
 
-          {/* ПРАВА ЧАСТИНА: Інформація */}
-          <div className="flex max-h-[50vh] w-full flex-col overflow-y-auto p-8 md:max-h-[90vh] md:w-[55%] md:p-14">
-            <div className="mb-10">
-              <div className="mb-2 flex items-center gap-2">
-                <span className="h-px w-8 bg-blue-500"></span>
-                <span className="text-xs font-bold tracking-[0.2em] text-blue-600 uppercase">
-                  {memberTeam.role[currentLang] || memberTeam.role["ua"]}
-                </span>
-              </div>
-              <h2 className="font-nunito text-3xl leading-tight text-gray-900 md:text-4xl">
-                {memberTeam.name[currentLang] || memberTeam.name["ua"]}
-              </h2>
-              <div className="mt-5 h-1.5 w-24 rounded-full bg-linear-to-r from-blue-500 to-yellow-400" />
-            </div>
-
-            <div className="space-y-8">
+          <div className="space-y-7">
+            {skills?.length > 0 && (
               <section>
-                <div className="mb-4 flex items-center gap-3 text-gray-900">
-                  <div className="rounded-lg bg-blue-50 p-2 text-blue-600">
-                    <Briefcase size={20} />
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                    <Briefcase size={18} />
                   </div>
-                  <h3 className="text-lg font-bold">Професійні навички</h3>
+
+                  <h3 className="text-base font-bold text-slate-950">Професійні навички</h3>
                 </div>
+
                 <div className="flex flex-wrap gap-2">
-                  {(memberTeam.skills[currentLang] || memberTeam.skills["ua"]).map(
-                    (skill, idx) => (
-                      <span
-                        key={idx}
-                        className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm"
-                      >
-                        {skill}
-                      </span>
-                    )
-                  )}
+                  {skills.map((skill, idx) => (
+                    <span
+                      key={`${skill}-${idx}`}
+                      className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-1.5 text-sm font-medium text-slate-700"
+                    >
+                      {skill}
+                    </span>
+                  ))}
                 </div>
               </section>
+            )}
 
+            {description && (
               <section>
-                <div className="mb-4 flex items-center gap-3 text-gray-900">
-                  <div className="rounded-lg bg-yellow-50 p-2 text-yellow-600">
-                    <Award size={20} />
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-yellow-50 text-yellow-600">
+                    <Award size={18} />
                   </div>
-                  <h3 className="text-lg font-bold">Досвід та експертиза</h3>
+
+                  <h3 className="text-base font-bold text-slate-950">Досвід та експертиза</h3>
                 </div>
+
                 <div className="relative">
-                  <span className="absolute -top-2 -left-4 font-serif text-6xl leading-none text-gray-100 select-none">
+                  <span className="absolute -top-4 -left-2 font-serif text-5xl leading-none text-slate-100 select-none">
                     “
                   </span>
-                  <p className="relative pl-2 text-lg leading-relaxed text-gray-600 italic">
-                    {memberTeam.description[currentLang] || memberTeam.description["ua"]}
+
+                  <p className="relative text-[15px] leading-7 text-slate-600 md:text-base md:leading-8">
+                    {description}
                   </p>
                 </div>
               </section>
+            )}
 
-              <section className="border-t border-gray-100 pt-4">
-                <div className="mb-2 flex items-center gap-3 text-gray-500">
+            {education && (
+              <section className="rounded-3xl border border-slate-100 bg-slate-50/70 p-4 md:p-5">
+                <div className="mb-3 flex items-center gap-3 text-slate-500">
                   <GraduationCap size={18} />
-                  <h3 className="text-sm font-semibold tracking-wider uppercase">Освіта</h3>
+
+                  <h3 className="text-xs font-bold tracking-[0.18em] uppercase">Освіта</h3>
                 </div>
-                <p className="ml-8 text-gray-500">
-                  {memberTeam.education[currentLang] || memberTeam.education["ua"]}
-                </p>
+
+                <p className="text-sm leading-7 text-slate-600">{education}</p>
               </section>
-            </div>
+            )}
           </div>
         </div>
       </div>

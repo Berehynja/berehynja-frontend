@@ -3,10 +3,9 @@ import type { TeamMember } from "../../../types/teamMember";
 import { useTranslation } from "react-i18next";
 import type { LangKey } from "../../../types/types";
 
-// Универсальный заглушка-силуэт, если нет фото
 const PhotoPlaceholder = () => (
-  <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-gray-50 to-gray-200 text-gray-400">
-    <User size={80} strokeWidth={1} className="opacity-40" />
+  <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-slate-50 to-slate-200 text-slate-400">
+    <User size={76} strokeWidth={1} className="opacity-40" />
   </div>
 );
 
@@ -20,48 +19,47 @@ export const MemberCard = ({
   const { i18n } = useTranslation();
   const currentLang = i18n.language as LangKey;
 
-  // Логика определения, показывать ли реальное фото или заглушку
-  // Заглушка показывается, если:
-  // 1. Поля image вообще нет (или оно пустое)
-  // 2. Или если поле image содержит специальный маркер "placeholder"
-  const showImage = member.image && member.image !== "placeholder";
+  const hasRealImage =
+    typeof member.image === "string" &&
+    member.image.trim() !== "" &&
+    member.image !== "placeholder";
+
+  const name = member.name[currentLang] || member.name.ua;
+  const role = member.role[currentLang] || member.role.ua;
 
   return (
-    <div
+    <button
+      type="button"
       onClick={() => setSelectedMember(member)}
-      className="group relative flex cursor-pointer flex-col items-center text-center transition-all duration-300 hover:-translate-y-2"
+      className="group flex w-full flex-col items-center text-center outline-none"
     >
-      {/* ДЕКОРАТИВНЫЙ КОНТЕЙНЕР ФОТО */}
-      <div className="relative mb-6 h-80 w-full overflow-hidden rounded-[2.5rem] border-4 border-white bg-white shadow-xl transition-all duration-500 group-hover:border-blue-50 group-hover:shadow-2xl">
-        {showImage ? (
+      <div className="relative mb-6 aspect-[4/5] w-full overflow-hidden rounded-[2rem] bg-slate-100 shadow-[0_18px_45px_rgba(15,23,42,0.14)] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_60px_rgba(15,23,42,0.18)]">
+        {hasRealImage ? (
           <img
             src={member.image}
-            // Выбираем имя на текущем языке,fallback на UA
-            alt={member.name[currentLang] || member.name["ua"]}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+            alt={name}
+            className="h-full w-full object-cover object-center"
           />
         ) : (
-          // Показываем заглушку, если сработала логика showImage
           <PhotoPlaceholder />
         )}
 
-        {/* Легкий градиент-наложение при наведении */}
-        <div className="absolute inset-0 bg-linear-to-t from-blue-900/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-linear-to-t from-slate-950/15 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
 
-      {/* ТЕКСТОВЫЙ БЛОК С ДЕКОРОМ */}
-      <div className="px-4">
-        <h3 className="font-nunito mb-1 text-xl text-gray-900">
-          {member.name[currentLang] || member.name["ua"]}
+      <div className="px-3">
+        <h3 className="font-nunito mb-2 text-xl leading-tight text-slate-950">
+          {name}
         </h3>
 
-        {/* Динамическая желтая линия */}
-        <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-yellow-400 transition-all duration-300 group-hover:w-20"></div>
+        <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-yellow-400 transition-all duration-300 group-hover:w-16" />
 
-        <p className="text-sm font-bold tracking-[0.15em] text-blue-600 uppercase opacity-80 transition-opacity group-hover:opacity-100">
-          {member.role[currentLang] || member.role["ua"]}
-        </p>
+        {role && (
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
+            {role}
+          </p>
+        )}
       </div>
-    </div>
+    </button>
   );
 };

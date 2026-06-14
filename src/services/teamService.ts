@@ -12,7 +12,6 @@ export const fetchTeamMembers = async (): Promise<TeamMember[]> => {
       id: doc.id,
       ...doc.data(),
     })) as TeamMember[];
-    console.log("🚀 ~ members:", members)
     return members;
   } catch (error) {
     console.error("Помилка при завантаженні членів команди:", error);
