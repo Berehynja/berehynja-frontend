@@ -1,6 +1,6 @@
 import { Briefcase, Heart, HouseHeart, School, Users } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
-import { EditTextModal, type FieldConfig } from "../../Modals/EditTextModal";
+import { EditTextModal } from "../../Modals/EditTextModal";
 import { useState } from "react";
 import { useFirebaseContent } from "../../../hooks/useFirebaseContent";
 import { useTranslation } from "react-i18next";
@@ -69,30 +69,45 @@ const cardsConfig = [
 ];
 
 export default function OurMission() {
-  const [isEditOpen, setIsEditOpen] = useState(false);
+  // const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isTitleOpen, setIsTitleOpen] = useState(false);
+  const [activeCard, setActiveCard] = useState<string | null>(null);
+
+  const openTitleEditor = () => setIsTitleOpen(true);
+  const closeTitleEditor = () => setIsTitleOpen(false);
+
+  const openCardEditor = (cardId: string) => {
+    setActiveCard(cardId);
+  };
+
+  const closeCardEditor = () => {
+    setActiveCard(null);
+  };
+
   const { getText, isLoading, data } = useFirebaseContent("home");
   const { t } = useTranslation();
   const { isAdmin } = useAuth();
 
   const mainTitle = getText("ourMission.title", t("ourMission.title"));
+  const selectedCard = activeCard ? data?.ourMission?.cards?.[activeCard] : null;
 
-  const missionFields: FieldConfig[] = [
-    { key: "title", label: "Головний заголовок секції", type: "input" },
-    ...cardsConfig.flatMap((card) => [
-      { key: `cards.${card.id}.title`, label: `Заголовок (${card.id})`, type: "input" as const },
-      {
-        key: `cards.${card.id}.subtitle`,
-        label: `Підзаголовок (${card.id})`,
-        type: "input" as const,
-      },
-      { key: `cards.${card.id}.lead`, label: `Лідабзац (${card.id})`, type: "textarea" as const },
-      {
-        key: `cards.${card.id}.text`,
-        label: `Основний текст (${card.id})`,
-        type: "textarea" as const,
-      },
-    ]),
-  ];
+  // const missionFields: FieldConfig[] = [
+  //   { key: "title", label: "Головний заголовок секції", type: "input" },
+  //   ...cardsConfig.flatMap((card) => [
+  //     { key: `cards.${card.id}.title`, label: `Заголовок (${card.id})`, type: "input" as const },
+  //     {
+  //       key: `cards.${card.id}.subtitle`,
+  //       label: `Підзаголовок (${card.id})`,
+  //       type: "input" as const,
+  //     },
+  //     { key: `cards.${card.id}.lead`, label: `Лідабзац (${card.id})`, type: "textarea" as const },
+  //     {
+  //       key: `cards.${card.id}.text`,
+  //       label: `Основний текст (${card.id})`,
+  //       type: "textarea" as const,
+  //     },
+  //   ]),
+  // ];
 
   return (
     <section className="relative my-10 overflow-hidden">
@@ -104,14 +119,19 @@ export default function OurMission() {
         transition={{ duration: 0.6 }}
         className="text-center"
       >
-        {/* 👇 Кнопка-олівець для адміна */}
-        {isAdmin && (
-          <EditButton
-            onClick={() => setIsEditOpen(true)}
-            className="top-2 right-4 h-12 w-12 border border-gray-200 bg-white text-gray-700 shadow-xl hover:scale-110 hover:bg-blue-600 hover:text-white"
-          />
-        )}
-        <h2 className="text-preset-2 font-semibold">{mainTitle}</h2>
+        <div className="relative inline-flex">
+          <h2 className="text-preset-2 font-semibold">
+            {mainTitle}
+
+            {isAdmin && (
+              <EditButton
+                onClick={openTitleEditor}
+                className="top-0 -right-1/3 h-8 w-8 border border-gray-200 bg-white text-gray-700 shadow hover:scale-110 hover:bg-blue-600 hover:text-white"
+                size={36}
+              />
+            )}
+          </h2>
+        </div>
       </motion.div>
 
       {/* Контейнер гріда */}
@@ -129,7 +149,18 @@ export default function OurMission() {
           const textPath = `ourMission.cards.${card.id}.text`;
 
           return (
-            <motion.aside key={card.id} variants={cardVariants} className={card.className}>
+            <motion.aside
+              key={card.id}
+              variants={cardVariants}
+              className={`${card.className} relative`}
+            >
+              {isAdmin && (
+                <EditButton
+                  onClick={() => openCardEditor(card.id)}
+                  className="top-4 right-4 h-12 w-12 border border-gray-200 bg-white text-gray-700 shadow-xl hover:scale-110 hover:bg-blue-600 hover:text-white"
+                  size={36}
+                />
+              )}
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full border border-black bg-gray-100">
                   {card.icon}
@@ -151,13 +182,34 @@ export default function OurMission() {
       </motion.div>
 
       <EditTextModal
-        isOpen={isEditOpen}
-        onClose={() => setIsEditOpen(false)}
-        documentName="home" // 👈 Вказуємо документ
-        sectionName="ourMission" // 👈 Вказуємо секцію
-        modalTitle="Редагування Our Mission" // 👈 Гарний заголовок
-        initialData={data?.ourMission} // 👈 Передаємо шматочок даних з хука
-        fields={missionFields}
+        isOpen={!!activeCard}
+        onClose={closeCardEditor}
+        documentName="home"
+        sectionName={`ourMission.cards.${activeCard}`}
+        modalTitle="Редагування картки"
+        initialData={selectedCard ?? {}}
+        fields={[
+          { key: "title", label: "Заголовок", type: "input" },
+          { key: "subtitle", label: "Підзаголовок", type: "input" },
+          { key: "lead", label: "Лідабзац", type: "textarea" },
+          { key: "text", label: "Основний текст", type: "textarea" },
+        ]}
+      />
+
+      <EditTextModal
+        isOpen={isTitleOpen}
+        onClose={closeTitleEditor}
+        documentName="home"
+        sectionName="ourMission"
+        modalTitle="Редагування заголовку"
+        initialData={data?.ourMission}
+        fields={[
+          {
+            key: "title",
+            label: "Заголовок",
+            type: "input",
+          },
+        ]}
       />
     </section>
   );
