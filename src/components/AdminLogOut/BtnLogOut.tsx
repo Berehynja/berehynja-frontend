@@ -9,7 +9,7 @@ export default function AdminLogout() {
       onClick={logout}
       aria-label="Log out of admin mode"
       title="Log out of admin mode"
-      className="group inline-flex flex-col items-stretch justify-center gap-1 rounded-md border border-slate-200 bg-white/95 px-2 py-1.5 text-[10px] font-semibold text-slate-700 shadow-sm backdrop-blur-md transition-all duration-200 hover:border-red-200 hover:bg-red-50 hover:shadow-md active:scale-[0.97] focus-visible:ring-3 focus-visible:ring-blue-500/25 focus-visible:outline-none sm:gap-1.5 sm:rounded-lg sm:px-3 sm:py-2 sm:text-xs"
+      className="group inline-flex flex-col items-stretch justify-center gap-1 rounded-md border border-red-200 bg-white/95 px-2 py-1.5 text-[10px] font-semibold text-slate-700 shadow-sm backdrop-blur-md transition-all duration-200 hover:border-red-200 hover:bg-red-50 hover:shadow-md active:scale-[0.97] focus-visible:ring-3 focus-visible:ring-blue-500/25 focus-visible:outline-none sm:gap-1.5 sm:rounded-lg sm:px-3 sm:py-2 sm:text-xs"
     >
       <span className="inline-flex items-center justify-center gap-2 whitespace-nowrap">
         <ShieldCheck
