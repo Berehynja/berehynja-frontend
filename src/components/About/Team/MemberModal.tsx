@@ -102,7 +102,7 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
         <div className="shrink-0 px-5 pt-6 pb-4 sm:px-7 sm:pt-8 sm:pb-5 md:col-start-2 md:row-start-1 md:flex md:flex-col md:justify-center md:px-8 md:py-8 lg:px-12 lg:pt-10 lg:pb-6">
           {role && (
             <div className="mb-3 flex items-start gap-3 pr-10 md:pr-8 lg:pr-12">
-              <p className="text-[10px] leading-5 font-bold tracking-[0.18em] text-blue-600 uppercase sm:text-[11px] sm:tracking-[0.2em]">
+              <p className="text-[11px] leading-5 font-bold tracking-[0.18em] text-blue-600 uppercase sm:text-xs sm:tracking-[0.2em] md:text-[13px] lg:text-sm">
                 {role}
               </p>
             </div>
@@ -110,7 +110,7 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
 
           <h2
             id="member-modal-title"
-            className="font-nunito pr-10 text-2xl leading-tight text-slate-950 sm:text-3xl md:pr-6 md:text-3xl lg:pr-12 lg:text-4xl"
+            className="font-nunito pr-10 text-[28px] leading-tight text-slate-950 sm:text-[32px] md:pr-6 md:text-4xl lg:pr-12 lg:text-[42px]"
           >
             {name}
           </h2>
@@ -127,7 +127,7 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
                     <Briefcase size={18} />
                   </div>
 
-                  <h3 className="text-sm font-bold text-slate-950 sm:text-base">
+                  <h3 className="text-base font-bold text-slate-950 sm:text-[17px] lg:text-lg">
                     Професійні навички
                   </h3>
                 </div>
@@ -136,7 +136,7 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
                   {skills.map((skill, idx) => (
                     <span
                       key={`${skill}-${idx}`}
-                      className="max-w-full rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs leading-5 font-medium break-words text-slate-700 sm:px-3.5 sm:text-sm"
+                      className="max-w-full rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[13px] leading-5 font-medium break-words text-slate-700 sm:px-3.5 sm:text-[15px] lg:text-base lg:leading-6"
                     >
                       {skill}
                     </span>
@@ -152,7 +152,7 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
                     <Award size={18} />
                   </div>
 
-                  <h3 className="text-sm font-bold text-slate-950 sm:text-base">
+                  <h3 className="text-base font-bold text-slate-950 sm:text-[17px] lg:text-lg">
                     Досвід та експертиза
                   </h3>
                 </div>
@@ -162,7 +162,7 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
                     “
                   </span>
 
-                  <p className="relative text-sm leading-7 whitespace-pre-line text-slate-600 sm:text-[15px] md:text-base md:leading-8">
+                  <p className="relative text-[15px] leading-7 whitespace-pre-line text-slate-600 sm:text-base md:text-[17px] md:leading-8 lg:text-lg lg:leading-9">
                     {description}
                   </p>
                 </div>
@@ -174,12 +174,12 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
                 <div className="mb-3 flex items-center gap-3 text-slate-500">
                   <GraduationCap size={18} className="shrink-0" />
 
-                  <h3 className="text-xs font-bold tracking-[0.18em] uppercase">
+                  <h3 className="text-[13px] font-bold tracking-[0.18em] uppercase sm:text-sm">
                     Освіта
                   </h3>
                 </div>
 
-                <p className="text-sm leading-7 whitespace-pre-line text-slate-600">
+                <p className="text-[15px] leading-7 whitespace-pre-line text-slate-600 sm:text-base lg:text-[17px] lg:leading-8">
                   {education}
                 </p>
               </section>
