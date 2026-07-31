@@ -33,13 +33,9 @@ export const MemberCard = ({
       onClick={() => setSelectedMember(member)}
       className="group flex w-full flex-col items-center text-center outline-none"
     >
-      <div className="relative mb-6 aspect-[4/5] w-full overflow-hidden rounded-[2rem] bg-slate-100 shadow-[0_18px_45px_rgba(15,23,42,0.14)] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_60px_rgba(15,23,42,0.18)]">
+      <div className="relative mb-6 aspect-square w-full overflow-hidden rounded-[2rem] bg-slate-100 shadow-[0_18px_45px_rgba(15,23,42,0.14)] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_60px_rgba(15,23,42,0.18)]">
         {hasRealImage ? (
-          <img
-            src={member.image}
-            alt={name}
-            className="h-full w-full object-cover object-center"
-          />
+          <img src={member.image} alt={name} className="h-full w-full object-cover object-center" />
         ) : (
           <PhotoPlaceholder />
         )}
@@ -48,16 +44,12 @@ export const MemberCard = ({
       </div>
 
       <div className="px-3">
-        <h3 className="font-nunito mb-2 text-xl leading-tight text-slate-950">
-          {name}
-        </h3>
+        <h3 className="font-nunito mb-2 text-xl leading-tight text-slate-950">{name}</h3>
 
         <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-yellow-400 transition-all duration-300 group-hover:w-16" />
 
         {role && (
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
-            {role}
-          </p>
+          <p className="text-xs font-bold tracking-[0.18em] text-blue-600 uppercase">{role}</p>
         )}
       </div>
     </button>

@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Cropper from "react-easy-crop";
 import {
-  X,
-  Plus,
-  Trash2,
+  Award,
+  Briefcase,
   Camera,
   CheckCircle2,
-  User,
-  Briefcase,
   GraduationCap,
-  Award,
+  Plus,
+  Trash2,
+  User,
   Wrench,
+  X,
 } from "lucide-react";
 
 import { uploadMedia } from "../../services/cloudinaryService";
@@ -70,7 +70,7 @@ export const AddTeamMemberModal = ({
 
   const handleTextChange = (
     field: keyof Omit<TeamMember, "id" | "skills" | "image">,
-    value: string
+    value: string,
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -141,7 +141,7 @@ export const AddTeamMemberModal = ({
     try {
       const croppedBlob = await getCroppedImg(
         selectedFileUrl,
-        croppedAreaPixels
+        croppedAreaPixels,
       );
 
       const croppedFile = new File([croppedBlob], "team-member.jpg", {
@@ -151,7 +151,7 @@ export const AddTeamMemberModal = ({
       const result = await uploadMedia(
         croppedFile,
         "team",
-        formData.name[activeLang]?.trim() || "member"
+        formData.name[activeLang]?.trim() || "member",
       );
 
       setFormData((prev) => ({ ...prev, image: result.url }));
@@ -181,7 +181,7 @@ export const AddTeamMemberModal = ({
   const renderImagePreview = () => {
     if (formData.image === "placeholder") {
       return (
-        <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-400">
+        <div className="flex h-full w-full items-center justify-center bg-slate-100 text-slate-400">
           <User size={64} className="opacity-50" />
         </div>
       );
@@ -191,14 +191,14 @@ export const AddTeamMemberModal = ({
       return (
         <img
           src={formData.image}
-          className="w-full h-full object-cover"
-          alt="Preview"
+          className="h-full w-full object-cover object-center"
+          alt="Попередній перегляд фото"
         />
       );
     }
 
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 gap-1 text-center px-2">
+      <div className="flex h-full w-full flex-col items-center justify-center gap-1 px-2 text-center text-slate-400">
         <Camera size={20} />
         <span className="text-[9px] font-bold uppercase">Фото</span>
       </div>
@@ -208,22 +208,23 @@ export const AddTeamMemberModal = ({
   return (
     <>
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-3"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-3 backdrop-blur-sm"
         onClick={onClose}
       >
         <div
-          className="w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[92vh]"
+          className="animate-in zoom-in-95 flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl duration-200"
           onClick={(e) => e.stopPropagation()}
         >
-          <header className="px-6 py-5 bg-slate-50 border-b border-slate-100 flex items-center justify-between shrink-0">
-            <h2 className="text-xl font-bold text-slate-800 uppercase tracking-tight">
+          <header className="flex shrink-0 items-center justify-between border-b border-slate-100 bg-slate-50 px-6 py-5">
+            <h2 className="text-xl font-bold tracking-tight text-slate-800 uppercase">
               {memberToEdit ? "Редагування профілю" : "Новий фахівець"}
             </h2>
 
             <button
               type="button"
               onClick={onClose}
-              className="p-2 hover:bg-slate-200 rounded-full transition-colors text-slate-400"
+              className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-200"
+              aria-label="Закрити модальне вікно"
             >
               <X size={20} />
             </button>
@@ -231,31 +232,32 @@ export const AddTeamMemberModal = ({
 
           <form
             onSubmit={handleSubmit}
-            className="p-6 sm:p-8 overflow-y-auto space-y-6 custom-scrollbar"
+            className="custom-scrollbar space-y-6 overflow-y-auto p-6 sm:p-8"
           >
-            <div className="flex flex-col md:flex-row gap-6 items-center md:items-start border-b border-slate-50 pb-6">
-              <div className="flex gap-3 items-center md:items-start shrink-0">
-                <div className="relative w-32 h-40 rounded-2xl bg-slate-100 border-2 border-dashed border-slate-200 overflow-hidden group">
+            <div className="flex flex-col items-center gap-6 border-b border-slate-50 pb-6 md:flex-row md:items-start">
+              <div className="flex shrink-0 items-center gap-3 md:items-start">
+                <div className="group relative size-32 overflow-hidden rounded-2xl border-2 border-dashed border-slate-200 bg-slate-100">
                   {renderImagePreview()}
 
-                  <label className="absolute inset-0 cursor-pointer bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
+                  <label className="absolute inset-0 flex cursor-pointer items-center justify-center bg-slate-900/40 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
                     <Plus className="text-white" size={24} />
+                    <span className="sr-only">Обрати фотографію</span>
                     <input
                       type="file"
                       accept="image/*"
                       onChange={handlePhotoUpload}
-                      className="hidden"
+                      className="sr-only"
                     />
                   </label>
                 </div>
 
-                <div className="flex flex-col gap-2 justify-center">
+                <div className="flex flex-col justify-center gap-2">
                   {formData.image ? (
                     <button
                       type="button"
                       onClick={handleRemovePhoto}
-                      className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 text-red-500 hover:bg-red-100 transition-colors"
-                      title="Видалити фотографію/заглушку"
+                      className="flex size-10 items-center justify-center rounded-xl bg-red-50 text-red-500 transition-colors hover:bg-red-100"
+                      title="Видалити фотографію або заглушку"
                     >
                       <Trash2 size={16} />
                     </button>
@@ -268,7 +270,7 @@ export const AddTeamMemberModal = ({
                           image: "placeholder",
                         }))
                       }
-                      className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-500 hover:border-blue-200 hover:bg-blue-50 transition-all shadow-sm"
+                      className="flex size-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-500 shadow-sm transition-all hover:border-blue-200 hover:bg-blue-50"
                       title="Встановити універсальну заглушку"
                     >
                       <User size={20} />
@@ -277,20 +279,20 @@ export const AddTeamMemberModal = ({
                 </div>
               </div>
 
-              <div className="flex-1 w-full space-y-3">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              <div className="w-full flex-1 space-y-3">
+                <label className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
                   Мова заповнення:
                 </label>
 
-                <div className="flex p-1 bg-slate-100 rounded-xl gap-1">
+                <div className="flex gap-1 rounded-xl bg-slate-100 p-1">
                   {(["ua", "de", "en"] as const).map((lang) => (
                     <button
                       key={lang}
                       type="button"
                       onClick={() => setActiveLang(lang)}
-                      className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase transition-all ${
+                      className={`flex-1 rounded-lg py-2 text-xs font-bold uppercase transition-all ${
                         activeLang === lang
-                          ? "bg-white shadow text-blue-600"
+                          ? "bg-white text-blue-600 shadow"
                           : "text-slate-500"
                       }`}
                     >
@@ -298,7 +300,7 @@ export const AddTeamMemberModal = ({
                       {formData.name[lang] && (
                         <CheckCircle2
                           size={10}
-                          className="inline ml-1 text-green-500"
+                          className="ml-1 inline text-green-500"
                         />
                       )}
                     </button>
@@ -307,18 +309,18 @@ export const AddTeamMemberModal = ({
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase">
                   <User size={12} className="text-blue-500" />
-                  Ім'я ({activeLang})
+                  Імʼя ({activeLang})
                 </label>
 
                 <input
                   required
                   value={formData.name[activeLang]}
                   onChange={(e) => handleTextChange("name", e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -332,7 +334,7 @@ export const AddTeamMemberModal = ({
                   required
                   value={formData.role[activeLang]}
                   onChange={(e) => handleTextChange("role", e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500"
                 />
               </div>
             </div>
@@ -348,11 +350,11 @@ export const AddTeamMemberModal = ({
                 onChange={(e) =>
                   handleTextChange("education", e.target.value)
                 }
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500"
               />
             </div>
 
-            <div className="space-y-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+            <div className="space-y-4 rounded-2xl border border-slate-100 bg-slate-50 p-4">
               <div className="flex items-center justify-between">
                 <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase">
                   <Wrench size={12} className="text-blue-500" />
@@ -362,26 +364,27 @@ export const AddTeamMemberModal = ({
                 <button
                   type="button"
                   onClick={addSkill}
-                  className="text-[9px] font-bold text-blue-600 bg-white px-2 py-1 rounded-lg shadow-sm hover:bg-blue-600 hover:text-white transition-all flex items-center gap-1"
+                  className="flex items-center gap-1 rounded-lg bg-white px-2 py-1 text-[9px] font-bold text-blue-600 shadow-sm transition-all hover:bg-blue-600 hover:text-white"
                 >
                   <Plus size={10} />
                   Додати
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {formData.skills[activeLang]?.map((skill, index) => (
                   <div key={index} className="flex gap-2">
                     <input
                       value={skill}
                       onChange={(e) => updateSkill(index, e.target.value)}
-                      className="flex-1 px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs outline-none focus:border-blue-400"
+                      className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs outline-none focus:border-blue-400"
                     />
 
                     <button
                       type="button"
                       onClick={() => removeSkill(index)}
-                      className="p-1.5 text-slate-300 hover:text-red-500 transition-colors"
+                      className="p-1.5 text-slate-300 transition-colors hover:text-red-500"
+                      aria-label="Видалити навичку"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -402,26 +405,26 @@ export const AddTeamMemberModal = ({
                 onChange={(e) =>
                   handleTextChange("description", e.target.value)
                 }
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm resize-none"
+                className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-blue-500"
               />
             </div>
 
-            <footer className="flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-slate-100 gap-4 mt-4">
+            <footer className="mt-4 flex flex-col items-center justify-between gap-4 border-t border-slate-100 pt-6 sm:flex-row">
               {memberToEdit && (
                 <button
                   type="button"
                   onClick={() => onDelete?.(memberToEdit.id!)}
-                  className="text-[9px] font-bold text-red-400 uppercase tracking-widest hover:text-red-600 transition-colors"
+                  className="text-[9px] font-bold tracking-widest text-red-400 uppercase transition-colors hover:text-red-600"
                 >
                   Видалити профіль
                 </button>
               )}
 
-              <div className="flex gap-2 w-full sm:w-auto sm:ml-auto">
+              <div className="flex w-full gap-2 sm:ml-auto sm:w-auto">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="flex-1 sm:flex-none px-6 py-2 text-[10px] font-bold uppercase text-slate-400 hover:text-slate-600"
+                  className="flex-1 px-6 py-2 text-[10px] font-bold text-slate-400 uppercase hover:text-slate-600 sm:flex-none"
                 >
                   Скасувати
                 </button>
@@ -429,7 +432,7 @@ export const AddTeamMemberModal = ({
                 <button
                   type="submit"
                   disabled={isUploading}
-                  className="flex-1 sm:flex-none px-8 py-3 bg-blue-600 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 disabled:bg-slate-300"
+                  className="flex-1 rounded-xl bg-blue-600 px-8 py-3 text-[10px] font-bold tracking-widest text-white uppercase shadow-lg shadow-blue-100 transition-all hover:bg-blue-700 disabled:bg-slate-300 sm:flex-none"
                 >
                   {isUploading ? "Завантаження..." : "Зберегти"}
                 </button>
@@ -440,9 +443,9 @@ export const AddTeamMemberModal = ({
       </div>
 
       {selectedFileUrl && (
-        <div className="fixed inset-0 z-[60] bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
-            <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4">
+          <div className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
               <h3 className="text-sm font-bold text-slate-700 uppercase">
                 Налаштування фото
               </h3>
@@ -450,18 +453,19 @@ export const AddTeamMemberModal = ({
               <button
                 type="button"
                 onClick={handleCropCancel}
-                className="p-2 hover:bg-slate-100 rounded-full text-slate-400"
+                className="rounded-full p-2 text-slate-400 hover:bg-slate-100"
+                aria-label="Закрити редактор фото"
               >
                 <X size={18} />
               </button>
             </div>
 
-            <div className="relative w-full h-[420px] bg-black">
+            <div className="relative mx-auto aspect-square w-full max-w-[420px] bg-black">
               <Cropper
                 image={selectedFileUrl}
                 crop={crop}
                 zoom={zoom}
-                aspect={4 / 5}
+                aspect={1}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
                 onCropComplete={(_, croppedPixels) => {
@@ -470,7 +474,7 @@ export const AddTeamMemberModal = ({
               />
             </div>
 
-            <div className="p-5 space-y-4">
+            <div className="space-y-4 p-5">
               <div className="space-y-2">
                 <label className="text-[10px] font-bold text-slate-500 uppercase">
                   Масштаб
@@ -492,7 +496,7 @@ export const AddTeamMemberModal = ({
                   type="button"
                   onClick={handleCropCancel}
                   disabled={isUploading}
-                  className="px-5 py-2 rounded-xl bg-slate-100 text-slate-600 text-[10px] font-bold uppercase disabled:opacity-50"
+                  className="rounded-xl bg-slate-100 px-5 py-2 text-[10px] font-bold text-slate-600 uppercase disabled:opacity-50"
                 >
                   Скасувати
                 </button>
@@ -501,7 +505,7 @@ export const AddTeamMemberModal = ({
                   type="button"
                   onClick={handleCropSave}
                   disabled={isUploading || !croppedAreaPixels}
-                  className="px-6 py-2 rounded-xl bg-blue-600 text-white text-[10px] font-bold uppercase hover:bg-blue-700 disabled:bg-slate-300"
+                  className="rounded-xl bg-blue-600 px-6 py-2 text-[10px] font-bold text-white uppercase hover:bg-blue-700 disabled:bg-slate-300"
                 >
                   {isUploading ? "Завантаження..." : "Готово"}
                 </button>
