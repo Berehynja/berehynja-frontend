@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Menu } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
-import { LogoSvg } from "../icons/Logo";
+// import { LogoSvg } from "../icons/Logo";
+import logo from "../../images/logo3.2.jpg";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { HeaderNav } from "./HeaderNav.tsx";
 
@@ -22,15 +23,15 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 max-w-full bg-white shadow-2xs">
-      <div className="mx-auto flex h-20 max-w-360 items-center justify-between px-5 sm:px-8 lg:px-8 xl:px-10">
+      <div className="mx-auto flex h-30 max-w-360 items-center justify-between px-5 sm:px-8 lg:px-8 xl:px-10">
         <NavLink className="flex justify-center decoration-0" to="/" end>
           <div className="flex items-center justify-center">
-            <LogoSvg />
+            <img src={logo} alt="Logo" className="h-30 w-50" />
           </div>
-          <div className="font-interMedium ml-3 flex flex-col items-center justify-center text-2xl whitespace-nowrap sm:ml-4">
+          {/* <div className="font-interMedium flex flex-col items-center justify-center text-2xl whitespace-nowrap ">
             BEREHYNJA
             <span className="font-caveatMedium -mt-2 text-xl font-medium">український простір</span>
-          </div>
+          </div> */}
         </NavLink>
         {isAdmin && <AdminLogout />}
         {screenWidth >= 1024 ? (

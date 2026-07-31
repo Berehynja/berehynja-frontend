@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Heart, UserPlus, ArrowRight } from "lucide-react";
+import { ArrowRight, Heart, UserPlus } from "lucide-react";
+
 import { DonationModal } from "../DonationModal/DonationModal";
 import { JoinModal } from "../JoinModal";
-import ban from "../../../images/children.jpg"; // Залишаємо як дефолтну картинку
+import ban from "../../../images/children.jpg";
 import { useFirebaseContent } from "../../../hooks/useFirebaseContent";
 import { EditTextModal, type FieldConfig } from "../../Modals/EditTextModal";
 import { useAuth } from "../../AuthProvider/useAuth";
@@ -15,19 +16,34 @@ export const Hero = () => {
   const [isDonationOpen, setIsDonationOpen] = useState(false);
   const [isJoinOpen, setIsJoinOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [displayedBanner, setDisplayedBanner] = useState(ban);
   const { getText, isLoading, data } = useFirebaseContent("home");
 
-  // Тексти з Firebase
   const title = getText("hero.title", t("home.welcome"));
   const description = getText("hero.description", t("home.description"));
 
-  // 1. Дістаємо URL картинки з Firebase. Якщо бази ще немає — беремо локальну ban
-  const currentBanner = (data?.hero as Record<string, string>)?.bannerImage || ban;
+  const currentBanner =
+    (data?.hero as Record<string, string>)?.bannerImage || ban;
 
-  // 2. Додаємо поле "image" у конфігурацію модалки
+  useEffect(() => {
+    if (currentBanner === displayedBanner) return;
+
+    let isActive = true;
+    const image = new Image();
+
+    image.src = currentBanner;
+    image.onload = () => {
+      if (isActive) {
+        setDisplayedBanner(currentBanner);
+      }
+    };
+
+    return () => {
+      isActive = false;
+    };
+  }, [currentBanner, displayedBanner]);
+
   const heroFields: FieldConfig[] = [
-    // Cast to unknown to allow extra property `mediaCategory` that our upload
-    // logic will read, while keeping the array type as FieldConfig[].
     {
       key: "bannerImage",
       label: "Фонове зображення",
@@ -39,13 +55,16 @@ export const Hero = () => {
   ];
 
   return (
-    <section
-      className="flex min-h-[90vh] w-full justify-center overflow-hidden rounded-b-3xl bg-gray-900 bg-cover bg-center bg-no-repeat transition-all duration-700"
-      // 3. Підставляємо динамічну картинку замість жорстко закодованої
-      style={{ backgroundImage: `url(${currentBanner})` }}
-    >
-      <div className="relative flex max-w-120 min-w-85 flex-col items-start justify-between p-5 md:max-w-5xl md:p-6 lg:min-h-190 lg:max-w-7xl lg:p-8 xl:max-w-full xl:p-10">
-        {/* Кнопка-олівець для адміна */}
+    <section className="relative flex min-h-[clamp(42rem,85svh,54rem)] w-full justify-center overflow-hidden rounded-b-3xl bg-gray-900">
+      <img
+        src={displayedBanner}
+        alt=""
+        aria-hidden="true"
+        fetchPriority="high"
+        className="absolute inset-0 h-full w-full object-cover object-[center_35%]"
+      />
+
+      <div className="relative z-10 flex min-h-[clamp(42rem,85svh,54rem)] w-full max-w-120 flex-col items-start justify-between p-5 md:max-w-5xl md:p-6 lg:max-w-7xl lg:p-8 xl:max-w-full xl:p-10">
         {isAdmin && (
           <EditButton
             onClick={() => setIsEditOpen(true)}
@@ -53,7 +72,6 @@ export const Hero = () => {
           />
         )}
 
-        {/* Контентна частина */}
         <div className="mt-auto mb-auto w-full sm:mt-0">
           <h1 className="text-preset-1 font-nunito mb-6 align-sub tracking-tighter text-white uppercase drop-shadow-2xl md:text-4xl lg:text-5xl">
             {isLoading ? "..." : title}
@@ -66,9 +84,9 @@ export const Hero = () => {
           </p>
         </div>
 
-        {/* Секція кнопок */}
         <div className="mt-8 flex w-full flex-col gap-4 md:w-auto md:flex-row md:gap-6">
           <button
+            type="button"
             onClick={() => setIsDonationOpen(true)}
             className="group font-nunito flex cursor-pointer items-center justify-center gap-4 rounded-2xl bg-yellow-400 px-10 py-5 text-sm tracking-widest text-gray-900 uppercase shadow-xl transition-all hover:scale-105 hover:bg-yellow-500 md:text-base"
           >
@@ -77,6 +95,7 @@ export const Hero = () => {
           </button>
 
           <button
+            type="button"
             onClick={() => setIsJoinOpen(true)}
             className="group font-nunito flex cursor-pointer items-center justify-center gap-4 rounded-2xl border border-white/30 bg-white/10 px-10 py-5 text-sm tracking-widest text-white uppercase backdrop-blur-md transition-all hover:bg-white hover:text-blue-900 md:text-base"
           >
@@ -90,11 +109,15 @@ export const Hero = () => {
         </div>
       </div>
 
-      {/* Підключені Модалки */}
-      <DonationModal isOpen={isDonationOpen} onClose={() => setIsDonationOpen(false)} />
-      <JoinModal isOpen={isJoinOpen} onClose={() => setIsJoinOpen(false)} />
+      <DonationModal
+        isOpen={isDonationOpen}
+        onClose={() => setIsDonationOpen(false)}
+      />
+      <JoinModal
+        isOpen={isJoinOpen}
+        onClose={() => setIsJoinOpen(false)}
+      />
 
-      {/* Модалка редагування */}
       <EditTextModal
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
