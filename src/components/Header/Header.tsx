@@ -23,7 +23,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 max-w-full bg-white shadow-2xs">
-      <div className="mx-auto flex h-30 max-w-360 items-center justify-between px-5 sm:px-8 lg:px-8 xl:px-10">
+      <div className="mx-auto flex h-25 max-w-360 items-center justify-between px-5 sm:px-8 lg:px-8 xl:px-10">
         <NavLink className="flex justify-center decoration-0" to="/" end>
           <div className="flex items-center justify-center">
             <img src={logo} alt="Logo" className="h-25 w-40" />
