@@ -69,22 +69,22 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
         onClick={onClose}
       />
 
-      <div className="relative flex max-h-[calc(100dvh-1.5rem)] w-full max-w-[480px] flex-col overflow-y-auto rounded-[1.75rem] bg-white shadow-[0_28px_80px_rgba(15,23,42,0.28)] [-ms-overflow-style:none] [scrollbar-width:none] sm:max-h-[calc(100dvh-2rem)] md:grid md:max-w-2xl md:grid-cols-2 lg:max-h-[min(92dvh,760px)] lg:max-w-5xl lg:grid-cols-[minmax(380px,1fr)_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:overflow-hidden lg:rounded-[2.25rem] [&::-webkit-scrollbar]:hidden">
+      <div className="relative flex h-[90dvh] w-full max-w-[480px] flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-[0_28px_80px_rgba(15,23,42,0.28)] [-ms-overflow-style:none] [scrollbar-width:none] sm:h-[92dvh] md:grid md:h-auto md:max-h-[calc(100dvh-3rem)] md:max-w-2xl md:grid-cols-2 md:overflow-y-auto lg:max-h-[min(92dvh,760px)] lg:max-w-5xl lg:grid-cols-[minmax(380px,1fr)_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:overflow-hidden lg:rounded-[2.25rem] [&::-webkit-scrollbar]:hidden">
         <button
           type="button"
           onClick={onClose}
           aria-label="Закрити"
-          className="absolute top-3 right-3 z-20 flex size-10 items-center justify-center rounded-full bg-white/95 text-slate-500 shadow-sm backdrop-blur transition hover:bg-red-50 hover:text-blue-500 focus-visible:ring-3 focus-visible:ring-blue-500/40 focus-visible:outline-none md:top-5 md:right-5 md:size-11"
+          className="absolute top-3 right-3 z-20 flex size-10 items-center justify-center rounded-full bg-white/95 text-slate-500 shadow-sm backdrop-blur transition hover:bg-red-50 hover:text-red-500 focus-visible:ring-3 focus-visible:ring-blue-500/40 focus-visible:outline-none md:top-5 md:right-5 md:size-11"
         >
           <X size={21} />
         </button>
 
-        <div className="relative aspect-square w-full shrink-0 overflow-hidden bg-slate-100 md:col-start-1 md:row-start-1 md:h-full md:min-h-72 md:aspect-auto  lg:row-span-2 lg:min-h-0">
+        <div className="relative h-[55%] w-full shrink-0 overflow-hidden bg-slate-100 md:col-start-1 md:row-start-1 md:h-full md:min-h-72 lg:row-span-2 lg:min-h-0">
           {hasRealImage ? (
             <img
               src={memberImage}
               alt={name}
-              className="h-full w-full object-cover object-center"
+              className="h-full w-full object-cover object-[center_35%] md:object-center"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-slate-50 to-slate-200 text-slate-300">
@@ -98,9 +98,11 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
           <div className="absolute inset-0 bg-linear-to-t from-slate-950/20 via-transparent to-transparent lg:hidden" />
         </div>
 
-        <div className="px-5 pt-6 pb-4 sm:px-7 sm:pt-8 sm:pb-5 md:col-start-2 md:row-start-1 md:flex md:flex-col md:justify-center md:px-8 md:py-8 lg:px-12 lg:pt-10 lg:pb-6">
+        <div className="min-h-0 flex-1 overflow-y-auto [-ms-overflow-style:none] [scrollbar-width:none] md:contents [&::-webkit-scrollbar]:hidden">
+        <div className="shrink-0 px-5 pt-6 pb-4 sm:px-7 sm:pt-8 sm:pb-5 md:col-start-2 md:row-start-1 md:flex md:flex-col md:justify-center md:px-8 md:py-8 lg:px-12 lg:pt-10 lg:pb-6">
           {role && (
             <div className="mb-3 flex items-start gap-3 pr-10 md:pr-8 lg:pr-12">
+              <span className="mt-2 h-px w-8 shrink-0 bg-blue-500 md:w-9" />
 
               <p className="text-[10px] leading-5 font-bold tracking-[0.18em] text-blue-600 uppercase sm:text-[11px] sm:tracking-[0.2em]">
                 {role}
@@ -118,7 +120,7 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
           <div className="mt-4 h-1 w-14 rounded-full bg-linear-to-r from-blue-500 to-yellow-400 md:w-16" />
         </div>
 
-        <div className="min-h-0 px-5 pt-2 pb-6 sm:px-7 sm:pb-8 md:col-span-2 md:row-start-2 md:px-8 md:pt-4 lg:col-span-1 lg:col-start-2 lg:min-h-0 lg:overflow-y-auto lg:px-12 lg:pt-2 lg:pb-10 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="min-h-0 px-5 pt-2 pb-6 sm:px-7 sm:pb-8 md:col-span-2 md:row-start-2 md:overflow-visible md:px-8 md:pt-4 lg:col-span-1 lg:col-start-2 lg:min-h-0 lg:overflow-y-auto lg:px-12 lg:pt-2 lg:pb-10 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="space-y-6 md:space-y-7">
             {skills.length > 0 && (
               <section>
@@ -185,6 +187,7 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
               </section>
             )}
           </div>
+        </div>
         </div>
       </div>
     </div>

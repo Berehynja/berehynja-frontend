@@ -16,7 +16,7 @@ export const Hero = () => {
   const [isDonationOpen, setIsDonationOpen] = useState(false);
   const [isJoinOpen, setIsJoinOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [displayedBanner, setDisplayedBanner] = useState(ban);
+  const [displayedBanner, setDisplayedBanner] = useState<string | null>(null);
   const { getText, isLoading, data } = useFirebaseContent("home");
 
   const title = getText("hero.title", t("home.welcome"));
@@ -26,6 +26,7 @@ export const Hero = () => {
     (data?.hero as Record<string, string>)?.bannerImage || ban;
 
   useEffect(() => {
+    if (isLoading) return;
     if (currentBanner === displayedBanner) return;
 
     let isActive = true;
@@ -41,7 +42,7 @@ export const Hero = () => {
     return () => {
       isActive = false;
     };
-  }, [currentBanner, displayedBanner]);
+  }, [currentBanner, displayedBanner, isLoading]);
 
   const heroFields: FieldConfig[] = [
     {
@@ -56,13 +57,15 @@ export const Hero = () => {
 
   return (
     <section className="relative flex min-h-[clamp(42rem,85svh,54rem)] w-full justify-center overflow-hidden rounded-b-3xl bg-gray-900">
-      <img
-        src={displayedBanner}
-        alt=""
-        aria-hidden="true"
-        fetchPriority="high"
-        className="absolute inset-0 h-full w-full object-cover object-[center_35%]"
-      />
+      {displayedBanner && (
+        <img
+          src={displayedBanner}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          className="absolute inset-0 h-full w-full object-cover object-[center_35%]"
+        />
+      )}
 
       <div className="relative z-10 flex min-h-[clamp(42rem,85svh,54rem)] w-full max-w-120 flex-col items-start justify-between p-5 md:max-w-5xl md:p-6 lg:max-w-7xl lg:p-8 xl:max-w-full xl:p-10">
         {isAdmin && (
