@@ -1,13 +1,20 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { ArrowRight, GraduationCap, Clock, MapPin, Users, Loader2, Baby } from "lucide-react";
+import {
+  ArrowRight,
+  Baby,
+  Clock,
+  GraduationCap,
+  Loader2,
+  MapPin,
+  Users,
+} from "lucide-react";
 
-import { fetchProgramsAdults } from "../../../services/programsAdultsService"; 
+import { fetchProgramsAdults } from "../../../services/programsAdultsService";
 import { programsService } from "../../../services/programsService";
 
-import type { ProgramAdults } from "../../../types/program";
-import type { Program } from "../../../types/program";
+import type { ProgramAdults, Program } from "../../../types/program";
 import type { LangKey } from "../../../types/types";
 
 export const ProgramsSection = () => {
@@ -15,31 +22,53 @@ export const ProgramsSection = () => {
   const currentLang = i18n.language as LangKey;
 
   const texts = {
-    sectionTitle: { ua: "Наші програми та курси", de: "Unsere Programme & Kurse", en: "Our Programs & Courses" },
-    adultsTitle: { ua: "Для дорослих", de: "Für Erwachsene", en: "For Adults" },
-    kidsTitle: { ua: "Для дітей", de: "Für Kinder", en: "For Kids" },
-    allCoursesBtn: { ua: "Всі курси", de: "Alle Kurse", en: "All Courses" },
-    allProgramsBtn: { ua: "Всі програми", de: "Alle Programme", en: "All Programs" }
+    sectionTitle: {
+      ua: "Наші програми та курси",
+      de: "Unsere Programme & Kurse",
+      en: "Our Programs & Courses",
+    },
+    adultsTitle: {
+      ua: "Для дорослих",
+      de: "Für Erwachsene",
+      en: "For Adults",
+    },
+    kidsTitle: {
+      ua: "Для дітей",
+      de: "Für Kinder",
+      en: "For Kids",
+    },
+    allCoursesBtn: {
+      ua: "Всі курси",
+      de: "Alle Kurse",
+      en: "All Courses",
+    },
+    allProgramsBtn: {
+      ua: "Всі програми",
+      de: "Alle Programme",
+      en: "All Programs",
+    },
   };
 
-  const [nextProgramAdult, setNextProgramAdult] = useState<ProgramAdults | null>(null);
+  const [nextProgramAdult, setNextProgramAdult] =
+    useState<ProgramAdults | null>(null);
   const [kidsPrograms, setKidsPrograms] = useState<Program[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [adultsData, kidsData]: [ProgramAdults[], Program[]] = await Promise.all([
-          fetchProgramsAdults(),
-          programsService.getPrograms()
-        ]);
+        const [adultsData, kidsData]: [ProgramAdults[], Program[]] =
+          await Promise.all([
+            fetchProgramsAdults(),
+            programsService.getPrograms(),
+          ]);
 
         if (adultsData?.length > 0) {
           setNextProgramAdult(adultsData[adultsData.length - 1]);
         }
 
         if (kidsData?.length > 0) {
-          setKidsPrograms(kidsData.slice(0, 6)); 
+          setKidsPrograms(kidsData.slice(0, 6));
         }
       } catch (error) {
         console.error("Помилка завантаження програм:", error);
@@ -51,89 +80,94 @@ export const ProgramsSection = () => {
     loadData();
   }, []);
 
-  if (loading) return (
-    <div className="flex justify-center py-20"><Loader2 className="animate-spin text-blue-500" size={40} /></div>
-  );
+  if (loading) {
+    return (
+      <div className="flex justify-center py-20">
+        <Loader2 className="animate-spin text-blue-500" size={40} />
+      </div>
+    );
+  }
 
   return (
-    <section className="w-full  mb-20 md:p-4 font-nunito">
-      
+    <section className="font-nunito mb-20 w-full md:p-4">
       <div className="mb-12 flex items-center justify-between text-center">
-        <h2 className="text-3xl md:text-4xl w-full text-preset-2 font-nunito text-gray-900 font-semibold tracking-tight">
+        <h2 className="text-preset-2 font-nunito w-full text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl">
           {texts.sectionTitle[currentLang]}
         </h2>
       </div>
 
-      <div className="flex flex-col gap-8 w-full font-nunito">
-        
-        {/* 1. КАРТОЧКА: ДЛЯ ВЗРОСЛЫХ */}
-        <div className="group relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-gray-200  shadow-xl transition-all duration-300 hover:-translate-y-1">
-          
-          {/* Левая часть */}
-          <div className="flex flex-row lg:flex-col items-center justify-center text-center gap-4 lg:w-[200px] shrink-0 border-b lg:border-b-0 lg:border-r border-gray-200 p-6 md:p-8">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-emerald-600 shadow-sm border border-emerald-100">
+      <div className="font-nunito grid w-full grid-cols-1 gap-8 lg:auto-rows-fr">
+        <div className="group relative flex h-full flex-col items-stretch overflow-hidden rounded-[2.5rem] border border-gray-200 bg-white shadow-xl transition-all duration-300 hover:-translate-y-1 lg:flex-row">
+          <div className="flex shrink-0 flex-row items-center justify-center gap-4 border-b border-gray-200 p-6 text-center md:p-8 lg:w-[200px] lg:flex-col lg:border-r lg:border-b-0">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-emerald-100 bg-white text-emerald-600 shadow-sm">
               <GraduationCap size={26} />
             </div>
-            <h3 className="text-xl font-black text-slate-800 uppercase tracking-tight leading-tight">
+            <h3 className="text-xl leading-tight font-black tracking-tight text-slate-800 uppercase">
               {texts.adultsTitle[currentLang]}
             </h3>
           </div>
 
-          {/* Центральная часть */}
-          <div className="flex-1 flex flex-col justify-center gap-4 p-6 md:p-8 py-6 lg:py-6 min-w-0">
+          <div className="flex min-w-0 flex-1 flex-col justify-center gap-4 p-6 md:p-8 lg:py-6">
             {nextProgramAdult && (
               <>
-                <div className="inline-flex items-center gap-2 self-start rounded-xl bg-white px-3 py-1.5 text-xs font-black text-emerald-700 uppercase tracking-wider shadow-sm border border-emerald-100/30">
-                  <Clock size={14} className="text-emerald-600" /> 
-                  <span className="text-black leading-none">{nextProgramAdult.dateRange}</span>
+                <div className="inline-flex items-center gap-2 self-start rounded-xl border border-emerald-100/30 bg-white px-3 py-1.5 text-xs font-black tracking-wider text-emerald-700 uppercase shadow-sm">
+                  <Clock size={14} className="text-emerald-600" />
+                  <span className="leading-none text-black">
+                    {nextProgramAdult.dateRange}
+                  </span>
                 </div>
 
-                <h4 className="text-xl md:text-2xl font-black text-slate-800 leading-tight tracking-tight ">
+                <h4 className="text-xl leading-tight font-black tracking-tight text-slate-800 md:text-2xl">
                   {nextProgramAdult.title[currentLang]}
                 </h4>
 
-                <p className="line-clamp-3 text-[15px] text-slate-600 font-medium leading-relaxed">
+                <p className="line-clamp-3 text-[15px] leading-relaxed font-medium text-slate-600">
                   {nextProgramAdult.description[currentLang]}
                 </p>
 
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 mt-1 w-full">
-                  
-                  <div className="flex items-center gap-3 rounded-2xl bg-white/90 p-3 border border-emerald-100/40 shadow-sm w-full min-w-0">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                <div className="mt-1 grid w-full grid-cols-1 gap-3 xl:grid-cols-2">
+                  <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-emerald-100/40 bg-white/90 p-3 shadow-sm">
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
                       <MapPin size={16} />
                     </div>
-                    <div className="flex flex-col min-w-0">
-                      <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 leading-none mb-0.5">Локація</span>
-                      <span className="text-sm font-bold text-slate-700 truncate leading-tight">{nextProgramAdult.location[currentLang]}</span>
+                    <div className="flex min-w-0 flex-col">
+                      <span className="mb-0.5 text-[10px] leading-none font-black tracking-wider text-slate-400 uppercase">
+                        Локація
+                      </span>
+                      <span className="truncate text-sm leading-tight font-bold text-slate-700">
+                        {nextProgramAdult.location[currentLang]}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 rounded-2xl bg-white/90 p-3 border border-emerald-100/40 shadow-sm w-full min-w-0">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                  <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-emerald-100/40 bg-white/90 p-3 shadow-sm">
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
                       <Users size={16} />
                     </div>
-                    <div className="flex flex-col min-w-0">
-                      <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 leading-none mb-0.5">Місткість групи</span>
-                      <span className="text-sm font-bold text-slate-700 truncate leading-tight">{nextProgramAdult.capacity[currentLang]}</span>
+                    <div className="flex min-w-0 flex-col">
+                      <span className="mb-0.5 text-[10px] leading-none font-black tracking-wider text-slate-400 uppercase">
+                        Місткість групи
+                      </span>
+                      <span className="truncate text-sm leading-tight font-bold text-slate-700">
+                        {nextProgramAdult.capacity[currentLang]}
+                      </span>
                     </div>
                   </div>
-
                 </div>
               </>
             )}
           </div>
 
-          {/* ФОТО КУРСА (ОНОВЛЕНО: без падінгів, на повну ширину/висоту) */}
           {nextProgramAdult && (
-            <div className="relative w-full h-64 md:h-[26rem] lg:h-auto lg:w-[320px] shrink-0 order-first lg:order-none overflow-hidden border-b lg:border-b-0 border-emerald-100/40">
+            <div className="relative order-first h-64 w-full shrink-0 overflow-hidden border-b border-emerald-100/40 md:h-[26rem] lg:order-none lg:h-auto lg:w-[320px] lg:border-b-0">
               {nextProgramAdult.image ? (
                 <>
-                  <img 
-                    src={nextProgramAdult.image} 
-                    alt="" 
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
+                  <img
+                    src={nextProgramAdult.image}
+                    alt=""
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-80" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-80" />
                 </>
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center bg-emerald-100/50 text-emerald-600">
@@ -143,64 +177,75 @@ export const ProgramsSection = () => {
             </div>
           )}
 
-          {/* Правая часть */}
-          <div className="flex items-center justify-center lg:w-[220px] shrink-0 p-6 md:p-8 lg:p-0 mx-auto lg:mx-0 w-full max-w-md lg:max-w-none border-t lg:border-t-0 border-emerald-100/40 lg:border-l border-emerald-100/20">
-            <Link to="/programs/adults" className="w-full lg:w-auto mx-6 lg:mx-0 flex items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-blue-600 transition-all duration-250 active:scale-[0.97] shadow-md text-center whitespace-nowrap shrink-0">
-              <span className="translate-y-[1px] leading-none">{texts.allCoursesBtn[currentLang]}</span>
-              <ArrowRight size={16} className="shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
+          <div className="mx-auto flex w-full max-w-md shrink-0 items-center justify-center border-t border-emerald-100/40 p-6 md:p-8 lg:mx-0 lg:w-[220px] lg:max-w-none lg:border-t-0 lg:border-l lg:border-emerald-100/20 lg:p-0">
+            <Link
+              to="/programs/adults"
+              className="mx-6 flex w-full shrink-0 items-center justify-center gap-3 whitespace-nowrap rounded-xl bg-slate-900 px-6 py-4 text-center text-xs font-black tracking-widest text-white uppercase shadow-md transition-all duration-250 hover:bg-blue-600 active:scale-[0.97] lg:mx-0 lg:w-auto"
+            >
+              <span className="translate-y-px leading-none">
+                {texts.allCoursesBtn[currentLang]}
+              </span>
+              <ArrowRight
+                size={16}
+                className="shrink-0 transition-transform duration-300 group-hover:translate-x-1"
+              />
             </Link>
           </div>
         </div>
 
-
-        {/* 2. КАРТОЧКА: ДЛЯ ДЕТЕЙ */}
-        <div className="group relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-gray-200 bg-wite shadow-xl transition-all duration-300 hover:-translate-y-1">
-          
-          {/* Левая часть */}
-          <div className="flex flex-row lg:flex-col items-center justify-center text-center gap-4 lg:w-[200px] shrink-0 border-b lg:border-b-0 lg:border-r border-amber-100/60 p-6 md:p-8">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-amber-600 shadow-md border border-amber-100">
+        <div className="group relative flex h-full flex-col items-stretch overflow-hidden rounded-[2.5rem] border border-gray-200 bg-white shadow-xl transition-all duration-300 hover:-translate-y-1 lg:flex-row">
+          <div className="flex shrink-0 flex-row items-center justify-center gap-4 border-b border-amber-100/60 p-6 text-center md:p-8 lg:w-[200px] lg:flex-col lg:border-r lg:border-b-0">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-amber-100 bg-white text-amber-600 shadow-md">
               <Baby size={24} />
             </div>
-            <h3 className="text-xl font-black text-slate-800 uppercase tracking-tight leading-tight">
+            <h3 className="text-xl leading-tight font-black tracking-tight text-slate-800 uppercase">
               {texts.kidsTitle[currentLang]}
             </h3>
           </div>
 
-          {/* Центральная часть: Список программ */}
-          <div className="flex-1 flex flex-col justify-center p-6 md:p-8 py-6 lg:py-6 min-w-0">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {kidsPrograms.map((prog) => (
-                <div 
-                  key={prog.id} 
-                  className="flex items-center gap-3 rounded-2xl bg-white p-2.5 border border-amber-100/40 shadow-sm min-w-0 transition-all"
+          <div className="flex min-w-0 flex-1 flex-col justify-center p-6 md:p-8 lg:h-full lg:py-6">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:h-full lg:auto-rows-fr">
+              {kidsPrograms.map((program) => (
+                <div
+                  key={program.id}
+                  className="flex h-full min-w-0 items-center gap-3 rounded-2xl border border-amber-100/40 bg-white p-2.5 shadow-sm transition-all lg:p-4"
                 >
-                   {/* МИНИАТЮРА ФОТО */}
-                   <div className="h-9 w-9 shrink-0 overflow-hidden rounded-md border border-slate-100 bg-slate-100 shadow-sm p-0">
-                     {prog.image ? (
-                       <img src={prog.image} alt="" className="h-full w-full object-cover" />
-                     ) : (
-                       <div className="flex h-full w-full items-center justify-center bg-amber-50 text-amber-600">
-                         <Baby size={16} />
-                       </div>
-                     )}
-                   </div>
-                   <span className="text-[14px] font-bold text-slate-700 truncate lg:text-wrap leading-tight translate-y-[1px]">
-                     {prog.title[currentLang]}
-                   </span>
+                  <div className="size-9 shrink-0 overflow-hidden rounded-md border border-slate-100 bg-slate-100 shadow-sm lg:size-12 lg:rounded-xl">
+                    {program.image ? (
+                      <img
+                        src={program.image}
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-amber-50 text-amber-600">
+                        <Baby size={16} />
+                      </div>
+                    )}
+                  </div>
+                  <span className="translate-y-px truncate text-[14px] leading-tight font-bold text-slate-700 lg:text-[15px] lg:text-wrap">
+                    {program.title[currentLang]}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Правая часть */}
-          <div className="flex items-center justify-center lg:w-[220px] shrink-0 p-6 md:p-8 lg:p-0 mx-auto lg:mx-0 w-full max-w-md lg:max-w-none border-t lg:border-t-0 border-amber-100/20 lg:border-l">
-            <Link to="/programs/kids" className="w-full lg:w-auto mx-6 lg:mx-0 flex items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-amber-600 transition-all duration-300 active:scale-[0.97] shadow-md text-center whitespace-nowrap shrink-0">
-              <span className="translate-y-[1px] leading-none">{texts.allProgramsBtn[currentLang]}</span>
-              <ArrowRight size={16} className="shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
+          <div className="mx-auto flex w-full max-w-md shrink-0 items-center justify-center border-t border-amber-100/20 p-6 md:p-8 lg:mx-0 lg:w-[220px] lg:max-w-none lg:border-t-0 lg:border-l lg:p-0">
+            <Link
+              to="/programs/kids"
+              className="mx-6 flex w-full shrink-0 items-center justify-center gap-3 whitespace-nowrap rounded-xl bg-slate-900 px-6 py-4 text-center text-xs font-black tracking-widest text-white uppercase shadow-md transition-all duration-300 hover:bg-amber-600 active:scale-[0.97] lg:mx-0 lg:w-auto"
+            >
+              <span className="translate-y-px leading-none">
+                {texts.allProgramsBtn[currentLang]}
+              </span>
+              <ArrowRight
+                size={16}
+                className="shrink-0 transition-transform duration-300 group-hover:translate-x-1"
+              />
             </Link>
           </div>
         </div>
-
       </div>
     </section>
   );
