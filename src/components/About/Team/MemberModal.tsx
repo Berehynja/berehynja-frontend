@@ -102,8 +102,6 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
         <div className="shrink-0 px-5 pt-6 pb-4 sm:px-7 sm:pt-8 sm:pb-5 md:col-start-2 md:row-start-1 md:flex md:flex-col md:justify-center md:px-8 md:py-8 lg:px-12 lg:pt-10 lg:pb-6">
           {role && (
             <div className="mb-3 flex items-start gap-3 pr-10 md:pr-8 lg:pr-12">
-              <span className="mt-2 h-px w-8 shrink-0 bg-blue-500 md:w-9" />
-
               <p className="text-[10px] leading-5 font-bold tracking-[0.18em] text-blue-600 uppercase sm:text-[11px] sm:tracking-[0.2em]">
                 {role}
               </p>
