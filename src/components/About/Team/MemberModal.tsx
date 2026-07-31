@@ -69,7 +69,7 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
         onClick={onClose}
       />
 
-      <div className="relative flex h-[90dvh] w-full max-w-[480px] flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-[0_28px_80px_rgba(15,23,42,0.28)] [-ms-overflow-style:none] [scrollbar-width:none] sm:h-[92dvh] md:grid md:h-auto md:max-h-[calc(100dvh-3rem)] md:max-w-2xl md:grid-cols-2 md:overflow-y-auto lg:max-h-[min(92dvh,760px)] lg:max-w-5xl lg:grid-cols-[minmax(380px,1fr)_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:overflow-hidden lg:rounded-[2.25rem] [&::-webkit-scrollbar]:hidden">
+      <div className="relative flex h-[94dvh] w-full max-w-[480px] flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-[0_28px_80px_rgba(15,23,42,0.28)] [-ms-overflow-style:none] [scrollbar-width:none] sm:h-[94dvh] md:grid md:h-auto md:max-h-[calc(100dvh-3rem)] md:max-w-2xl md:grid-cols-2 md:overflow-y-auto lg:max-h-[min(92dvh,760px)] lg:max-w-5xl lg:grid-cols-[minmax(380px,1fr)_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:overflow-hidden lg:rounded-[2.25rem] [&::-webkit-scrollbar]:hidden">
         <button
           type="button"
           onClick={onClose}
