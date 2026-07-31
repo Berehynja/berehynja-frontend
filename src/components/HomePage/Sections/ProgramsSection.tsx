@@ -67,10 +67,10 @@ export const ProgramsSection = () => {
       <div className="flex flex-col gap-8 w-full font-nunito">
         
         {/* 1. КАРТОЧКА: ДЛЯ ВЗРОСЛЫХ */}
-        <div className="group relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-emerald-200/50 bg-emerald-50/50 shadow-xl transition-all duration-300 hover:bg-emerald-100/40 hover:-translate-y-1">
+        <div className="group relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-gray-200  shadow-xl transition-all duration-300 hover:-translate-y-1">
           
           {/* Левая часть */}
-          <div className="flex flex-row lg:flex-col items-center justify-center text-center gap-4 lg:w-[200px] shrink-0 border-b lg:border-b-0 lg:border-r border-emerald-100/40 p-6 md:p-8">
+          <div className="flex flex-row lg:flex-col items-center justify-center text-center gap-4 lg:w-[200px] shrink-0 border-b lg:border-b-0 lg:border-r border-gray-200 p-6 md:p-8">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-emerald-600 shadow-sm border border-emerald-100">
               <GraduationCap size={26} />
             </div>
@@ -85,10 +85,10 @@ export const ProgramsSection = () => {
               <>
                 <div className="inline-flex items-center gap-2 self-start rounded-xl bg-white px-3 py-1.5 text-xs font-black text-emerald-700 uppercase tracking-wider shadow-sm border border-emerald-100/30">
                   <Clock size={14} className="text-emerald-600" /> 
-                  <span className="translate-y-[1px] leading-none">{nextProgramAdult.dateRange}</span>
+                  <span className="text-black leading-none">{nextProgramAdult.dateRange}</span>
                 </div>
 
-                <h4 className="text-xl md:text-2xl font-black text-slate-800 leading-tight tracking-tight transition-colors duration-300 group-hover:text-emerald-700">
+                <h4 className="text-xl md:text-2xl font-black text-slate-800 leading-tight tracking-tight ">
                   {nextProgramAdult.title[currentLang]}
                 </h4>
 
@@ -145,7 +145,7 @@ export const ProgramsSection = () => {
 
           {/* Правая часть */}
           <div className="flex items-center justify-center lg:w-[220px] shrink-0 p-6 md:p-8 lg:p-0 mx-auto lg:mx-0 w-full max-w-md lg:max-w-none border-t lg:border-t-0 border-emerald-100/40 lg:border-l border-emerald-100/20">
-            <Link to="/programs/adults" className="w-full lg:w-auto mx-6 lg:mx-0 flex items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-emerald-600 transition-all duration-300 active:scale-[0.97] shadow-md text-center whitespace-nowrap shrink-0">
+            <Link to="/programs/adults" className="w-full lg:w-auto mx-6 lg:mx-0 flex items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-blue-600 transition-all duration-250 active:scale-[0.97] shadow-md text-center whitespace-nowrap shrink-0">
               <span className="translate-y-[1px] leading-none">{texts.allCoursesBtn[currentLang]}</span>
               <ArrowRight size={16} className="shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
@@ -154,7 +154,7 @@ export const ProgramsSection = () => {
 
 
         {/* 2. КАРТОЧКА: ДЛЯ ДЕТЕЙ */}
-        <div className="group relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-amber-200/50 bg-amber-50/50 shadow-xl transition-all duration-300 hover:bg-amber-100/40 hover:-translate-y-1">
+        <div className="group relative flex flex-col lg:flex-row items-stretch overflow-hidden rounded-[2.5rem] border border-gray-200 bg-wite shadow-xl transition-all duration-300 hover:-translate-y-1">
           
           {/* Левая часть */}
           <div className="flex flex-row lg:flex-col items-center justify-center text-center gap-4 lg:w-[200px] shrink-0 border-b lg:border-b-0 lg:border-r border-amber-100/60 p-6 md:p-8">
