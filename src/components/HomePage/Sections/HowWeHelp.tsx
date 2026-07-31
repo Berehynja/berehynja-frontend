@@ -122,7 +122,7 @@ export function HowWeHelp() {
               {isAdmin && (
                 <EditButton
                   onClick={openTitleEditor}
-                  className="top-4 -right-1/4 h-8 w-8 border border-gray-200 bg-white text-gray-700 shadow hover:scale-110 hover:bg-blue-600 hover:text-white"
+                  className="top-0 -right-1/3 h-8 w-8 border border-gray-200 bg-white text-gray-700 shadow hover:scale-110 hover:bg-blue-600 hover:text-white"
                   size={36}
                 />
               )}
