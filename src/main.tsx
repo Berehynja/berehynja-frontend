@@ -2,6 +2,7 @@ import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./components/AuthProvider/AuthProvider.tsx";
+import { PageLoader } from "./components/ui/PageLoader.tsx";
 
 import "./i18n.tsx";
 import "modern-normalize/modern-normalize.css";
@@ -15,7 +16,7 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter basename="/berehynja-frontend/">
       <AuthProvider>
         <ToastProvider />
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<PageLoader visible />}>
           <App />
         </Suspense>
       </AuthProvider>
