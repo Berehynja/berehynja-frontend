@@ -8,7 +8,7 @@ import { useFirebaseContent } from "../../../hooks/useFirebaseContent";
 import { EditTextModal, type FieldConfig } from "../../Modals/EditTextModal";
 import { useAuth } from "../../AuthProvider/useAuth";
 import EditButton from "../../Buttons/EditButton";
-import { PageLoader } from "../../ui/PageLoader";
+import { usePageLoading } from "../../ui/usePageLoading";
 
 const HERO_BANNER_CACHE_KEY = "berehynia-hero-banner";
 
@@ -113,6 +113,8 @@ export const Hero = () => {
   const isHeroReady =
     (isPageReady && !isLoading) || hasLoadingTimedOut;
 
+  usePageLoading("hero-banner", !isHeroReady);
+
   const heroFields: FieldConfig[] = [
     {
       key: "bannerImage",
@@ -126,8 +128,6 @@ export const Hero = () => {
 
   return (
     <>
-      <PageLoader visible={!isHeroReady} />
-
       <section className="relative flex min-h-[clamp(42rem,85svh,54rem)] w-full justify-center overflow-hidden rounded-b-3xl bg-linear-to-br from-slate-800 via-slate-900 to-blue-950">
       {displayedBanner && (
         <img
