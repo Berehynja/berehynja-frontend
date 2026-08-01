@@ -32,6 +32,7 @@ export const Hero = () => {
   const [nextBanner, setNextBanner] = useState<string | null>(null);
   const [isNextBannerVisible, setIsNextBannerVisible] = useState(false);
   const [isPageReady, setIsPageReady] = useState(false);
+  const [hasLoadingTimedOut, setHasLoadingTimedOut] = useState(false);
   const { getText, isLoading, data } = useFirebaseContent("home");
 
   const title = getText("hero.title", t("home.welcome"));
@@ -103,11 +104,14 @@ export const Hero = () => {
 
   useEffect(() => {
     const safetyTimeoutId = window.setTimeout(() => {
-      setIsPageReady(true);
+      setHasLoadingTimedOut(true);
     }, 8000);
 
     return () => window.clearTimeout(safetyTimeoutId);
   }, []);
+
+  const isHeroReady =
+    (isPageReady && !isLoading) || hasLoadingTimedOut;
 
   const heroFields: FieldConfig[] = [
     {
@@ -122,7 +126,7 @@ export const Hero = () => {
 
   return (
     <>
-      <PageLoader visible={!isPageReady} />
+      <PageLoader visible={!isHeroReady} />
 
       <section className="relative flex min-h-[clamp(42rem,85svh,54rem)] w-full justify-center overflow-hidden rounded-b-3xl bg-linear-to-br from-slate-800 via-slate-900 to-blue-950">
       {displayedBanner && (
