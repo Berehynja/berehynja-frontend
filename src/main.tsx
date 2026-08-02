@@ -15,9 +15,9 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter basename="/berehynja-frontend/">
       <AuthProvider>
         <ToastProvider />
-
+        
         <App />
       </AuthProvider>
     </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 );

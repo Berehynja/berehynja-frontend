@@ -9,7 +9,7 @@ export const PageLoader = ({ visible }: PageLoaderProps) => {
     <div
       role="status"
       aria-label="Loading"
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-white"
+      className="fixed inset-0 z-9998 flex items-center justify-center bg-white"
     >
       <div className="flex flex-col items-center gap-5">
         <div className="relative flex size-20 items-center justify-center">

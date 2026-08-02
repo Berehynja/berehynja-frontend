@@ -10,7 +10,7 @@ i18next
   .init({
     fallbackLng: "ua",
     debug: false,
-
+    showSupportNotice: false,
     backend: {
       loadPath: "/berehynja-frontend/locales/{{lng}}.json",
     },

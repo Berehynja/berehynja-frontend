@@ -154,7 +154,7 @@ export const EditTextModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm" onClick={onClose}>
-      <div className="animate-in zoom-in-95 flex max-h-[95vh] w-full max-w-2xl flex-col overflow-hidden rounded-[2rem] bg-white shadow-2xl duration-200" onClick={(e) => e.stopPropagation()}>
+      <div className="animate-in zoom-in-95 flex max-h-[95vh] w-full max-w-2xl flex-col overflow-hidden rounded-4xl bg-white shadow-2xl duration-200" onClick={(e) => e.stopPropagation()}>
         
         <header className="flex items-center justify-between border-b border-slate-100 px-8 pt-8 pb-4">
           <div>

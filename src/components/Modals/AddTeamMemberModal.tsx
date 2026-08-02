@@ -443,7 +443,7 @@ export const AddTeamMemberModal = ({
       </div>
 
       {selectedFileUrl && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4">
+        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/70 p-4">
           <div className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl">
             <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
               <h3 className="text-sm font-bold text-slate-700 uppercase">
@@ -460,7 +460,7 @@ export const AddTeamMemberModal = ({
               </button>
             </div>
 
-            <div className="relative mx-auto aspect-square w-full max-w-[420px] bg-black">
+            <div className="relative mx-auto aspect-square w-full max-w-105 bg-black">
               <Cropper
                 image={selectedFileUrl}
                 crop={crop}

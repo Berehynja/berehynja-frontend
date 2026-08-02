@@ -33,7 +33,7 @@ export const CookieConsent = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-9998 bg-slate-900/20 backdrop-blur-md"
+            className="fixed inset-0 z-9999 bg-slate-900/20 backdrop-blur-md"
           />
 
           {/* КОНТЕЙНЕР (Центрування) */}
@@ -42,7 +42,7 @@ export const CookieConsent = () => {
               initial={{ scale: 0.95, opacity: 0, y: 15 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 15 }}
-              className="pointer-events-auto relative w-full max-w-[480px] overflow-hidden rounded-[2.5rem] border border-white/50 bg-white/95 p-7 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.3)] backdrop-blur-2xl"
+              className="pointer-events-auto relative w-full max-w-120 overflow-hidden rounded-[2.5rem] border border-white/50 bg-white/95 p-7 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.3)] backdrop-blur-2xl"
             >
               {/* КНОПКА ЗАКРИТТЯ */}
               <button
@@ -101,7 +101,7 @@ export const CookieConsent = () => {
       Додаємо translate-y-[1px], щоб візуально "осадити" Nunito на центральну вісь.
       leading-none прибирає зайвий простір зверху/знизу.
   */}
-                    <span className="translate-y-[1px] leading-none">
+                    <span className="translate-y-px leading-none">
                       {t("cookie.only_essential")}
                     </span>
                   </div>

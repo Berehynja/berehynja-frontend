@@ -69,7 +69,7 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
         onClick={onClose}
       />
 
-      <div className="relative flex h-[94dvh] w-full max-w-[480px] flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-[0_28px_80px_rgba(15,23,42,0.28)] [-ms-overflow-style:none] [scrollbar-width:none] sm:h-[94dvh] md:grid md:h-auto md:max-h-[calc(100dvh-3rem)] md:max-w-2xl md:grid-cols-2 md:overflow-y-auto lg:max-h-[min(92dvh,760px)] lg:max-w-5xl lg:grid-cols-[minmax(380px,1fr)_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:overflow-hidden lg:rounded-[2.25rem] [&::-webkit-scrollbar]:hidden">
+      <div className="relative flex h-[94dvh] w-full max-w-120 flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-[0_28px_80px_rgba(15,23,42,0.28)] [-ms-overflow-style:none] scrollbar-none sm:h-[94dvh] md:grid md:h-auto md:max-h-[calc(100dvh-3rem)] md:max-w-2xl md:grid-cols-2 md:overflow-y-auto lg:max-h-[min(92dvh,760px)] lg:max-w-5xl lg:grid-cols-[minmax(380px,1fr)_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:overflow-hidden lg:rounded-[2.25rem] [&::-webkit-scrollbar]:hidden">
         <button
           type="button"
           onClick={onClose}
@@ -98,7 +98,7 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
           <div className="absolute inset-0 bg-linear-to-t from-slate-950/20 via-transparent to-transparent lg:hidden" />
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto [-ms-overflow-style:none] [scrollbar-width:none] md:contents [&::-webkit-scrollbar]:hidden">
+        <div className="min-h-0 flex-1 overflow-y-auto [-ms-overflow-style:none] scrollbar-none md:contents [&::-webkit-scrollbar]:hidden">
         <div className="shrink-0 px-5 pt-6 pb-4 sm:px-7 sm:pt-8 sm:pb-5 md:col-start-2 md:row-start-1 md:flex md:flex-col md:justify-center md:px-8 md:py-8 lg:px-12 lg:pt-10 lg:pb-6">
           {role && (
             <div className="mb-3 flex items-start gap-3 pr-10 md:pr-8 lg:pr-12">
@@ -118,7 +118,7 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
           <div className="mt-4 h-1 w-14 rounded-full bg-linear-to-r from-blue-500 to-yellow-400 md:w-16" />
         </div>
 
-        <div className="min-h-0 px-5 pt-2 pb-6 sm:px-7 sm:pb-8 md:col-span-2 md:row-start-2 md:overflow-visible md:px-8 md:pt-4 lg:col-span-1 lg:col-start-2 lg:min-h-0 lg:overflow-y-auto lg:px-12 lg:pt-2 lg:pb-10 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="min-h-0 px-5 pt-2 pb-6 sm:px-7 sm:pb-8 md:col-span-2 md:row-start-2 md:overflow-visible md:px-8 md:pt-4 lg:col-span-1 lg:col-start-2 lg:min-h-0 lg:overflow-y-auto lg:px-12 lg:pt-2 lg:pb-10 [-ms-overflow-style:none] scrollbar-none [&::-webkit-scrollbar]:hidden">
           <div className="space-y-6 md:space-y-7">
             {skills.length > 0 && (
               <section>
@@ -136,7 +136,7 @@ export const MemberModal = ({ memberTeam, onClose }: MemberModalProps) => {
                   {skills.map((skill, idx) => (
                     <span
                       key={`${skill}-${idx}`}
-                      className="max-w-full rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[13px] leading-5 font-medium break-words text-slate-700 sm:px-3.5 sm:text-[15px] lg:text-base lg:leading-6"
+                      className="max-w-full rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[13px] leading-5 font-medium wrap-break-word text-slate-700 sm:px-3.5 sm:text-[15px] lg:text-base lg:leading-6"
                     >
                       {skill}
                     </span>

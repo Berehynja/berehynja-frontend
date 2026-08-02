@@ -102,11 +102,9 @@ export function HowWeHelp() {
 
   const selectedCard = activeCard ? data?.howWeHelp?.cards?.[activeCard] : null;
 
-  console.log(data?.howWeHelp?.title);
-
   return (
     <section className="relative my-6 overflow-hidden">
-      <div className="relative mx-auto max-w-[375px] px-4 py-6 md:max-w-full">
+      <div className="relative mx-auto max-w-93.75 px-4 py-6 md:max-w-full">
         {/* Анімація заголовка */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -147,7 +145,7 @@ export function HowWeHelp() {
               <motion.div
                 key={item.id}
                 variants={cardVariants}
-                className={`shadow-card relative h-[250px] w-full rounded-sm border-t-4 bg-white px-8 py-7 ${item.borderColor}`}
+                className={`shadow-card relative h-62.5 w-full rounded-sm border-t-4 bg-white px-8 py-7 ${item.borderColor}`}
               >
                 <h3 className="text-preset-3 font-semibold">
                   {isLoading ? "..." : getText(titlePath, t(titlePath))}

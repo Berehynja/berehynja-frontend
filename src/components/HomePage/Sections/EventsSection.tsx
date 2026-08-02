@@ -82,7 +82,7 @@ export const EventsSection = () => {
           return (
             <div 
               key={event.id} 
-              className="group relative flex w-full flex-col overflow-hidden rounded-[2rem] border border-gray-100 bg-white transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
+              className="group relative flex w-full flex-col overflow-hidden rounded-4xl border border-gray-100 bg-white transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
             >
               
               {/* КОНТЕЙНЕР ЗОБРАЖЕННЯ */}
@@ -93,7 +93,7 @@ export const EventsSection = () => {
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                 />
                 {/* Градієнт поверх фото для глибини */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-60" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent opacity-60" />
 
                 {/* Бейджі поверх фото */}
                 <div className="absolute bottom-4 left-4 flex flex-col items-start gap-2">
@@ -125,13 +125,13 @@ export const EventsSection = () => {
                   </div>
                   <div className="flex items-center gap-1.5">
                     <MapPin size={16} className="text-red-500" />
-                    <span className="max-w-[150px] truncate">{event.location}</span>
+                    <span className="max-w-37.5 truncate">{event.location}</span>
                   </div>
                 </div>
 
                 {/* БЛОК ОПИСУ */}
                 <div className="relative mb-6">
-                  <p className="min-h-[5.5rem] line-clamp-4 text-sm text-gray-500">
+                  <p className="min-h-22 line-clamp-4 text-sm text-gray-500">
                     {event.descriptions[currentLang]}
                   </p>
                 </div>

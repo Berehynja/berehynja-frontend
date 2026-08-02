@@ -33,7 +33,7 @@ export const MemberCard = ({
       onClick={() => setSelectedMember(member)}
       className="group flex w-full flex-col items-center text-center outline-none"
     >
-      <div className="relative mb-6 aspect-square w-full overflow-hidden rounded-[2rem] bg-slate-100 shadow-[0_18px_45px_rgba(15,23,42,0.14)] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_60px_rgba(15,23,42,0.18)]">
+      <div className="relative mb-6 aspect-square w-full overflow-hidden rounded-4xl bg-slate-100 shadow-[0_18px_45px_rgba(15,23,42,0.14)] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_60px_rgba(15,23,42,0.18)]">
         {hasRealImage ? (
           <img src={member.image} alt={name} className="h-full w-full object-cover object-center" />
         ) : (

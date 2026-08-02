@@ -98,7 +98,7 @@ export const ProgramsSection = () => {
 
       <div className="font-nunito grid w-full grid-cols-1 gap-8 lg:auto-rows-fr">
         <div className="group relative flex h-full flex-col items-stretch overflow-hidden rounded-[2.5rem] border border-gray-200 bg-white shadow-xl transition-all duration-300 hover:-translate-y-1 lg:flex-row">
-          <div className="flex shrink-0 flex-row items-center justify-center gap-4 border-b border-gray-200 p-6 text-center md:p-8 lg:w-[200px] lg:flex-col lg:border-r lg:border-b-0">
+          <div className="flex shrink-0 flex-row items-center justify-center gap-4 border-b border-gray-200 p-6 text-center md:p-8 lg:w-50 lg:flex-col lg:border-r lg:border-b-0">
             <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-emerald-100 bg-white text-emerald-600 shadow-sm">
               <GraduationCap size={26} />
             </div>
@@ -159,7 +159,7 @@ export const ProgramsSection = () => {
           </div>
 
           {nextProgramAdult && (
-            <div className="relative order-first h-64 w-full shrink-0 overflow-hidden border-b border-emerald-100/40 md:h-[26rem] lg:order-none lg:h-auto lg:w-[320px] lg:border-b-0">
+            <div className="relative order-first h-64 w-full shrink-0 overflow-hidden border-b border-emerald-100/40 md:h-104 lg:order-0 lg:h-auto lg:w-[320px] lg:border-b-0">
               {nextProgramAdult.image ? (
                 <>
                   <img
@@ -177,7 +177,7 @@ export const ProgramsSection = () => {
             </div>
           )}
 
-          <div className="mx-auto flex w-full max-w-md shrink-0 items-center justify-center border-t border-emerald-100/40 p-6 md:p-8 lg:mx-0 lg:w-[220px] lg:max-w-none lg:border-t-0 lg:border-l lg:border-emerald-100/20 lg:p-0">
+          <div className="mx-auto flex w-full max-w-md shrink-0 items-center justify-center border-t border-emerald-100/40 p-6 md:p-8 lg:mx-0 lg:w-55 lg:max-w-none lg:border-t-0 lg:border-l lg:border-emerald-100/20 lg:p-0">
             <Link
               to="/programs/adults"
               className="mx-6 flex w-full shrink-0 items-center justify-center gap-3 whitespace-nowrap rounded-xl bg-slate-900 px-6 py-4 text-center text-xs font-black tracking-widest text-white uppercase shadow-md transition-all duration-250 hover:bg-blue-600 active:scale-[0.97] lg:mx-0 lg:w-auto"
@@ -194,7 +194,7 @@ export const ProgramsSection = () => {
         </div>
 
         <div className="group relative flex h-full flex-col items-stretch overflow-hidden rounded-[2.5rem] border border-gray-200 bg-white shadow-xl transition-all duration-300 hover:-translate-y-1 lg:flex-row">
-          <div className="flex shrink-0 flex-row items-center justify-center gap-4 border-b border-amber-100/60 p-6 text-center md:p-8 lg:w-[200px] lg:flex-col lg:border-r lg:border-b-0">
+          <div className="flex shrink-0 flex-row items-center justify-center gap-4 border-b border-amber-100/60 p-6 text-center md:p-8 lg:w-50 lg:flex-col lg:border-r lg:border-b-0">
             <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-amber-100 bg-white text-amber-600 shadow-md">
               <Baby size={24} />
             </div>
@@ -231,7 +231,7 @@ export const ProgramsSection = () => {
             </div>
           </div>
 
-          <div className="mx-auto flex w-full max-w-md shrink-0 items-center justify-center border-t border-amber-100/20 p-6 md:p-8 lg:mx-0 lg:w-[220px] lg:max-w-none lg:border-t-0 lg:border-l lg:p-0">
+          <div className="mx-auto flex w-full max-w-md shrink-0 items-center justify-center border-t border-amber-100/20 p-6 md:p-8 lg:mx-0 lg:w-55 lg:max-w-none lg:border-t-0 lg:border-l lg:p-0">
             <Link
               to="/programs/kids"
               className="mx-6 flex w-full shrink-0 items-center justify-center gap-3 whitespace-nowrap rounded-xl bg-slate-900 px-6 py-4 text-center text-xs font-black tracking-widest text-white uppercase shadow-md transition-all duration-300 hover:bg-amber-600 active:scale-[0.97] lg:mx-0 lg:w-auto"

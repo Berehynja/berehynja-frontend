@@ -12,7 +12,6 @@ export const fetchProgramsAdults = async (): Promise<ProgramAdults[]> => {
       id: doc.id,
         ...doc.data(),
     })) as ProgramAdults[];
-    console.log("🚀 ~ programs:", programs)
     return programs;
   } 
     catch (error) {
