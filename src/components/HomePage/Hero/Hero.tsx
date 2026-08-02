@@ -8,7 +8,7 @@ import { useFirebaseContent } from "../../../hooks/useFirebaseContent";
 import { EditTextModal, type FieldConfig } from "../../Modals/EditTextModal";
 import { useAuth } from "../../AuthProvider/useAuth";
 import EditButton from "../../Buttons/EditButton";
-import { usePageLoading } from "../../ui/usePageLoading";
+import { PageLoader } from "../../ui/PageLoader";
 
 const HERO_BANNER_CACHE_KEY = "berehynia-hero-banner";
 
@@ -77,6 +77,12 @@ export const Hero = () => {
       }, 600);
     };
 
+    image.onerror = () => {
+      if (isActive) {
+        setIsPageReady(true);
+      }
+    };
+
     return () => {
       isActive = false;
 
@@ -86,12 +92,6 @@ export const Hero = () => {
 
       if (transitionTimeoutId !== null) {
         window.clearTimeout(transitionTimeoutId);
-      }
-    };
-
-    image.onerror = () => {
-      if (isActive) {
-        setIsPageReady(true);
       }
     };
   }, [currentBanner, displayedBanner, isLoading]);
@@ -110,10 +110,7 @@ export const Hero = () => {
     return () => window.clearTimeout(safetyTimeoutId);
   }, []);
 
-  const isHeroReady =
-    (isPageReady && !isLoading) || hasLoadingTimedOut;
-
-  usePageLoading("hero-banner", !isHeroReady);
+  const isHeroReady = (isPageReady && !isLoading) || hasLoadingTimedOut;
 
   const heroFields: FieldConfig[] = [
     {
@@ -128,29 +125,31 @@ export const Hero = () => {
 
   return (
     <>
-      <section className="relative flex min-h-[clamp(42rem,85svh,54rem)] w-full justify-center overflow-hidden rounded-b-3xl bg-linear-to-br from-slate-800 via-slate-900 to-blue-950">
-      {displayedBanner && (
-        <img
-          src={displayedBanner}
-          alt=""
-          aria-hidden="true"
-          fetchPriority="high"
-          onLoad={() => setIsPageReady(true)}
-          onError={() => setIsPageReady(true)}
-          className="absolute inset-0 h-full w-full object-cover object-[center_35%]"
-        />
-      )}
+      <PageLoader visible={!isHeroReady} />
 
-      {nextBanner && (
-        <img
-          src={nextBanner}
-          alt=""
-          aria-hidden="true"
-          className={`absolute inset-0 h-full w-full object-cover object-[center_35%] transition-opacity duration-500 ${
-            isNextBannerVisible ? "opacity-100" : "opacity-0"
-          }`}
-        />
-      )}
+      <section className="relative flex min-h-[clamp(42rem,85svh,54rem)] w-full justify-center overflow-hidden rounded-b-3xl bg-linear-to-br from-slate-800 via-slate-900 to-blue-950">
+        {displayedBanner && (
+          <img
+            src={displayedBanner}
+            alt=""
+            aria-hidden="true"
+            fetchPriority="high"
+            onLoad={() => setIsPageReady(true)}
+            onError={() => setIsPageReady(true)}
+            className="absolute inset-0 h-full w-full object-cover object-[center_35%]"
+          />
+        )}
+
+        {nextBanner && (
+          <img
+            src={nextBanner}
+            alt=""
+            aria-hidden="true"
+            className={`absolute inset-0 h-full w-full object-cover object-[center_35%] transition-opacity duration-500 ${
+              isNextBannerVisible ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        )}
 
       <div className="relative z-10 flex min-h-[clamp(42rem,85svh,54rem)] w-full max-w-120 flex-col items-start justify-between p-5 md:max-w-5xl md:p-6 lg:max-w-7xl lg:p-8 xl:max-w-full xl:p-10">
         {isAdmin && (

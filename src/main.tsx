@@ -1,13 +1,9 @@
-import { StrictMode, Suspense } from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
 import { AuthProvider } from "./components/AuthProvider/AuthProvider.tsx";
 import App from "./components/App/App.tsx";
-import {
-  LoaderProvider,
-  SuspenseLoader,
-} from "./components/ui/LoaderProvider.tsx";
 import { ToastProvider } from "./components/ui/ToastProvider.tsx";
 
 import "./i18n.tsx";
@@ -20,11 +16,7 @@ createRoot(document.getElementById("root")!).render(
       <AuthProvider>
         <ToastProvider />
 
-        <LoaderProvider>
-          <Suspense fallback={<SuspenseLoader loaderKey="app" />}>
-            <App />
-          </Suspense>
-        </LoaderProvider>
+        <App />
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>,

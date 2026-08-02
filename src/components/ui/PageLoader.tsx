@@ -1,27 +1,15 @@
 interface PageLoaderProps {
   visible: boolean;
-  label?: string;
-  fullscreen?: boolean;
 }
 
-export const PageLoader = ({
-  visible,
-  label = "Berehynia",
-  fullscreen = true,
-}: PageLoaderProps) => {
+export const PageLoader = ({ visible }: PageLoaderProps) => {
+  if (!visible) return null;
+
   return (
     <div
       role="status"
-      aria-live="polite"
       aria-label="Loading"
-      aria-hidden={!visible}
-      className={`${
-        fullscreen ? "fixed inset-0 z-[9999]" : "absolute inset-0 z-50"
-      } flex items-center justify-center bg-white transition-opacity duration-500 ${
-        visible
-          ? "pointer-events-auto opacity-100"
-          : "pointer-events-none opacity-0"
-      }`}
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-white"
     >
       <div className="flex flex-col items-center gap-5">
         <div className="relative flex size-20 items-center justify-center">
@@ -60,13 +48,11 @@ export const PageLoader = ({
             className="relative size-14 drop-shadow-[0_8px_18px_rgba(37,99,235,0.16)]"
           >
             <circle cx="32" cy="32" r="27" fill="#eff6ff" />
-
             <path
               d="M32 39.5S19 32.2 19 23.8c0-4.3 3.2-7.3 7.2-7.3 2.5 0 4.7 1.3 5.8 3.4 1.1-2.1 3.3-3.4 5.8-3.4 4 0 7.2 3 7.2 7.3 0 8.4-13 15.7-13 15.7Z"
               fill="#facc15"
               className="origin-center animate-pulse"
             />
-
             <path
               d="M9.5 31.5c4.6.8 8.2 3.2 10.4 7.2 2.6 4.8 6.2 7.2 12.1 8.8"
               fill="none"
@@ -81,7 +67,6 @@ export const PageLoader = ({
               strokeWidth="3.5"
               strokeLinecap="round"
             />
-
             <path
               d="M12.5 27.5 8 31.5l5.5 2.5M51.5 27.5l4.5 4-5.5 2.5"
               fill="none"
@@ -93,12 +78,11 @@ export const PageLoader = ({
           </svg>
         </div>
 
-        {label && (
-          <span className="font-nunito text-sm font-bold tracking-[0.22em] text-slate-700 uppercase">
-            {label}
-          </span>
-        )}
+        <span className="font-nunito text-sm font-bold tracking-[0.22em] text-slate-700 uppercase">
+          Berehynia
+        </span>
       </div>
     </div>
   );
 };
+

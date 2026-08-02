@@ -2,12 +2,10 @@ import { useState } from "react";
 import { LogOut, ShieldCheck } from "lucide-react";
 
 import { logout } from "../AdminLogOut/AdminLogOut";
-import { usePageLoading } from "../ui/usePageLoading";
+import { PageLoader } from "../ui/PageLoader";
 
 export default function AdminLogout() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-
-  usePageLoading("admin-logout", isLoggingOut);
 
   const handleLogout = async () => {
     if (isLoggingOut) return;
@@ -24,7 +22,10 @@ export default function AdminLogout() {
   };
 
   return (
-    <button
+    <>
+      <PageLoader visible={isLoggingOut} />
+
+      <button
         type="button"
         onClick={handleLogout}
         disabled={isLoggingOut}
@@ -58,6 +59,7 @@ export default function AdminLogout() {
           <span className="sm:hidden">Exit</span>
           <span className="hidden sm:inline">Log out</span>
         </span>
-    </button>
+      </button>
+    </>
   );
 }
