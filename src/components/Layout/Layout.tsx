@@ -16,6 +16,9 @@ export const Layout = () => {
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const currentLanguage = (i18n.resolvedLanguage || i18n.language).split("-")[0];
+    const documentLanguage = currentLanguage === "ua" ? "uk" : currentLanguage;
+
+    document.documentElement.lang = documentLanguage;
 
     if (searchParams.get("lang") !== currentLanguage) {
       searchParams.set("lang", currentLanguage);

@@ -9,16 +9,21 @@ i18next
   .use(initReactI18next)
   .init({
     fallbackLng: "ua",
+    supportedLngs: ["ua", "en", "de"],
+    load: "languageOnly",
     debug: false,
     showSupportNotice: false,
+
     backend: {
       loadPath: "/berehynja-frontend/locales/{{lng}}.json",
     },
+
     detection: {
       order: ["querystring", "localStorage"],
       caches: ["localStorage"],
-      lookupQuerystring: "lng",
+      lookupQuerystring: "lang",
     },
+
     interpolation: {
       escapeValue: false,
     },
