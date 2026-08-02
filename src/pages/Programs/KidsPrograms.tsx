@@ -40,22 +40,26 @@ export const ProgramsKids = () => {
   return (
     <div
       aria-busy={isLoading || isScheduleLoading}
-      className="font-nunito w-full py-8"
+      className="font-nunito w-full"
     >
       <PageLoader visible={isLoading || isScheduleLoading} />
 
-      <div className="flex flex-col items-center justify-center gap-8 py-7 md:flex-row md:py-10">
-        <div className="flex flex-col items-center justify-center text-nowrap">
-          <h2 className="text-preset-2 flex flex-nowrap justify-center pb-4 font-bold">
+      <header className="flex flex-col items-center justify-center gap-6 py-8 md:flex-row md:gap-10 md:py-12">
+        <div className="flex max-w-full shrink-0 flex-col items-center justify-center">
+          <h1 className="text-preset-2 pb-4 text-center font-semibold tracking-tight text-slate-950">
             {t("programs.kids.title")}
-          </h2>
-          <div className="mb-4 h-1 w-full bg-linear-to-r from-blue-500 to-yellow-400" />
+          </h1>
+
+          <div
+            aria-hidden="true"
+            className="h-1 w-full rounded-full bg-linear-to-r from-blue-500 to-yellow-400"
+          />
         </div>
 
-        <p className="text-preset-4 flex max-w-4xl items-center justify-center px-4 leading-8 font-semibold md:px-0">
+        <p className="text-preset-4 max-w-4xl px-2 text-center leading-7 font-medium text-slate-600 md:px-0 md:text-left md:leading-8">
           {t("programs.kids.description")}
         </p>
-      </div>
+      </header>
 
       <div className="flex flex-col gap-20">
         <ScheduleCalendar

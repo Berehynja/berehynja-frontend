@@ -1,52 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300..900;1,300..900&display=swap");
 @import "tailwindcss";
-/* @config "../tailwind.config.js"; */
 
 @theme {
-  /* Roboto */
-  --font-robotoRegular: "Roboto-Regular", sans-serif;
-  --font-robotoMedium: "Roboto-Medium", sans-serif;
-  --font-robotoSemiBold: "Roboto-SemiBold", sans-serif;
-  --font-robotoBold: "Roboto-Bold", sans-serif;
+  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
+  --font-nunito: "Nunito", ui-sans-serif, system-ui, sans-serif;
 
-  /* Inter */
-  --font-interRegular: "Inter-Regular", sans-serif;
-  --font-interMedium: "Inter-Medium", sans-serif;
-
-  /* Montserrat */
-  --font-nunito: "Montserrat-Regular", sans-serif;
-  --font-montserratMedium: "Montserrat-Medium", sans-serif;
-  --font-nunito: "Montserrat-Bold", sans-serif;
-
-  /* Caveat */
-  --font-caveatRegular: "Caveat-Regular", cursive;
-  --font-caveatMedium: "Caveat-Medium", cursive;
-
-  /* Dancing Script */
-  --font-dancingRegular: "DancingScript-Regular", cursive;
-  --font-dancingMedium: "DancingScript-Medium", cursive;
-
-  /* Nunito */
-  --font-nunito: "Nunito", sans-serif;
-
-  /* Manrope */
-  --font-manrope: "Manrope", sans-serif;
-
-  /* Colors */
-
-  /* Sky: "#6ED0F0",
-  RoyalBlue: "#01b0f1",
-  Blue: "#2b7fff",
-  LightSky: "#C1DDEF",
-  Rose: "#DF7D84",
-  Red: "#FF5A5A",
-  Violet: "#CD7EEE",
-  Green: "#2ECC71",
-  GreenAccent: "#9ACD32",
-  Pink: "#FF66B2",
-  Orange: "#FF9F43",
-  Yellow: "#F1C40F", */
   --color-Sky: #6ed0f0;
   --color-RoyalBlue: #01b0f1;
   --color-Blue: #2b7fff;
@@ -60,29 +18,41 @@
   --color-Orange: #ff9f43;
   --color-Yellow: #f1c40f;
 
-  --color-Red-2: rgba(223, 125, 132, 0.2);
-  --color-Cyan-2: rgba(193, 221, 239, 0.2);
-  --color-Orange-2: rgba(226, 205, 122, 0.2);
-  --color-Blue-2: rgba(47, 110, 187, 0.2);
-  --color-Green-2: rgba(164, 201, 160, 0.2);
+  --color-Red-2: rgb(223 125 132 / 20%);
+  --color-Cyan-2: rgb(193 221 239 / 20%);
+  --color-Orange-2: rgb(226 205 122 / 20%);
+  --color-Blue-2: rgb(47 110 187 / 20%);
+  --color-Green-2: rgb(164 201 160 / 20%);
 
-  --shadow-card: 0 15px 30px -11px rgba(131, 166, 210, 0.5);
+  --shadow-card: 0 15px 30px -11px rgb(131 166 210 / 50%);
 
-  /* Font Sizes */
-  --font-size-preset-1: clamp(2.5rem, 5vw, 4rem); /* 40px → 64px → 64px */
-  --font-size-preset-2: clamp(1.75rem, 3vw, 2.5rem); /* 28px → 40px → 40px */
-  --font-size-preset-3: clamp(1.5rem, 2.5vw, 2rem); /* 24px → 32px → 32px */
-  --font-size-preset-4: clamp(1rem, 1.5vw, 1.25rem); /* 16px → 20px → 20px */
-  --font-size-preset-5: clamp(0.875rem, 1.2vw, 1rem); /* 14px → 16px → 16px */
-  --font-size-preset-6: clamp(0.625rem, 2.4vw, 1rem); /* 10px → 16px */
+ --font-size-preset-1: clamp(2.25rem, 1.75rem + 2.5vw, 4rem);
+--font-size-preset-2: clamp(1.875rem, 1.625rem + 1.25vw, 2.5rem);
+--font-size-preset-3: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+--font-size-preset-4: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+--font-size-preset-5: clamp(0.875rem, 0.825rem + 0.25vw, 1rem);
+--font-size-preset-6: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
 
-  /* Line Heights - всі 110% */
-  --line-height-preset-1: 1.1;
-  --line-height-preset-2: 1.1;
-  --line-height-preset-3: 1.1;
-  --line-height-preset-4: 1.2;
-  --line-height-preset-5: 1.3;
-  --line-height-preset-6: 1.3;
+--line-height-preset-1: 1.05;
+--line-height-preset-2: 1.15;
+--line-height-preset-3: 1.2;
+--line-height-preset-4: 1.55;
+--line-height-preset-5: 1.5;
+--line-height-preset-6: 1.4;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-nunito);
+  }
+
+  body,
+  button,
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+  }
 }
 
 @layer utilities {
@@ -102,7 +72,6 @@
   }
 
   .text-preset-4 {
-    /* ← Перевірте цей блок */
     font-size: var(--font-size-preset-4);
     line-height: var(--line-height-preset-4);
   }
@@ -111,143 +80,9 @@
     font-size: var(--font-size-preset-5);
     line-height: var(--line-height-preset-5);
   }
+
   .text-preset-6 {
     font-size: var(--font-size-preset-6);
     line-height: var(--line-height-preset-6);
   }
-}
-
-/* -----------------------------------------Roboto----------------------------------- */
-
-@font-face {
-  font-family: "Roboto-Regular";
-  src:
-    local("Roboto-Regular"),
-    url("./fonts/Roboto/Roboto-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Roboto-Medium";
-  src:
-    local("Roboto-Medium"),
-    url("./fonts/Roboto/Roboto-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Roboto-SemiBold";
-  src:
-    local("Roboto-SemiBold"),
-    url("./fonts/Roboto/Roboto-SemiBold.ttf") format("truetype");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Roboto-Bold";
-  src:
-    local("Roboto-Bold"),
-    url("./fonts/Roboto/Roboto-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* -------------------------------------INTER----------------------------------- */
-
-@font-face {
-  font-family: "Inter-Medium";
-  src:
-    local("Inter-Medium"),
-    url("./fonts/Inter/Inter_18pt-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Inter-Regular";
-  src:
-    local("Inter-Regular"),
-    url("./fonts/Inter/Inter_18pt-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* -----------------------------------------Montserrat----------------------------------- */
-
-@font-face {
-  font-family: "Montserrat-Regular";
-  src:
-    local("Montserrat-Regular"),
-    url("./fonts/Montserrat/Montserrat-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Montserrat-Medium";
-  src:
-    local("Montserrat-Medium"),
-    url("./fonts/Montserrat/Montserrat-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Montserrat-Bold";
-  src:
-    local("Montserrat-Bold"),
-    url("./fonts/Montserrat/Montserrat-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* --------------------------------------------------Caveat---------------------------------------- */
-
-@font-face {
-  font-family: "Caveat-Regular";
-  src:
-    local("Caveat-Regular"),
-    url("./fonts/Caveat/Caveat-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Caveat-Medium";
-  src:
-    local("Caveat-Medium"),
-    url("./fonts/Caveat/Caveat-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-/* -------------------------------------Dancing Script----------------------------------- */
-
-@font-face {
-  font-family: "DancingScript-Regular";
-  src:
-    local("DancingScript-Regular"),
-    url("./fonts/DancingScript/DancingScript-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "DancingScript-Medium";
-  src:
-    local("DancingScript-Medium"),
-    url("./fonts/DancingScript/DancingScript-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
 }

@@ -1,8 +1,4 @@
-import {
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
 
 import { LessonCard } from "./LessonCard";
@@ -21,6 +17,29 @@ interface LessonsGridProps {
   setPrograms: Dispatch<SetStateAction<Program[]>>;
 }
 
+const LESSONS_GRID_TEXT = {
+  title: {
+    ua: "Всі програми",
+    de: "Alle Programme",
+    en: "All programs",
+  },
+  add: {
+    ua: "Додати програму",
+    de: "Programm hinzufügen",
+    en: "Add program",
+  },
+  empty: {
+    ua: "Поки що немає доступних програм.",
+    de: "Derzeit sind keine Programme verfügbar.",
+    en: "There are currently no programs available.",
+  },
+  confirmDelete: {
+    ua: "Видалити цю програму?",
+    de: "Dieses Programm löschen?",
+    en: "Delete this program?",
+  },
+};
+
 export function LessonsGrid({
   programs,
   ageGroups,
@@ -32,22 +51,12 @@ export function LessonsGrid({
   const [isProcessing, setIsProcessing] = useState(false);
   const [editingProgram, setEditingProgram] = useState<Program | null>(null);
 
-  const currentLang = (
-    i18n.resolvedLanguage || i18n.language
-  ).split("-")[0] as LangKey;
-
-  const texts = {
-    title: {
-      ua: "Всі програми",
-      de: "Alle Programme",
-      en: "All programs",
-    },
-    empty: {
-      ua: "Поки що немає доступних програм.",
-      de: "Derzeit sind keine Programme verfügbar.",
-      en: "There are currently no programs available.",
-    },
-  };
+  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
+    "-",
+  )[0];
+  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
+    ? (detectedLanguage as LangKey)
+    : "ua";
 
   const handleCloseModal = () => {
     if (isProcessing) return;
@@ -66,10 +75,7 @@ export function LessonsGrid({
     setIsModalOpen(true);
   };
 
-  const handleSaveProgram = async (
-    data: Omit<Program, "id">,
-    id?: string,
-  ) => {
+  const handleSaveProgram = async (data: Omit<Program, "id">, id?: string) => {
     if (isProcessing) return;
 
     setIsProcessing(true);
@@ -78,41 +84,46 @@ export function LessonsGrid({
       if (id) {
         await programsService.updateProgram(id, data);
 
-        setPrograms((previousPrograms) =>
-          previousPrograms.map((program) =>
+        setPrograms((currentPrograms) =>
+          currentPrograms.map((program) =>
             program.id === id ? { ...data, id } : program,
           ),
         );
       } else {
         const newProgram = await programsService.addProgram(data);
-        setPrograms((previousPrograms) => [...previousPrograms, newProgram]);
+        setPrograms((currentPrograms) => [...currentPrograms, newProgram]);
       }
 
       setIsModalOpen(false);
       setEditingProgram(null);
     } catch (error) {
-      console.error("Помилка збереження програми:", error);
+      console.error("Program save error:", error);
     } finally {
       setIsProcessing(false);
     }
   };
 
   const handleDeleteProgram = async (id: string) => {
-    if (isProcessing) return;
+    if (
+      isProcessing ||
+      !window.confirm(LESSONS_GRID_TEXT.confirmDelete[currentLang])
+    ) {
+      return;
+    }
 
     setIsProcessing(true);
 
     try {
       await programsService.deleteProgram(id);
 
-      setPrograms((previousPrograms) =>
-        previousPrograms.filter((program) => program.id !== id),
+      setPrograms((currentPrograms) =>
+        currentPrograms.filter((program) => program.id !== id),
       );
 
       setIsModalOpen(false);
       setEditingProgram(null);
     } catch (error) {
-      console.error("Помилка видалення програми:", error);
+      console.error("Program deletion error:", error);
     } finally {
       setIsProcessing(false);
     }
@@ -121,18 +132,25 @@ export function LessonsGrid({
   return (
     <section
       aria-labelledby="all-programs-title"
-      className="font-nunito mb-25"
+      className="font-nunito mb-25 w-full"
     >
       <PageLoader visible={isProcessing} />
 
-      <h3
+      <h2
         id="all-programs-title"
         className="text-preset-2 mb-10 text-center font-semibold text-gray-800"
       >
-        {texts.title[currentLang]}
-      </h3>
+        {LESSONS_GRID_TEXT.title[currentLang]}
+      </h2>
 
-      <div className="grid auto-rows-fr grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid w-full auto-rows-fr grid-cols-1 items-stretch gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+        {isAdmin && (
+          <AddEvent
+            onClick={handleOpenCreate}
+            label={LESSONS_GRID_TEXT.add[currentLang]}
+          />
+        )}
+
         {programs.map((program) => (
           <LessonCard
             key={program.id}
@@ -144,23 +162,23 @@ export function LessonsGrid({
         {programs.length === 0 && !isAdmin && (
           <p
             role="status"
-            className="col-span-full text-center text-gray-600"
+            className="col-span-full py-10 text-center text-gray-600"
           >
-            {texts.empty[currentLang]}
+            {LESSONS_GRID_TEXT.empty[currentLang]}
           </p>
         )}
-
-        {isAdmin && <AddEvent onClick={handleOpenCreate} />}
       </div>
 
-      <AddLessonModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSave={handleSaveProgram}
-        onDelete={handleDeleteProgram}
-        ageGroups={ageGroups}
-        programToEdit={editingProgram}
-      />
+      {isAdmin && (
+        <AddLessonModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onSave={handleSaveProgram}
+          onDelete={handleDeleteProgram}
+          ageGroups={ageGroups}
+          programToEdit={editingProgram}
+        />
+      )}
     </section>
   );
 }

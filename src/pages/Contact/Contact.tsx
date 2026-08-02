@@ -27,9 +27,9 @@ export const Contact = () => {
   const [contacts, setContacts] = useState<ContactData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
-    "-",
-  )[0];
+  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
+    .split("-")[0]
+    .toLowerCase();
   const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
     ? (detectedLanguage as LangKey)
     : "ua";
@@ -43,20 +43,20 @@ export const Contact = () => {
     <>
       <PageLoader visible={isLoading} />
 
-      <div className="mx-auto w-full max-w-7xl px-3 pb-12 md:px-8">
-        <header className="font-nunito flex flex-col items-center justify-center gap-7 py-7 text-center md:flex-row md:gap-10 md:py-12 md:text-left">
-          <div className="flex max-w-full shrink-0 flex-col items-center justify-center md:items-start">
-            <h1 className="text-preset-2 font-nunito pb-4 text-center text-3xl leading-tight font-black text-balance md:text-left md:text-5xl">
+      <div className="font-nunito mx-auto w-full max-w-7xl px-3 pb-12 md:px-8">
+        <header className="flex flex-col items-center justify-center gap-6 py-8 md:flex-row md:gap-10 md:py-12">
+          <div className="flex max-w-full shrink-0 flex-col items-center justify-center">
+            <h1 className="pb-4 text-center text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
               {CONTACT_PAGE_TEXT.title[currentLang]}
             </h1>
 
             <div
               aria-hidden="true"
-              className="mx-auto mb-4 h-1 w-full bg-linear-to-r from-blue-500 to-yellow-400 md:mx-0"
+              className="h-1 w-full rounded-full bg-linear-to-r from-blue-500 to-yellow-400"
             />
           </div>
 
-          <p className="text-preset-4 max-w-3xl px-2 text-center leading-8 text-gray-600 md:px-0 md:text-left">
+          <p className="max-w-4xl px-2 text-center text-base leading-7 font-medium text-slate-600 md:px-0 md:text-left md:text-lg md:leading-8">
             {CONTACT_PAGE_TEXT.description[currentLang]}
           </p>
         </header>

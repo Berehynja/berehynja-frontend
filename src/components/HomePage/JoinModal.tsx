@@ -7,13 +7,7 @@ import {
   UserPlus,
   X,
 } from "lucide-react";
-import {
-  useEffect,
-  useId,
-  useCallback,
-  useState,
-  type FormEvent,
-} from "react";
+import { useEffect, useId, useCallback, useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 
 import type { LangKey } from "../../types/types";
@@ -45,7 +39,11 @@ const JOIN_TEXT = {
     de: "Werden Sie Teil von Berehynja",
     en: "Become part of Berehynja",
   },
-  fullName: { ua: "Повне ім’я *", de: "Vollständiger Name *", en: "Full name *" },
+  fullName: {
+    ua: "Повне ім’я *",
+    de: "Vollständiger Name *",
+    en: "Full name *",
+  },
   fullNamePlaceholder: {
     ua: "Ваше прізвище та ім’я",
     de: "Ihr Vor- und Nachname",
@@ -84,7 +82,11 @@ const JOIN_TEXT = {
     de: "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
     en: "The application could not be sent. Please try again.",
   },
-  submit: { ua: "Надіслати заявку", de: "Anfrage senden", en: "Send application" },
+  submit: {
+    ua: "Надіслати заявку",
+    de: "Anfrage senden",
+    en: "Send application",
+  },
   submitting: { ua: "Надсилаємо...", de: "Wird gesendet...", en: "Sending..." },
   successTitle: { ua: "Дякуємо!", de: "Vielen Dank!", en: "Thank you!" },
   successText: {
@@ -94,11 +96,7 @@ const JOIN_TEXT = {
   },
 };
 
-export const JoinModal = ({
-  isOpen,
-  onClose,
-  onSubmit,
-}: JoinModalProps) => {
+export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
   const { i18n } = useTranslation();
   const fieldId = useId();
   const [fullName, setFullName] = useState("");
@@ -111,9 +109,9 @@ export const JoinModal = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const detectedLanguage = (
-    i18n.resolvedLanguage || i18n.language
-  ).split("-")[0];
+  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
+    "-",
+  )[0];
   const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
     ? (detectedLanguage as LangKey)
     : "ua";
@@ -205,7 +203,7 @@ export const JoinModal = ({
         onMouseDown={handleClose}
       />
 
-      <div className="animate-in zoom-in-95 font-nunito relative max-h-[calc(100dvh-2rem)] w-full max-w-3xl overflow-y-auto rounded-4xl border border-slate-200 bg-white p-6 shadow-[0_28px_90px_rgba(15,23,42,0.28)] duration-300 sm:p-8 lg:p-10">
+      <div className="animate-in zoom-in-95 font-nunito relative max-h-[calc(100dvh-2rem)] w-full max-w-3xl overflow-y-auto rounded-4xl border border-slate-200 bg-white p-6 shadow-[0_28px_90px_rgba(15,23,42,0.28)] duration-300 md:p-8 lg:p-10">
         <div
           aria-hidden="true"
           className="absolute inset-x-0 top-0 h-1.5 bg-linear-to-r from-blue-600 via-blue-500 to-yellow-400"
@@ -215,7 +213,7 @@ export const JoinModal = ({
           onClick={handleClose}
           aria-label={JOIN_TEXT.close[currentLang]}
           title={JOIN_TEXT.close[currentLang]}
-          className="absolute top-5 right-5 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all hover:border-blue-300 hover:text-blue-600 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:top-7 sm:right-7"
+          className="absolute top-5 right-5 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all hover:border-blue-300 hover:text-blue-600 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:top-7 md:right-7"
         >
           <X size={22} aria-hidden="true" />
         </button>
@@ -390,7 +388,7 @@ export const JoinModal = ({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                aria-disabled={isSubmitting || !acceptedPrivacy}
+                aria-disabled={isSubmitting}
                 className={`group font-nunito flex w-full items-center justify-center gap-3 rounded-2xl bg-slate-950 px-6 py-4 font-black text-white shadow-lg transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:cursor-not-allowed disabled:opacity-60 ${
                   acceptedPrivacy
                     ? "cursor-pointer hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl"

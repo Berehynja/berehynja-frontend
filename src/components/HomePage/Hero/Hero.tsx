@@ -10,8 +10,42 @@ import { EditTextModal, type FieldConfig } from "../../Modals/EditTextModal";
 import { useAuth } from "../../AuthProvider/useAuth";
 import EditButton from "../../Buttons/EditButton";
 import { PageLoader } from "../../ui/PageLoader";
+import type { LangKey } from "../../../types/types";
 
 const HERO_BANNER_CACHE_KEY = "berehynia-hero-banner";
+
+const HERO_INTERFACE_TEXT = {
+  donate: {
+    ua: "Благодійність",
+    de: "Spenden",
+    en: "Donate",
+  },
+  join: {
+    ua: "Приєднатися",
+    de: "Mitmachen",
+    en: "Join us",
+  },
+  bannerField: {
+    ua: "Фонове зображення",
+    de: "Hintergrundbild",
+    en: "Background image",
+  },
+  titleField: {
+    ua: "Головний заголовок",
+    de: "Hauptüberschrift",
+    en: "Main heading",
+  },
+  descriptionField: {
+    ua: "Опис під заголовком",
+    de: "Beschreibung unter der Überschrift",
+    en: "Description below the heading",
+  },
+  editModalTitle: {
+    ua: "Редагування головного екрана",
+    de: "Startbildschirm bearbeiten",
+    en: "Edit hero section",
+  },
+};
 
 const getInitialBanner = (): string | null => {
   if (typeof window === "undefined") return null;
@@ -24,10 +58,7 @@ const getInitialBanner = (): string | null => {
 };
 
 const getHeroImageUrl = (url: string, width: number) =>
-  optimizeCloudinaryImage(
-    url,
-    `f_auto,q_auto:good,c_limit,w_${width}`,
-  );
+  optimizeCloudinaryImage(url, `f_auto,q_auto:good,c_limit,w_${width}`);
 
 const getHeroSrcSet = (url: string) =>
   [640, 960, 1280, 1600, 1920]
@@ -35,7 +66,7 @@ const getHeroSrcSet = (url: string) =>
     .join(", ");
 
 export const Hero = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isAdmin } = useAuth();
   const { getText, isLoading, data } = useFirebaseContent("home");
 
@@ -48,6 +79,13 @@ export const Hero = () => {
   const [isPageReady, setIsPageReady] = useState(false);
   const [hasLoadingTimedOut, setHasLoadingTimedOut] = useState(false);
   const transitionTimeoutRef = useRef<number | null>(null);
+
+  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
+    "-",
+  )[0];
+  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
+    ? (detectedLanguage as LangKey)
+    : "ua";
 
   const title = getText("hero.title", t("home.welcome"));
   const description = getText("hero.description", t("home.description"));
@@ -138,14 +176,18 @@ export const Hero = () => {
   const heroFields: FieldConfig[] = [
     {
       key: "bannerImage",
-      label: "Фонове зображення",
+      label: HERO_INTERFACE_TEXT.bannerField[currentLang],
       type: "image" as unknown as FieldConfig["type"],
       mediaCategory: "banners",
     } as unknown as FieldConfig,
-    { key: "title", label: "Головний заголовок", type: "input" },
+    {
+      key: "title",
+      label: HERO_INTERFACE_TEXT.titleField[currentLang],
+      type: "input",
+    },
     {
       key: "description",
-      label: "Опис під заголовком",
+      label: HERO_INTERFACE_TEXT.descriptionField[currentLang],
       type: "textarea",
     },
   ];
@@ -203,13 +245,13 @@ export const Hero = () => {
             />
           )}
 
-          <div className="mt-auto mb-auto w-full sm:mt-0">
+          <div className="mt-auto mb-auto w-full md:mt-0">
             <h1 className="text-preset-1 font-nunito mb-6 align-sub tracking-tighter text-white uppercase drop-shadow-2xl md:text-4xl lg:text-5xl">
               {isLoading ? "..." : title}
             </h1>
           </div>
 
-          <div className="mt-auto mb-auto w-full sm:mb-0">
+          <div className="mt-auto mb-auto w-full md:mb-0">
             <p className="text-preset-2 block w-full max-w-7xl rounded-3xl border border-white/10 bg-black/40 p-6 indent-8 text-xl leading-8 text-white backdrop-blur-md md:text-3xl md:leading-10">
               {description}
             </p>
@@ -225,7 +267,7 @@ export const Hero = () => {
                 size={20}
                 className="fill-current group-hover:animate-pulse"
               />
-              <span>Благодійність</span>
+              <span>{HERO_INTERFACE_TEXT.donate[currentLang]}</span>
             </button>
 
             <button
@@ -234,7 +276,7 @@ export const Hero = () => {
               className="group font-nunito flex cursor-pointer items-center justify-center gap-4 rounded-2xl border border-white/30 bg-white/10 px-10 py-5 text-sm tracking-widest text-white uppercase backdrop-blur-md transition-all hover:bg-white hover:text-blue-900 md:text-base"
             >
               <UserPlus size={20} />
-              <span>Приєднатися</span>
+              <span>{HERO_INTERFACE_TEXT.join[currentLang]}</span>
               <ArrowRight
                 size={20}
                 className="-translate-x-4 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
@@ -249,17 +291,14 @@ export const Hero = () => {
         onClose={() => setIsDonationOpen(false)}
       />
 
-      <JoinModal
-        isOpen={isJoinOpen}
-        onClose={() => setIsJoinOpen(false)}
-      />
+      <JoinModal isOpen={isJoinOpen} onClose={() => setIsJoinOpen(false)} />
 
       <EditTextModal
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         documentName="home"
         sectionName="hero"
-        modalTitle="Редагування головного екрана"
+        modalTitle={HERO_INTERFACE_TEXT.editModalTitle[currentLang]}
         initialData={data?.hero as Record<string, unknown>}
         fields={heroFields}
       />

@@ -43,7 +43,7 @@ export const DonationQRCode = ({ details }: DonationQRCodeProps) => {
 
   return (
     // Додано w-full та max-w-[280px], щоб він не був зашироким на мобільних
-    <div className="relative flex flex-col items-center w-full max-w-[280px] mx-auto">
+    <div className="relative flex flex-col items-center w-full max-w-70 mx-auto">
       <div className="w-full aspect-square rounded-2xl border border-gray-100 bg-white p-4 shadow-inner flex items-center justify-center">
         <QRCodeSVG
           value={qrString}

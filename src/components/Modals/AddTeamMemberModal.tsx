@@ -1,31 +1,231 @@
-import { useEffect, useState } from "react";
-import Cropper from "react-easy-crop";
 import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
+import Cropper, { type Area } from "react-easy-crop";
+import {
+  AlertTriangle,
   Award,
   Briefcase,
   Camera,
+  Check,
   CheckCircle2,
   GraduationCap,
+  Loader2,
   Plus,
   Trash2,
   User,
   Wrench,
   X,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 import { uploadMedia } from "../../services/cloudinaryService";
 import { getCroppedImg } from "../../utils/getCroppedImg";
-
 import type { TeamMember } from "../../types/teamMember";
 import type { LangKey } from "../../types/types";
 
 interface AddTeamMemberModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (data: TeamMember) => void;
+  onSave: (data: TeamMember) => void | Promise<void>;
   memberToEdit?: TeamMember | null;
-  onDelete?: (memberId: string) => void;
+  onDelete?: (memberId: string) => void | Promise<void>;
 }
+
+const LANGUAGES: Array<{ key: LangKey; label: string }> = [
+  { key: "ua", label: "UA" },
+  { key: "de", label: "DE" },
+  { key: "en", label: "EN" },
+];
+
+const TEXT = {
+  ua: {
+    admin: "Berehynja Admin",
+    createTitle: "Новий член команди",
+    editTitle: "Редагування профілю",
+    close: "Закрити",
+    language: "Мова заповнення",
+    photo: "Фото профілю",
+    choosePhoto: "Вибрати фото",
+    changePhoto: "Замінити",
+    removePhoto: "Прибрати",
+    usePlaceholder: "Використати заглушку",
+    cropTitle: "Налаштування фото",
+    cropHint: "Перемістіть фото та відрегулюйте масштаб",
+    zoom: "Масштаб",
+    apply: "Застосувати",
+    uploading: "Завантаження...",
+    invalidImage: "Оберіть коректний файл зображення.",
+    imageTooLarge: "Розмір зображення не повинен перевищувати 12 МБ.",
+    uploadSuccess: "Фото завантажено.",
+    uploadError: "Не вдалося обробити або завантажити фото.",
+    name: "Ім’я та прізвище",
+    namePlaceholder: "Введіть ім’я та прізвище",
+    role: "Посада",
+    rolePlaceholder: "Введіть посаду",
+    education: "Освіта",
+    educationPlaceholder: "Навчальний заклад, спеціальність...",
+    skills: "Професійні навички",
+    skillPlaceholder: "Наприклад, фандрейзинг",
+    addSkill: "Додати навичку",
+    removeSkill: "Видалити навичку",
+    skillLimit: "Максимум 6 навичок для кожної мови",
+    description: "Досвід та експертиза",
+    descriptionPlaceholder: "Коротко опишіть досвід та експертизу...",
+    required: "обов’язково",
+    cancel: "Скасувати",
+    create: "Додати до команди",
+    save: "Зберегти зміни",
+    saving: "Збереження...",
+    validation: "Заповніть ім’я та посаду українською мовою.",
+    saved: "Профіль збережено.",
+    saveError: "Не вдалося зберегти профіль.",
+    delete: "Видалити профіль",
+    deleteTitle: "Видалити профіль?",
+    deleteMessage:
+      "Цю дію неможливо скасувати. Профіль буде видалено назавжди.",
+    confirmDelete: "Так, видалити",
+    deleting: "Видалення...",
+    deleted: "Профіль видалено.",
+    deleteError: "Не вдалося видалити профіль.",
+  },
+  de: {
+    admin: "Berehynja Admin",
+    createTitle: "Neues Teammitglied",
+    editTitle: "Profil bearbeiten",
+    close: "Schließen",
+    language: "Eingabesprache",
+    photo: "Profilfoto",
+    choosePhoto: "Foto auswählen",
+    changePhoto: "Ersetzen",
+    removePhoto: "Entfernen",
+    usePlaceholder: "Platzhalter verwenden",
+    cropTitle: "Foto anpassen",
+    cropHint: "Verschieben Sie das Foto und passen Sie den Zoom an.",
+    zoom: "Zoom",
+    apply: "Übernehmen",
+    uploading: "Wird hochgeladen...",
+    invalidImage: "Wählen Sie eine gültige Bilddatei aus.",
+    imageTooLarge: "Das Bild darf nicht größer als 12 MB sein.",
+    uploadSuccess: "Das Foto wurde hochgeladen.",
+    uploadError: "Das Foto konnte nicht verarbeitet oder hochgeladen werden.",
+    name: "Vor- und Nachname",
+    namePlaceholder: "Vor- und Nachnamen eingeben",
+    role: "Position",
+    rolePlaceholder: "Position eingeben",
+    education: "Ausbildung",
+    educationPlaceholder: "Bildungseinrichtung, Fachrichtung...",
+    skills: "Berufliche Fähigkeiten",
+    skillPlaceholder: "Zum Beispiel Fundraising",
+    addSkill: "Fähigkeit hinzufügen",
+    removeSkill: "Fähigkeit entfernen",
+    skillLimit: "Maximal 6 Fähigkeiten pro Sprache",
+    description: "Erfahrung und Expertise",
+    descriptionPlaceholder: "Beschreiben Sie kurz Erfahrung und Expertise...",
+    required: "erforderlich",
+    cancel: "Abbrechen",
+    create: "Zum Team hinzufügen",
+    save: "Änderungen speichern",
+    saving: "Wird gespeichert...",
+    validation: "Füllen Sie Name und Position auf Ukrainisch aus.",
+    saved: "Das Profil wurde gespeichert.",
+    saveError: "Das Profil konnte nicht gespeichert werden.",
+    delete: "Profil löschen",
+    deleteTitle: "Profil löschen?",
+    deleteMessage:
+      "Diese Aktion kann nicht rückgängig gemacht werden. Das Profil wird dauerhaft gelöscht.",
+    confirmDelete: "Ja, löschen",
+    deleting: "Wird gelöscht...",
+    deleted: "Das Profil wurde gelöscht.",
+    deleteError: "Das Profil konnte nicht gelöscht werden.",
+  },
+  en: {
+    admin: "Berehynja Admin",
+    createTitle: "New team member",
+    editTitle: "Edit profile",
+    close: "Close",
+    language: "Content language",
+    photo: "Profile photo",
+    choosePhoto: "Choose photo",
+    changePhoto: "Replace",
+    removePhoto: "Remove",
+    usePlaceholder: "Use placeholder",
+    cropTitle: "Adjust photo",
+    cropHint: "Move the photo and adjust the zoom.",
+    zoom: "Zoom",
+    apply: "Apply",
+    uploading: "Uploading...",
+    invalidImage: "Choose a valid image file.",
+    imageTooLarge: "The image must not exceed 12 MB.",
+    uploadSuccess: "The photo has been uploaded.",
+    uploadError: "The photo could not be processed or uploaded.",
+    name: "Full name",
+    namePlaceholder: "Enter the full name",
+    role: "Position",
+    rolePlaceholder: "Enter the position",
+    education: "Education",
+    educationPlaceholder: "Institution, qualification...",
+    skills: "Professional skills",
+    skillPlaceholder: "For example, fundraising",
+    addSkill: "Add skill",
+    removeSkill: "Remove skill",
+    skillLimit: "Maximum 6 skills for each language",
+    description: "Experience and expertise",
+    descriptionPlaceholder: "Briefly describe experience and expertise...",
+    required: "required",
+    cancel: "Cancel",
+    create: "Add to team",
+    save: "Save changes",
+    saving: "Saving...",
+    validation: "Enter the Ukrainian name and position.",
+    saved: "The profile has been saved.",
+    saveError: "The profile could not be saved.",
+    delete: "Delete profile",
+    deleteTitle: "Delete profile?",
+    deleteMessage:
+      "This action cannot be undone. The profile will be permanently deleted.",
+    confirmDelete: "Yes, delete",
+    deleting: "Deleting...",
+    deleted: "The profile has been deleted.",
+    deleteError: "The profile could not be deleted.",
+  },
+} as const;
+
+const MAX_FILE_SIZE = 12 * 1024 * 1024;
+
+const emptyMember = (): TeamMember => ({
+  name: { ua: "", de: "", en: "" },
+  role: { ua: "", de: "", en: "" },
+  description: { ua: "", de: "", en: "" },
+  skills: { ua: [], de: [], en: [] },
+  education: { ua: "", de: "", en: "" },
+  image: "",
+});
+
+const copyMember = (member?: TeamMember | null): TeamMember => {
+  if (!member) return emptyMember();
+
+  return {
+    ...member,
+    name: { ...member.name },
+    role: { ...member.role },
+    description: { ...member.description },
+    education: { ...member.education },
+    skills: {
+      ua: [...(member.skills.ua ?? [])],
+      de: [...(member.skills.de ?? [])],
+      en: [...(member.skills.en ?? [])],
+    },
+    image: member.image ?? "",
+  };
+};
 
 export const AddTeamMemberModal = ({
   isOpen,
@@ -34,107 +234,166 @@ export const AddTeamMemberModal = ({
   onDelete,
   memberToEdit,
 }: AddTeamMemberModalProps) => {
-  const [activeLang, setActiveLang] = useState<LangKey>("ua");
-  const [isUploading, setIsUploading] = useState(false);
+  const { i18n } = useTranslation();
+  const modalTitleId = useId();
+  const fileInputId = useId();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
+    .split("-")[0]
+    .toLowerCase();
+  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
+    ? (detectedLanguage as LangKey)
+    : "ua";
+  const text = TEXT[currentLang];
+
+  const [activeLang, setActiveLang] = useState<LangKey>("ua");
+  const [formData, setFormData] = useState<TeamMember>(() =>
+    copyMember(memberToEdit),
+  );
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<{
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  } | null>(null);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const getEmptyFormState = (): TeamMember => ({
-    name: { ua: "", en: "", de: "" },
-    role: { ua: "", en: "", de: "" },
-    description: { ua: "", en: "", de: "" },
-    skills: { ua: [], en: [], de: [] },
-    education: { ua: "", en: "", de: "" },
-    image: "",
-  });
+  const isBusy = isUploading || isSaving || isDeleting;
 
-  const [formData, setFormData] = useState<TeamMember>(getEmptyFormState());
+  const closeCropper = useCallback(() => {
+    setSelectedFileUrl(null);
+    setCroppedAreaPixels(null);
+    setCrop({ x: 0, y: 0 });
+    setZoom(1);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    if (isBusy) return;
+    closeCropper();
+    setIsDeleteModalOpen(false);
+    onClose();
+  }, [closeCropper, isBusy, onClose]);
 
   useEffect(() => {
-    if (isOpen) {
-      if (memberToEdit) {
-        setFormData({ ...memberToEdit });
+    if (!isOpen) return;
+
+    setFormData(copyMember(memberToEdit));
+    setActiveLang("ua");
+    setIsDeleteModalOpen(false);
+    closeCropper();
+  }, [closeCropper, isOpen, memberToEdit]);
+
+  useEffect(() => {
+    if (!selectedFileUrl) return;
+    return () => URL.revokeObjectURL(selectedFileUrl);
+  }, [selectedFileUrl]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || isBusy) return;
+
+      if (selectedFileUrl) {
+        closeCropper();
+      } else if (isDeleteModalOpen) {
+        setIsDeleteModalOpen(false);
       } else {
-        setFormData(getEmptyFormState());
+        onClose();
       }
-    }
-  }, [memberToEdit, isOpen]);
+    };
+
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [
+    closeCropper,
+    isBusy,
+    isDeleteModalOpen,
+    isOpen,
+    onClose,
+    selectedFileUrl,
+  ]);
 
   const handleTextChange = (
-    field: keyof Omit<TeamMember, "id" | "skills" | "image">,
+    field: "name" | "role" | "description" | "education",
     value: string,
   ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: { ...prev[field], [activeLang]: value },
+    setFormData((previous) => ({
+      ...previous,
+      [field]: { ...previous[field], [activeLang]: value },
     }));
   };
 
   const addSkill = () => {
     if (formData.skills[activeLang].length >= 6) return;
 
-    setFormData((prev) => ({
-      ...prev,
+    setFormData((previous) => ({
+      ...previous,
       skills: {
-        ...prev.skills,
-        [activeLang]: [...(prev.skills[activeLang] || []), ""],
+        ...previous.skills,
+        [activeLang]: [...previous.skills[activeLang], ""],
       },
     }));
   };
 
   const updateSkill = (index: number, value: string) => {
-    const newSkills = [...formData.skills[activeLang]];
-    newSkills[index] = value;
-
-    setFormData((prev) => ({
-      ...prev,
-      skills: { ...prev.skills, [activeLang]: newSkills },
-    }));
-  };
-
-  const removeSkill = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
+    setFormData((previous) => ({
+      ...previous,
       skills: {
-        ...prev.skills,
-        [activeLang]: prev.skills[activeLang].filter((_, i) => i !== index),
+        ...previous.skills,
+        [activeLang]: previous.skills[activeLang].map((skill, skillIndex) =>
+          skillIndex === index ? value : skill,
+        ),
       },
     }));
   };
 
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const removeSkill = (index: number) => {
+    setFormData((previous) => ({
+      ...previous,
+      skills: {
+        ...previous.skills,
+        [activeLang]: previous.skills[activeLang].filter(
+          (_, skillIndex) => skillIndex !== index,
+        ),
+      },
+    }));
+  };
+
+  const handlePhotoSelect = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (!file) return;
 
-    const imageUrl = URL.createObjectURL(file);
+    if (!file.type.startsWith("image/")) {
+      toast.error(text.invalidImage);
+      event.target.value = "";
+      return;
+    }
 
-    setSelectedFileUrl(imageUrl);
+    if (file.size > MAX_FILE_SIZE) {
+      toast.error(text.imageTooLarge);
+      event.target.value = "";
+      return;
+    }
+
+    setSelectedFileUrl(URL.createObjectURL(file));
     setCrop({ x: 0, y: 0 });
     setZoom(1);
     setCroppedAreaPixels(null);
-
-    e.target.value = "";
-  };
-
-  const handleCropCancel = () => {
-    if (selectedFileUrl) {
-      URL.revokeObjectURL(selectedFileUrl);
-    }
-
-    setSelectedFileUrl(null);
-    setCroppedAreaPixels(null);
+    event.target.value = "";
   };
 
   const handleCropSave = async () => {
-    if (!selectedFileUrl || !croppedAreaPixels) return;
+    if (!selectedFileUrl || !croppedAreaPixels || isUploading) return;
 
     setIsUploading(true);
 
@@ -143,377 +402,570 @@ export const AddTeamMemberModal = ({
         selectedFileUrl,
         croppedAreaPixels,
       );
-
       const croppedFile = new File([croppedBlob], "team-member.jpg", {
         type: "image/jpeg",
       });
+      const folderName =
+        formData.name.ua.trim() || formData.name[activeLang].trim() || "member";
+      const result = await uploadMedia(croppedFile, "team", folderName);
 
-      const result = await uploadMedia(
-        croppedFile,
-        "team",
-        formData.name[activeLang]?.trim() || "member",
-      );
-
-      setFormData((prev) => ({ ...prev, image: result.url }));
-
-      URL.revokeObjectURL(selectedFileUrl);
-      setSelectedFileUrl(null);
-      setCroppedAreaPixels(null);
+      setFormData((previous) => ({ ...previous, image: result.url }));
+      closeCropper();
+      toast.success(text.uploadSuccess);
     } catch (error) {
-      console.error("Crop upload error:", error);
+      console.error("Team photo crop or upload error:", error);
+      toast.error(text.uploadError);
     } finally {
       setIsUploading(false);
     }
   };
 
-  const handleRemovePhoto = () => {
-    setFormData((prev) => ({ ...prev, image: "" }));
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isBusy) return;
+
+    if (!formData.name.ua.trim() || !formData.role.ua.trim()) {
+      setActiveLang("ua");
+      toast.error(text.validation);
+      return;
+    }
+
+    const cleanedMember: TeamMember = {
+      ...formData,
+      name: {
+        ua: formData.name.ua.trim(),
+        de: formData.name.de.trim(),
+        en: formData.name.en.trim(),
+      },
+      role: {
+        ua: formData.role.ua.trim(),
+        de: formData.role.de.trim(),
+        en: formData.role.en.trim(),
+      },
+      education: {
+        ua: formData.education.ua.trim(),
+        de: formData.education.de.trim(),
+        en: formData.education.en.trim(),
+      },
+      description: {
+        ua: formData.description.ua.trim(),
+        de: formData.description.de.trim(),
+        en: formData.description.en.trim(),
+      },
+      skills: {
+        ua: formData.skills.ua.map((skill) => skill.trim()).filter(Boolean),
+        de: formData.skills.de.map((skill) => skill.trim()).filter(Boolean),
+        en: formData.skills.en.map((skill) => skill.trim()).filter(Boolean),
+      },
+    };
+
+    setIsSaving(true);
+
+    try {
+      await onSave(cleanedMember);
+      toast.success(text.saved);
+      onClose();
+    } catch (error) {
+      console.error("Team member save error:", error);
+      toast.error(text.saveError);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSave(formData);
-    onClose();
+  const handleDelete = async () => {
+    if (!memberToEdit?.id || !onDelete || isBusy) return;
+
+    setIsDeleting(true);
+
+    try {
+      await onDelete(memberToEdit.id);
+      toast.success(text.deleted);
+      setIsDeleteModalOpen(false);
+      onClose();
+    } catch (error) {
+      console.error("Team member delete error:", error);
+      toast.error(text.deleteError);
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   if (!isOpen) return null;
 
-  const renderImagePreview = () => {
-    if (formData.image === "placeholder") {
-      return (
-        <div className="flex h-full w-full items-center justify-center bg-slate-100 text-slate-400">
-          <User size={64} className="opacity-50" />
-        </div>
-      );
-    }
-
-    if (formData.image) {
-      return (
-        <img
-          src={formData.image}
-          className="h-full w-full object-cover object-center"
-          alt="Попередній перегляд фото"
-        />
-      );
-    }
-
-    return (
-      <div className="flex h-full w-full flex-col items-center justify-center gap-1 px-2 text-center text-slate-400">
-        <Camera size={20} />
-        <span className="text-[9px] font-bold uppercase">Фото</span>
-      </div>
-    );
-  };
+  const currentSkills = formData.skills[activeLang] ?? [];
+  const canAddSkill = currentSkills.length < 6;
 
   return (
-    <>
+    <div className="font-nunito fixed inset-0 z-9999 flex items-center justify-center p-4 md:p-6">
+      <button
+        type="button"
+        aria-label={text.close}
+        onClick={handleClose}
+        className="absolute inset-0 cursor-default bg-slate-950/65 backdrop-blur-sm"
+      />
+
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-3 backdrop-blur-sm"
-        onClick={onClose}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={modalTitleId}
+        className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-4xl flex-col overflow-hidden rounded-4xl border border-white/70 bg-white shadow-[0_32px_90px_rgba(15,23,42,0.35)]"
       >
-        <div
-          className="animate-in zoom-in-95 flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl duration-200"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <header className="flex shrink-0 items-center justify-between border-b border-slate-100 bg-slate-50 px-6 py-5">
-            <h2 className="text-xl font-bold tracking-tight text-slate-800 uppercase">
-              {memberToEdit ? "Редагування профілю" : "Новий фахівець"}
-            </h2>
-
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-200"
-              aria-label="Закрити модальне вікно"
+        <header className="flex shrink-0 items-center justify-between gap-4 border-b border-slate-200 px-5 py-4 md:px-8 md:py-5">
+          <div className="min-w-0">
+            <p className="mb-1 text-[11px] font-black tracking-[0.2em] text-blue-600 uppercase">
+              {text.admin}
+            </p>
+            <h2
+              id={modalTitleId}
+              className="truncate text-xl font-semibold tracking-tight text-slate-950 md:text-2xl"
             >
-              <X size={20} />
-            </button>
-          </header>
+              {memberToEdit ? text.editTitle : text.createTitle}
+            </h2>
+          </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="custom-scrollbar space-y-6 overflow-y-auto p-6 sm:p-8"
+          <button
+            type="button"
+            onClick={handleClose}
+            disabled={isBusy}
+            aria-label={text.close}
+            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <div className="flex flex-col items-center gap-6 border-b border-slate-50 pb-6 md:flex-row md:items-start">
-              <div className="flex shrink-0 items-center gap-3 md:items-start">
-                <div className="group relative size-32 overflow-hidden rounded-2xl border-2 border-dashed border-slate-200 bg-slate-100">
-                  {renderImagePreview()}
+            <X size={21} />
+          </button>
+        </header>
 
-                  <label className="absolute inset-0 flex cursor-pointer items-center justify-center bg-slate-900/40 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
-                    <Plus className="text-white" size={24} />
-                    <span className="sr-only">Обрати фотографію</span>
+        <form
+          id="team-member-form"
+          onSubmit={handleSubmit}
+          className="overflow-y-auto px-5 py-6 md:px-8 md:py-7"
+        >
+          <div className="space-y-7">
+            <div className="grid gap-6 border-b border-slate-200 pb-7 md:grid-cols-[220px_1fr] md:items-start">
+              <section>
+                <h3 className="mb-3 text-sm font-extrabold text-slate-800">
+                  {text.photo}
+                </h3>
+
+                <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-50">
+                  <div className="aspect-square overflow-hidden">
+                    {formData.image && formData.image !== "placeholder" ? (
+                      <img
+                        src={formData.image}
+                        alt=""
+                        className="h-full w-full object-cover object-center"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-slate-400">
+                        {formData.image === "placeholder" ? (
+                          <User size={62} strokeWidth={1.25} />
+                        ) : (
+                          <Camera size={34} strokeWidth={1.5} />
+                        )}
+                        <span className="text-xs font-bold">{text.photo}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="grid gap-2 border-t border-slate-200 bg-white p-3">
                     <input
+                      ref={fileInputRef}
+                      id={fileInputId}
                       type="file"
                       accept="image/*"
-                      onChange={handlePhotoUpload}
+                      onChange={handlePhotoSelect}
                       className="sr-only"
                     />
-                  </label>
-                </div>
 
-                <div className="flex flex-col justify-center gap-2">
-                  {formData.image ? (
                     <button
                       type="button"
-                      onClick={handleRemovePhoto}
-                      className="flex size-10 items-center justify-center rounded-xl bg-red-50 text-red-500 transition-colors hover:bg-red-100"
-                      title="Видалити фотографію або заглушку"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={isBusy}
+                      className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-extrabold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                      <Trash2 size={16} />
+                      <Camera size={16} />
+                      {formData.image ? text.changePhoto : text.choosePhoto}
                     </button>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          image: "placeholder",
-                        }))
-                      }
-                      className="flex size-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-500 shadow-sm transition-all hover:border-blue-200 hover:bg-blue-50"
-                      title="Встановити універсальну заглушку"
-                    >
-                      <User size={20} />
-                    </button>
-                  )}
+
+                    {formData.image ? (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setFormData((previous) => ({
+                            ...previous,
+                            image: "",
+                          }))
+                        }
+                        disabled={isBusy}
+                        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-extrabold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        <Trash2 size={16} />
+                        {text.removePhoto}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setFormData((previous) => ({
+                            ...previous,
+                            image: "placeholder",
+                          }))
+                        }
+                        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-extrabold text-slate-600 transition hover:bg-slate-100"
+                      >
+                        <User size={16} />
+                        {text.usePlaceholder}
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
+              </section>
 
-              <div className="w-full flex-1 space-y-3">
-                <label className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
-                  Мова заповнення:
-                </label>
+              <section aria-labelledby={`${modalTitleId}-language`}>
+                <p
+                  id={`${modalTitleId}-language`}
+                  className="mb-3 text-xs font-black tracking-[0.15em] text-slate-500 uppercase"
+                >
+                  {text.language}
+                </p>
 
-                <div className="flex gap-1 rounded-xl bg-slate-100 p-1">
-                  {(["ua", "de", "en"] as const).map((lang) => (
+                <div
+                  role="tablist"
+                  aria-label={text.language}
+                  className="grid grid-cols-3 gap-1 rounded-2xl bg-slate-100 p-1.5"
+                >
+                  {LANGUAGES.map(({ key, label }) => (
                     <button
-                      key={lang}
+                      key={key}
                       type="button"
-                      onClick={() => setActiveLang(lang)}
-                      className={`flex-1 rounded-lg py-2 text-xs font-bold uppercase transition-all ${
-                        activeLang === lang
-                          ? "bg-white text-blue-600 shadow"
-                          : "text-slate-500"
+                      role="tab"
+                      aria-selected={activeLang === key}
+                      onClick={() => setActiveLang(key)}
+                      className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-extrabold transition ${
+                        activeLang === key
+                          ? "bg-white text-blue-700 shadow-sm"
+                          : "text-slate-500 hover:text-slate-900"
                       }`}
                     >
-                      {lang}
-                      {formData.name[lang] && (
-                        <CheckCircle2
-                          size={10}
-                          className="ml-1 inline text-green-500"
-                        />
-                      )}
+                      {label}
+                      {formData.name[key].trim() &&
+                        formData.role[key].trim() && (
+                          <CheckCircle2
+                            size={14}
+                            className="text-emerald-500"
+                          />
+                        )}
                     </button>
                   ))}
                 </div>
-              </div>
+
+                <div className="mt-6 grid gap-5 md:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-2 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                      <User size={17} className="text-blue-600" />
+                      {text.name} ({activeLang.toUpperCase()})
+                      {activeLang === "ua" && (
+                        <span className="text-xs text-blue-600">
+                          {text.required}
+                        </span>
+                      )}
+                    </span>
+                    <input
+                      type="text"
+                      value={formData.name[activeLang]}
+                      onChange={(event) =>
+                        handleTextChange("name", event.target.value)
+                      }
+                      placeholder={text.namePlaceholder}
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+                    />
+                  </label>
+
+                  <label className="block">
+                    <span className="mb-2 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                      <Briefcase size={17} className="text-blue-600" />
+                      {text.role} ({activeLang.toUpperCase()})
+                      {activeLang === "ua" && (
+                        <span className="text-xs text-blue-600">
+                          {text.required}
+                        </span>
+                      )}
+                    </span>
+                    <input
+                      type="text"
+                      value={formData.role[activeLang]}
+                      onChange={(event) =>
+                        handleTextChange("role", event.target.value)
+                      }
+                      placeholder={text.rolePlaceholder}
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+                    />
+                  </label>
+                </div>
+              </section>
             </div>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase">
-                  <User size={12} className="text-blue-500" />
-                  Імʼя ({activeLang})
-                </label>
-
-                <input
-                  required
-                  value={formData.name[activeLang]}
-                  onChange={(e) => handleTextChange("name", e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase">
-                  <Briefcase size={12} className="text-blue-500" />
-                  Посада ({activeLang})
-                </label>
-
-                <input
-                  required
-                  value={formData.role[activeLang]}
-                  onChange={(e) => handleTextChange("role", e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase">
-                <GraduationCap size={14} className="text-blue-500" />
-                Освіта ({activeLang})
-              </label>
-
+            <label className="block">
+              <span className="mb-2 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                <GraduationCap size={18} className="text-blue-600" />
+                {text.education} ({activeLang.toUpperCase()})
+              </span>
               <input
+                type="text"
                 value={formData.education[activeLang]}
-                onChange={(e) =>
-                  handleTextChange("education", e.target.value)
+                onChange={(event) =>
+                  handleTextChange("education", event.target.value)
                 }
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500"
+                placeholder={text.educationPlaceholder}
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
               />
-            </div>
+            </label>
 
-            <div className="space-y-4 rounded-2xl border border-slate-100 bg-slate-50 p-4">
-              <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase">
-                  <Wrench size={12} className="text-blue-500" />
-                  Навички
-                </label>
+            <section className="rounded-3xl border border-slate-200 bg-slate-50 p-4 md:p-5">
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <h3 className="flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                    <Wrench size={17} className="text-blue-600" />
+                    {text.skills} ({activeLang.toUpperCase()})
+                  </h3>
+                  <p className="mt-1 text-xs text-slate-500">
+                    {text.skillLimit}
+                  </p>
+                </div>
 
                 <button
                   type="button"
                   onClick={addSkill}
-                  className="flex items-center gap-1 rounded-lg bg-white px-2 py-1 text-[9px] font-bold text-blue-600 shadow-sm transition-all hover:bg-blue-600 hover:text-white"
+                  disabled={!canAddSkill}
+                  className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-blue-200 bg-white px-3 py-2 text-xs font-extrabold text-blue-700 transition hover:bg-blue-600 hover:text-white disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-400"
                 >
-                  <Plus size={10} />
-                  Додати
+                  <Plus size={15} />
+                  {text.addSkill}
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {formData.skills[activeLang]?.map((skill, index) => (
-                  <div key={index} className="flex gap-2">
-                    <input
-                      value={skill}
-                      onChange={(e) => updateSkill(index, e.target.value)}
-                      className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs outline-none focus:border-blue-400"
-                    />
-
-                    <button
-                      type="button"
-                      onClick={() => removeSkill(index)}
-                      className="p-1.5 text-slate-300 transition-colors hover:text-red-500"
-                      aria-label="Видалити навичку"
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase">
-                <Award size={12} className="text-blue-500" />
-                Досвід ({activeLang})
-              </label>
-
-              <textarea
-                rows={3}
-                value={formData.description[activeLang]}
-                onChange={(e) =>
-                  handleTextChange("description", e.target.value)
-                }
-                className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-blue-500"
-              />
-            </div>
-
-            <footer className="mt-4 flex flex-col items-center justify-between gap-4 border-t border-slate-100 pt-6 sm:flex-row">
-              {memberToEdit && (
-                <button
-                  type="button"
-                  onClick={() => onDelete?.(memberToEdit.id!)}
-                  className="text-[9px] font-bold tracking-widest text-red-400 uppercase transition-colors hover:text-red-600"
-                >
-                  Видалити профіль
-                </button>
+              {currentSkills.length > 0 && (
+                <div className="grid gap-3 md:grid-cols-2">
+                  {currentSkills.map((skill, index) => (
+                    <div key={index} className="flex gap-2">
+                      <input
+                        type="text"
+                        value={skill}
+                        onChange={(event) =>
+                          updateSkill(index, event.target.value)
+                        }
+                        placeholder={text.skillPlaceholder}
+                        className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeSkill(index)}
+                        aria-label={text.removeSkill}
+                        title={text.removeSkill}
+                        className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-400 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                      >
+                        <Trash2 size={17} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               )}
+            </section>
 
-              <div className="flex w-full gap-2 sm:ml-auto sm:w-auto">
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="flex-1 px-6 py-2 text-[10px] font-bold text-slate-400 uppercase hover:text-slate-600 sm:flex-none"
-                >
-                  Скасувати
-                </button>
+            <label className="block">
+              <span className="mb-2 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                <Award size={18} className="text-amber-500" />
+                {text.description} ({activeLang.toUpperCase()})
+              </span>
+              <textarea
+                rows={4}
+                value={formData.description[activeLang]}
+                onChange={(event) =>
+                  handleTextChange("description", event.target.value)
+                }
+                placeholder={text.descriptionPlaceholder}
+                className="w-full resize-y rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+              />
+            </label>
+          </div>
+        </form>
 
-                <button
-                  type="submit"
-                  disabled={isUploading}
-                  className="flex-1 rounded-xl bg-blue-600 px-8 py-3 text-[10px] font-bold tracking-widest text-white uppercase shadow-lg shadow-blue-100 transition-all hover:bg-blue-700 disabled:bg-slate-300 sm:flex-none"
-                >
-                  {isUploading ? "Завантаження..." : "Зберегти"}
-                </button>
-              </div>
-            </footer>
-          </form>
-        </div>
+        <footer className="flex shrink-0 flex-col gap-3 border-t border-slate-200 bg-slate-50 px-5 py-4 md:flex-row md:items-center md:justify-between md:px-8">
+          <div>
+            {memberToEdit?.id && onDelete && (
+              <button
+                type="button"
+                onClick={() => setIsDeleteModalOpen(true)}
+                disabled={isBusy}
+                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-extrabold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
+              >
+                <Trash2 size={18} />
+                {text.delete}
+              </button>
+            )}
+          </div>
+
+          <div className="flex flex-col-reverse gap-2 md:flex-row">
+            <button
+              type="button"
+              onClick={handleClose}
+              disabled={isBusy}
+              className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {text.cancel}
+            </button>
+            <button
+              type="submit"
+              form="team-member-form"
+              disabled={isBusy}
+              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
+            >
+              {isSaving ? (
+                <Loader2 size={18} className="animate-spin" />
+              ) : (
+                <Check size={18} />
+              )}
+              {isSaving ? text.saving : memberToEdit ? text.save : text.create}
+            </button>
+          </div>
+        </footer>
       </div>
 
       {selectedFileUrl && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
-              <h3 className="text-sm font-bold text-slate-700 uppercase">
-                Налаштування фото
-              </h3>
-
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-950/75 p-4 backdrop-blur-sm">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={`${modalTitleId}-crop-title`}
+            className="flex max-h-[calc(100dvh-2rem)] w-full max-w-xl flex-col overflow-hidden rounded-4xl border border-white/70 bg-white shadow-2xl"
+          >
+            <header className="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-4 md:px-6">
+              <div>
+                <h3
+                  id={`${modalTitleId}-crop-title`}
+                  className="text-lg font-semibold tracking-tight text-slate-950 md:text-xl"
+                >
+                  {text.cropTitle}
+                </h3>
+                <p className="mt-1 text-sm text-slate-500">{text.cropHint}</p>
+              </div>
               <button
                 type="button"
-                onClick={handleCropCancel}
-                className="rounded-full p-2 text-slate-400 hover:bg-slate-100"
-                aria-label="Закрити редактор фото"
+                onClick={closeCropper}
+                disabled={isUploading}
+                aria-label={text.close}
+                className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <X size={18} />
+                <X size={19} />
               </button>
-            </div>
+            </header>
 
-            <div className="relative mx-auto aspect-square w-full max-w-105 bg-black">
+            <div className="relative h-[min(60dvh,32rem)] w-full bg-slate-950">
               <Cropper
                 image={selectedFileUrl}
                 crop={crop}
                 zoom={zoom}
                 aspect={1}
+                showGrid={false}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
-                onCropComplete={(_, croppedPixels) => {
-                  setCroppedAreaPixels(croppedPixels);
-                }}
+                onCropComplete={(_, croppedPixels) =>
+                  setCroppedAreaPixels(croppedPixels)
+                }
               />
             </div>
 
-            <div className="space-y-4 p-5">
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-slate-500 uppercase">
-                  Масштаб
-                </label>
-
+            <div className="space-y-4 px-5 py-4 md:px-6">
+              <label className="block">
+                <span className="mb-2 block text-xs font-extrabold tracking-wide text-slate-600 uppercase">
+                  {text.zoom}
+                </span>
                 <input
                   type="range"
                   min={1}
                   max={3}
                   step={0.1}
                   value={zoom}
-                  onChange={(e) => setZoom(Number(e.target.value))}
-                  className="w-full"
+                  onChange={(event) => setZoom(Number(event.target.value))}
+                  className="w-full cursor-pointer accent-blue-600"
                 />
-              </div>
+              </label>
 
-              <div className="flex justify-end gap-2">
+              <div className="flex flex-col-reverse gap-2 md:flex-row md:justify-end">
                 <button
                   type="button"
-                  onClick={handleCropCancel}
+                  onClick={closeCropper}
                   disabled={isUploading}
-                  className="rounded-xl bg-slate-100 px-5 py-2 text-[10px] font-bold text-slate-600 uppercase disabled:opacity-50"
+                  className="cursor-pointer rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  Скасувати
+                  {text.cancel}
                 </button>
-
                 <button
                   type="button"
                   onClick={handleCropSave}
                   disabled={isUploading || !croppedAreaPixels}
-                  className="rounded-xl bg-blue-600 px-6 py-2 text-[10px] font-bold text-white uppercase hover:bg-blue-700 disabled:bg-slate-300"
+                  className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400"
                 >
-                  {isUploading ? "Завантаження..." : "Готово"}
+                  {isUploading ? (
+                    <Loader2 size={18} className="animate-spin" />
+                  ) : (
+                    <Check size={18} />
+                  )}
+                  {isUploading ? text.uploading : text.apply}
                 </button>
               </div>
             </div>
           </div>
         </div>
       )}
-    </>
+
+      {isDeleteModalOpen && (
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-slate-950/55 p-4 backdrop-blur-sm">
+          <div
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby={`${modalTitleId}-delete-title`}
+            className="w-full max-w-md overflow-hidden rounded-3xl border border-white/70 bg-white shadow-2xl"
+          >
+            <div className="flex items-start gap-4 p-6">
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-red-50 text-red-600">
+                <AlertTriangle size={23} />
+              </span>
+              <div>
+                <h3
+                  id={`${modalTitleId}-delete-title`}
+                  className="text-lg font-semibold tracking-tight text-slate-950 md:text-xl"
+                >
+                  {text.deleteTitle}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  {text.deleteMessage}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-col-reverse gap-2 border-t border-slate-200 bg-slate-50 p-4 md:flex-row md:justify-end">
+              <button
+                type="button"
+                onClick={() => setIsDeleteModalOpen(false)}
+                disabled={isDeleting}
+                className="cursor-pointer rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {text.cancel}
+              </button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-extrabold text-white transition hover:bg-red-700 disabled:cursor-wait disabled:opacity-60"
+              >
+                {isDeleting && <Loader2 size={17} className="animate-spin" />}
+                {isDeleting ? text.deleting : text.confirmDelete}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };

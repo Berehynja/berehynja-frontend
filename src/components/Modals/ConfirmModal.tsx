@@ -1,13 +1,41 @@
-import { AlertTriangle, X } from "lucide-react";
+import { useEffect, useId, useRef, useState, type MouseEvent } from "react";
+import { AlertTriangle, Loader2, Trash2, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
+import type { LangKey } from "../../types/types";
 
 interface ConfirmModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: () => void | Promise<void>;
   title: string;
   message: string;
   isLoading?: boolean;
+  cancelLabel?: string;
+  confirmLabel?: string;
+  loadingLabel?: string;
 }
+
+const TEXT = {
+  ua: {
+    close: "Закрити",
+    cancel: "Скасувати",
+    confirm: "Так, видалити",
+    loading: "Видалення...",
+  },
+  de: {
+    close: "Schließen",
+    cancel: "Abbrechen",
+    confirm: "Ja, löschen",
+    loading: "Wird gelöscht...",
+  },
+  en: {
+    close: "Close",
+    cancel: "Cancel",
+    confirm: "Yes, delete",
+    loading: "Deleting...",
+  },
+} as const;
 
 export function ConfirmModal({
   isOpen,
@@ -16,56 +44,145 @@ export function ConfirmModal({
   title,
   message,
   isLoading = false,
+  cancelLabel,
+  confirmLabel,
+  loadingLabel,
 }: ConfirmModalProps) {
+  const { i18n } = useTranslation();
+  const titleId = useId();
+  const messageId = useId();
+  const cancelButtonRef = useRef<HTMLButtonElement>(null);
+  const isBusyRef = useRef(false);
+  const [isConfirming, setIsConfirming] = useState(false);
+
+  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
+    .split("-")[0]
+    .toLowerCase();
+  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
+    ? (detectedLanguage as LangKey)
+    : "ua";
+  const text = TEXT[currentLang];
+  const isBusy = isLoading || isConfirming;
+  isBusyRef.current = isBusy;
+
+  useEffect(() => {
+    if (!isOpen) {
+      setIsConfirming(false);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    cancelButtonRef.current?.focus();
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !isBusyRef.current) onClose();
+    };
+
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen, onClose]);
+
+  const handleBackdropClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget && !isBusy) onClose();
+  };
+
+  const handleConfirm = async () => {
+    if (isBusy) return;
+
+    setIsConfirming(true);
+
+    try {
+      await onConfirm();
+    } catch (error) {
+      console.error("Confirmation action error:", error);
+    } finally {
+      setIsConfirming(false);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
     <div
-      className="font-nunito fixed inset-0 z-60 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-in fade-in duration-200"
-      onClick={onClose}
+      onMouseDown={handleBackdropClick}
+      className="font-nunito fixed inset-0 z-10000 flex items-center justify-center bg-slate-950/65 p-4 backdrop-blur-sm"
     >
       <div
-        className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl transition-all"
-        onClick={(e) => e.stopPropagation()}
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={messageId}
+        className="w-full max-w-md overflow-hidden rounded-4xl border border-white/70 bg-white shadow-[0_32px_90px_rgba(15,23,42,0.4)]"
       >
-        {/* Header: Червоний фон для уваги */}
-        <div className="flex items-center gap-4 border-b border-red-100 bg-red-50 p-6">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600">
-            <AlertTriangle size={24} />
+        <header className="flex items-start gap-4 border-b border-red-100 bg-red-50/80 px-5 py-5 md:px-6">
+          <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white text-red-600 shadow-sm ring-1 ring-red-100">
+            <AlertTriangle size={23} />
           </div>
-          <div className="flex-1">
-            <h3 className="text-lg font-bold text-gray-900">{title}</h3>
+
+          <div className="min-w-0 flex-1 pt-1">
+            <h2
+              id={titleId}
+              className="text-lg font-semibold tracking-tight text-slate-950 md:text-xl"
+            >
+              {title}
+            </h2>
           </div>
+
           <button
+            type="button"
             onClick={onClose}
-            className="cursor-pointer text-gray-400 hover:text-gray-600 transition-colors"
+            disabled={isBusy}
+            aria-label={text.close}
+            className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-red-100 bg-white text-slate-500 shadow-sm transition hover:border-red-200 hover:bg-red-100 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <X size={24} />
+            <X size={19} />
           </button>
+        </header>
+
+        <div className="px-5 py-6 md:px-6">
+          <p
+            id={messageId}
+            className="text-sm leading-6 text-slate-600 md:text-base"
+          >
+            {message}
+          </p>
         </div>
 
-        {/* Content */}
-        <div className="p-6">
-          <p className="text-gray-600 leading-relaxed">{message}</p>
-        </div>
-
-        {/* Footer: Кнопки */}
-        <div className="flex justify-evenly gap-3 bg-gray-50 p-4">
+        <footer className="flex flex-col-reverse gap-2 border-t border-slate-200 bg-slate-50 px-5 py-4 md:flex-row md:justify-end md:px-6">
           <button
+            ref={cancelButtonRef}
+            type="button"
             onClick={onClose}
-            disabled={isLoading}
-            className="cursor-pointer rounded-xl px-4 py-2 font-bold text-gray-700 transition-colors hover:bg-gray-200 disabled:opacity-50"
+            disabled={isBusy}
+            className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Скасувати
+            {cancelLabel ?? text.cancel}
           </button>
+
           <button
-            onClick={onConfirm}
-            disabled={isLoading}
-            className="cursor-pointer rounded-xl bg-red-500 px-4 py-2 font-bold text-white shadow-lg shadow-red-200 transition-all hover:bg-red-600 hover:shadow-red-300 disabled:cursor-wait disabled:opacity-50"
+            type="button"
+            onClick={handleConfirm}
+            disabled={isBusy}
+            className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-red-600 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-red-200 transition hover:bg-red-700 disabled:cursor-wait disabled:opacity-60 disabled:shadow-none"
           >
-            {isLoading ? "Видалення..." : "Так, видалити"}
+            {isBusy ? (
+              <Loader2 size={18} className="animate-spin" />
+            ) : (
+              <Trash2 size={18} />
+            )}
+            {isBusy
+              ? (loadingLabel ?? text.loading)
+              : (confirmLabel ?? text.confirm)}
           </button>
-        </div>
+        </footer>
       </div>
     </div>
   );

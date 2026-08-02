@@ -1,264 +1,804 @@
-import { useState, useEffect, useMemo } from 'react';
-import type { ProgramAdults } from "../../types/program";
-import { uploadMedia } from '../../services/cloudinaryService';
-import { Calendar, 
-    Clock, 
-    // Target, 
-    Users, 
-    CheckCircle2,
-    X, 
-    Plus, 
-    Trash2, 
-    Loader2, 
-    Hourglass,
-    MapPin } from 'lucide-react';
-import type { LangKey } from '../../types/types';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
+import {
+  Calendar,
+  Check,
+  CheckCircle2,
+  Clock,
+  Hourglass,
+  ImageIcon,
+  ListChecks,
+  Loader2,
+  MapPin,
+  Target,
+  Trash2,
+  Upload,
+  Users,
+  X,
+  type LucideIcon,
+} from "lucide-react";
+import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
-type AddProgramModalProps = {
+import { uploadMedia } from "../../services/cloudinaryService";
+import type { ProgramAdults } from "../../types/program";
+import type { LangKey } from "../../types/types";
+
+interface AddProgramModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (data: ProgramAdults) => void;
+  onSave: (data: ProgramAdults) => void | Promise<void>;
   programToEdit?: ProgramAdults | null;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: string) => void | Promise<void>;
+}
+
+type LocalizedField =
+  | "title"
+  | "description"
+  | "duration"
+  | "intensity"
+  | "target"
+  | "capacity"
+  | "location";
+
+interface DetailFieldConfig {
+  field: "intensity" | "target" | "capacity" | "location";
+  label: string;
+  placeholder: string;
+  icon: LucideIcon;
+  iconClassName: string;
+}
+
+const LANGUAGES: Array<{ key: LangKey; label: string }> = [
+  { key: "ua", label: "UA" },
+  { key: "de", label: "DE" },
+  { key: "en", label: "EN" },
+];
+
+const TEXT = {
+  ua: {
+    admin: "Berehynja Admin",
+    createTitle: "Створення програми",
+    editTitle: "Редагування програми",
+    close: "Закрити",
+    image: "Головне зображення",
+    addImage: "Додати обкладинку",
+    changeImage: "Замінити",
+    removeImage: "Прибрати",
+    uploading: "Завантаження...",
+    imageHint: "JPG, PNG, WEBP або AVIF, до 12 МБ",
+    language: "Мова заповнення",
+    period: "Період проведення",
+    periodPlaceholder: "Наприклад, 15.05 – 25.05",
+    duration: "Тривалість",
+    durationPlaceholder: "Наприклад, 10 днів",
+    name: "Назва програми",
+    namePlaceholder: "Введіть назву програми",
+    description: "Короткий опис",
+    descriptionPlaceholder: "Опишіть програму кількома реченнями...",
+    schedule: "Графік",
+    schedulePlaceholder: "Наприклад, щодня з 10:00 до 14:00",
+    target: "Для кого",
+    targetPlaceholder: "Опишіть цільову аудиторію",
+    capacity: "Місткість групи",
+    capacityPlaceholder: "Наприклад, 10 осіб",
+    location: "Локація",
+    locationPlaceholder: "Введіть адресу або назву місця",
+    features: "Особливості програми",
+    featuresHint: "Кожен пункт записуйте з нового рядка",
+    featuresPlaceholder: "Практичні заняття\nПідтримка викладача\nСертифікат",
+    required: "обов’язково",
+    delete: "Видалити програму",
+    cancel: "Скасувати",
+    create: "Створити програму",
+    save: "Зберегти зміни",
+    saving: "Збереження...",
+    titleRequired: "Додайте українську назву програми.",
+    invalidImage: "Оберіть коректний файл зображення.",
+    imageTooLarge: "Розмір зображення не повинен перевищувати 12 МБ.",
+    imageUploaded: "Зображення завантажено.",
+    uploadError: "Не вдалося завантажити зображення.",
+    saveError: "Не вдалося зберегти програму.",
+    deleteError: "Не вдалося видалити програму.",
+  },
+  de: {
+    admin: "Berehynja Admin",
+    createTitle: "Programm erstellen",
+    editTitle: "Programm bearbeiten",
+    close: "Schließen",
+    image: "Hauptbild",
+    addImage: "Titelbild hinzufügen",
+    changeImage: "Ersetzen",
+    removeImage: "Entfernen",
+    uploading: "Wird hochgeladen...",
+    imageHint: "JPG, PNG, WEBP oder AVIF, bis zu 12 MB",
+    language: "Eingabesprache",
+    period: "Zeitraum",
+    periodPlaceholder: "Zum Beispiel 15.05 – 25.05",
+    duration: "Dauer",
+    durationPlaceholder: "Zum Beispiel 10 Tage",
+    name: "Programmtitel",
+    namePlaceholder: "Programmtitel eingeben",
+    description: "Kurzbeschreibung",
+    descriptionPlaceholder: "Beschreiben Sie das Programm in wenigen Sätzen...",
+    schedule: "Zeitplan",
+    schedulePlaceholder: "Zum Beispiel täglich von 10:00 bis 14:00 Uhr",
+    target: "Zielgruppe",
+    targetPlaceholder: "Beschreiben Sie die Zielgruppe",
+    capacity: "Gruppengröße",
+    capacityPlaceholder: "Zum Beispiel 10 Personen",
+    location: "Ort",
+    locationPlaceholder: "Adresse oder Ort eingeben",
+    features: "Programminhalte",
+    featuresHint: "Schreiben Sie jeden Punkt in eine neue Zeile",
+    featuresPlaceholder:
+      "Praktische Übungen\nUnterstützung durch Lehrkräfte\nZertifikat",
+    required: "erforderlich",
+    delete: "Programm löschen",
+    cancel: "Abbrechen",
+    create: "Programm erstellen",
+    save: "Änderungen speichern",
+    saving: "Wird gespeichert...",
+    titleRequired: "Bitte geben Sie einen ukrainischen Programmtitel ein.",
+    invalidImage: "Wählen Sie eine gültige Bilddatei aus.",
+    imageTooLarge: "Das Bild darf nicht größer als 12 MB sein.",
+    imageUploaded: "Das Bild wurde hochgeladen.",
+    uploadError: "Das Bild konnte nicht hochgeladen werden.",
+    saveError: "Das Programm konnte nicht gespeichert werden.",
+    deleteError: "Das Programm konnte nicht gelöscht werden.",
+  },
+  en: {
+    admin: "Berehynja Admin",
+    createTitle: "Create program",
+    editTitle: "Edit program",
+    close: "Close",
+    image: "Main image",
+    addImage: "Add cover image",
+    changeImage: "Replace",
+    removeImage: "Remove",
+    uploading: "Uploading...",
+    imageHint: "JPG, PNG, WEBP or AVIF, up to 12 MB",
+    language: "Content language",
+    period: "Program period",
+    periodPlaceholder: "For example, 15.05 – 25.05",
+    duration: "Duration",
+    durationPlaceholder: "For example, 10 days",
+    name: "Program title",
+    namePlaceholder: "Enter the program title",
+    description: "Short description",
+    descriptionPlaceholder: "Describe the program in a few sentences...",
+    schedule: "Schedule",
+    schedulePlaceholder: "For example, daily from 10:00 to 14:00",
+    target: "Target group",
+    targetPlaceholder: "Describe the target audience",
+    capacity: "Group capacity",
+    capacityPlaceholder: "For example, 10 people",
+    location: "Location",
+    locationPlaceholder: "Enter the address or place",
+    features: "Program features",
+    featuresHint: "Enter each item on a new line",
+    featuresPlaceholder: "Practical sessions\nInstructor support\nCertificate",
+    required: "required",
+    delete: "Delete program",
+    cancel: "Cancel",
+    create: "Create program",
+    save: "Save changes",
+    saving: "Saving...",
+    titleRequired: "Please enter the Ukrainian program title.",
+    invalidImage: "Choose a valid image file.",
+    imageTooLarge: "The image must not exceed 12 MB.",
+    imageUploaded: "The image has been uploaded.",
+    uploadError: "The image could not be uploaded.",
+    saveError: "The program could not be saved.",
+    deleteError: "The program could not be deleted.",
+  },
+} as const;
+
+const MAX_IMAGE_SIZE = 12 * 1024 * 1024;
+
+const createEmptyProgram = (): ProgramAdults => ({
+  id: "",
+  title: { ua: "", de: "", en: "" },
+  description: { ua: "", de: "", en: "" },
+  dateRange: "",
+  duration: { ua: "", de: "", en: "" },
+  intensity: { ua: "", de: "", en: "" },
+  target: { ua: "", de: "", en: "" },
+  capacity: { ua: "", de: "", en: "" },
+  image: "",
+  location: { ua: "", de: "", en: "" },
+  features: { ua: [], de: [], en: [] },
+});
+
+const createFormData = (program?: ProgramAdults | null): ProgramAdults => {
+  const emptyProgram = createEmptyProgram();
+  if (!program) return emptyProgram;
+
+  return {
+    ...emptyProgram,
+    ...program,
+    title: { ...emptyProgram.title, ...program.title },
+    description: { ...emptyProgram.description, ...program.description },
+    duration: { ...emptyProgram.duration, ...program.duration },
+    intensity: { ...emptyProgram.intensity, ...program.intensity },
+    target: { ...emptyProgram.target, ...program.target },
+    capacity: { ...emptyProgram.capacity, ...program.capacity },
+    location: { ...emptyProgram.location, ...program.location },
+    features: {
+      ua: [...(program.features?.ua ?? [])],
+      de: [...(program.features?.de ?? [])],
+      en: [...(program.features?.en ?? [])],
+    },
+  };
 };
 
+export const AddProgramModal = ({
+  isOpen,
+  onClose,
+  onSave,
+  onDelete,
+  programToEdit,
+}: AddProgramModalProps) => {
+  const { i18n } = useTranslation();
+  const modalTitleId = useId();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
+    .split("-")[0]
+    .toLowerCase();
+  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
+    ? (detectedLanguage as LangKey)
+    : "ua";
+  const text = TEXT[currentLang];
 
-export const AddProgramModal = ({ isOpen, onClose, onSave, onDelete, programToEdit }: AddProgramModalProps) => {
-  const [activeLang, setActiveLang] = useState<LangKey>('ua');
+  const [activeLang, setActiveLang] = useState<LangKey>("ua");
+  const [formData, setFormData] = useState<ProgramAdults>(() =>
+    createFormData(programToEdit),
+  );
   const [isUploading, setIsUploading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const initialFormState = useMemo<ProgramAdults>(() => ({
-    id: "",
-    title: { ua: "", de: "", en: "" },
-    description: { ua: "", de: "", en: "" },
-    dateRange: "",
-    duration: { ua: "", de: "", en: "" },
-    intensity: { ua: "", de: "", en: "" },
-    target: { ua: "", de: "", en: "" },
-    capacity: { ua: "", de: "", en: "" },
-    image: "",
-    location: { ua: "", de: "", en: "" },
-    features: { ua: [], de: [], en: [] },
-  }), []);
+  const isBusy = isUploading || isSubmitting || isDeleting;
 
-  const [formData, setFormData] = useState<ProgramAdults>(initialFormState);
+  const handleClose = useCallback(() => {
+    if (isBusy) return;
+    onClose();
+  }, [isBusy, onClose]);
 
   useEffect(() => {
-    if (isOpen) {
-      setFormData(programToEdit ? { ...initialFormState, ...programToEdit } : initialFormState);
-    }
-  }, [programToEdit, isOpen, initialFormState]);
+    if (!isOpen) return;
+    setFormData(createFormData(programToEdit));
+    setActiveLang("ua");
+  }, [isOpen, programToEdit]);
 
-  const handleLangChange = (field: keyof ProgramAdults, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: { ...(prev[field] as object), [activeLang]: value }
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") handleClose();
+    };
+
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [handleClose, isOpen]);
+
+  const handleLocalizedChange = (field: LocalizedField, value: string) => {
+    setFormData((previous) => ({
+      ...previous,
+      [field]: { ...previous[field], [activeLang]: value },
     }));
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const handleFeaturesChange = (value: string) => {
+    setFormData((previous) => ({
+      ...previous,
+      features: {
+        ua: previous.features?.ua ?? [],
+        de: previous.features?.de ?? [],
+        en: previous.features?.en ?? [],
+        [activeLang]: value.split("\n"),
+      },
+    }));
+  };
+
+  const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || isBusy) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error(text.invalidImage);
+      event.target.value = "";
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_SIZE) {
+      toast.error(text.imageTooLarge);
+      event.target.value = "";
+      return;
+    }
+
     setIsUploading(true);
+
     try {
-      const result = await uploadMedia(file, 'programs', formData.title.ua || 'adult-program');
-      setFormData(prev => ({ ...prev, image: result.url }));
+      const result = await uploadMedia(
+        file,
+        "programs",
+        formData.title.ua.trim() || "adult-program",
+      );
+      setFormData((previous) => ({ ...previous, image: result.url }));
+      toast.success(text.imageUploaded);
     } catch (error) {
-      console.error("Upload error:", error);
+      console.error("Program image upload error:", error);
+      toast.error(text.uploadError);
     } finally {
       setIsUploading(false);
+      event.target.value = "";
     }
   };
 
-  const isLangFilled = (lang: LangKey) => formData.title[lang].length > 2;
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isBusy) return;
+
+    if (!formData.title.ua.trim()) {
+      setActiveLang("ua");
+      toast.error(text.titleRequired);
+      return;
+    }
+
+    const normalizedProgram: ProgramAdults = {
+      ...formData,
+      title: {
+        ua: formData.title.ua.trim(),
+        de: formData.title.de.trim(),
+        en: formData.title.en.trim(),
+      },
+      description: {
+        ua: formData.description.ua.trim(),
+        de: formData.description.de.trim(),
+        en: formData.description.en.trim(),
+      },
+      duration: {
+        ua: formData.duration.ua.trim(),
+        de: formData.duration.de.trim(),
+        en: formData.duration.en.trim(),
+      },
+      intensity: {
+        ua: formData.intensity.ua.trim(),
+        de: formData.intensity.de.trim(),
+        en: formData.intensity.en.trim(),
+      },
+      target: {
+        ua: formData.target.ua.trim(),
+        de: formData.target.de.trim(),
+        en: formData.target.en.trim(),
+      },
+      capacity: {
+        ua: formData.capacity.ua.trim(),
+        de: formData.capacity.de.trim(),
+        en: formData.capacity.en.trim(),
+      },
+      location: {
+        ua: formData.location.ua.trim(),
+        de: formData.location.de.trim(),
+        en: formData.location.en.trim(),
+      },
+      dateRange: formData.dateRange.trim(),
+      features: {
+        ua: (formData.features?.ua ?? [])
+          .map((item) => item.trim())
+          .filter(Boolean),
+        de: (formData.features?.de ?? [])
+          .map((item) => item.trim())
+          .filter(Boolean),
+        en: (formData.features?.en ?? [])
+          .map((item) => item.trim())
+          .filter(Boolean),
+      },
+    };
+
+    setIsSubmitting(true);
+
+    try {
+      await onSave(normalizedProgram);
+    } catch (error) {
+      console.error("Program save error:", error);
+      toast.error(text.saveError);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!programToEdit?.id || !onDelete || isBusy) return;
+
+    setIsDeleting(true);
+
+    try {
+      await onDelete(programToEdit.id);
+    } catch (error) {
+      console.error("Program delete error:", error);
+      toast.error(text.deleteError);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   if (!isOpen) return null;
 
+  const modalTitle = programToEdit ? text.editTitle : text.createTitle;
+  const languageIsFilled = (language: LangKey) =>
+    Boolean(formData.title[language].trim());
+
+  const detailFields: DetailFieldConfig[] = [
+    {
+      field: "intensity",
+      label: text.schedule,
+      placeholder: text.schedulePlaceholder,
+      icon: Clock,
+      iconClassName: "text-orange-500",
+    },
+    {
+      field: "target",
+      label: text.target,
+      placeholder: text.targetPlaceholder,
+      icon: Target,
+      iconClassName: "text-violet-600",
+    },
+    {
+      field: "capacity",
+      label: text.capacity,
+      placeholder: text.capacityPlaceholder,
+      icon: Users,
+      iconClassName: "text-emerald-600",
+    },
+    {
+      field: "location",
+      label: text.location,
+      placeholder: text.locationPlaceholder,
+      icon: MapPin,
+      iconClassName: "text-red-500",
+    },
+  ];
+
+  const inputClassName =
+    "w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm font-semibold text-slate-900 outline-none transition placeholder:font-normal placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10";
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4" onClick={onClose}>
-      <div 
-        className="w-full max-w-2xl bg-white rounded-4xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[95vh]"
-        onClick={e => e.stopPropagation()}
+    <div className="font-nunito fixed inset-0 z-9999 flex items-center justify-center p-4 md:p-6">
+      <button
+        type="button"
+        aria-label={text.close}
+        onClick={handleClose}
+        className="absolute inset-0 cursor-default bg-slate-950/65 backdrop-blur-sm"
+      />
+
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={modalTitleId}
+        className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-4xl flex-col overflow-hidden rounded-4xl border border-white/70 bg-white shadow-[0_32px_90px_rgba(15,23,42,0.35)]"
       >
-        <header className="px-8 pt-8 pb-4 flex items-center justify-between border-b border-slate-100">
-          <div>
-            <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
-              {programToEdit ? "Редагування" : "Створення"} програми
+        <header className="flex shrink-0 items-center justify-between gap-4 border-b border-slate-200 px-5 py-4 md:px-8 md:py-5">
+          <div className="min-w-0">
+            <p className="mb-1 text-[11px] font-black tracking-[0.2em] text-blue-600 uppercase">
+              {text.admin}
+            </p>
+            <h2
+              id={modalTitleId}
+              className="truncate text-xl font-semibold tracking-tight text-slate-950 md:text-2xl"
+            >
+              {modalTitle}
             </h2>
-            <p className="text-[10px] font-bold text-blue-600 uppercase tracking-[0.2em] mt-1 text-left">Berehynja Admin</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-all text-slate-400">
-            <X size={24} />
+
+          <button
+            type="button"
+            onClick={handleClose}
+            disabled={isBusy}
+            aria-label={text.close}
+            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <X size={21} />
           </button>
         </header>
 
-        <form onSubmit={(e) => { e.preventDefault(); onSave(formData); }} className="p-8 overflow-y-auto flex flex-col gap-6">
-          
-          {/* Зображення з кнопками поверх (як у прикладі) */}
-          <div className="flex flex-col gap-1.5 text-left">
-            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">Головне зображення</label>
-            {formData.image ? (
-              <div className="h-40 w-full rounded-2xl overflow-hidden border-2 border-slate-200 relative group">
-                <img src={formData.image} className="w-full h-full object-cover" alt="Banner" />
-                <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center gap-2">
-                  <label className="cursor-pointer bg-white text-slate-900 px-4 py-2 rounded-lg text-[10px] font-bold uppercase hover:bg-blue-50 transition-colors">
-                    Змінити
-                    <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
-                  </label>
-                  <button 
-                    type="button" 
-                    onClick={() => setFormData({...formData, image: ""})}
-                    className="bg-red-600 text-white px-4 py-2 rounded-lg text-[10px] font-bold uppercase hover:bg-red-700"
-                  >
-                    Видалити
-                  </button>
-                </div>
+        <form
+          id="adult-program-form"
+          onSubmit={handleSubmit}
+          className="overflow-y-auto px-5 py-6 md:px-8 md:py-7"
+        >
+          <div className="space-y-7">
+            <section>
+              <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+                <h3 className="text-sm font-extrabold text-slate-800">
+                  {text.image}
+                </h3>
+                <span className="text-xs text-slate-500">{text.imageHint}</span>
               </div>
-            ) : (
-              <label className="h-32 w-full flex flex-col items-center justify-center gap-2 cursor-pointer border-2 border-dashed border-slate-300 rounded-2xl hover:bg-blue-50 hover:border-blue-400 transition-all bg-slate-50 group">
-                <div className="p-2 bg-white rounded-full shadow-sm group-hover:scale-110 transition-transform">
-                  {isUploading ? <Loader2 className="animate-spin text-blue-600" size={20} /> : <Plus className="text-blue-600" size={20} />}
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/avif"
+                onChange={handleImageUpload}
+                disabled={isBusy}
+                className="sr-only"
+              />
+
+              {formData.image ? (
+                <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-100">
+                  <div className="aspect-16/6 max-h-72 overflow-hidden">
+                    <img
+                      src={formData.image}
+                      alt={formData.title[activeLang] || modalTitle}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 border-t border-slate-200 bg-white p-3">
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={isBusy}
+                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-extrabold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {isUploading ? (
+                        <Loader2 size={16} className="animate-spin" />
+                      ) : (
+                        <Upload size={16} />
+                      )}
+                      {isUploading ? text.uploading : text.changeImage}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFormData((previous) => ({
+                          ...previous,
+                          image: "",
+                        }))
+                      }
+                      disabled={isBusy}
+                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-xs font-extrabold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <Trash2 size={16} />
+                      {text.removeImage}
+                    </button>
+                  </div>
                 </div>
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-                  {isUploading ? "Завантаження..." : "Додати обкладинку"}
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isBusy}
+                  className="flex min-h-40 w-full cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed border-slate-300 bg-slate-50 px-6 py-7 text-center transition hover:border-blue-400 hover:bg-blue-50 disabled:cursor-wait disabled:opacity-70"
+                >
+                  <span className="mb-3 flex size-12 items-center justify-center rounded-2xl bg-white text-blue-600 shadow-sm">
+                    {isUploading ? (
+                      <Loader2 size={24} className="animate-spin" />
+                    ) : (
+                      <ImageIcon size={24} />
+                    )}
+                  </span>
+                  <span className="text-sm font-extrabold text-slate-900">
+                    {isUploading ? text.uploading : text.addImage}
+                  </span>
+                </button>
+              )}
+            </section>
+
+            <section aria-labelledby={`${modalTitleId}-language`}>
+              <p
+                id={`${modalTitleId}-language`}
+                className="mb-3 text-xs font-black tracking-[0.15em] text-slate-500 uppercase"
+              >
+                {text.language}
+              </p>
+
+              <div
+                role="tablist"
+                aria-label={text.language}
+                className="grid grid-cols-3 gap-1 rounded-2xl bg-slate-100 p-1.5"
+              >
+                {LANGUAGES.map(({ key, label }) => (
+                  <button
+                    key={key}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeLang === key}
+                    onClick={() => setActiveLang(key)}
+                    className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-extrabold transition ${
+                      activeLang === key
+                        ? "bg-white text-blue-700 shadow-sm"
+                        : "text-slate-500 hover:text-slate-900"
+                    }`}
+                  >
+                    {label}
+                    {languageIsFilled(key) && (
+                      <CheckCircle2 size={14} className="text-emerald-500" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </section>
+
+            <div className="grid gap-5 md:grid-cols-2">
+              <label className="block">
+                <span className="mb-2 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                  <Calendar size={17} className="text-blue-600" />
+                  {text.period}
                 </span>
-                <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" disabled={isUploading} />
+                <input
+                  type="text"
+                  value={formData.dateRange}
+                  onChange={(event) =>
+                    setFormData((previous) => ({
+                      ...previous,
+                      dateRange: event.target.value,
+                    }))
+                  }
+                  placeholder={text.periodPlaceholder}
+                  className={inputClassName}
+                />
               </label>
+
+              <label className="block">
+                <span className="mb-2 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                  <Hourglass size={17} className="text-blue-600" />
+                  {text.duration} ({activeLang.toUpperCase()})
+                </span>
+                <input
+                  type="text"
+                  value={formData.duration[activeLang]}
+                  onChange={(event) =>
+                    handleLocalizedChange("duration", event.target.value)
+                  }
+                  placeholder={text.durationPlaceholder}
+                  className={inputClassName}
+                />
+              </label>
+            </div>
+
+            <label className="block">
+              <span className="mb-2 block text-sm font-extrabold text-slate-800">
+                {text.name} ({activeLang.toUpperCase()})
+                {activeLang === "ua" && (
+                  <span className="ml-2 text-xs text-blue-600">
+                    {text.required}
+                  </span>
+                )}
+              </span>
+              <input
+                type="text"
+                value={formData.title[activeLang]}
+                onChange={(event) =>
+                  handleLocalizedChange("title", event.target.value)
+                }
+                placeholder={text.namePlaceholder}
+                className={inputClassName}
+              />
+            </label>
+
+            <label className="block">
+              <span className="mb-2 block text-sm font-extrabold text-slate-800">
+                {text.description} ({activeLang.toUpperCase()})
+              </span>
+              <textarea
+                rows={4}
+                value={formData.description[activeLang]}
+                onChange={(event) =>
+                  handleLocalizedChange("description", event.target.value)
+                }
+                placeholder={text.descriptionPlaceholder}
+                className="w-full resize-y rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 leading-7 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+              />
+            </label>
+
+            <div className="grid gap-5 md:grid-cols-2">
+              {detailFields.map(
+                ({ field, label, placeholder, icon: Icon, iconClassName }) => (
+                  <label key={field} className="block">
+                    <span className="mb-2 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                      <Icon size={17} className={iconClassName} />
+                      {label} ({activeLang.toUpperCase()})
+                    </span>
+                    <input
+                      type="text"
+                      value={formData[field][activeLang]}
+                      onChange={(event) =>
+                        handleLocalizedChange(field, event.target.value)
+                      }
+                      placeholder={placeholder}
+                      className={inputClassName}
+                    />
+                  </label>
+                ),
+              )}
+            </div>
+
+            <label className="block">
+              <span className="mb-1 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                <ListChecks size={18} className="text-blue-600" />
+                {text.features} ({activeLang.toUpperCase()})
+              </span>
+              <span className="mb-2 block text-xs text-slate-500">
+                {text.featuresHint}
+              </span>
+              <textarea
+                rows={5}
+                value={(formData.features?.[activeLang] ?? []).join("\n")}
+                onChange={(event) => handleFeaturesChange(event.target.value)}
+                placeholder={text.featuresPlaceholder}
+                className="w-full resize-y rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 leading-7 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+              />
+            </label>
+          </div>
+        </form>
+
+        <footer className="flex shrink-0 flex-col gap-3 border-t border-slate-200 bg-slate-50 px-5 py-4 md:flex-row md:items-center md:justify-between md:px-8">
+          <div>
+            {programToEdit?.id && onDelete && (
+              <button
+                type="button"
+                onClick={handleDelete}
+                disabled={isBusy}
+                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-extrabold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
+              >
+                {isDeleting ? (
+                  <Loader2 size={18} className="animate-spin" />
+                ) : (
+                  <Trash2 size={18} />
+                )}
+                {text.delete}
+              </button>
             )}
           </div>
 
-          {/* Загальні поля: Дати та Тривалість */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex flex-col gap-1.5 text-left">
-              <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">
-                <Calendar size={14} className="text-blue-600" /> Період (дати)
-              </label>
-              <input 
-                value={formData.dateRange} 
-                onChange={(e) => setFormData({...formData, dateRange: e.target.value})}
-                placeholder="15.05 - 25.05"
-                className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold focus:bg-white outline-none transition-all" 
-              />
-            </div>
-            <div className="flex flex-col gap-1.5 text-left">
-              <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">
-                <Hourglass size={14} className="text-blue-600" /> Тривалість ({activeLang})
-              </label>
-              <input 
-                value={formData.duration[activeLang]} 
-                onChange={(e) => handleLangChange('duration', e.target.value)}
-                placeholder="напр. 10 днів"
-                className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm font-bold focus:bg-white outline-none transition-all" 
-              />
-            </div>
-          </div>
+          <div className="flex flex-col-reverse gap-2 md:flex-row">
+            <button
+              type="button"
+              onClick={handleClose}
+              disabled={isBusy}
+              className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {text.cancel}
+            </button>
 
-          {/* Перемикач мов */}
-          <div className="flex p-1 bg-slate-100 rounded-xl border border-slate-200">
-            {(['ua', 'de', 'en'] as const).map((lang) => (
-              <button
-                key={lang} type="button" onClick={() => setActiveLang(lang)}
-                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold uppercase transition-all ${
-                  activeLang === lang ? 'bg-white shadow text-blue-700' : 'text-slate-500'
-                }`}
-              >
-                {lang} {isLangFilled(lang) && <CheckCircle2 size={14} className="text-green-600" />}
-              </button>
-            ))}
-          </div>
-
-          {/* Багатомовний контент */}
-          <div className="space-y-4">
-            <div className="flex flex-col gap-1.5 text-left">
-              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">Назва ({activeLang})</label>
-              <input 
-                value={formData.title[activeLang]} 
-                onChange={(e) => handleLangChange('title', e.target.value)}
-                className="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 text-lg font-bold focus:border-blue-500 outline-none transition-all shadow-sm"
-              />
-            </div>
-
-            <div className="flex flex-col gap-1.5 text-left">
-              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">Опис ({activeLang})</label>
-              <textarea 
-                rows={3} value={formData.description[activeLang]} 
-                onChange={(e) => handleLangChange('description', e.target.value)}
-                className="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:border-blue-500 outline-none transition-all shadow-sm resize-none"
-              />
-            </div>
-
-            {/* Додаткові параметри */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="flex flex-col gap-1.5 text-left">
-                <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">
-                  <Clock size={14} className="text-orange-500" /> Графік
-                </label>
-                <input 
-                  value={formData.intensity[activeLang]} 
-                  onChange={(e) => handleLangChange('intensity', e.target.value)}
-                  className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold" 
-                />
-              </div>
-              {/* <div className="flex flex-col gap-1.5 text-left">
-                <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">
-                  <Target size={14} className="text-purple-500" /> Ціль
-                </label>
-                <input 
-                  value={formData.target[activeLang]} 
-                  onChange={(e) => handleLangChange('target', e.target.value)}
-                  className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold" 
-                />
-              </div> */}
-              <div className="flex flex-col gap-1.5 text-left">
-                <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">
-                  <Users size={14} className="text-green-500" /> Група
-                </label>
-                <input 
-                  value={formData.capacity[activeLang]} 
-                  onChange={(e) => handleLangChange('capacity', e.target.value)}
-                  className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold" 
-                />
-              </div>
-              <div className="flex flex-col gap-1.5 text-left">
-                <label className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">
-                  <MapPin size={14} className="text-green-500" /> Локація
-                </label>
-                <input 
-                  value={formData.location[activeLang]} 
-                  onChange={(e) => handleLangChange('location', e.target.value)}
-                  className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold" 
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Footer */}
-          <footer className="flex items-center justify-between mt-4 pt-6 border-t border-slate-100">
-            <div>
-              {programToEdit?.id && (
-                <button 
-                  type="button" 
-                  onClick={() => onDelete?.(programToEdit.id)}
-                  className="flex items-center gap-2 text-[10px] font-bold text-red-500 uppercase tracking-widest hover:text-red-700 transition-colors cursor-pointer"
-                >
-                  <Trash2 size={16} /> Видалити програму
-                </button>
+            <button
+              type="submit"
+              form="adult-program-form"
+              disabled={isBusy}
+              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
+            >
+              {isSubmitting ? (
+                <Loader2 size={18} className="animate-spin" />
+              ) : (
+                <Check size={18} />
               )}
-            </div>
-            <div className="flex gap-3">
-              <button type="button" onClick={onClose} className="px-6 py-3 rounded-xl text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-100 transition-all">
-                Скасувати
-              </button>
-              <button 
-                type="submit" disabled={isUploading}
-                className="px-10 py-3 bg-slate-900 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-blue-600 disabled:bg-slate-300 transition-all shadow-lg flex items-center gap-2"
-              >
-                {isUploading ? <Loader2 size={14} className="animate-spin" /> : "Зберегти"}
-              </button>
-            </div>
-          </footer>
-        </form>
+              {isSubmitting
+                ? text.saving
+                : programToEdit
+                  ? text.save
+                  : text.create}
+            </button>
+          </div>
+        </footer>
       </div>
     </div>
   );

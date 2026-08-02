@@ -1,231 +1,394 @@
+import { useEffect, useState } from "react";
 import {
+  ArrowRight,
   Calendar,
   Clock,
-  ArrowRight,
-  Users,
-  Pencil,
   MapPin,
+  Pencil,
+  Users,
 } from "lucide-react";
-import { Link } from "react-router-dom";
-import type { LangKey } from "../../../types/types";
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+
 import { useAuth } from "../../AuthProvider/useAuth";
-import type { ProgramAdults } from "../../../types/program";
 import { AddEvent } from "../../Buttons/AddEvent";
 import { AddProgramModal } from "../../Modals/AddAdultProgramsModal";
+import { PageLoader } from "../../ui/PageLoader";
 import {
-  fetchProgramsAdults,
-  updateProgramAdults,
   addProgramAdults,
   deleteProgramAdults,
+  fetchProgramsAdults,
+  updateProgramAdults,
 } from "../../../services/programsAdultsService";
-import { PageLoader } from "../../ui/PageLoader";
-import toast from "react-hot-toast";
+import type { ProgramAdults } from "../../../types/program";
+import type { LangKey } from "../../../types/types";
+
+const PROGRAMS_LIST_TEXT = {
+  period: {
+    ua: "Період",
+    de: "Zeitraum",
+    en: "Period",
+  },
+  duration: {
+    ua: "Тривалість",
+    de: "Dauer",
+    en: "Duration",
+  },
+  schedule: {
+    ua: "Графік",
+    de: "Zeitplan",
+    en: "Schedule",
+  },
+  group: {
+    ua: "Група",
+    de: "Gruppe",
+    en: "Group",
+  },
+  location: {
+    ua: "Локація",
+    de: "Ort",
+    en: "Location",
+  },
+  details: {
+    ua: "Детальніше",
+    de: "Mehr erfahren",
+    en: "Learn more",
+  },
+  edit: {
+    ua: "Редагувати програму",
+    de: "Programm bearbeiten",
+    en: "Edit program",
+  },
+  add: {
+    ua: "Додати програму",
+    de: "Programm hinzufügen",
+    en: "Add program",
+  },
+  empty: {
+    ua: "Наразі немає доступних програм.",
+    de: "Derzeit sind keine Programme verfügbar.",
+    en: "There are currently no programs available.",
+  },
+  confirmDelete: {
+    ua: "Видалити цю програму?",
+    de: "Dieses Programm löschen?",
+    en: "Delete this program?",
+  },
+  added: {
+    ua: "Програму додано!",
+    de: "Programm wurde hinzugefügt!",
+    en: "Program added!",
+  },
+  updated: {
+    ua: "Програму оновлено!",
+    de: "Programm wurde aktualisiert!",
+    en: "Program updated!",
+  },
+  deleted: {
+    ua: "Програму видалено!",
+    de: "Programm wurde gelöscht!",
+    en: "Program deleted!",
+  },
+  saveError: {
+    ua: "Не вдалося зберегти програму.",
+    de: "Das Programm konnte nicht gespeichert werden.",
+    en: "The program could not be saved.",
+  },
+  deleteError: {
+    ua: "Не вдалося видалити програму.",
+    de: "Das Programm konnte nicht gelöscht werden.",
+    en: "The program could not be deleted.",
+  },
+};
 
 export const ProgramsList = () => {
   const { isAdmin } = useAuth();
   const { i18n } = useTranslation();
-  const currentLang = (
-    i18n.resolvedLanguage || i18n.language
-  ).split("-")[0] as LangKey;
-
   const [programs, setPrograms] = useState<ProgramAdults[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingProgram, setEditingProgram] = useState<ProgramAdults | null>(null);
+  const [editingProgram, setEditingProgram] = useState<ProgramAdults | null>(
+    null,
+  );
 
-  // 1. Завантаження даних
+  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
+    "-",
+  )[0];
+  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
+    ? (detectedLanguage as LangKey)
+    : "ua";
+
   useEffect(() => {
-    const loadData = async () => {
+    const loadPrograms = async () => {
       try {
         const data = await fetchProgramsAdults();
         setPrograms(data);
       } catch (error) {
-        console.error("Помилка завантаження:", error);
+        console.error("Programs loading error:", error);
       } finally {
         setIsLoading(false);
       }
     };
-    void loadData();
+
+    void loadPrograms();
   }, []);
 
-  // 2. Збереження/Оновлення
+  const handleOpenCreate = () => {
+    setEditingProgram(null);
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEdit = (program: ProgramAdults) => {
+    setEditingProgram(program);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    if (isProcessing) return;
+
+    setEditingProgram(null);
+    setIsModalOpen(false);
+  };
+
   const handleSave = async (formData: ProgramAdults) => {
     if (isProcessing) return;
+
     setIsProcessing(true);
 
     try {
       if (editingProgram) {
         await updateProgramAdults(editingProgram.id, formData);
-        setPrograms((prev) =>
-          prev.map((p) =>
-            p.id === editingProgram.id ? { ...formData, id: editingProgram.id } : p
-          )
+
+        setPrograms((currentPrograms) =>
+          currentPrograms.map((program) =>
+            program.id === editingProgram.id
+              ? { ...formData, id: editingProgram.id }
+              : program,
+          ),
         );
+
+        toast.success(PROGRAMS_LIST_TEXT.updated[currentLang]);
       } else {
         const newProgram = await addProgramAdults(formData);
-        setPrograms((prev) => [...prev, newProgram]);
+        setPrograms((currentPrograms) => [...currentPrograms, newProgram]);
+        toast.success(PROGRAMS_LIST_TEXT.added[currentLang]);
       }
+
+      setEditingProgram(null);
       setIsModalOpen(false);
-      toast.success(editingProgram ? "Програму оновлено!" : "Програму додано!");
     } catch (error) {
-      console.error("Помилка збереження:", error);
-      toast.error("Не вдалося зберегти програму.");
+      console.error("Program save error:", error);
+      toast.error(PROGRAMS_LIST_TEXT.saveError[currentLang]);
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // 3. Видалення
   const handleDelete = async (id: string) => {
-    if (isProcessing) return;
+    if (
+      isProcessing ||
+      !window.confirm(PROGRAMS_LIST_TEXT.confirmDelete[currentLang])
+    ) {
+      return;
+    }
+
     setIsProcessing(true);
 
     try {
       await deleteProgramAdults(id);
-      setPrograms((prev) => prev.filter((p) => p.id !== id));
+      setPrograms((currentPrograms) =>
+        currentPrograms.filter((program) => program.id !== id),
+      );
+      setEditingProgram(null);
       setIsModalOpen(false);
-      toast.success("Програму видалено!");
+      toast.success(PROGRAMS_LIST_TEXT.deleted[currentLang]);
     } catch (error) {
-      console.error("Помилка видалення:", error);
-      toast.error("Не вдалося видалити програму.");
+      console.error("Program deletion error:", error);
+      toast.error(PROGRAMS_LIST_TEXT.deleteError[currentLang]);
     } finally {
       setIsProcessing(false);
     }
   };
 
-  if (isLoading) return <PageLoader visible />;
-
   return (
     <>
-      <PageLoader visible={isProcessing} />
-      {isAdmin && (
-        <AddEvent
-          onClick={() => {
-            setEditingProgram(null);
-            setIsModalOpen(true);
-          }}
-        />
+      <PageLoader visible={isLoading || isProcessing} />
+
+      {!isLoading && (
+        <ul className="grid w-full grid-cols-1 items-stretch justify-center gap-6 md:grid-cols-2 md:gap-7 xl:grid-cols-3 xl:gap-10">
+          {isAdmin && (
+            <li className="min-h-80">
+              <AddEvent
+                onClick={handleOpenCreate}
+                label={PROGRAMS_LIST_TEXT.add[currentLang]}
+              />
+            </li>
+          )}
+
+          {programs.map((program, index) => {
+            const title = program.title[currentLang] || program.title.ua;
+            const description =
+              program.description[currentLang] || program.description.ua;
+            const duration =
+              program.duration[currentLang] || program.duration.ua;
+            const intensity =
+              program.intensity[currentLang] || program.intensity.ua;
+            const capacity =
+              program.capacity[currentLang] || program.capacity.ua;
+            const location =
+              program.location[currentLang] || program.location.ua;
+
+            return (
+              <li
+                key={program.id}
+                className="group relative flex h-full min-w-0 flex-col overflow-hidden rounded-4xl border border-gray-100 bg-white shadow-[0_12px_35px_rgba(15,23,42,0.08)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_22px_55px_rgba(15,23,42,0.14)]"
+              >
+                {isAdmin && (
+                  <button
+                    type="button"
+                    onClick={() => handleOpenEdit(program)}
+                    aria-label={`${PROGRAMS_LIST_TEXT.edit[currentLang]}: ${title}`}
+                    title={PROGRAMS_LIST_TEXT.edit[currentLang]}
+                    className="absolute top-4 right-4 z-20 flex size-11 cursor-pointer items-center justify-center rounded-xl border border-white/60 bg-white/90 text-gray-700 shadow-md backdrop-blur-md transition-all duration-300 hover:border-blue-600 hover:bg-blue-600 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                  >
+                    <Pencil size={18} aria-hidden="true" />
+                  </button>
+                )}
+
+                <div className="relative aspect-4/3 overflow-hidden bg-slate-100">
+                  <img
+                    src={program.image}
+                    alt={title}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                    decoding="async"
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-transparent"
+                  />
+
+                  {program.dateRange && (
+                    <div className="absolute right-4 bottom-4 flex flex-col items-center justify-center rounded-2xl border border-white/40 bg-white/85 px-4 py-3 text-center shadow-lg backdrop-blur-md">
+                      <span className="mb-0.5 text-[11px] font-black tracking-widest text-blue-700 uppercase">
+                        {PROGRAMS_LIST_TEXT.period[currentLang]}
+                      </span>
+                      <span className="text-sm font-black text-gray-900 uppercase">
+                        {program.dateRange}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex grow flex-col p-5 md:p-6">
+                  <h2 className="mb-3 text-2xl leading-tight font-bold tracking-tight text-gray-900 transition-colors duration-300 group-hover:text-blue-600">
+                    {title}
+                  </h2>
+
+                  {description && (
+                    <p className="mb-5 line-clamp-3 min-h-18 text-sm leading-6 text-gray-600">
+                      {description}
+                    </p>
+                  )}
+
+                  <dl className="mb-6 grid gap-3 border-t border-gray-100 pt-5 text-sm">
+                    <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3">
+                      <dt className="flex items-center gap-2 font-semibold text-gray-500">
+                        <Calendar
+                          size={17}
+                          className="shrink-0 text-blue-600"
+                          aria-hidden="true"
+                        />
+                        {PROGRAMS_LIST_TEXT.duration[currentLang]}:
+                      </dt>
+                      <dd className="min-w-0 text-right font-bold wrap-break-word text-gray-800">
+                        {duration}
+                      </dd>
+                    </div>
+
+                    <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3">
+                      <dt className="flex items-center gap-2 font-semibold text-gray-500">
+                        <Clock
+                          size={17}
+                          className="shrink-0 text-orange-600"
+                          aria-hidden="true"
+                        />
+                        {PROGRAMS_LIST_TEXT.schedule[currentLang]}:
+                      </dt>
+                      <dd className="min-w-0 text-right font-bold wrap-break-word text-gray-800">
+                        {intensity}
+                      </dd>
+                    </div>
+
+                    <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3">
+                      <dt className="flex items-center gap-2 font-semibold text-gray-500">
+                        <Users
+                          size={17}
+                          className="shrink-0 text-emerald-600"
+                          aria-hidden="true"
+                        />
+                        {PROGRAMS_LIST_TEXT.group[currentLang]}:
+                      </dt>
+                      <dd className="min-w-0 text-right font-bold wrap-break-word text-gray-800">
+                        {capacity}
+                      </dd>
+                    </div>
+
+                    <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3">
+                      <dt className="flex items-center gap-2 font-semibold text-gray-500">
+                        <MapPin
+                          size={17}
+                          className="shrink-0 text-red-600"
+                          aria-hidden="true"
+                        />
+                        {PROGRAMS_LIST_TEXT.location[currentLang]}:
+                      </dt>
+                      <dd className="min-w-0 text-right font-bold wrap-break-word text-gray-800">
+                        {location}
+                      </dd>
+                    </div>
+                  </dl>
+
+                  <Link
+                    to={`/programs/adults/${program.id}`}
+                    aria-label={`${PROGRAMS_LIST_TEXT.details[currentLang]}: ${title}`}
+                    className="group/link mt-auto flex items-center justify-center gap-3 rounded-2xl bg-gray-900 px-6 py-4 text-sm font-bold text-white shadow-sm transition-all hover:bg-blue-600 hover:shadow-lg active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                  >
+                    <span className="tracking-wider uppercase">
+                      {PROGRAMS_LIST_TEXT.details[currentLang]}
+                    </span>
+                    <ArrowRight
+                      size={18}
+                      className="transition-transform duration-300 group-hover/link:translate-x-1"
+                      aria-hidden="true"
+                    />
+                  </Link>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
       )}
 
-      <div className="mx-auto mt-10 grid max-w-7xl grid-cols-1 gap-12 px-4 md:grid-cols-2 lg:grid-cols-3">
-        {programs.map((program) => (
-          <div
-            key={program.id}
-            className="group relative flex flex-col overflow-hidden rounded-4xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
-          >
-            {/* Кнопка редагування для адміна */}
-            {isAdmin && (
-              <button
-                type="button"
-                onClick={() => {
-                  setEditingProgram(program);
-                  setIsModalOpen(true);
-                }}
-                aria-label={`Редагувати: ${program.title[currentLang]}`}
-                title="Редагувати програму"
-                className="absolute top-4 right-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-gray-700 shadow-md backdrop-blur-sm transition-all hover:bg-blue-600 hover:text-white active:scale-90"
-              >
-                <Pencil size={18} />
-              </button>
-            )}
+      {!isLoading && programs.length === 0 && !isAdmin && (
+        <p className="py-12 text-center text-gray-500">
+          {PROGRAMS_LIST_TEXT.empty[currentLang]}
+        </p>
+      )}
 
-            {/* Фото з матовою плашкою дат */}
-            <div className="relative h-64 w-full overflow-hidden">
-              <img
-                src={program.image}
-                alt={program.title[currentLang]}
-                loading="lazy"
-                decoding="async"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-
-              <div className="absolute right-4 bottom-4 flex flex-col items-center justify-center rounded-2xl border border-white/30 bg-white/60 p-4 shadow-lg backdrop-blur-md">
-                <span className="mb-0.5 text-[10px] font-bold tracking-widest text-blue-600 uppercase">
-                  Період
-                </span>
-                <span className="text-sm font-black text-gray-900 uppercase">
-                  {program.dateRange}
-                </span>
-              </div>
-            </div>
-
-            {/* Контент */}
-            <div className="flex flex-1 flex-col p-8">
-              <h3 className="mb-4 text-2xl leading-tight font-bold text-gray-900 transition-colors group-hover:text-blue-600">
-                {program.title[currentLang]}
-              </h3>
-
-              <p className="mb-6 line-clamp-3 text-sm leading-relaxed text-gray-500">
-                {program.description[currentLang]}
-              </p>
-
-              {/* Деталі з іконками */}
-              <div className="mb-8 space-y-4 border-t border-gray-100 pt-6">
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-3 font-medium text-gray-400">
-                    <Calendar size={18} className="text-blue-500" />
-                    Тривалість:
-                  </div>
-                  <span className="font-bold text-gray-700">{program.duration[currentLang]}</span>
-                </div>
-
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-3 font-medium text-gray-400">
-                    <Clock size={18} className="text-orange-500" />
-                    Графік:
-                  </div>
-                  <span className="font-bold text-gray-700">{program.intensity[currentLang]}</span>
-                </div>
-
-                {/* <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-3 font-medium text-gray-400">
-                    <Target size={18} className="text-purple-500" />
-                    Для кого:
-                  </div>
-                  <span className="font-bold text-gray-700">{program.target[currentLang]}</span>
-                </div> */}
-
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-3 font-medium text-gray-400">
-                    <Users size={18} className="text-green-500" />
-                    Група:
-                  </div>
-                  <span className="font-bold text-gray-700">{program.capacity[currentLang]}</span>
-                </div>
-
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-3 font-medium text-gray-400">
-                    <MapPin size={18} className="text-green-500" />
-                    Локація:
-                  </div>
-                  <span className="font-bold text-gray-700">{program.location[currentLang]}</span>
-                </div>
-              </div>
-
-              {/* Кнопка переходу */}
-              <Link
-                to={`/programs/adults/${program.id}`}
-                aria-label={`Детальніше про програму: ${program.title[currentLang]}`}
-                className="mt-auto flex items-center justify-center gap-3 rounded-2xl bg-gray-900 px-6 py-4 text-sm font-bold text-white transition-all hover:bg-blue-600 hover:shadow-lg active:scale-95"
-              >
-                Детальніше <ArrowRight size={18} />
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Модалка */}
-      <AddProgramModal
-        programToEdit={editingProgram}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSave={handleSave}
-        onDelete={handleDelete}
-      />
+      {isAdmin && (
+        <AddProgramModal
+          programToEdit={editingProgram}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onSave={handleSave}
+          onDelete={handleDelete}
+        />
+      )}
     </>
   );
 };
