@@ -26,7 +26,13 @@ export function Header() {
       <div className="mx-auto flex h-25 max-w-360 items-center justify-between px-5 sm:px-8 lg:px-8 xl:px-10">
         <NavLink className="flex justify-center decoration-0" to="/" end>
           <div className="flex items-center justify-center">
-            <img src={logo} alt="Logo" className="h-25 w-40" />
+            <img
+              src={logo}
+              alt="Berehynia"
+              width={1536}
+              height={1024}
+              className="h-25 w-auto object-contain"
+            />
           </div>
           {/* <div className="font-interMedium flex flex-col items-center justify-center text-2xl whitespace-nowrap ">
             BEREHYNJA
