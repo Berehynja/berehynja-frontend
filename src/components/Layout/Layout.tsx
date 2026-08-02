@@ -15,19 +15,26 @@ export const Layout = () => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
+    const currentLanguage = (i18n.resolvedLanguage || i18n.language).split("-")[0];
 
-    if (searchParams.get("lang") !== i18n.language) {
-      searchParams.set("lang", i18n.language);
+    if (searchParams.get("lang") !== currentLanguage) {
+      searchParams.set("lang", currentLanguage);
 
       navigate(
         {
           pathname: location.pathname,
-          search: searchParams.toString(),
+          search: `?${searchParams.toString()}`,
         },
         { replace: true },
       );
     }
-  }, [location.pathname, location.search, i18n.language, navigate]);
+  }, [
+    location.pathname,
+    location.search,
+    i18n.language,
+    i18n.resolvedLanguage,
+    navigate,
+  ]);
 
   return (
     <div className="layout">
