@@ -27,11 +27,6 @@ interface ContactFormProps {
 }
 
 const CONTACT_TEXT = {
-  eyebrow: {
-    ua: "Зв’язатися з нами",
-    de: "Kontaktieren Sie uns",
-    en: "Contact us",
-  },
   title: { ua: "Напишіть нам", de: "Schreiben Sie uns", en: "Write to us" },
   description: {
     ua: "Маєте запитання або ідею? Залиште повідомлення, і ми зв’яжемося з вами.",
@@ -121,9 +116,9 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const detectedLanguage = (
-    i18n.resolvedLanguage || i18n.language
-  ).split("-")[0];
+  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
+    "-",
+  )[0];
   const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
     ? (detectedLanguage as LangKey)
     : "ua";
@@ -209,14 +204,9 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
       className="font-nunito relative overflow-hidden rounded-4xl border border-slate-200 bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.12)] md:p-10 lg:p-12"
     >
       <header className="mb-9">
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-xs font-black tracking-[0.14em] text-blue-700 uppercase">
-          <MessageSquare size={16} aria-hidden="true" />
-          {CONTACT_TEXT.eyebrow[currentLang]}
-        </div>
-
         <h2
           id={`${fieldId}-title`}
-              className="text-3xl leading-tight font-black text-slate-950 md:text-4xl"
+          className="text-3xl leading-tight font-black text-slate-950 md:text-4xl"
         >
           {CONTACT_TEXT.title[currentLang]}
         </h2>
@@ -225,7 +215,11 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
         </p>
       </header>
 
-      <form className="relative flex flex-col gap-6" name="contact_form" onSubmit={submitHandler}>
+      <form
+        className="relative flex flex-col gap-6"
+        name="contact_form"
+        onSubmit={submitHandler}
+      >
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
             <label
@@ -350,7 +344,9 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               if (event.target.checked) setPrivacyError(false);
             }}
             aria-invalid={privacyError}
-            aria-describedby={privacyError ? `${fieldId}-privacy-error` : undefined}
+            aria-describedby={
+              privacyError ? `${fieldId}-privacy-error` : undefined
+            }
             className="mt-1 size-4 shrink-0 cursor-pointer accent-blue-600"
           />
           <span>
