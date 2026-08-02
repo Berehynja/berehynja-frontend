@@ -1,247 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Pencil } from "lucide-react";
+import toast from "react-hot-toast";
+
 import { useAuth } from "../../AuthProvider/useAuth";
+import { PageLoader } from "../../ui/PageLoader";
 import { COLORS, type LessonColor } from "../../../data/colors";
 import type { Program } from "../../../types/program";
 import type { AgeGroup } from "../../../types/ageGroup";
 import type { ScheduleItem } from "../../../types/scheduleItem";
 import { scheduleService } from "../../../services/scheduleService";
 import { getNextSundayDate } from "../../../utils/dateUtils";
-import { Loader2, Pencil, Trash2 } from "lucide-react";
-import toast from "react-hot-toast";
+import {
+  InlineScheduleForm,
+  type ScheduleFormData,
+} from "./InlineScheduleForm";
 
 interface ScheduleCalendarProps {
   programs: Program[];
   ageGroups: AgeGroup[];
+  onLoadingChange?: (isLoading: boolean) => void;
 }
 
-export interface ScheduleFormData {
-  lessonId: string;
-  timeStart: string;
-  timeEnd: string;
-  room: LessonColor;
-  subGroupId?: string | null;
-  level?: string;
-  teacher?: string;
-}
-
-interface InlineScheduleFormProps {
-  groupId: string;
-  groupName: string;
-  programs: Program[];
-  ageGroups: AgeGroup[];
-  initialData?: ScheduleItem;
-  onSave: (data: ScheduleFormData) => void;
-  onCancel: () => void;
-  onDelete?: (id: string, title: string) => void; // Додали пропс для видалення
-}
-
-// ============================================================================
-// МІНІ-КОМПОНЕНТ ФОРМИ
-// ============================================================================
-function InlineScheduleForm({
-  groupId,
-  groupName,
+export function ScheduleCalendar({
   programs,
   ageGroups,
-  initialData,
-  onSave,
-  onCancel,
-  onDelete, // Отримуємо функцію видалення
-}: InlineScheduleFormProps) {
-  const [timeStart, setTimeStart] = useState(initialData?.timeStart || "10:00");
-  const [timeEnd, setTimeEnd] = useState(initialData?.timeEnd || "12:00");
-  const [lessonId, setLessonId] = useState(initialData?.lessonId || "");
-  const [room, setRoom] = useState<LessonColor>(initialData?.room || "RoyalBlue");
-  const [level, setLevel] = useState(initialData?.level || "");
-  const [teacher, setTeacher] = useState(initialData?.teacher || "");
-
-  const subGroups = ageGroups.filter((g) => g.parentId === groupId);
-  const [subGroupId, setSubGroupId] = useState<string>(initialData?.subGroupId || "");
-  const { i18n } = useTranslation();
-
-  const handleSubmit = () => {
-    if (!lessonId) return toast.error("Будь ласка, оберіть програму!");
-
-    // Створюємо чистий об'єкт тільки з тими полями, що мають значення
-    const formData: ScheduleFormData = {
-      lessonId,
-      timeStart,
-      timeEnd,
-      room,
-      subGroupId: subGroupId || null, // Додаємо subGroupId тільки якщо він є
-    };
-
-    if (level.trim()) formData.level = level.trim();
-    if (teacher.trim()) formData.teacher = teacher.trim();
-
-    onSave(formData);
-  };
-
-  return (
-    <div className="animate-in fade-in zoom-in flex flex-col space-y-4 rounded-xl border border-gray-200 bg-white p-4 shadow-md duration-200">
-      <h4 className="border-b border-gray-100 pb-2 text-center text-sm font-bold text-gray-800">
-        {initialData ? "Редагування заняття" : `Нове заняття (${groupName})`}
-      </h4>
-
-      <div className="flex gap-3">
-        <div className="w-1/2 space-y-1">
-          <label className="ml-1 text-xs font-bold text-gray-700">Початок</label>
-          <input
-            type="time"
-            value={timeStart}
-            onChange={(e) => setTimeStart(e.target.value)}
-            className="focus:ring-Blue focus:border-Blue w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 transition-all outline-none focus:bg-white focus:ring-2"
-          />
-        </div>
-        <div className="w-1/2 space-y-1">
-          <label className="ml-1 text-xs font-bold text-gray-700">Кінець</label>
-          <input
-            type="time"
-            value={timeEnd}
-            onChange={(e) => setTimeEnd(e.target.value)}
-            className="focus:ring-Blue focus:border-Blue w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 transition-all outline-none focus:bg-white focus:ring-2"
-          />
-        </div>
-      </div>
-
-      <div className="space-y-1">
-        <label className="ml-1 text-xs font-bold text-gray-700">Програма</label>
-        <select
-          value={lessonId}
-          onChange={(e) => setLessonId(e.target.value)}
-          className="focus:ring-Blue focus:border-Blue w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm transition-all outline-none focus:bg-white focus:ring-2"
-        >
-          <option value="" disabled>
-            Оберіть програму...
-          </option>
-          {programs
-            .filter(
-              (p) =>
-                p.ageGroupIds &&
-                p.ageGroupIds.some((id) =>
-                  [
-                    groupId,
-                    ...ageGroups.filter((g) => g.parentId === groupId).map((g) => g.id),
-                  ].includes(id)
-                )
-            )
-            .map((prog) => (
-              <option key={prog.id} value={prog.id}>
-                {typeof prog.title === "string"
-                  ? prog.title
-                  : prog.title[i18n.language as keyof typeof prog.title] || prog.title.ua}
-              </option>
-            ))}
-        </select>
-      </div>
-
-      {subGroups.length > 0 && (
-        <div className="space-y-1">
-          <label className="ml-1 text-xs font-bold text-gray-700">
-            Підгрупа (якщо для конкретної)
-          </label>
-          <select
-            value={subGroupId}
-            onChange={(e) => setSubGroupId(e.target.value)}
-            className="focus:ring-Blue focus:border-Blue w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm transition-all outline-none focus:bg-white focus:ring-2"
-          >
-            <option value="">Для обох підгруп (спільне)</option>
-            {subGroups.map((sg) => (
-              <option key={sg.id} value={sg.id}>
-                {sg.subLabel || sg.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
-
-      <div className="space-y-1">
-        <label className="ml-1 text-xs font-bold text-gray-700">Дод. інформація</label>
-        <input
-          type="text"
-          value={level}
-          onChange={(e) => setLevel(e.target.value)}
-          placeholder="Напр.: Нульовий - 5-6 років"
-          className="focus:ring-Blue focus:border-Blue w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm transition-all outline-none placeholder:text-gray-400 focus:bg-white focus:ring-2"
-        />
-      </div>
-
-      <div className="space-y-1">
-        <label className="ml-1 text-xs font-bold text-gray-700">Викладач</label>
-        <input
-          type="text"
-          value={teacher}
-          onChange={(e) => setTeacher(e.target.value)}
-          placeholder="Напр.: Марія Іванівна"
-          className="focus:ring-Blue focus:border-Blue w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm transition-all outline-none placeholder:text-gray-400 focus:bg-white focus:ring-2"
-        />
-      </div>
-
-      <div className="space-y-2 pt-1">
-        <label className="ml-1 text-xs font-bold text-gray-700">Колір кімнати</label>
-        <div className="flex flex-wrap justify-between gap-1 rounded-xl border border-gray-100 bg-gray-50/30 p-2">
-          {Object.entries(COLORS).map(([name, hex]) => (
-            <button
-              key={name}
-              type="button"
-              onClick={() => setRoom(name as LessonColor)}
-              className={`h-6 w-6 cursor-pointer rounded-full border-2 transition-transform ${
-                room === name
-                  ? "scale-110 border-gray-600 shadow-md ring-2 ring-gray-200"
-                  : "border-transparent hover:scale-110"
-              }`}
-              style={{ backgroundColor: hex }}
-              title={name}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-2 flex justify-end gap-2 border-t border-gray-100 pt-3">
-        {/* Кнопка видалення (показуємо тільки при редагуванні, коли є initialData і onDelete) */}
-        {initialData && onDelete && (
-          <div className="flex w-full justify-center">
-            <button
-              onClick={() => {
-                const programTitle = programs.find((p) => p.id === lessonId)?.title || "це заняття";
-                onDelete(
-                  initialData.id,
-                  typeof programTitle === "string"
-                    ? programTitle
-                    : programTitle[i18n.language as keyof typeof programTitle] || programTitle.ua
-                );
-              }}
-              className="cursor-pointer rounded-lg px-3 py-2 text-sm font-bold text-red-600 transition-colors hover:bg-red-50"
-            >
-              <Trash2 size={24} />
-            </button>
-          </div>
-        )}
-
-        <button
-          onClick={onCancel}
-          className="cursor-pointer rounded-lg bg-gray-100 px-4 py-2 text-sm font-bold text-gray-600 transition-colors hover:bg-gray-200"
-        >
-          Скасувати
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="bg-Blue cursor-pointer rounded-lg px-4 py-2 text-sm font-bold text-white shadow-sm transition-colors hover:bg-blue-600"
-        >
-          Зберегти
-        </button>
-      </div>
-    </div>
-  );
-}
-
-// ============================================================================
-// ГОЛОВНИЙ КОМПОНЕНТ
-// ============================================================================
-export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps) {
+  onLoadingChange,
+}: ScheduleCalendarProps) {
   const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
   const [isLoadingSchedules, setIsLoadingSchedules] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
   const { isAdmin } = useAuth();
   const { t, i18n } = useTranslation();
   const [addingForGroup, setAddingForGroup] = useState<string | null>(null);
@@ -252,6 +40,8 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
   useEffect(() => {
     const fetchSchedules = async () => {
       setIsLoadingSchedules(true);
+      onLoadingChange?.(true);
+
       try {
         const data = await scheduleService.getSchedules();
         setSchedules(data);
@@ -259,12 +49,16 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
         console.error("Помилка при завантаженні розкладу:", error);
       } finally {
         setIsLoadingSchedules(false);
+        onLoadingChange?.(false);
       }
     };
     fetchSchedules();
-  }, []);
+  }, [onLoadingChange]);
 
   const handleSaveAdd = async (groupId: string, data: ScheduleFormData) => {
+    if (isProcessing) return;
+    setIsProcessing(true);
+
     try {
       const newScheduleData = { ...data, ageGroupId: groupId, date: newDate };
       const addedSchedule = await scheduleService.addSchedule(newScheduleData);
@@ -274,10 +68,15 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
     } catch (error) {
       console.error("Помилка:", error);
       toast.error("Помилка при збереженні.");
+    } finally {
+      setIsProcessing(false);
     }
   };
 
   const handleSaveEdit = async (scheduleId: string, data: ScheduleFormData) => {
+    if (isProcessing) return;
+    setIsProcessing(true);
+
     try {
       await scheduleService.updateSchedule(scheduleId, data);
 
@@ -301,13 +100,17 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
     } catch (error) {
       console.error("Помилка при оновленні:", error);
       toast.error("Помилка при оновленні.");
+    } finally {
+      setIsProcessing(false);
     }
   };
 
   const handleDeleteSchedule = async (scheduleId: string, title: string) => {
+    if (isProcessing) return;
     const confirmDelete = window.confirm(`Ви точно хочете видалити заняття "${title}" з розкладу?`);
     if (!confirmDelete) return;
 
+    setIsProcessing(true);
     try {
       await scheduleService.deleteSchedule(scheduleId);
       setSchedules((prev) => prev.filter((sch) => sch.id !== scheduleId));
@@ -316,17 +119,12 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
     } catch (error) {
       console.error("Помилка:", error);
       toast.error("Сталася помилка при видаленні.");
+    } finally {
+      setIsProcessing(false);
     }
   };
 
-  if (isLoadingSchedules) {
-    return (
-      <div className="my-30 flex flex-col items-center justify-center gap-4">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
-        <p className="text-gray-500">Формуємо графік занять...</p>
-      </div>
-    );
-  }
+  if (isLoadingSchedules) return null;
 
   const fullSchedule = schedules
     .map((scheduleItem) => {
@@ -334,7 +132,9 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
       if (!program) return null;
       return { ...program, ...scheduleItem };
     })
-    .filter((item) => item !== null);
+    .filter(
+      (item): item is NonNullable<typeof item> => item !== null,
+    );
 
   const displayDate = fullSchedule.length > 0 ? fullSchedule[0].date : newDate;
   const mainAgeGroups = ageGroups.filter((group) => !group.parentId);
@@ -355,6 +155,7 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
 
   return (
     <div className="font-nunito">
+      <PageLoader visible={isProcessing} />
       <h2 className="text-preset-2 my-10 text-center font-semibold text-gray-700">
         {t("programs.kids.schedule")} {displayDate}
       </h2>
@@ -372,7 +173,7 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
               acc[slot].push(lesson);
               return acc;
             },
-            {} as Record<string, ScheduleItem[]>
+            {} as Record<string, (typeof fullSchedule)[number][]>
           );
 
           // 2. Отримуємо відсортовані ключі часу (щоб розклад йшов по порядку)
@@ -476,7 +277,11 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
                               >
                                 <div className="flex w-full flex-col items-center justify-center text-center">
                                   <span className="text-preset-4 font-nunito leading-tight font-bold">
-                                    {(lesson.title as keyof typeof lesson.title)[i18n.language]}
+                                    {typeof lesson.title === "string"
+                                      ? lesson.title
+                                      : lesson.title[
+                                          i18n.language as keyof typeof lesson.title
+                                        ] || lesson.title.ua}
                                   </span>{" "}
                                   {lesson.level && (
                                     <span className="text-preset-5 text-gray-800">
@@ -492,8 +297,11 @@ export function ScheduleCalendar({ programs, ageGroups }: ScheduleCalendarProps)
 
                                 {isAdmin && (
                                   <button
+                                    type="button"
                                     onClick={() => setEditingScheduleId(lesson.id)}
-                                    className="ml-2 flex shrink-0 cursor-pointer items-center justify-center rounded-full p-1 text-gray-600 transition-colors hover:text-blue-600"
+                                    aria-label="Редагувати заняття"
+                                    title="Редагувати заняття"
+                                    className="ml-2 flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-gray-200 bg-white/90 text-gray-600 shadow-sm transition-all hover:border-blue-300 hover:bg-white hover:text-blue-600 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                                   >
                                     <Pencil size={14} />
                                   </button>

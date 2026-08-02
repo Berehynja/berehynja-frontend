@@ -1,114 +1,191 @@
-import { useState, useEffect, type ChangeEvent } from "react";
-import { Clock, Trash2, Plus, Save, Ban, CheckCircle2 } from "lucide-react";
+import { useEffect, useState, type ChangeEvent } from "react";
+import {
+  Ban,
+  CheckCircle2,
+  Clock,
+  Plus,
+  Save,
+  Trash2,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
+
 import { useAuth } from "../AuthProvider/useAuth";
-import { subscribeToSchedule, saveSchedule } from "../../services/workingSheduleService";
+import {
+  saveSchedule,
+  subscribeToSchedule,
+} from "../../services/workingSheduleService";
 import type { WorkingSchedule } from "../../types/workingSchedule";
 import type { LangKey } from "../../types/types";
+
+const WORKING_HOURS_TEXT = {
+  title: { ua: "Робочі години", de: "Öffnungszeiten", en: "Opening hours" },
+  closed: { ua: "Зачинено", de: "Geschlossen", en: "Closed" },
+  add: { ua: "Додати період", de: "Zeitraum hinzufügen", en: "Add period" },
+  save: { ua: "Зберегти графік", de: "Zeitplan speichern", en: "Save schedule" },
+  toggleClosed: {
+    ua: "Змінити статус",
+    de: "Status ändern",
+    en: "Change status",
+  },
+  remove: { ua: "Видалити період", de: "Zeitraum löschen", en: "Remove period" },
+  periodPlaceholder: { ua: "Період...", de: "Zeitraum...", en: "Period..." },
+  labelPlaceholder: { ua: "Опис...", de: "Beschreibung...", en: "Description..." },
+  empty: {
+    ua: "Графік поки не заповнений",
+    de: "Der Zeitplan ist noch nicht ausgefüllt",
+    en: "The schedule has not been filled in yet",
+  },
+  saved: { ua: "Графік збережено!", de: "Zeitplan gespeichert!", en: "Schedule saved!" },
+  saveError: {
+    ua: "Не вдалося зберегти графік.",
+    de: "Der Zeitplan konnte nicht gespeichert werden.",
+    en: "The schedule could not be saved.",
+  },
+};
 
 export const WorkingHours = () => {
   const { isAdmin } = useAuth();
   const { i18n, t } = useTranslation();
-
   const [items, setItems] = useState<WorkingSchedule[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [editLang, setEditLang] = useState<LangKey>("ua");
 
-  const currentLang = i18n.language as LangKey;
+  const detectedLanguage = (
+    i18n.resolvedLanguage || i18n.language
+  ).split("-")[0];
+  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
+    ? (detectedLanguage as LangKey)
+    : "ua";
 
   useEffect(() => {
     const unsubscribe = subscribeToSchedule((data) => {
       setItems(data);
       setLoading(false);
     });
+
     return () => unsubscribe();
   }, []);
 
-  // Оновлення простих полів (time, isClosed)
-  const handleUpdate = (id: string, updates: Partial<WorkingSchedule>): void => {
-    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, ...updates } : item)));
+  const handleUpdate = (
+    id: string,
+    updates: Partial<WorkingSchedule>,
+  ): void => {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, ...updates } : item,
+      ),
+    );
   };
 
-  // Оновлення перекладів (days, label)
-  const handleLangUpdate = (id: string, field: "days" | "label", value: string) => {
+  const handleLangUpdate = (
+    id: string,
+    field: "days" | "label",
+    value: string,
+  ) => {
     setItems((prev) =>
-      prev.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            [field]: { ...item[field], [editLang]: value },
-          };
-        }
-        return item;
-      })
+      prev.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              [field]: { ...item[field], [editLang]: value },
+            }
+          : item,
+      ),
     );
   };
 
   const addItem = (): void => {
     const newItem: WorkingSchedule = {
       id: crypto.randomUUID(),
-      days: { ua: "Новий період", en: "New period", de: "Zeitraum" },
+      days: { ua: "Новий період", en: "New period", de: "Neuer Zeitraum" },
       label: { ua: "Опис", en: "Description", de: "Beschreibung" },
       time: "09:00 - 18:00",
       isClosed: false,
     };
-    setItems([...items, newItem]);
+
+    setItems((prev) => [...prev, newItem]);
   };
 
   const removeItem = (id: string): void => {
-    setItems((prev) => prev.filter((i) => i.id !== id));
+    setItems((prev) => prev.filter((item) => item.id !== id));
   };
 
   const onSave = async (): Promise<void> => {
+    if (isSaving) return;
+    setIsSaving(true);
+
     try {
       await saveSchedule(items);
-      alert("Успішно збережено!");
+      toast.success(WORKING_HOURS_TEXT.saved[currentLang]);
     } catch (error) {
-      console.error("Save error:", error);
-      alert("Помилка при збереженні");
+      console.error("Schedule save error:", error);
+      toast.error(WORKING_HOURS_TEXT.saveError[currentLang]);
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  const statusLabels: Record<LangKey, string> = {
-    ua: "Зачинено",
-    en: "Closed",
-    de: "Geschlossen",
-  };
-
-  if (loading) return null;
+  if (loading) {
+    return (
+      <div
+        role="status"
+        aria-label="Loading"
+        className="min-h-80 w-full animate-pulse rounded-4xl bg-[#041560]"
+      />
+    );
+  }
 
   return (
-    <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#041560] p-6 text-white shadow-xl">
-      {/* HEADER */}
-      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <section
+      aria-labelledby="working-hours-title"
+      className="relative overflow-hidden rounded-4xl border border-white/10 bg-[#041560] p-5 text-white shadow-[0_24px_70px_rgba(4,21,96,0.28)] md:p-6 lg:p-8"
+    >
+      <header className="mb-7 flex flex-col items-center gap-5 text-center lg:flex-row lg:justify-between lg:text-left">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 shadow-lg shadow-blue-900/20">
-            <Clock size={20} />
+          <div className="flex size-11 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-950/30">
+            <Clock size={21} aria-hidden="true" />
           </div>
-          <h3 className="font-nunito text-xl font-black tracking-tight">Робочі години</h3>
+          <h2
+            id="working-hours-title"
+            className="font-nunito text-2xl font-black tracking-tight"
+          >
+            {WORKING_HOURS_TEXT.title[currentLang]}
+          </h2>
         </div>
 
         {isAdmin && (
-          <div className="flex items-center gap-3">
-            {/* Language Tabs */}
-            <div className="flex gap-1 rounded-xl border border-white/10 bg-white/5 p-1">
-              {(["ua", "en", "de"] as const).map((l) => {
-                const isFilled = items.every((i) => i.days[l]?.trim() && i.label[l]?.trim());
+          <div className="flex w-full flex-col items-center gap-3 md:w-auto md:flex-row md:flex-wrap md:justify-center">
+            <div className="flex rounded-xl border border-white/15 bg-white/5 p-1 shadow-inner">
+              {(["ua", "en", "de"] as const).map((lang) => {
+                const isFilled = items.every(
+                  (item) =>
+                    item.days[lang]?.trim() && item.label[lang]?.trim(),
+                );
+
                 return (
                   <button
-                    key={l}
-                    onClick={() => setEditLang(l)}
-                    className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] font-bold uppercase transition-all ${
-                      editLang === l
+                    key={lang}
+                    type="button"
+                    onClick={() => setEditLang(lang)}
+                    aria-pressed={editLang === lang}
+                    className={`flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold uppercase transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300 ${
+                      editLang === lang
                         ? "bg-blue-600 text-white shadow-md"
-                        : "text-white/40 hover:text-white"
+                        : "text-white/65 hover:bg-white/10 hover:text-white"
                     }`}
                   >
-                    {l}
+                    {lang}
                     {isFilled && (
                       <CheckCircle2
-                        size={12}
-                        className={editLang === l ? "text-blue-200" : "text-green-500"}
+                        size={13}
+                        aria-hidden="true"
+                        className={
+                          editLang === lang
+                            ? "text-blue-100"
+                            : "text-green-400"
+                        }
                       />
                     )}
                   </button>
@@ -116,122 +193,152 @@ export const WorkingHours = () => {
               })}
             </div>
 
-            <div className="ml-2 flex gap-1">
+            <div className="flex gap-2">
               <button
+                type="button"
                 onClick={addItem}
-                className="rounded-xl p-2.5 text-blue-400 transition-all hover:bg-white/10 active:scale-90"
+                aria-label={WORKING_HOURS_TEXT.add[currentLang]}
+                title={WORKING_HOURS_TEXT.add[currentLang]}
+                className="flex size-10 cursor-pointer items-center justify-center rounded-xl border border-blue-400/30 bg-blue-500/15 text-blue-300 transition-all hover:border-blue-300 hover:bg-blue-500 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300"
               >
-                <Plus size={22} />
+                <Plus size={20} aria-hidden="true" />
               </button>
               <button
+                type="button"
                 onClick={onSave}
-                className="rounded-xl p-2.5 text-green-400 transition-all hover:bg-white/10 active:scale-90"
+                disabled={isSaving}
+                aria-label={WORKING_HOURS_TEXT.save[currentLang]}
+                title={WORKING_HOURS_TEXT.save[currentLang]}
+                className="flex size-10 cursor-pointer items-center justify-center rounded-xl border border-green-400/30 bg-green-500/15 text-green-300 transition-all hover:border-green-300 hover:bg-green-500 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-300 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <Save size={22} />
+                <Save
+                  size={20}
+                  aria-hidden="true"
+                  className={isSaving ? "animate-pulse" : ""}
+                />
               </button>
             </div>
           </div>
         )}
-      </div>
+      </header>
 
-      {/* SCHEDULE LIST */}
-      <div className="space-y-6">
-        {items.map((item, index) => (
-          <div
+      <div className="space-y-3">
+        {items.length === 0 && (
+          <p className="rounded-2xl border border-white/10 bg-white/5 px-5 py-8 text-center text-sm font-semibold text-white/70">
+            {WORKING_HOURS_TEXT.empty[currentLang]}
+          </p>
+        )}
+
+        {items.map((item) => (
+          <article
             key={item.id}
-            className={`flex gap-4 pb-4 ${
-              index !== items.length - 1 ? "border-b border-white/5" : ""
-            }`}
+              className="rounded-2xl border border-white/10 bg-white/5 p-4 transition-all hover:border-white/20 hover:bg-white/7 md:p-5"
           >
-            {/* Admin Actions (Left side - logic) */}
-            {isAdmin && (
-              <div className="flex flex-col gap-2 pt-1">
-                <button
-                  onClick={() => handleUpdate(item.id, { isClosed: !item.isClosed })}
-                  className={`rounded-lg p-2 transition-all ${
-                    item.isClosed
-                      ? "bg-red-500 text-white"
-                      : "bg-white/5 text-white/30 hover:bg-white/10"
-                  }`}
-                >
-                  <Ban size={16} />
-                </button>
-                <button
-                  onClick={() => removeItem(item.id)}
-                  className="rounded-lg bg-white/5 p-2 text-white/30 transition-all hover:bg-red-400/10 hover:text-red-400"
-                >
-                  <Trash2 size={16} />
-                </button>
+              <div className="flex flex-col items-center gap-4 text-center md:flex-row md:text-left">
+              {isAdmin && (
+                <div className="order-2 flex shrink-0 gap-2 md:order-1 md:flex-col">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleUpdate(item.id, { isClosed: !item.isClosed })
+                    }
+                    aria-label={WORKING_HOURS_TEXT.toggleClosed[currentLang]}
+                    title={WORKING_HOURS_TEXT.toggleClosed[currentLang]}
+                    className={`flex size-9 cursor-pointer items-center justify-center rounded-xl border transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-300 ${
+                      item.isClosed
+                        ? "border-red-400 bg-red-500 text-white"
+                        : "border-white/10 bg-white/5 text-white/60 hover:border-red-400/50 hover:text-red-300"
+                    }`}
+                  >
+                    <Ban size={16} aria-hidden="true" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => removeItem(item.id)}
+                    aria-label={WORKING_HOURS_TEXT.remove[currentLang]}
+                    title={WORKING_HOURS_TEXT.remove[currentLang]}
+                    className="flex size-9 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/60 transition-all hover:border-red-400/50 hover:bg-red-500/10 hover:text-red-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-300"
+                  >
+                    <Trash2 size={16} aria-hidden="true" />
+                  </button>
+                </div>
+              )}
+
+                <div className="order-1 min-w-0 flex-1 md:order-2">
+                {isAdmin ? (
+                    <div className="mx-auto flex max-w-xl flex-col gap-2 md:mx-0">
+                    <input
+                      aria-label={`${WORKING_HOURS_TEXT.periodPlaceholder[currentLang]} ${editLang}`}
+                        className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-center text-xs font-black tracking-widest text-blue-300 uppercase outline-none transition-all placeholder:text-white/40 focus:border-blue-400 focus:bg-white/10 focus:ring-4 focus:ring-blue-500/10 md:text-left"
+                      value={item.days[editLang]}
+                      onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                        handleLangUpdate(item.id, "days", event.target.value)
+                      }
+                      placeholder={
+                        WORKING_HOURS_TEXT.periodPlaceholder[currentLang]
+                      }
+                    />
+                    <input
+                      aria-label={`${WORKING_HOURS_TEXT.labelPlaceholder[currentLang]} ${editLang}`}
+                        className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-center text-sm font-bold text-white outline-none transition-all placeholder:text-white/40 focus:border-blue-400 focus:bg-white/10 focus:ring-4 focus:ring-blue-500/10 md:text-left"
+                      value={item.label[editLang]}
+                      onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                        handleLangUpdate(item.id, "label", event.target.value)
+                      }
+                      placeholder={
+                        WORKING_HOURS_TEXT.labelPlaceholder[currentLang]
+                      }
+                    />
+                  </div>
+                ) : (
+                    <div className="flex flex-col items-center gap-1 md:items-start">
+                    <span
+                      className={`text-sm font-black tracking-widest uppercase ${
+                        item.isClosed ? "text-white/60" : "text-blue-300"
+                      }`}
+                    >
+                      {item.days[currentLang] || item.days.ua}
+                    </span>
+                    <span
+                      className={`text-base font-bold ${
+                        item.isClosed ? "text-white/60" : "text-white"
+                      }`}
+                    >
+                      {item.label[currentLang] || item.label.ua}
+                    </span>
+                  </div>
+                )}
               </div>
-            )}
 
-            {/* Main Info (Center - editable) */}
-            <div className="min-w-0 flex-1 space-y-2">
-              {isAdmin ? (
-                <div className="flex flex-col gap-2">
-                  <input
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-[11px] font-black tracking-widest text-blue-400 uppercase transition-all outline-none focus:border-blue-500"
-                    value={item.days[editLang]}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      handleLangUpdate(item.id, "days", e.target.value)
-                    }
-                    placeholder="Період..."
-                  />
-                  <input
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-bold text-white transition-all outline-none focus:border-blue-500"
-                    value={item.label[editLang]}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      handleLangUpdate(item.id, "label", e.target.value)
-                    }
-                    placeholder="Опис..."
-                  />
-                </div>
-              ) : (
-                <div className="flex flex-col  gap-1">
-                  <span
-                    className={`text-[15px] font-black pt-1 tracking-widest uppercase ${item.isClosed ? "text-white/50" : "text-blue-400"}`}
-                  >
-                    {item.days[currentLang] || item.days["ua"]}
+                <div className="order-3 flex min-w-32 shrink-0 items-center justify-center md:justify-end">
+                {item.isClosed ? (
+                  <span className="inline-flex min-h-8 min-w-25 items-center justify-center rounded-full border border-red-400/50 bg-red-500/20 px-4 text-xs font-black tracking-widest text-red-300 uppercase">
+                    {WORKING_HOURS_TEXT.closed[currentLang]}
                   </span>
-                  <span
-                    className={`text-sm font-bold ${item.isClosed ? "text-white/40" : "text-white"}`}
-                  >
-                    {item.label[currentLang] || item.label["ua"]}
+                ) : isAdmin ? (
+                  <input
+                    aria-label="Time"
+                    className="w-36 rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-center text-sm font-black text-white outline-none transition-all focus:border-blue-400 focus:bg-white/10 focus:ring-4 focus:ring-blue-500/10"
+                    value={item.time}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                      handleUpdate(item.id, { time: event.target.value })
+                    }
+                    placeholder="00:00 - 00:00"
+                  />
+                ) : (
+                  <span className="rounded-xl bg-white/5 px-4 py-2 text-base font-black tracking-tight whitespace-nowrap text-white">
+                    {item.time}
                   </span>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-
-            {/* Time / Status (Right side) */}
-            <div className="flex min-h-9.5 items-start ">
-              {/* min-h-[44px] відповідає висоті інпуту, щоб рядок не "стрибав" за висотою */}
-              {item.isClosed ? (
-                <span className="inline-flex h-6 min-w-[100px] items-center justify-center rounded-full border border-red-400/50 bg-red-500/20 px-3  text-[10px] leading-none font-black tracking-widest text-red-400 uppercase">
-                  {statusLabels[currentLang]}
-                </span>
-              ) : isAdmin ? (
-                <input
-                  className="w-32 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-right text-base font-black text-white transition-all outline-none focus:border-blue-500 focus:bg-white/10"
-                  value={item.time}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleUpdate(item.id, { time: e.target.value })
-                  }
-                  placeholder="00:00 - 00:00"
-                />
-              ) : (
-                <span className="text-base font-black tracking-tight whitespace-nowrap text-white">
-                  {item.time}
-                </span>
-              )}
-            </div>
-          </div>
+          </article>
         ))}
       </div>
 
-      {/* FOOTER */}
-      <p className="mt-8 text-center text-[14px] font-medium text-white/50 italic">
+      <p className="mt-7 text-center text-sm font-medium text-white/65 italic">
         * {t("schedule.disclaimer") || "Графік може змінюватися у святкові дні"}
       </p>
-    </div>
+    </section>
   );
 };

@@ -1,12 +1,11 @@
-import { 
-  Calendar, 
-  Clock, 
-  ArrowRight, 
-  // Target, 
-  Users, 
-  Pencil, 
-  Loader2, 
-  MapPin } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  ArrowRight,
+  Users,
+  Pencil,
+  MapPin,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import type { LangKey } from "../../../types/types";
 import { useEffect, useState } from "react";
@@ -21,14 +20,19 @@ import {
   addProgramAdults,
   deleteProgramAdults,
 } from "../../../services/programsAdultsService";
+import { PageLoader } from "../../ui/PageLoader";
+import toast from "react-hot-toast";
 
 export const ProgramsList = () => {
   const { isAdmin } = useAuth();
   const { i18n } = useTranslation();
-  const currentLang = i18n.language as LangKey;
+  const currentLang = (
+    i18n.resolvedLanguage || i18n.language
+  ).split("-")[0] as LangKey;
 
   const [programs, setPrograms] = useState<ProgramAdults[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProgram, setEditingProgram] = useState<ProgramAdults | null>(null);
 
@@ -44,50 +48,59 @@ export const ProgramsList = () => {
         setIsLoading(false);
       }
     };
-    loadData();
+    void loadData();
   }, []);
 
   // 2. Збереження/Оновлення
   const handleSave = async (formData: ProgramAdults) => {
+    if (isProcessing) return;
+    setIsProcessing(true);
+
     try {
       if (editingProgram) {
         await updateProgramAdults(editingProgram.id, formData);
-        setPrograms(
-          programs.map((p) =>
+        setPrograms((prev) =>
+          prev.map((p) =>
             p.id === editingProgram.id ? { ...formData, id: editingProgram.id } : p
           )
         );
       } else {
         const newProgram = await addProgramAdults(formData);
-        setPrograms([...programs, newProgram]);
+        setPrograms((prev) => [...prev, newProgram]);
       }
       setIsModalOpen(false);
+      toast.success(editingProgram ? "Програму оновлено!" : "Програму додано!");
     } catch (error) {
-      alert("Помилка збереження: " + error);
+      console.error("Помилка збереження:", error);
+      toast.error("Не вдалося зберегти програму.");
+    } finally {
+      setIsProcessing(false);
     }
   };
 
   // 3. Видалення
   const handleDelete = async (id: string) => {
+    if (isProcessing) return;
+    setIsProcessing(true);
+
     try {
       await deleteProgramAdults(id);
-      setPrograms(programs.filter((p) => p.id !== id));
+      setPrograms((prev) => prev.filter((p) => p.id !== id));
       setIsModalOpen(false);
+      toast.success("Програму видалено!");
     } catch (error) {
-      alert("Помилка видалення: " + error);
+      console.error("Помилка видалення:", error);
+      toast.error("Не вдалося видалити програму.");
+    } finally {
+      setIsProcessing(false);
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center py-20">
-        <Loader2 className="animate-spin text-blue-500" size={48} />
-      </div>
-    );
-  }
+  if (isLoading) return <PageLoader visible />;
 
   return (
     <>
+      <PageLoader visible={isProcessing} />
       {isAdmin && (
         <AddEvent
           onClick={() => {
@@ -106,10 +119,13 @@ export const ProgramsList = () => {
             {/* Кнопка редагування для адміна */}
             {isAdmin && (
               <button
+                type="button"
                 onClick={() => {
                   setEditingProgram(program);
                   setIsModalOpen(true);
                 }}
+                aria-label={`Редагувати: ${program.title[currentLang]}`}
+                title="Редагувати програму"
                 className="absolute top-4 right-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-gray-700 shadow-md backdrop-blur-sm transition-all hover:bg-blue-600 hover:text-white active:scale-90"
               >
                 <Pencil size={18} />
@@ -120,7 +136,9 @@ export const ProgramsList = () => {
             <div className="relative h-64 w-full overflow-hidden">
               <img
                 src={program.image}
-                alt="program"
+                alt={program.title[currentLang]}
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
 
@@ -190,6 +208,7 @@ export const ProgramsList = () => {
               {/* Кнопка переходу */}
               <Link
                 to={`/programs/adults/${program.id}`}
+                aria-label={`Детальніше про програму: ${program.title[currentLang]}`}
                 className="mt-auto flex items-center justify-center gap-3 rounded-2xl bg-gray-900 px-6 py-4 text-sm font-bold text-white transition-all hover:bg-blue-600 hover:shadow-lg active:scale-95"
               >
                 Детальніше <ArrowRight size={18} />

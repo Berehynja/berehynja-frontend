@@ -18,31 +18,88 @@ import { getProgramAdultsById, updateProgramAdults } from "../../../services/pro
 import { useTranslation } from "react-i18next";
 import type { ProgramAdults } from "../../../types/program";
 import type { LangKey } from "../../../types/types";
+import { PageLoader } from "../../ui/PageLoader";
+import toast from "react-hot-toast";
+import {
+  CourseRegistrationForm,
+  type CourseRegistrationData,
+} from "./CourseRegistrationForm";
 
 export const ProgramDetail = () => {
   const [program, setProgram] = useState<ProgramAdults | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   const [editLang, setEditLang] = useState<LangKey>("ua");
 
   const { id } = useParams();
   const { i18n } = useTranslation();
   const { isAdmin } = useAuth();
-  const lang = (i18n.language as LangKey) || "ua";
+  const lang = ((i18n.resolvedLanguage || i18n.language).split("-")[0] as LangKey) || "ua";
 
   useEffect(() => {
     const getSingleEvent = async () => {
-      if (!id) return;
-      const programData = await getProgramAdultsById(id);
-      setProgram(programData as ProgramAdults);
+      if (!id) {
+        setIsLoading(false);
+        return;
+      }
+
+      setIsLoading(true);
+
+      try {
+        const programData = await getProgramAdultsById(id);
+        setProgram(programData as ProgramAdults | null);
+      } catch (error) {
+        console.error("Помилка при завантаженні програми:", error);
+        setProgram(null);
+      } finally {
+        setIsLoading(false);
+      }
     };
-    getSingleEvent();
+
+    void getSingleEvent();
   }, [id]);
 
+  useEffect(() => {
+    if (!isRegistrationOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsRegistrationOpen(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [isRegistrationOpen]);
+
   const handleSave = async () => {
-    if (!id || !program) return;
-    await updateProgramAdults(id, program);
-    setIsEditing(false);
+    if (!id || !program || isSaving) return;
+
+    setIsSaving(true);
+
+    try {
+      await updateProgramAdults(id, program);
+      setIsEditing(false);
+      toast.success("Зміни збережено!");
+    } catch (error) {
+      console.error("Помилка при збереженні програми:", error);
+      toast.error("Не вдалося зберегти зміни.");
+    } finally {
+      setIsSaving(false);
+    }
   };
+
+  const handleRegistration = (data: CourseRegistrationData) => {
+    console.log("Course registration data:", data);
+  };
+
+  if (isLoading) return <PageLoader visible />;
 
   if (!program) {
     return <div className="font-nunito py-20 text-center text-2xl">Програму не знайдено</div>;
@@ -50,6 +107,7 @@ export const ProgramDetail = () => {
 
   return (
     <div className="font-nunito w-full pb-20 text-left">
+      <PageLoader visible={isSaving} />
       <div className="mx-auto max-w-7xl px-4 pt-8">
         <Link
           to="/programs/adults"
@@ -75,6 +133,9 @@ export const ProgramDetail = () => {
               src={program.image}
               className="h-full w-full object-cover"
               alt={program.title[lang]}
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
             />
             <div className="absolute top-6 right-6 rounded-2xl border border-white/30 bg-white/60 p-5 shadow-lg backdrop-blur-md">
               <span className="mb-1 block text-xs font-bold tracking-widest text-blue-600 uppercase">
@@ -91,6 +152,7 @@ export const ProgramDetail = () => {
               </h3>
               {isAdmin && (
               <button
+                type="button"
                 onClick={() => {
                   setIsEditing(!isEditing);
                   setEditLang(lang);
@@ -116,7 +178,9 @@ export const ProgramDetail = () => {
                 {(["ua", "de", "en"] as const).map((l) => (
                   <button
                     key={l}
+                    type="button"
                     onClick={() => setEditLang(l)}
+                    aria-pressed={editLang === l}
                     className={`rounded-lg px-4 py-1.5 text-xs font-bold uppercase transition-all ${editLang === l ? "bg-white text-blue-600 shadow" : "text-gray-400 hover:text-gray-600"}`}
                   >
                     {l}
@@ -127,6 +191,7 @@ export const ProgramDetail = () => {
 
             {isEditing ? (
               <textarea
+                aria-label="Опис програми"
                 className="h-64 w-full rounded-3xl border-2 border-slate-100 bg-slate-50 p-6 font-medium outline-none focus:border-blue-500"
                 value={program.description[editLang] || ""}
                 onChange={(e) =>
@@ -167,13 +232,29 @@ export const ProgramDetail = () => {
                           ? {...prev, features: {...prev.features!, [editLang]: newArray } } 
                           : prev );
                         }}
-                      /><X 
-                      size={24} 
-                      className="text-red-500"
-                      onClick={()=> setProgram((prev) => {const newArray = [...(prev?.features?.[editLang] || [])];
-                      newArray.splice(index, 1);
-                      return prev ? {...prev, features: {...prev.features!, [editLang]: newArray }} : prev;})}
-                      /></div>
+                      />
+                      <button
+                        type="button"
+                        aria-label="Видалити пункт"
+                        onClick={() =>
+                          setProgram((prev) => {
+                            const newArray = [...(prev?.features?.[editLang] || [])];
+                            newArray.splice(index, 1);
+                            return prev
+                              ? {
+                                  ...prev,
+                                  features: {
+                                    ...prev.features!,
+                                    [editLang]: newArray,
+                                  },
+                                }
+                              : prev;
+                          })
+                        }
+                      >
+                        <X size={24} className="text-red-500" />
+                      </button>
+                    </div>
                     ) : (
                       <li
                         key={index}
@@ -208,6 +289,7 @@ export const ProgramDetail = () => {
 
               {isEditing ? (
                 <textarea
+                  aria-label="Мета курсу"
                   className="w-full rounded-2xl border-2 border-blue-100 bg-white p-3 font-semibold text-blue-800 outline-none focus:border-blue-500"
                   value={program.target?.[editLang] || ""}
                   onChange={(e) =>
@@ -221,6 +303,7 @@ export const ProgramDetail = () => {
 
           {isEditing && (
             <button
+              type="button"
               onClick={handleSave}
               className="flex items-center gap-2 rounded-2xl bg-gray-900 px-10 py-4 font-bold text-white uppercase shadow-lg transition-all hover:bg-blue-600 active:scale-95"
             >
@@ -283,7 +366,11 @@ export const ProgramDetail = () => {
               </div>
             </div>
 
-            <button className="w-full rounded-2xl bg-gray-900 py-5 text-lg font-bold tracking-widest text-white uppercase shadow-lg transition-all hover:bg-blue-600 active:scale-95">
+            <button
+              type="button"
+              onClick={() => setIsRegistrationOpen(true)}
+              className="w-full rounded-2xl bg-gray-900 py-5 text-lg font-bold tracking-widest text-white uppercase shadow-lg transition-all hover:bg-blue-600 active:scale-95"
+            >
               Записатися зараз
             </button>
             <p className="mt-2 text-center text-xs font-bold tracking-tighter text-gray-400 uppercase">
@@ -292,6 +379,38 @@ export const ProgramDetail = () => {
           </div>
         </div>
       </div>
+
+      {isRegistrationOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Реєстрація на курс"
+          className="fixed inset-0 z-9999 flex items-center justify-center bg-slate-950/65 p-4 backdrop-blur-sm"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setIsRegistrationOpen(false);
+            }
+          }}
+        >
+          <div className="relative max-h-[calc(100dvh-2rem)] w-full max-w-3xl overflow-y-auto rounded-4xl">
+            <button
+              type="button"
+              onClick={() => setIsRegistrationOpen(false)}
+              aria-label="Закрити форму реєстрації"
+              title="Закрити"
+              className="absolute top-4 right-4 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-md transition-all hover:border-blue-300 hover:text-blue-600 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            >
+              <X size={20} aria-hidden="true" />
+            </button>
+
+            <CourseRegistrationForm
+              courseId={program.id}
+              courseTitle={program.title[lang] || program.title.ua}
+              onSubmit={handleRegistration}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
