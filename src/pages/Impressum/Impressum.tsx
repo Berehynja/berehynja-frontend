@@ -241,7 +241,7 @@ export const Impressum = () => {
             accent="blue"
           >
             <p className="text-lg font-semibold text-slate-950">
-              Berehynja e.V.
+              Berehynja
             </p>
             <div className="mt-4 flex items-start gap-3 text-slate-600">
               <MapPin size={18} className="mt-0.5 shrink-0 text-slate-400" />
@@ -373,7 +373,7 @@ export const Impressum = () => {
           <Info
             size={130}
             aria-hidden="true"
-            className="pointer-events-none absolute -top-4 -right-4 text-slate-900/[0.03]"
+            className="pointer-events-none absolute -top-4 -right-4 text-slate-900/3"
           />
 
           <div className="relative">
