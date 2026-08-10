@@ -11,10 +11,7 @@ import type { AgeGroup } from "../../../types/ageGroup";
 import type { ScheduleItem } from "../../../types/scheduleItem";
 import { scheduleService } from "../../../services/scheduleService";
 import { getNextSundayDate } from "../../../utils/dateUtils";
-import {
-  InlineScheduleForm,
-  type ScheduleFormData,
-} from "./InlineScheduleForm";
+import { InlineScheduleForm, type ScheduleFormData } from "./InlineScheduleForm";
 
 interface ScheduleCalendarProps {
   programs: Program[];
@@ -22,11 +19,7 @@ interface ScheduleCalendarProps {
   onLoadingChange?: (isLoading: boolean) => void;
 }
 
-export function ScheduleCalendar({
-  programs,
-  ageGroups,
-  onLoadingChange,
-}: ScheduleCalendarProps) {
+export function ScheduleCalendar({ programs, ageGroups, onLoadingChange }: ScheduleCalendarProps) {
   const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
   const [isLoadingSchedules, setIsLoadingSchedules] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -35,7 +28,71 @@ export function ScheduleCalendar({
   const [addingForGroup, setAddingForGroup] = useState<string | null>(null);
   const [editingScheduleId, setEditingScheduleId] = useState<string | null>(null);
 
+  const [adminDate, setAdminDate] = useState<string | null>(null);
   const newDate = getNextSundayDate();
+
+  // DD.MM.YYYY → YYYY-MM-DD
+  const dateToInputValue = (date: string): string => {
+    const [day, month, year] = date.split(".");
+    return `${year}-${month}-${day}`;
+  };
+
+  // YYYY-MM-DD → DD.MM.YYYY
+  const dateFromInputValue = (date: string): string => {
+    const [year, month, day] = date.split("-");
+    return `${day}.${month}.${year}`;
+  };
+
+  // useEffect(() => {
+  //   if (!adminDate) {
+  //     return;
+  //   }
+
+  //   const adminDateObj = new Date(`${dateToInputValue(adminDate)}T00:00:00`);
+
+  //   const newDateObj = new Date(`${dateToInputValue(newDate)}T00:00:00`);
+
+  //   if (adminDateObj < newDateObj) {
+  //     setAdminDate(null);
+  //   }
+  // }, [adminDate, newDate]);
+
+  // const newDate = getNextSundayDate();
+
+  useEffect(() => {
+    if (!adminDate) {
+      return;
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const adminDateObj = new Date(`${dateToInputValue(adminDate)}T00:00:00`);
+
+    if (adminDateObj < today) {
+      setAdminDate(null);
+    }
+  }, [adminDate]);
+
+  const displayDate = adminDate || newDate;
+
+  // useEffect(() => {
+  //   const fetchSchedules = async () => {
+  //     setIsLoadingSchedules(true);
+  //     onLoadingChange?.(true);
+
+  //     try {
+  //       const data = await scheduleService.getSchedules();
+  //       setSchedules(data);
+  //     } catch (error) {
+  //       console.error("Помилка при завантаженні розкладу:", error);
+  //     } finally {
+  //       setIsLoadingSchedules(false);
+  //       onLoadingChange?.(false);
+  //     }
+  //   };
+  //   fetchSchedules();
+  // }, [onLoadingChange]);
 
   useEffect(() => {
     const fetchSchedules = async () => {
@@ -43,8 +100,13 @@ export function ScheduleCalendar({
       onLoadingChange?.(true);
 
       try {
-        const data = await scheduleService.getSchedules();
-        setSchedules(data);
+        const [schedulesData, savedAdminDate] = await Promise.all([
+          scheduleService.getSchedules(),
+          scheduleService.getAdminDate(),
+        ]);
+
+        setSchedules(schedulesData);
+        setAdminDate(savedAdminDate);
       } catch (error) {
         console.error("Помилка при завантаженні розкладу:", error);
       } finally {
@@ -52,6 +114,7 @@ export function ScheduleCalendar({
         onLoadingChange?.(false);
       }
     };
+
     fetchSchedules();
   }, [onLoadingChange]);
 
@@ -132,11 +195,8 @@ export function ScheduleCalendar({
       if (!program) return null;
       return { ...program, ...scheduleItem };
     })
-    .filter(
-      (item): item is NonNullable<typeof item> => item !== null,
-    );
+    .filter((item): item is NonNullable<typeof item> => item !== null);
 
-  const displayDate = fullSchedule.length > 0 ? fullSchedule[0].date : newDate;
   const mainAgeGroups = ageGroups.filter((group) => !group.parentId);
 
   const eventsByAge = mainAgeGroups.map((group) => {
@@ -156,9 +216,65 @@ export function ScheduleCalendar({
   return (
     <div className="font-nunito">
       <PageLoader visible={isProcessing} />
-      <h2 className="text-preset-2 my-10 text-center font-semibold text-gray-700">
+      {/* <h2 className="text-preset-2 my-10 text-center font-semibold text-gray-700">
         {t("programs.kids.schedule")} {displayDate}
-      </h2>
+      </h2> */}
+
+      <div className="my-10 flex flex-col items-center gap-3">
+        <h2 className="text-preset-2 text-center font-semibold text-gray-700">
+          {t("programs.kids.schedule")} {displayDate}
+        </h2>
+
+        {isAdmin && (
+          <div className="flex items-center gap-2">
+            <label htmlFor="admin-date" className="text-sm font-semibold text-gray-600">
+              Дата:
+            </label>
+
+            <input
+              id="admin-date"
+              type="date"
+              value={adminDate ? dateToInputValue(adminDate) : ""}
+              min={new Date().toISOString().split("T")[0]}
+              // onChange={(e) => {
+              //   setAdminDate(e.target.value ? dateFromInputValue(e.target.value) : null);
+              // }}
+              onChange={async (e) => {
+                const value = e.target.value;
+
+                if (!value) {
+                  setAdminDate(null);
+                  await scheduleService.setAdminDate(null);
+                  return;
+                }
+
+                const formattedDate = dateFromInputValue(value);
+
+                setAdminDate(formattedDate);
+
+                try {
+                  await scheduleService.setAdminDate(formattedDate);
+                } catch (error) {
+                  console.error("Помилка при збереженні дати:", error);
+                  toast.error("Не вдалося зберегти дату.");
+                }
+              }}
+              className="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            />
+
+            {adminDate && (
+              <button
+                type="button"
+                onClick={() => setAdminDate(null)}
+                className="rounded-md px-2 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                title="Повернути автоматичну дату"
+              >
+                Скинути
+              </button>
+            )}
+          </div>
+        )}
+      </div>
 
       <div className="grid gap-6 xl:grid-cols-4">
         {eventsByAge.map(({ groupId, groupName, lessons }) => {
@@ -279,9 +395,8 @@ export function ScheduleCalendar({
                                   <span className="text-preset-4 font-nunito leading-tight font-bold">
                                     {typeof lesson.title === "string"
                                       ? lesson.title
-                                      : lesson.title[
-                                          i18n.language as keyof typeof lesson.title
-                                        ] || lesson.title.ua}
+                                      : lesson.title[i18n.language as keyof typeof lesson.title] ||
+                                        lesson.title.ua}
                                   </span>{" "}
                                   {lesson.level && (
                                     <span className="text-preset-5 text-gray-800">
