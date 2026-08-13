@@ -2,7 +2,6 @@ import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
 import {
   Building2,
   Copyright,
-  Edit2,
   FileText,
   Globe,
   Info,
@@ -10,9 +9,9 @@ import {
   Loader2,
   Mail,
   MapPin,
+  Pencil,
   Phone,
   Save,
-  Scale,
   ShieldCheck,
   UserCircle,
   X,
@@ -40,6 +39,9 @@ const INITIAL_DATA: ImpressumData = {
   headerDescription: "",
   website: "",
 };
+
+type EditableBlock =
+  "header" | "representative" | "contact" | "register" | "responsible";
 
 const UI_TEXT = {
   ua: {
@@ -83,7 +85,7 @@ const UI_TEXT = {
 export const Impressum = () => {
   const { isAdmin } = useAuth();
   const { i18n } = useTranslation();
-  const [isEditing, setIsEditing] = useState(false);
+  const [editingBlock, setEditingBlock] = useState<EditableBlock | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [legalData, setLegalData] = useState<ImpressumData>(INITIAL_DATA);
@@ -124,15 +126,15 @@ export const Impressum = () => {
     setLegalData((previous) => ({ ...previous, [name]: value }));
   };
 
-  const handleStartEditing = () => {
+  const handleStartEditing = (block: EditableBlock) => {
     setSavedLegalData({ ...legalData });
-    setIsEditing(true);
+    setEditingBlock(block);
   };
 
   const handleCancelEditing = () => {
     if (isSaving) return;
     setLegalData({ ...savedLegalData });
-    setIsEditing(false);
+    setEditingBlock(null);
   };
 
   const handleSave = async () => {
@@ -142,7 +144,7 @@ export const Impressum = () => {
     try {
       await saveImpressum(legalData);
       setSavedLegalData({ ...legalData });
-      setIsEditing(false);
+      setEditingBlock(null);
       toast.success(text.saved);
     } catch (error) {
       console.error("Impressum save error:", error);
@@ -153,69 +155,81 @@ export const Impressum = () => {
   };
 
   const inputClassName =
-    "w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10";
+    "w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-base font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10";
+
+  const renderEditActions = (block: EditableBlock) => {
+    if (!isAdmin) return null;
+
+    const isCurrentBlock = editingBlock === block;
+    const isAnotherBlockOpen = editingBlock !== null && !isCurrentBlock;
+
+    if (!isCurrentBlock) {
+      return (
+        <button
+          type="button"
+          onClick={() => handleStartEditing(block)}
+          disabled={isSaving || isAnotherBlockOpen}
+          aria-label={text.edit}
+          title={text.edit}
+          className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 shadow-sm transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          <Pencil size={17} aria-hidden="true" />
+        </button>
+      );
+    }
+
+    return (
+      <div className="flex shrink-0 items-center gap-2">
+        <button
+          type="button"
+          onClick={handleCancelEditing}
+          disabled={isSaving}
+          aria-label={text.cancel}
+          title={text.cancel}
+          className="flex size-10 cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 shadow-sm transition-all hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <X size={18} aria-hidden="true" />
+        </button>
+
+        <button
+          type="button"
+          onClick={() => void handleSave()}
+          disabled={isSaving}
+          aria-label={text.save}
+          title={text.save}
+          className="flex size-10 cursor-pointer items-center justify-center rounded-xl border border-emerald-600 bg-emerald-600 text-white shadow-sm transition-all hover:bg-emerald-700 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 disabled:cursor-wait disabled:opacity-60"
+        >
+          {isSaving ? (
+            <Loader2 size={18} className="animate-spin" aria-hidden="true" />
+          ) : (
+            <Save size={18} aria-hidden="true" />
+          )}
+        </button>
+      </div>
+    );
+  };
 
   return (
     <div className="font-nunito mx-auto w-full max-w-6xl px-3 pb-14 md:px-6 md:pb-20">
       <PageLoader visible={isLoading} />
 
-      {isAdmin && (
-        <div className="fixed right-4 bottom-4 z-60 flex items-center gap-2 rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-xl backdrop-blur md:right-6 md:bottom-6">
-          {isEditing && (
-            <button
-              type="button"
-              onClick={handleCancelEditing}
-              disabled={isSaving}
-              aria-label={text.cancel}
-              title={text.cancel}
-              className="flex size-11 cursor-pointer items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <X size={19} />
-            </button>
-          )}
-
-          <button
-            type="button"
-            onClick={isEditing ? handleSave : handleStartEditing}
-            disabled={isSaving}
-            className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-3 text-xs font-extrabold text-white shadow-md transition disabled:cursor-wait disabled:opacity-60 ${
-              isEditing
-                ? "bg-emerald-600 hover:bg-emerald-700"
-                : "bg-blue-600 hover:bg-blue-700"
-            }`}
-          >
-            {isSaving ? (
-              <Loader2 size={18} className="animate-spin" />
-            ) : isEditing ? (
-              <Save size={18} />
-            ) : (
-              <Edit2 size={18} />
-            )}
-            <span className="hidden md:inline">
-              {isSaving ? text.saving : isEditing ? text.save : text.edit}
-            </span>
-          </button>
-        </div>
-      )}
-
       <header className="py-8 md:py-12">
-        <div className="flex w-fit max-w-full flex-col items-center gap-3">
-          <div className="flex items-center gap-3 md:gap-4">
-            <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 shadow-sm md:size-12">
-              <Scale size={23} />
-            </div>
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex w-fit max-w-full flex-col items-center gap-3">
             <h1 className="text-preset-2 font-semibold tracking-tight text-slate-950">
               Impressum
             </h1>
+
+            <div
+              aria-hidden="true"
+              className="h-1 w-full rounded-full bg-linear-to-r from-blue-500 to-yellow-400"
+            />
           </div>
 
-          <div
-            aria-hidden="true"
-            className="h-1 w-full rounded-full bg-linear-to-r from-blue-500 to-yellow-400"
-          />
+          {renderEditActions("header")}
         </div>
 
-        {isEditing ? (
+        {editingBlock === "header" ? (
           <textarea
             name="headerDescription"
             value={legalData.headerDescription}
@@ -240,12 +254,12 @@ export const Impressum = () => {
             title="Angaben gemäß § 5 TMG"
             accent="blue"
           >
-            <p className="text-lg font-semibold text-slate-950">
-              Berehynja
+            <p className="text-lg font-semibold text-slate-950 md:text-xl">
+              Berehynja e.V.
             </p>
             <div className="mt-4 flex items-start gap-3 text-slate-600">
               <MapPin size={18} className="mt-0.5 shrink-0 text-slate-400" />
-              <address className="not-italic leading-7">
+              <address className="text-base leading-7 not-italic md:text-lg md:leading-8">
                 {contacts?.address || "Weserstraße 24"}
                 <br />
                 {contacts?.city || "32545 Bad Oeynhausen, Germany"}
@@ -253,8 +267,13 @@ export const Impressum = () => {
             </div>
           </LegalCard>
 
-          <LegalCard icon={UserCircle} title="Vertreten durch" accent="blue">
-            {isEditing ? (
+          <LegalCard
+            icon={UserCircle}
+            title="Vertreten durch"
+            accent="blue"
+            action={renderEditActions("representative")}
+          >
+            {editingBlock === "representative" ? (
               <div className="space-y-3">
                 <input
                   name="representative"
@@ -273,18 +292,23 @@ export const Impressum = () => {
               </div>
             ) : (
               <div>
-                <p className="text-lg font-semibold text-slate-950">
+                <p className="text-lg font-semibold text-slate-950 md:text-xl">
                   {legalData.representative || "Nicht angegeben"}
                 </p>
-                <p className="mt-2 inline-flex rounded-lg border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-bold tracking-wide text-slate-600 uppercase">
+                <p className="mt-2 inline-flex rounded-lg border border-slate-200 bg-slate-100 px-3 py-1 text-sm font-semibold tracking-wide text-slate-600 uppercase">
                   {legalData.position || "Nicht angegeben"}
                 </p>
               </div>
             )}
           </LegalCard>
 
-          <LegalCard icon={Mail} title="Kontakt" accent="yellow">
-            <div className="space-y-4 text-slate-700">
+          <LegalCard
+            icon={Mail}
+            title="Kontakt"
+            accent="yellow"
+            action={renderEditActions("contact")}
+          >
+            <div className="space-y-4 text-base text-slate-700 md:text-lg">
               <div className="flex items-center gap-3">
                 <Phone size={18} className="shrink-0 text-slate-400" />
                 <a
@@ -307,7 +331,7 @@ export const Impressum = () => {
 
               <div className="flex items-start gap-3 border-t border-slate-100 pt-4">
                 <Globe size={18} className="mt-3 shrink-0 text-slate-400" />
-                {isEditing ? (
+                {editingBlock === "contact" ? (
                   <input
                     name="website"
                     type="url"
@@ -332,8 +356,13 @@ export const Impressum = () => {
             </div>
           </LegalCard>
 
-          <LegalCard icon={FileText} title="Registereintrag" accent="blue">
-            <p className="mb-5 text-sm leading-6 text-slate-500">
+          <LegalCard
+            icon={FileText}
+            title="Registereintrag"
+            accent="blue"
+            action={renderEditActions("register")}
+          >
+            <p className="mb-5 text-base leading-7 text-slate-600 md:text-lg md:leading-8">
               Eintragung im Vereinsregister.
             </p>
 
@@ -341,7 +370,7 @@ export const Impressum = () => {
               <LegalValue
                 label="Registergericht"
                 value={legalData.registerCourt || "\u2014"}
-                isEditing={isEditing}
+                isEditing={editingBlock === "register"}
               >
                 <input
                   name="registerCourt"
@@ -355,7 +384,7 @@ export const Impressum = () => {
               <LegalValue
                 label="Registernummer"
                 value={legalData.registerNumber || "\u2014"}
-                isEditing={isEditing}
+                isEditing={editingBlock === "register"}
               >
                 <input
                   name="registerNumber"
@@ -373,16 +402,20 @@ export const Impressum = () => {
           <Info
             size={130}
             aria-hidden="true"
-            className="pointer-events-none absolute -top-4 -right-4 text-slate-900/3"
+            className="pointer-events-none absolute -top-4 -right-4 text-slate-900/[0.03]"
           />
 
           <div className="relative">
-            <h2 className="text-preset-5 flex items-start gap-3 font-bold tracking-wide text-slate-700 uppercase">
-              <Info size={20} className="mt-0.5 shrink-0 text-slate-500" />
-              Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
-            </h2>
+            <div className="flex items-start justify-between gap-4">
+              <h2 className="flex items-start gap-3 text-base font-semibold tracking-wide text-slate-700 uppercase md:text-lg">
+                <Info size={20} className="mt-0.5 shrink-0 text-slate-500" />
+                Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
+              </h2>
 
-            {isEditing ? (
+              {renderEditActions("responsible")}
+            </div>
+
+            {editingBlock === "responsible" ? (
               <textarea
                 name="responsiblePerson"
                 value={legalData.responsiblePerson}
@@ -392,7 +425,7 @@ export const Impressum = () => {
                 placeholder={text.responsiblePlaceholder}
               />
             ) : (
-              <p className="mt-5 inline-block rounded-2xl border border-slate-200 bg-white px-4 py-3 font-medium leading-7 text-slate-800 shadow-sm">
+              <p className="mt-5 inline-block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base leading-7 font-medium text-slate-800 shadow-sm md:text-lg md:leading-8">
                 {legalData.responsiblePerson || "Nicht angegeben"}
               </p>
             )}
@@ -439,10 +472,17 @@ interface LegalCardProps {
   icon: typeof Building2;
   title: string;
   accent: "blue" | "yellow";
+  action?: ReactNode;
   children: ReactNode;
 }
 
-const LegalCard = ({ icon: Icon, title, accent, children }: LegalCardProps) => {
+const LegalCard = ({
+  icon: Icon,
+  title,
+  accent,
+  action,
+  children,
+}: LegalCardProps) => {
   const isYellow = accent === "yellow";
 
   return (
@@ -451,22 +491,29 @@ const LegalCard = ({ icon: Icon, title, accent, children }: LegalCardProps) => {
         isYellow ? "border-t-yellow-400" : "border-t-blue-600"
       }`}
     >
-      <div className="mb-6 flex items-center gap-3">
-        <div
-          className={`flex size-11 shrink-0 items-center justify-center rounded-xl ${
-            isYellow
-              ? "bg-yellow-50 text-amber-600"
-              : "bg-blue-50 text-blue-600"
-          }`}
-        >
-          <Icon size={20} />
+      <div className="mb-6 flex items-start justify-between gap-4">
+        <div className="flex min-w-0 items-center gap-3">
+          <div
+            className={`flex size-11 shrink-0 items-center justify-center rounded-xl ${
+              isYellow
+                ? "bg-yellow-50 text-amber-600"
+                : "bg-blue-50 text-blue-600"
+            }`}
+          >
+            <Icon size={20} />
+          </div>
+
+          <h2 className="text-base font-semibold tracking-wide text-slate-700 uppercase md:text-lg">
+            {title}
+          </h2>
         </div>
-        <h2 className="text-preset-5 font-bold tracking-wide text-slate-600 uppercase">
-          {title}
-        </h2>
+
+        {action}
       </div>
 
-      <div className="md:pl-14">{children}</div>
+      <div className="text-base leading-7 md:pl-14 md:text-lg md:leading-8">
+        {children}
+      </div>
     </section>
   );
 };
@@ -480,13 +527,13 @@ interface LegalValueProps {
 
 const LegalValue = ({ label, value, isEditing, children }: LegalValueProps) => (
   <div className="grid gap-2 border-b border-slate-100 pb-4 last:border-0 last:pb-0 md:grid-cols-[140px_1fr] md:items-center">
-    <span className="text-xs font-bold tracking-wide text-slate-500 uppercase">
+    <span className="text-sm font-semibold tracking-wide text-slate-600 uppercase md:text-base">
       {label}
     </span>
     {isEditing ? (
       children
     ) : (
-      <span className="font-semibold text-slate-800 md:text-right">
+      <span className="text-base font-semibold text-slate-800 md:text-right md:text-lg">
         {value || "—"}
       </span>
     )}
@@ -505,10 +552,12 @@ const DisclaimerItem = ({
   children,
 }: DisclaimerItemProps) => (
   <article>
-    <h3 className="mb-3 flex items-center gap-2 font-semibold text-slate-900">
+    <h3 className="mb-3 flex items-center gap-2 text-base font-semibold text-slate-900 md:text-lg">
       <Icon size={19} className="shrink-0 text-blue-600" />
       {title}
     </h3>
-    <p className="text-sm leading-6 text-slate-600">{children}</p>
+    <p className="text-base leading-7 text-slate-600 md:text-lg md:leading-8">
+      {children}
+    </p>
   </article>
 );

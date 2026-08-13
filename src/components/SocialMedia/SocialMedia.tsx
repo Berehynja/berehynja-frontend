@@ -2,7 +2,10 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import { Edit2, Save } from "lucide-react";
 
 import { InstagramIcon, TelegramIcon } from "../icons/SocialIcons";
-import { subscribeToContacts, saveContacts } from "../../services/contactService";
+import {
+  subscribeToContacts,
+  saveContacts,
+} from "../../services/contactService";
 import { useAuth } from "../AuthProvider/useAuth";
 import type { ContactData } from "../../types/contactData";
 
@@ -61,7 +64,7 @@ export const SocialMedia = () => {
   if (!contacts) return null;
 
   const socialLinkStyles =
-    "group flex h-12 w-12 items-center justify-center rounded-xl text-white shadow-md transition-all duration-300 hover:scale-110 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-slate-900";
+    "group flex h-12 w-12 cursor-pointer items-center justify-center rounded-xl text-white shadow-md transition-all duration-300 hover:scale-110 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-slate-900";
 
   return (
     <div className="flex flex-col gap-4">
@@ -134,7 +137,9 @@ export const SocialMedia = () => {
           <button
             type="button"
             onClick={isEditing ? handleSave : () => setIsEditing(true)}
-            aria-label={isEditing ? "Save social media links" : "Edit social media links"}
+            aria-label={
+              isEditing ? "Save social media links" : "Edit social media links"
+            }
             title={isEditing ? "Save" : "Edit"}
             className={`ml-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl transition-all focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-slate-900 ${
               isEditing

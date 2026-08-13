@@ -1,5 +1,5 @@
 import { useEffect, useState, type ChangeEvent } from "react";
-import { Edit2, Mail, MapPin, Phone, Save } from "lucide-react";
+import { Edit2, Loader2, Mail, MapPin, Phone, Save } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 
@@ -106,9 +106,9 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
-    "-",
-  )[0];
+  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
+    .split("-")[0]
+    .toLowerCase();
   const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
     ? (detectedLanguage as LangKey)
     : "ua";
@@ -156,12 +156,12 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
   return (
     <section
       aria-labelledby="contact-info-title"
-      className="relative flex h-full flex-col rounded-4xl border border-slate-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.1)] md:p-8 lg:p-10"
+      className="font-nunito relative flex h-full flex-col rounded-4xl border border-slate-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.1)] md:p-8 lg:p-10"
     >
       <div className="mb-8 flex items-center justify-between gap-4">
         <h2
           id="contact-info-title"
-          className="font-nunito text-3xl leading-tight font-black text-gray-900 md:text-4xl"
+          className="text-preset-3 font-semibold tracking-tight text-slate-950"
         >
           {CONTACT_INFO_TEXT.title[currentLang]}
         </h2>
@@ -183,7 +183,9 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
                 : "border-gray-200 bg-white text-gray-600 hover:border-blue-600 hover:bg-blue-600 hover:text-white"
             }`}
           >
-            {isEditing ? (
+            {isSaving ? (
+              <Loader2 size={20} className="animate-spin" aria-hidden="true" />
+            ) : isEditing ? (
               <Save size={20} aria-hidden="true" />
             ) : (
               <Edit2 size={20} aria-hidden="true" />
@@ -199,7 +201,7 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
           </div>
 
           <div className="flex min-w-0 flex-1 flex-col">
-            <p className="mb-1 text-xs font-black tracking-widest text-slate-600 uppercase transition-colors group-hover:text-blue-700">
+            <p className="mb-1 text-base font-semibold text-slate-700 transition-colors group-hover:text-blue-700">
               {CONTACT_INFO_TEXT.email[currentLang]}
             </p>
 
@@ -211,12 +213,12 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
                 onChange={handleChange}
                 aria-label={CONTACT_INFO_TEXT.email[currentLang]}
                 placeholder={CONTACT_INFO_TEXT.emailPlaceholder[currentLang]}
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
               />
             ) : (
               <a
                 href={`mailto:${contacts.email}`}
-                className="block w-full truncate text-lg font-bold text-gray-800 transition-colors group-hover:text-blue-600"
+                className="text-preset-4 block w-full truncate font-semibold text-slate-900 transition-colors group-hover:text-blue-600"
               >
                 {contacts.email}
               </a>
@@ -230,7 +232,7 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
           </div>
 
           <div className="min-w-0 flex-1">
-            <p className="mb-1 text-xs font-black tracking-widest text-slate-600 uppercase transition-colors group-hover:text-blue-700">
+            <p className="mb-1 text-base font-semibold text-slate-700 transition-colors group-hover:text-blue-700">
               {CONTACT_INFO_TEXT.phone[currentLang]}
             </p>
 
@@ -242,12 +244,12 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
                 onChange={handleChange}
                 aria-label={CONTACT_INFO_TEXT.phone[currentLang]}
                 placeholder={CONTACT_INFO_TEXT.phonePlaceholder[currentLang]}
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
               />
             ) : (
               <a
                 href={`tel:${contacts.phone}`}
-                className="block truncate text-xl font-black text-gray-800 transition-colors group-hover:text-blue-600"
+                className="text-preset-4 block truncate font-semibold text-slate-900 transition-colors group-hover:text-blue-600"
               >
                 {contacts.phone}
               </a>
@@ -261,7 +263,7 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
           </div>
 
           <div className="min-w-0 flex-1">
-            <p className="mb-1 text-xs font-black tracking-widest text-slate-600 uppercase transition-colors group-hover:text-blue-700">
+            <p className="mb-1 text-base font-semibold text-slate-700 transition-colors group-hover:text-blue-700">
               {CONTACT_INFO_TEXT.address[currentLang]}
             </p>
 
@@ -275,7 +277,7 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
                   placeholder={
                     CONTACT_INFO_TEXT.addressPlaceholder[currentLang]
                   }
-                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                 />
 
                 <input
@@ -284,7 +286,7 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
                   onChange={handleChange}
                   aria-label={CONTACT_INFO_TEXT.cityPlaceholder[currentLang]}
                   placeholder={CONTACT_INFO_TEXT.cityPlaceholder[currentLang]}
-                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-blue-600 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base font-medium text-blue-700 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                 />
 
                 <input
@@ -293,11 +295,11 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
                   onChange={handleChange}
                   aria-label={CONTACT_INFO_TEXT.mapPlaceholder[currentLang]}
                   placeholder={CONTACT_INFO_TEXT.mapPlaceholder[currentLang]}
-                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-medium outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                 />
               </div>
             ) : (
-              <p className="text-lg leading-tight font-bold text-gray-800 transition-colors group-hover:text-blue-600">
+              <p className="text-preset-4 font-semibold text-slate-900 transition-colors group-hover:text-blue-600">
                 {contacts.address}
                 {contacts.address && contacts.city ? ", " : ""}
                 <span className="text-blue-600">{contacts.city}</span>
@@ -307,7 +309,7 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
         </li>
 
         <li className="mt-auto flex flex-col items-center gap-5 rounded-2xl border border-slate-100 bg-slate-50/70 p-5 md:items-start">
-          <span className="text-xs font-black tracking-widest text-slate-600 uppercase">
+          <span className="text-base font-semibold text-slate-700">
             {CONTACT_INFO_TEXT.socials[currentLang]}
           </span>
 
