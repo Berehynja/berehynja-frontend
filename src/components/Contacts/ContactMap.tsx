@@ -57,10 +57,7 @@ const normalizeCoordinates = (value: string) => {
   const latitude = Number(match[1]);
   const longitude = Number(match[2]);
   const coordinatesAreValid =
-    latitude >= -90 &&
-    latitude <= 90 &&
-    longitude >= -180 &&
-    longitude <= 180;
+    latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180;
 
   return coordinatesAreValid ? `${latitude},${longitude}` : "";
 };
@@ -76,7 +73,9 @@ const extractCoordinates = (value: string) => {
     );
 
     if (pathCoordinates) {
-      return normalizeCoordinates(`${pathCoordinates[1]},${pathCoordinates[2]}`);
+      return normalizeCoordinates(
+        `${pathCoordinates[1]},${pathCoordinates[2]}`,
+      );
     }
 
     for (const parameter of ["q", "query", "ll", "destination"]) {
@@ -97,12 +96,16 @@ export const ContactMap = ({ contacts }: ContactMapProps) => {
   const { i18n } = useTranslation();
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split("-")[0];
+  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
+    "-",
+  )[0];
   const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
     ? (detectedLanguage as LangKey)
     : "ua";
 
-  const addressQuery = [contacts?.address, contacts?.city].filter(Boolean).join(", ");
+  const addressQuery = [contacts?.address, contacts?.city]
+    .filter(Boolean)
+    .join(", ");
   const savedMapValue = contacts?.mapUrl?.trim() || "";
   const coordinates = extractCoordinates(savedMapValue);
   const mapQuery = coordinates || addressQuery;
@@ -125,7 +128,7 @@ export const ContactMap = ({ contacts }: ContactMapProps) => {
   return (
     <section
       aria-label={MAP_TEXT.title[currentLang]}
-      className="relative min-h-80 overflow-hidden rounded-4xl border border-slate-200 bg-slate-50 shadow-[0_18px_50px_rgba(15,23,42,0.12)] md:min-h-96"
+      className="font-nunito relative min-h-80 overflow-hidden rounded-4xl border border-slate-200 bg-slate-50 shadow-[0_18px_50px_rgba(15,23,42,0.12)] md:min-h-96"
     >
       {mapEmbedUrl && isMapLoaded ? (
         <>
@@ -143,7 +146,7 @@ export const ContactMap = ({ contacts }: ContactMapProps) => {
               href={externalMapUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute right-4 bottom-4 inline-flex items-center gap-2 rounded-xl border border-white/50 bg-white/90 px-4 py-2.5 text-sm font-bold text-slate-800 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+              className="absolute right-4 bottom-4 inline-flex cursor-pointer items-center gap-2 rounded-xl border border-white/50 bg-white/90 px-4 py-2.5 text-base font-semibold text-slate-800 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
             >
               {MAP_TEXT.openMap[currentLang]}
               <ExternalLink size={16} aria-hidden="true" />
@@ -156,11 +159,11 @@ export const ContactMap = ({ contacts }: ContactMapProps) => {
             <MapPin size={30} aria-hidden="true" />
           </div>
 
-          <h2 className="text-xl font-black text-slate-950">
+          <h2 className="text-preset-3 font-semibold tracking-tight text-slate-950">
             {MAP_TEXT.title[currentLang]}
           </h2>
 
-          <p className="mt-3 max-w-md text-sm leading-6 text-slate-600">
+          <p className="text-preset-4 mt-3 max-w-md leading-7 font-medium text-slate-600 md:leading-8">
             {mapEmbedUrl
               ? MAP_TEXT.description[currentLang]
               : MAP_TEXT.unavailable[currentLang]}
@@ -170,7 +173,7 @@ export const ContactMap = ({ contacts }: ContactMapProps) => {
             <button
               type="button"
               onClick={() => setIsMapLoaded(true)}
-              className="mt-6 inline-flex cursor-pointer items-center gap-2 rounded-2xl bg-slate-950 px-6 py-3 font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+              className="mt-6 inline-flex cursor-pointer items-center gap-2 rounded-2xl bg-slate-950 px-6 py-3 text-base font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
             >
               <MapPin size={18} aria-hidden="true" />
               {MAP_TEXT.loadMap[currentLang]}
