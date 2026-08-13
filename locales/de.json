@@ -30,8 +30,8 @@
       "uploadError": "Die Datei konnte nicht hochgeladen werden.",
       "errorLog": "Fehler beim Hochladen:",
       "delete": "Löschen",
-"confirmDelete": "Sind Sie sicher, dass Sie diese Datei entfernen möchten?",
-"deleteError": "Datei konnte nicht gelöscht werden."
+      "confirmDelete": "Sind Sie sicher, dass Sie diese Datei entfernen möchten?",
+      "deleteError": "Datei konnte nicht gelöscht werden."
     }
   },
   "programs": {
@@ -69,50 +69,128 @@
   },
   "privacy": {
     "title": "Datenschutz",
-    "subtitle": "Der Schutz Ihrer Daten ist unsere Priorität. Wir behandeln Informationen vertraulich und streng nach den Vorgaben der DSGVO und des BDSG.",
+    "subtitle": "Der Schutz Ihrer Daten hat für uns hohe Priorität. Wir verarbeiten personenbezogene Daten vertraulich, transparent und ausschließlich für festgelegte Zwecke gemäß der DSGVO und den anwendbaren deutschen Datenschutzvorschriften.",
+    "contents": "Inhaltsverzeichnis",
+    "lastUpdated": "Zuletzt aktualisiert",
+    "empty": "Die Informationen werden derzeit aktualisiert.",
+    "retentionPeriod": "Aufbewahrungsfrist: {{count}} Monate",
+
     "controller": {
-      "title": "Verantwortlicher",
-      "desc": "Verantwortlich für die Datenverarbeitung auf dieser Website ist der Berehynja Detaillierte Kontaktdaten finden Sie in unserem Impressum."
+      "title": "Verantwortliche Stelle",
+      "desc": "Verantwortlich für die Verarbeitung personenbezogener Daten auf dieser Website ist Berehynja e.V. Der Verein bestimmt die Zwecke und Mittel der Verarbeitung personenbezogener Daten. Ausführliche Kontakt- und Registerangaben finden Sie in unserem Impressum."
     },
+
     "infrastructure": {
-      "title": "Infrastruktur & Hosting",
-      "desc": "Alle Textinhalte, Links und die Website-Logik werden über Firebase (Google Ireland Ltd) verarbeitet. Die Daten werden ausschließlich auf Servern innerhalb der EU nach höchsten Sicherheitsstandards gespeichert.",
-      "encryption": "End-to-End Encryption"
+      "title": "Infrastruktur und Hosting",
+      "desc": "Für einzelne Funktionen dieser Website verwenden wir technische Infrastruktur von Firebase, einem Dienst von Google. Je nach eingesetztem Dienst und dessen Konfiguration können Daten durch Google und beauftragte Unterauftragsverarbeiter verarbeitet werden. Die Verarbeitung erfolgt auf Grundlage der anwendbaren vertraglichen Vereinbarungen und Datenschutzvorschriften.",
+      "encryption": "Geschützte Datenübertragung mittels TLS"
     },
+
     "cookies": {
-      "title": "Cookies & Tracking",
-      "desc": "Wir verwenden nur technisch notwendige Cookies (Session Storage), um Ihre Sprachauswahl zu speichern. Auf dieser Website werden keine Marketing- oder Analyse-Tracker eingesetzt."
+      "title": "Cookies und lokaler Speicher",
+      "desc": "Wir verwenden ausschließlich technisch erforderliche Cookies oder den lokalen Speicher des Browsers, insbesondere zur Speicherung der gewählten Sprache und zur Bereitstellung grundlegender Websitefunktionen. Marketing- oder Analyse-Tracking wird nicht eingesetzt, sofern es nicht gesondert ausgewiesen und auf einer geeigneten Rechtsgrundlage aktiviert wird."
     },
+
     "rights": {
       "title": "Ihre Rechte",
       "info": {
         "label": "Auskunft",
-        "desc": "Sie haben das Recht, Auskunft darüber zu erhalten, ob Ihre Daten verarbeitet werden, welche Daten gespeichert sind und zu welchem Zweck sie verarbeitet werden."
+        "desc": "Sie haben das Recht zu erfahren, ob wir Ihre personenbezogenen Daten verarbeiten, welche Daten gespeichert werden, zu welchen Zwecken sie verwendet werden und an welche Empfänger sie gegebenenfalls übermittelt werden."
       },
       "correction": {
         "label": "Berichtigung",
-        "desc": "Sie haben das Recht, die unverzügliche Berichtigung unrichtiger oder unvollständiger personenbezogener Daten zu verlangen."
+        "desc": "Sie haben das Recht, die Berichtigung unrichtiger personenbezogener Daten und die Vervollständigung unvollständiger Angaben zu verlangen."
       },
       "deletion": {
         "label": "Löschung",
-        "desc": "Sie haben das Recht, die Löschung Ihrer Daten zu verlangen, wenn diese für die Zwecke, für die sie erhoben wurden, nicht mehr erforderlich sind."
+        "desc": "Sie haben das Recht, die Löschung personenbezogener Daten zu verlangen, wenn diese für die jeweiligen Zwecke nicht mehr erforderlich sind und keine rechtmäßigen Gründe für die weitere Speicherung bestehen."
       },
       "objection": {
         "label": "Widerspruch",
-        "desc": "Sie haben das Recht, der Verarbeitung Ihrer Daten zu widersprechen, wenn wir diese auf Grundlage berechtigter Interessen verarbeiten."
+        "desc": "Sie haben unter den Voraussetzungen des Art. 21 DSGVO das Recht, einer Verarbeitung personenbezogener Daten zu widersprechen, die auf einem berechtigten Interesse beruht."
       }
     },
+
     "media": {
-      "title": "Externe Medien",
-      "cloudinaryDesc": "Wird als CDN ausschließlich für die sichere Speicherung und schnelle Bereitstellung von Bildern verwendet.",
-      "youtubeDesc": "Videos aus unseren Kanälen werden im erweiterten Datenschutzmodus eingebettet."
+      "title": "Externe Mediendienste",
+      "cloudinaryDesc": "Cloudinary wird zur Speicherung, Optimierung und Bereitstellung von Bildern und Mediendateien eingesetzt. Beim Abruf solcher Inhalte können technische Daten, insbesondere die IP-Adresse, an Cloudinary übermittelt werden.",
+      "youtubeDesc": "Auf dieser Website können Videos von YouTube eingebettet sein. Bei Verwendung des erweiterten Datenschutzmodus werden Daten grundsätzlich erst bei einer Interaktion mit dem Video an YouTube übertragen. Die konkrete Verarbeitung hängt von der tatsächlichen Einbindungsart ab."
     },
+
     "complaint": {
-      "title": "Beschwerderecht (Art. 77 DSGVO)",
-      "desc": "Sie haben das Recht, sich bei der zuständigen Datenschutzaufsichtsbehörde zu beschwerden."
+      "title": "Beschwerderecht",
+      "desc": "Sie haben gemäß Art. 77 DSGVO das Recht, sich bei einer zuständigen Datenschutzaufsichtsbehörde zu beschweren, wenn Sie der Ansicht sind, dass die Verarbeitung Ihrer personenbezogenen Daten gegen Datenschutzrecht verstößt."
     },
+
     "modal": {
       "close": "Verstanden"
+    },
+
+    "sections": {
+      "controller": {
+        "title": "Verantwortliche Stelle"
+      },
+      "generalProcessing": {
+        "title": "Allgemeine Informationen zur Verarbeitung",
+        "default": "Wir verarbeiten personenbezogene Daten nur in dem Umfang, der für den Betrieb dieser Website, die Bearbeitung von Anfragen, die Organisation unserer Angebote und die Erfüllung unserer satzungsmäßigen Aufgaben erforderlich ist. Die Verarbeitung erfolgt gemäß der DSGVO und den sonstigen anwendbaren Datenschutzvorschriften."
+      },
+      "contactForms": {
+        "title": "Kontaktformulare und Anmeldungen",
+        "default": "Bei der Übermittlung eines Kontakt- oder Anmeldeformulars können wir insbesondere Name, E-Mail-Adresse, Telefonnummer, ausgewähltes Programm oder Veranstaltung, Nachrichteninhalt, Datum und Uhrzeit der Übermittlung sowie freiwillig mitgeteilte Angaben verarbeiten. Die Daten werden zur Bearbeitung der Anfrage, Organisation der Teilnahme und anschließenden Kommunikation verwendet."
+      },
+      "automation": {
+        "title": "Automatisierte Übermittlung mit n8n",
+        "default": "Zur technischen Übermittlung, Zuordnung und strukturierten Verarbeitung von Formulardaten verwenden wir eine selbst gehostete n8n-Instanz. Erforderliche Angaben werden automatisiert an die von uns festgelegten Zielsysteme weitergeleitet. Eine ausschließlich automatisierte Entscheidung mit rechtlicher oder vergleichbar erheblicher Wirkung findet nicht statt."
+      },
+      "vpsHosting": {
+        "title": "Self-hosted n8n und VPS-Server",
+        "default": "Die n8n-Software wird von uns auf einem gemieteten virtuellen Server betrieben. Formulardaten werden zur Ausführung der Automatisierung nicht an den Anbieter der n8n-Software übermittelt. Der VPS-Anbieter kann Daten im Rahmen des Betriebs, der Wartung und der Absicherung der Serverinfrastruktur in unserem Auftrag verarbeiten. Der Systemzugriff ist auf autorisierte Personen beschränkt."
+      },
+      "googleWorkspace": {
+        "title": "Google Workspace und Google Sheets",
+        "default": "Zur internen Verwaltung, Zuordnung und Nachverfolgung von Anfragen können übermittelte Angaben in Google Workspace, insbesondere Google Sheets, gespeichert werden. Google verarbeitet diese Daten in unserem Auftrag. Übermittlungen außerhalb des Europäischen Wirtschaftsraums erfolgen nur unter Anwendung der nach der DSGVO vorgesehenen Schutzmechanismen."
+      },
+      "cloudinary": {
+        "title": "Bilder und Cloudinary"
+      },
+      "youtube": {
+        "title": "Videos und YouTube"
+      },
+      "cookies": {
+        "title": "Cookies und lokaler Speicher"
+      },
+      "retention": {
+        "title": "Speicherdauer",
+        "default": "Wir speichern personenbezogene Daten nur so lange, wie dies für den jeweiligen Zweck erforderlich ist. Anfragedaten werden nach Ablauf der festgelegten Frist gelöscht oder anonymisiert, sofern keine gesetzlichen Aufbewahrungspflichten bestehen oder die Daten zur Geltendmachung oder Abwehr von Rechtsansprüchen benötigt werden."
+      },
+      "userRights": {
+        "title": "Ihre Rechte",
+        "default": "Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung sowie auf Widerspruch und, soweit gesetzlich vorgesehen, Datenübertragbarkeit. Eine erteilte Einwilligung kann jederzeit mit Wirkung für die Zukunft widerrufen werden."
+      },
+      "complaint": {
+        "title": "Beschwerderecht"
+      }
+    },
+
+    "vps": {
+      "provider": "Anbieter",
+      "location": "Serverstandort",
+      "address": "Anschrift"
+    },
+
+    "admin": {
+      "edit": "Abschnitt bearbeiten",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "saved": "Die Datenschutzinformationen wurden gespeichert.",
+      "saveError": "Die Datenschutzinformationen konnten nicht gespeichert werden.",
+      "loadError": "Die Datenschutzinformationen konnten nicht geladen werden.",
+      "germanRequired": "Die deutsche Fassung darf nicht leer sein.",
+      "sectionText": "Text des Abschnitts",
+      "vpsProvider": "VPS-Anbieter",
+      "serverLocation": "Serverstandort",
+      "vpsAddress": "Anschrift des Anbieters",
+      "retentionMonths": "Aufbewahrungsfrist in Monaten"
     }
   }
 }
