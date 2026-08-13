@@ -1,8 +1,19 @@
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  setDoc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../firebase"; // Ваш шлях до конфігу Firebase
 import type { ScheduleItem } from "../types/scheduleItem";
 
 const COLLECTION_NAME = "schedules";
+const SETTINGS_COLLECTION = "settings";
+const SCHEDULE_SETTINGS_ID = "schedule";
 
 export const scheduleService = {
   // 1. Отримати весь розклад
@@ -33,5 +44,31 @@ export const scheduleService = {
   deleteSchedule: async (id: string): Promise<void> => {
     const docRef = doc(db, COLLECTION_NAME, id);
     await deleteDoc(docRef);
+  },
+
+  // Отримати дату, яку встановив адмін
+  getAdminDate: async (): Promise<string | null> => {
+    const docRef = doc(db, SETTINGS_COLLECTION, SCHEDULE_SETTINGS_ID);
+
+    const snapshot = await getDoc(docRef);
+
+    if (!snapshot.exists()) {
+      return null;
+    }
+
+    return snapshot.data().adminDate || null;
+  },
+
+  // Зберегти дату адміна
+  setAdminDate: async (adminDate: string | null): Promise<void> => {
+    const docRef = doc(db, SETTINGS_COLLECTION, SCHEDULE_SETTINGS_ID);
+
+    await setDoc(
+      docRef,
+      {
+        adminDate,
+      },
+      { merge: true }
+    );
   },
 };
