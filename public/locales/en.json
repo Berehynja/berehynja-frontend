@@ -30,8 +30,8 @@
       "uploadError": "Failed to upload the file.",
       "errorLog": "Upload error:",
       "delete": "Delete",
-"confirmDelete": "Are you sure you want to delete this file?",
-"deleteError": "Failed to delete the file."
+      "confirmDelete": "Are you sure you want to delete this file?",
+      "deleteError": "Failed to delete the file."
     }
   },
   "programs": {
@@ -68,51 +68,129 @@
     "only_essential": "No personal data collected"
   },
   "privacy": {
-    "title": "Privacy Policy",
-    "subtitle": "Protecting your data is our priority. We handle information confidentially and strictly in accordance with GDPR and BDSG requirements.",
+    "title": "Privacy",
+    "subtitle": "Protecting your data is a high priority for us. We process personal data confidentially, transparently and only for specified purposes in accordance with the GDPR and applicable German data protection law.",
+    "contents": "Contents",
+    "lastUpdated": "Last updated",
+    "empty": "The information is currently being updated.",
+    "retentionPeriod": "Retention period: {{count}} months",
+
     "controller": {
-      "title": "Controller",
-      "desc": "Berehynja is responsible for data processing on this website. Detailed contact information can be found in our Impressum."
+      "title": "Data controller",
+      "desc": "Berehynja e.V. is responsible for processing personal data on this website. The association determines the purposes and means of processing personal data. Detailed contact and registration information is available in our legal notice."
     },
+
     "infrastructure": {
-      "title": "Infrastruktur & Hosting",
-      "desc": "All text content, links, and website logic are processed via Firebase (Google Ireland Ltd). Data is stored exclusively on servers within the EU according to the highest security standards.",
-      "encryption": "End-to-End Encryption"
+      "title": "Infrastructure and hosting",
+      "desc": "We use technical infrastructure provided by Firebase, a Google service, for certain functions of this website. Depending on the services used and their configuration, data may be processed by Google and its subprocessors. Processing is governed by the applicable contractual arrangements and data protection requirements.",
+      "encryption": "Secure data transmission using TLS"
     },
+
     "cookies": {
-      "title": "Cookies & Tracking",
-      "desc": "We only use technically necessary Cookies (Session Storage) to save your language preference. No marketing or analytics trackers are used on this website."
+      "title": "Cookies and local storage",
+      "desc": "We use only technically necessary cookies or browser local storage, particularly to remember the selected language and provide essential website functions. Marketing or analytics tracking is not used unless it is identified separately and activated on an appropriate legal basis."
     },
+
     "rights": {
-      "title": "Ihre Rechte (Your Rights)",
+      "title": "Your rights",
       "info": {
-        "label": "Auskunft (Information)",
-        "desc": "You have the right to request information about whether your data is being processed, what data is stored, and the purpose of the processing."
+        "label": "Access",
+        "desc": "You have the right to know whether we process your personal data, what data is stored, the purposes for which it is used and the recipients to whom it may be disclosed."
       },
       "correction": {
-        "label": "Berichtigung (Correction)",
-        "desc": "You have the right to request the immediate correction of any inaccurate or incomplete personal data."
+        "label": "Rectification",
+        "desc": "You have the right to request the correction of inaccurate personal data and the completion of incomplete information."
       },
       "deletion": {
-        "label": "Löschung (Deletion)",
-        "desc": "You have the right to request the deletion of your data if it is no longer necessary for the purposes for which it was collected."
+        "label": "Erasure",
+        "desc": "You have the right to request the erasure of personal data when it is no longer needed for the relevant purposes and there are no lawful grounds for continued retention."
       },
       "objection": {
-        "label": "Widerspruch (Objection)",
-        "desc": "You have the right to object to the processing of your data if we use it based on legitimate interests."
+        "label": "Objection",
+        "desc": "Subject to the conditions of Article 21 GDPR, you have the right to object to processing based on a legitimate interest."
       }
     },
+
     "media": {
-      "title": "Externe Medien",
-      "cloudinaryDesc": "Used as a CDN exclusively for the secure storage and fast delivery of images.",
-      "youtubeDesc": "Videos from channels are embedded in enhanced privacy mode (erweiterter Datenschutzmodus)."
+      "title": "External media services",
+      "cloudinaryDesc": "Cloudinary is used to store, optimize and deliver images and media files. When such content is retrieved, technical data, particularly the IP address, may be transmitted to Cloudinary.",
+      "youtubeDesc": "YouTube videos may be embedded on this website. When privacy-enhanced mode is used, data is generally transmitted to YouTube only after the user interacts with the video. The precise processing depends on the actual embedding method."
     },
+
     "complaint": {
-      "title": "Beschwerderecht (Art. 77 DSGVO)",
-      "desc": "You have the right to lodge a complaint with the competent data protection supervisory authority."
+      "title": "Right to lodge a complaint",
+      "desc": "Under Article 77 GDPR, you have the right to lodge a complaint with a competent data protection supervisory authority if you believe that the processing of your personal data infringes data protection law."
     },
+
     "modal": {
       "close": "Understood"
+    },
+
+    "sections": {
+      "controller": {
+        "title": "Data controller"
+      },
+      "generalProcessing": {
+        "title": "General information about processing",
+        "default": "We process personal data only to the extent necessary to operate this website, handle requests, organize our services and fulfil our statutory purposes. Processing is carried out in accordance with the GDPR and other applicable data protection laws."
+      },
+      "contactForms": {
+        "title": "Contact forms and registrations",
+        "default": "When a contact or registration form is submitted, we may process your name, email address, telephone number, selected program or event, message content, submission date and time, and any information provided voluntarily. The data is used to process the request, organize participation and communicate with you afterwards."
+      },
+      "automation": {
+        "title": "Automated transmission using n8n",
+        "default": "We use a self-hosted n8n instance for the technical transmission, allocation and structured processing of form data. Required information is automatically forwarded to destination systems selected by us. We do not make decisions producing legal or similarly significant effects solely by automated means."
+      },
+      "vpsHosting": {
+        "title": "Self-hosted n8n and VPS server",
+        "default": "The n8n software is operated by us on a rented virtual private server. Form data is not transferred to the n8n software provider to run the automation. The VPS provider may process data on our behalf when operating, maintaining and securing the server infrastructure. System access is restricted to authorized persons."
+      },
+      "googleWorkspace": {
+        "title": "Google Workspace and Google Sheets",
+        "default": "Submitted information may be stored in Google Workspace, particularly Google Sheets, to manage, allocate and track requests internally. Google processes this data on our behalf. Transfers outside the European Economic Area take place only using safeguards recognized by the GDPR."
+      },
+      "cloudinary": {
+        "title": "Images and Cloudinary"
+      },
+      "youtube": {
+        "title": "Videos and YouTube"
+      },
+      "cookies": {
+        "title": "Cookies and local storage"
+      },
+      "retention": {
+        "title": "Retention periods",
+        "default": "We retain personal data only for as long as necessary for the relevant purpose. Request data is deleted or anonymized after the defined period unless statutory retention obligations apply or the data is required to establish or defend legal claims."
+      },
+      "userRights": {
+        "title": "Your rights",
+        "default": "You have the right to access, rectify or erase your data, restrict or object to processing and, where provided by law, receive your data in a portable format. Consent may be withdrawn at any time with future effect."
+      },
+      "complaint": {
+        "title": "Right to lodge a complaint"
+      }
+    },
+
+    "vps": {
+      "provider": "Provider",
+      "location": "Server location",
+      "address": "Address"
+    },
+
+    "admin": {
+      "edit": "Edit section",
+      "save": "Save",
+      "cancel": "Cancel",
+      "saved": "The privacy information has been saved.",
+      "saveError": "The privacy information could not be saved.",
+      "loadError": "The privacy information could not be loaded.",
+      "germanRequired": "The German version must not be empty.",
+      "sectionText": "Section text",
+      "vpsProvider": "VPS provider",
+      "serverLocation": "Server location",
+      "vpsAddress": "Provider address",
+      "retentionMonths": "Retention period in months"
     }
   }
 }
