@@ -50,6 +50,34 @@
       "description": "Kurzfristige Kurse und Intensivprogramme, die auf schnelle Anpassung, Spracherwerb und berufliche Entwicklung in einer neuen Umgebung abzielen."
     }
   },
+  "events": {
+    "details": {
+      "back": "Zurück zur Übersicht",
+      "media": "Medien der Veranstaltung",
+      "photos": "Fotos",
+      "videos": "Videos",
+      "addPhoto": "Foto hinzufügen",
+      "addVideo": "YouTube-Video hinzufügen",
+      "deletePhoto": "Foto löschen",
+      "deleteVideo": "Video löschen",
+      "confirmDelete": "Diese Mediendatei löschen?",
+      "noPhotos": "Für diese Veranstaltung wurden noch keine Fotos hinzugefügt.",
+      "noVideos": "Für diese Veranstaltung wurden noch keine Videos hinzugefügt.",
+      "notFound": "Veranstaltung nicht gefunden.",
+      "openPhoto": "Foto öffnen",
+      "playVideo": "Video abspielen",
+      "showMore": "Mehr anzeigen",
+      "showLess": "Weniger anzeigen",
+      "close": "Schließen",
+      "eventMedia": "Veranstaltungsmedium",
+      "eventImage": "Veranstaltungsbild",
+      "loadError": "Die Veranstaltung konnte nicht geladen werden.",
+      "photoAdded": "Das Foto wurde hinzugefügt.",
+      "videoAdded": "Das Video wurde hinzugefügt.",
+      "mediaDeleted": "Die Mediendatei wurde gelöscht.",
+      "deleteError": "Die Mediendatei konnte nicht gelöscht werden."
+    }
+  },
   "footer": {
     "contacts": "Kontakte",
     "adress": "Adresse",
@@ -60,12 +88,12 @@
     "lang": "DE"
   },
   "cookie": {
-    "title": "Privatsphäre & Sicherheit",
-    "description": "Wir verwenden ausschließlich technische Cookies. Diese sind vollständig anonym, sammeln keine personenbezogenen Daten, verfolgen nicht Ihren Standort und werden nicht für Werbezwecke verwendet.",
-    "necessary_title": "Technisch notwendig",
-    "necessary_desc": "Diese Daten identifizieren Sie nicht persönlich. Sie dienen ausschließlich der stabilen Schnittstellenleistung: Speichern der Sprachwahl und Schutz der Website vor Spam oder Angriffen.",
-    "button": "Akzeptieren & Weiter",
-    "only_essential": "Keine Datenerfassung"
+    "title": "Datenschutzhinweis",
+    "description": "Wir verwenden ausschließlich technisch notwendige lokale Speicherungen, damit die Website ordnungsgemäß funktioniert und Ihre Sprachauswahl gespeichert werden kann. Externe Dienste wie YouTube und Google Maps werden erst nach Ihrer ausdrücklichen Auswahl geladen.",
+    "necessary_title": "Technisch notwendige Speicherung",
+    "necessary_desc": "Diese Speicherung wird für grundlegende Websitefunktionen und zur Speicherung Ihrer Sprachauswahl verwendet. Sie dient weder Werbung noch Analyse oder Tracking.",
+    "only_essential": "Immer aktiv",
+    "acknowledge_button": "Verstanden"
   },
   "privacy": {
     "title": "Datenschutz",

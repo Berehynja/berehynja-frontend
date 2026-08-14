@@ -50,6 +50,34 @@
       "description": "Short-term courses and intensives aimed at quick adaptation, language learning, and professional development in a new environment."
     }
   },
+  "events": {
+    "details": {
+      "back": "Back to events",
+      "media": "Event media",
+      "photos": "Photos",
+      "videos": "Videos",
+      "addPhoto": "Add photo",
+      "addVideo": "Add YouTube video",
+      "deletePhoto": "Delete photo",
+      "deleteVideo": "Delete video",
+      "confirmDelete": "Delete this media file?",
+      "noPhotos": "No photos have been added to this event yet.",
+      "noVideos": "No videos have been added to this event yet.",
+      "notFound": "Event not found.",
+      "openPhoto": "Open photo",
+      "playVideo": "Play video",
+      "showMore": "Show more",
+      "showLess": "Show less",
+      "close": "Close",
+      "eventMedia": "Event media",
+      "eventImage": "Event image",
+      "loadError": "The event could not be loaded.",
+      "photoAdded": "The photo has been added.",
+      "videoAdded": "The video has been added.",
+      "mediaDeleted": "The media file has been deleted.",
+      "deleteError": "The media file could not be deleted."
+    }
+  },
   "footer": {
     "contacts": "Contacts",
     "adress": "Adress",
@@ -60,12 +88,12 @@
     "lang": "EN"
   },
   "cookie": {
-    "title": "Privacy & Security",
-    "description": "We use only technical cookies. They are completely anonymous, do not collect any personal data, do not track your location, and are not used for advertising purposes.",
-    "necessary_title": "Strictly Necessary",
-    "necessary_desc": "This data does not identify you personally. It is used solely for stable interface performance: remembering language preferences and protecting the site from spam or attacks.",
-    "button": "Accept and Continue",
-    "only_essential": "No personal data collected"
+    "title": "Privacy notice",
+    "description": "We use only technically necessary local storage to ensure that the website functions properly and remembers your language selection. External services such as YouTube and Google Maps are loaded only after your explicit action.",
+    "necessary_title": "Technically necessary storage",
+    "necessary_desc": "This storage is used for essential website functionality and to remember your language selection. It is not used for advertising, analytics or tracking.",
+    "only_essential": "Always active",
+    "acknowledge_button": "Got it"
   },
   "privacy": {
     "title": "Privacy",
