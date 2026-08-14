@@ -74,9 +74,9 @@ const FooterSection = ({
 
 const FOOTER_STATIC_TEXT = {
   description: {
-    ua: "Ми створюємо простір для розвитку, підтримки та єднання української громади в Бад-Ейнгаузені. Разом ми сильніші.",
-    de: "Wir schaffen einen Raum für Entwicklung, Unterstützung und Zusammenhalt der ukrainischen Gemeinschaft in Bad Oeynhausen. Gemeinsam sind wir stärker.",
-    en: "We create a space for growth, support and unity for the Ukrainian community in Bad Oeynhausen. Together we are stronger.",
+    ua: "Ми створюємо простір для розвитку, підтримки та єднання української громади. Разом ми сильніші.",
+    de: "Wir schaffen einen Raum für Entwicklung, Unterstützung und Zusammenhalt der ukrainischen Gemeinschaft. Gemeinsam sind wir stärker.",
+    en: "We create a space for growth, support and unity for the Ukrainian community. Together we are stronger.",
   },
   cityCountry: {
     ua: "Бад-Ейнгаузен, Німеччина",

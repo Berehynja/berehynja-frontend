@@ -79,7 +79,7 @@ export const PageLoader = ({ visible }: PageLoaderProps) => {
         </div>
 
         <span className="font-nunito text-sm font-bold tracking-[0.22em] text-slate-700 uppercase">
-          Berehynia
+          Berehynja
         </span>
       </div>
     </div>
