@@ -12,7 +12,16 @@
   },
   "home": {
     "welcome": "Willkommen bei «Berehynja»!",
-    "description": "«Berehynja» ist ein ukrainischer Raum in Deutschland, geschaffen für Kinder, Jugendliche und Erwachsene, die sich gezwungenermaßen fern von ihrem Zuhause wiedergefunden haben. Wir vereinen ukrainische Familien, helfen, die Sprache, Kultur und Traditionen zu bewahren und unterstützen jene, die den Weg der Anpassung und Integration in eine neue Umgebung gehen."
+    "description": "«Berehynja» ist ein ukrainischer Raum in Deutschland, geschaffen für Kinder, Jugendliche und Erwachsene, die sich gezwungenermaßen fern von ihrem Zuhause wiedergefunden haben. Wir vereinen ukrainische Familien, helfen, die Sprache, Kultur und Traditionen zu bewahren und unterstützen jene, die den Weg der Anpassung und Integration in eine neue Umgebung gehen.",
+    "title": "Willkommen bei «Berehynja»!",
+    "heroUi": {
+      "donate": "Spenden",
+      "join": "Mitmachen",
+      "bannerField": "Hintergrundbild",
+      "titleField": "Hauptüberschrift",
+      "descriptionField": "Beschreibung unter der Überschrift",
+      "editModalTitle": "Startbildschirm bearbeiten"
+    }
   },
   "about": {
     "aboutUs": "Über «Berehynja»",
@@ -32,6 +41,29 @@
       "delete": "Löschen",
       "confirmDelete": "Sind Sie sicher, dass Sie diese Datei entfernen möchten?",
       "deleteError": "Datei konnte nicht gelöscht werden."
+    },
+    "partners": {
+      "add": "Partner hinzufügen",
+      "empty": "Partner werden bald hinzugefügt.",
+      "delete": "Partner löschen",
+      "confirmDelete": "Diesen Partner löschen?",
+      "openWebsite": "Partner-Website öffnen",
+      "added": "Partner wurde hinzugefügt!",
+      "deleted": "Partner wurde gelöscht!",
+      "addError": "Der Partner konnte nicht hinzugefügt werden.",
+      "deleteError": "Der Partner konnte nicht gelöscht werden."
+    },
+    "team": {
+      "title": "Unser Team",
+      "add": "Teammitglied hinzufügen",
+      "edit": "Profil bearbeiten",
+      "empty": "Es wurden noch keine Teaminformationen hinzugefügt.",
+      "confirmDelete": "Dieses Profil löschen?",
+      "added": "Teammitglied wurde hinzugefügt!",
+      "updated": "Profil wurde aktualisiert!",
+      "deleted": "Profil wurde gelöscht!",
+      "saveError": "Das Profil konnte nicht gespeichert werden.",
+      "deleteError": "Das Profil konnte nicht gelöscht werden."
     }
   },
   "programs": {
@@ -43,11 +75,34 @@
       "initial1": "Anfänger",
       "initial2": "Mittelstufe",
       "time": "Zeit",
-      "lessonName": "Lektion Name"
+      "lessonName": "Lektion Name",
+      "list": {
+        "title": "Alle Programme",
+        "add": "Programm hinzufügen",
+        "empty": "Derzeit sind keine Programme verfügbar.",
+        "confirmDelete": "Dieses Programm löschen?"
+      }
     },
     "adults": {
       "title": "Programme für Erwachsene",
-      "description": "Kurzfristige Kurse und Intensivprogramme, die auf schnelle Anpassung, Spracherwerb und berufliche Entwicklung in einer neuen Umgebung abzielen."
+      "description": "Kurzfristige Kurse und Intensivprogramme, die auf schnelle Anpassung, Spracherwerb und berufliche Entwicklung in einer neuen Umgebung abzielen.",
+      "list": {
+        "period": "Zeitraum",
+        "duration": "Dauer",
+        "schedule": "Zeitplan",
+        "group": "Gruppe",
+        "location": "Ort",
+        "details": "Mehr erfahren",
+        "edit": "Programm bearbeiten",
+        "add": "Programm hinzufügen",
+        "empty": "Derzeit sind keine Programme verfügbar.",
+        "confirmDelete": "Dieses Programm löschen?",
+        "added": "Programm wurde hinzugefügt!",
+        "updated": "Programm wurde aktualisiert!",
+        "deleted": "Programm wurde gelöscht!",
+        "saveError": "Das Programm konnte nicht gespeichert werden.",
+        "deleteError": "Das Programm konnte nicht gelöscht werden."
+      }
     }
   },
   "events": {
@@ -76,13 +131,29 @@
       "videoAdded": "Das Video wurde hinzugefügt.",
       "mediaDeleted": "Die Mediendatei wurde gelöscht.",
       "deleteError": "Die Mediendatei konnte nicht gelöscht werden."
+    },
+    "page": {
+      "title": "Veranstaltungen",
+      "description": "Nehmen Sie an unseren Gemeinschaftsveranstaltungen, Feiern und weiteren Aktivitäten teil, die Menschen zusammenbringen und unsere Mission unterstützen."
+    },
+    "list": {
+      "add": "Veranstaltung hinzufügen",
+      "empty": "Derzeit gibt es keine Veranstaltungen.",
+      "confirmDelete": "Diese Veranstaltung löschen?"
+    },
+    "card": {
+      "details": "Mehr erfahren",
+      "edit": "Veranstaltung bearbeiten"
     }
   },
   "footer": {
     "contacts": "Kontakte",
     "adress": "Adresse",
     "location": "Unser Standort",
-    "madeWith": "Mit Liebe gemacht"
+    "madeWith": "Mit Liebe gemacht",
+    "description": "Wir schaffen einen Raum für Entwicklung, Unterstützung und Zusammenhalt der ukrainischen Gemeinschaft in Bad Oeynhausen. Gemeinsam sind wir stärker.",
+    "cityCountry": "Bad Oeynhausen, Deutschland",
+    "community": "für die ukrainische Gemeinschaft"
   },
   "languageSwitcher": {
     "lang": "DE"
@@ -102,23 +173,19 @@
     "lastUpdated": "Zuletzt aktualisiert",
     "empty": "Die Informationen werden derzeit aktualisiert.",
     "retentionPeriod": "Aufbewahrungsfrist: {{count}} Monate",
-
     "controller": {
       "title": "Verantwortliche Stelle",
       "desc": "Verantwortlich für die Verarbeitung personenbezogener Daten auf dieser Website ist Berehynja e.V. Der Verein bestimmt die Zwecke und Mittel der Verarbeitung personenbezogener Daten. Ausführliche Kontakt- und Registerangaben finden Sie in unserem Impressum."
     },
-
     "infrastructure": {
       "title": "Infrastruktur und Hosting",
       "desc": "Für einzelne Funktionen dieser Website verwenden wir technische Infrastruktur von Firebase, einem Dienst von Google. Je nach eingesetztem Dienst und dessen Konfiguration können Daten durch Google und beauftragte Unterauftragsverarbeiter verarbeitet werden. Die Verarbeitung erfolgt auf Grundlage der anwendbaren vertraglichen Vereinbarungen und Datenschutzvorschriften.",
       "encryption": "Geschützte Datenübertragung mittels TLS"
     },
-
     "cookies": {
       "title": "Cookies und lokaler Speicher",
       "desc": "Wir verwenden ausschließlich technisch erforderliche Cookies oder den lokalen Speicher des Browsers, insbesondere zur Speicherung der gewählten Sprache und zur Bereitstellung grundlegender Websitefunktionen. Marketing- oder Analyse-Tracking wird nicht eingesetzt, sofern es nicht gesondert ausgewiesen und auf einer geeigneten Rechtsgrundlage aktiviert wird."
     },
-
     "rights": {
       "title": "Ihre Rechte",
       "info": {
@@ -138,22 +205,18 @@
         "desc": "Sie haben unter den Voraussetzungen des Art. 21 DSGVO das Recht, einer Verarbeitung personenbezogener Daten zu widersprechen, die auf einem berechtigten Interesse beruht."
       }
     },
-
     "media": {
       "title": "Externe Mediendienste",
       "cloudinaryDesc": "Cloudinary wird zur Speicherung, Optimierung und Bereitstellung von Bildern und Mediendateien eingesetzt. Beim Abruf solcher Inhalte können technische Daten, insbesondere die IP-Adresse, an Cloudinary übermittelt werden.",
       "youtubeDesc": "Auf dieser Website können Videos von YouTube eingebettet sein. Bei Verwendung des erweiterten Datenschutzmodus werden Daten grundsätzlich erst bei einer Interaktion mit dem Video an YouTube übertragen. Die konkrete Verarbeitung hängt von der tatsächlichen Einbindungsart ab."
     },
-
     "complaint": {
       "title": "Beschwerderecht",
       "desc": "Sie haben gemäß Art. 77 DSGVO das Recht, sich bei einer zuständigen Datenschutzaufsichtsbehörde zu beschweren, wenn Sie der Ansicht sind, dass die Verarbeitung Ihrer personenbezogenen Daten gegen Datenschutzrecht verstößt."
     },
-
     "modal": {
       "close": "Verstanden"
     },
-
     "sections": {
       "controller": {
         "title": "Verantwortliche Stelle"
@@ -199,13 +262,11 @@
         "title": "Beschwerderecht"
       }
     },
-
     "vps": {
       "provider": "Anbieter",
       "location": "Serverstandort",
       "address": "Anschrift"
     },
-
     "admin": {
       "edit": "Abschnitt bearbeiten",
       "save": "Speichern",
@@ -219,6 +280,445 @@
       "serverLocation": "Serverstandort",
       "vpsAddress": "Anschrift des Anbieters",
       "retentionMonths": "Aufbewahrungsfrist in Monaten"
+    }
+  },
+  "ourMission": {
+    "title": "Unsere Mission",
+    "cards": {
+      "mission": {
+        "title": "Die Mission von Berehynja",
+        "subtitle": "Unterstützung und Verständnis",
+        "lead": "Wir möchten, dass sich jede ukrainische Familie nicht allein fühlt und Unterstützung sowie einen Ort findet, an dem sie verstanden wird.",
+        "text": "Berehynja ist mehr als ein Verein. Es ist ein kleines Stück Ukraine im Herzen Europas. Wir haben diesen Raum geschaffen, damit Menschen einen eigenen Ort haben: einen Ort, an dem sie ihre Muttersprache sprechen, traditionelle Feste feiern, Kinder mit der ukrainischen Kultur vertraut machen und die Wärme einer Gemeinschaft erleben können. Hier findet jeder etwas für sich: Unterstützung, persönliche Entwicklung, Freundschaft oder einfach eine ruhige und einladende Umgebung."
+      },
+      "children": {
+        "title": "Für Kinder",
+        "subtitle": "Entwicklung und Bildung",
+        "lead": "Wir bewahren die Verbindung zur Ukraine und fördern die Fähigkeiten der Kinder.",
+        "text": "Unsere Kurse und Programme helfen Kindern und Jugendlichen, auch im Ausland mit der Ukraine verbunden zu bleiben. Wir vermitteln ukrainische Sprache und Kultur und fördern Denken, Kreativität, Selbstvertrauen und Teamfähigkeit."
+      },
+      "community": {
+        "title": "Gemeinschaft",
+        "subtitle": "Begegnungen und Veranstaltungen",
+        "lead": "Durch Austausch und gemeinsame Erlebnisse schaffen wir ein Gefühl der Zugehörigkeit.",
+        "text": "Besonderen Wert legen wir auf die Begegnung von Familien bei Treffen, Workshops, Veranstaltungen und kulturellen Aktivitäten. So entsteht eine starke, herzliche und unterstützende Gemeinschaft."
+      },
+      "adults": {
+        "title": "Für Eltern",
+        "subtitle": "Unterstützung und Integration",
+        "lead": "Beratung und Unterstützung bei der Integration in Deutschland.",
+        "text": "Für Erwachsene organisieren wir Beratungen, Informationsveranstaltungen und Unterstützung bei der Integration, damit jeder sein Leben in Deutschland sicherer gestalten kann. Wir kennen die Herausforderungen der Anpassung an ein neues Umfeld und stehen in jeder Phase unterstützend zur Seite."
+      },
+      "summary": {
+        "title": "Berehynja",
+        "subtitle": "Ein Ort der Wärme und Unterstützung",
+        "lead": "Ein Ort, an dem Kinder wachsen, Eltern Unterstützung erhalten und die Gemeinschaft stärker wird.",
+        "text": "Berehynja ist ein Ort, an dem wir bewahren, was uns mit der Ukraine verbindet. Jeder, der zu uns kommt, soll Wärme, Sicherheit und die Gewissheit spüren, nicht allein zu sein. Das gibt Kindern Halt und erleichtert ihnen die Anpassung an Schule und neues Umfeld."
+      }
+    }
+  },
+  "howWeHelp": {
+    "title": "Wie wir helfen",
+    "cards": {
+      "support": {
+        "title": "Unterstützung",
+        "description": "Emotionale und praktische Unterstützung für Ukrainerinnen und Ukrainer bei der Eingewöhnung in Deutschland."
+      },
+      "community": {
+        "title": "Gemeinschaft",
+        "description": "Aufbau von Kontakten und eines Zugehörigkeitsgefühls im neuen Land."
+      },
+      "integration": {
+        "title": "Integration",
+        "description": "Sprachkurse, kulturelle Orientierung und Unterstützung im Alltag in Deutschland."
+      },
+      "events": {
+        "title": "Veranstaltungen",
+        "description": "Kulturelle Veranstaltungen, Workshops und Aktivitäten zur Pflege des ukrainischen Kulturerbes."
+      }
+    }
+  },
+  "contact": {
+    "page": {
+      "title": "Kontaktieren Sie uns",
+      "description": "Wir sind für Sie da. Wenn Sie Fragen haben, Unterstützung benötigen oder uns Feedback geben möchten, hilft Ihnen unser Team gerne weiter."
+    },
+    "info": {
+      "title": "Kontakte",
+      "email": "Schreiben Sie uns",
+      "phone": "Rufen Sie uns an",
+      "address": "Unsere Adresse",
+      "socials": "Wir in sozialen Netzwerken",
+      "editContacts": "Kontakte bearbeiten",
+      "saveContacts": "Kontakte speichern",
+      "edit": "Bearbeiten",
+      "save": "Speichern",
+      "emailPlaceholder": "E-Mail-Adresse",
+      "phonePlaceholder": "Telefonnummer",
+      "addressPlaceholder": "Straße und Hausnummer",
+      "cityPlaceholder": "Stadt",
+      "mapPlaceholder": "Link oder Koordinaten: 50.1109, 8.6821",
+      "saved": "Kontakte wurden aktualisiert!",
+      "saveError": "Kontakte konnten nicht aktualisiert werden."
+    },
+    "map": {
+      "title": "Unser Standort",
+      "description": "Die Karte wird nach Ihrer Bestätigung geladen und stellt eine Verbindung zu Google Maps her.",
+      "loadMap": "Karte anzeigen",
+      "openMap": "In Google Maps öffnen",
+      "unavailable": "Die Adresse für die Karte ist noch nicht eingerichtet"
+    },
+    "form": {
+      "title": "Schreiben Sie uns",
+      "description": "Haben Sie eine Frage oder eine Idee? Hinterlassen Sie uns eine Nachricht und wir melden uns bei Ihnen.",
+      "name": "Vollständiger Name",
+      "namePlaceholder": "Ihr Vor- und Nachname",
+      "email": "E-Mail-Adresse",
+      "emailPlaceholder": "name@beispiel.de",
+      "phone": "Telefon",
+      "phonePlaceholder": "z. B. +49 123 456789",
+      "optional": "optional",
+      "message": "Ihre Nachricht",
+      "messagePlaceholder": "Schreiben Sie Ihre Nachricht...",
+      "required": "erforderlich",
+      "privacyBefore": "Ich stimme der Verarbeitung meiner Daten gemäß der",
+      "privacyLink": "Datenschutzerklärung",
+      "privacyRequired": "Bitte stimmen Sie der Datenverarbeitung zu, um die Nachricht zu senden.",
+      "submit": "Nachricht senden",
+      "submitting": "Wird gesendet...",
+      "submitError": "Die Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+      "successTitle": "Nachricht gesendet",
+      "successText": "Vielen Dank! Wir melden uns in Kürze bei Ihnen.",
+      "sendAnother": "Weitere Nachricht senden"
+    },
+    "workingHours": {
+      "title": "Öffnungszeiten",
+      "closed": "Geschlossen",
+      "add": "Zeitraum hinzufügen",
+      "save": "Zeitplan speichern",
+      "toggleClosed": "Status ändern",
+      "remove": "Zeitraum löschen",
+      "periodPlaceholder": "Zeitraum...",
+      "labelPlaceholder": "Beschreibung...",
+      "empty": "Der Zeitplan ist noch nicht ausgefüllt",
+      "saved": "Zeitplan gespeichert!",
+      "saveError": "Der Zeitplan konnte nicht gespeichert werden.",
+      "disclaimer": "Der Zeitplan kann sich an Feiertagen ändern."
+    }
+  },
+  "impressum": {
+    "ui": {
+      "edit": "Impressum bearbeiten",
+      "save": "Speichern",
+      "saving": "Wird gespeichert...",
+      "cancel": "Abbrechen",
+      "saved": "Die Impressum-Daten wurden gespeichert.",
+      "saveError": "Die Impressum-Daten konnten nicht gespeichert werden.",
+      "headerPlaceholder": "Einleitungstext (optional)...",
+      "representativePlaceholder": "Name der vertretungsberechtigten Person",
+      "positionPlaceholder": "Position, zum Beispiel Vorstand",
+      "responsiblePlaceholder": "Name und Anschrift der verantwortlichen Person..."
+    }
+  },
+  "courseRegistration": {
+    "eyebrow": "Kursanmeldung",
+    "title": "Machen Sie den ersten Schritt",
+    "description": "Hinterlassen Sie Ihre Kontaktdaten – wir melden uns bei Ihnen und erklären die nächsten Schritte.",
+    "selectedCourse": "Ausgewählter Kurs",
+    "fullName": "Vor- und Nachname",
+    "fullNamePlaceholder": "Zum Beispiel Anna Schmidt",
+    "email": "E-Mail",
+    "emailPlaceholder": "name@beispiel.de",
+    "phone": "Telefon",
+    "phonePlaceholder": "+49 123 4567890",
+    "privacy": "Ich stimme der Verarbeitung meiner Daten zur Kontaktaufnahme bezüglich dieses Kurses zu.",
+    "privacyRequired": "Bitte stimmen Sie der Datenverarbeitung zu, um die Anmeldung zu senden.",
+    "submit": "Zum Kurs anmelden",
+    "submitting": "Wird gesendet...",
+    "successTitle": "Anmeldung gesendet",
+    "successText": "Vielen Dank! Wir melden uns in Kürze bei Ihnen.",
+    "submitError": "Die Anmeldung konnte nicht gesendet werden. Bitte versuchen Sie es erneut."
+  },
+  "joinModal": {
+    "dialogLabel": "Beitrittsformular",
+    "close": "Formular schließen",
+    "title": "Mitmachen",
+    "subtitle": "Werden Sie Teil von Berehynja",
+    "fullName": "Vollständiger Name *",
+    "fullNamePlaceholder": "Ihr Vor- und Nachname",
+    "email": "E-Mail *",
+    "phone": "Telefon",
+    "optional": "(optional)",
+    "message": "Wie möchten Sie helfen?",
+    "messagePlaceholder": "Erzählen Sie uns etwas über sich oder Ihre Ideen...",
+    "privacyBefore": "Ich stimme der Verarbeitung meiner Daten gemäß der",
+    "privacyLink": "Datenschutzerklärung",
+    "privacyRequired": "Bitte stimmen Sie der Datenverarbeitung zu, um die Anfrage zu senden.",
+    "submitError": "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+    "submit": "Anfrage senden",
+    "submitting": "Wird gesendet...",
+    "successTitle": "Vielen Dank!",
+    "successText": "Wir haben Ihre Anfrage erhalten. Unser Koordinator wird sich in Kürze bei Ihnen melden."
+  },
+  "donationModal": {
+    "dialogLabel": "Bankverbindung für eine Spende",
+    "title": "Unterstützen Sie uns",
+    "subtitle": "Ihre Hilfe ist wichtig",
+    "bankLabel": "Bank und Empfänger",
+    "bankPlaceholder": "Bankname",
+    "namePlaceholder": "Empfänger",
+    "purposeLabel": "Verwendungszweck",
+    "secureBadge": "Sichere Überweisung",
+    "save": "Speichern",
+    "edit": "Bearbeiten",
+    "close": "Bankverbindung schließen",
+    "copyIban": "IBAN kopieren",
+    "copied": "Kopiert!",
+    "notSpecified": "Nicht angegeben",
+    "noDetails": "Die Bankverbindung wurde noch nicht eingerichtet.",
+    "saved": "Bankverbindung wurde gespeichert!",
+    "saveError": "Die Bankverbindung konnte nicht gespeichert werden.",
+    "copyError": "Die IBAN konnte nicht kopiert werden."
+  },
+  "admin": {
+    "adultProgramModal": {
+      "admin": "Berehynja Admin",
+      "createTitle": "Programm erstellen",
+      "editTitle": "Programm bearbeiten",
+      "close": "Schließen",
+      "image": "Hauptbild",
+      "addImage": "Titelbild hinzufügen",
+      "changeImage": "Ersetzen",
+      "removeImage": "Entfernen",
+      "uploading": "Wird hochgeladen...",
+      "imageHint": "JPG, PNG, WEBP oder AVIF, bis zu 12 MB",
+      "language": "Eingabesprache",
+      "period": "Zeitraum",
+      "periodPlaceholder": "Zum Beispiel 15.05 – 25.05",
+      "duration": "Dauer",
+      "durationPlaceholder": "Zum Beispiel 10 Tage",
+      "name": "Programmtitel",
+      "namePlaceholder": "Programmtitel eingeben",
+      "description": "Kurzbeschreibung",
+      "descriptionPlaceholder": "Beschreiben Sie das Programm in wenigen Sätzen...",
+      "schedule": "Zeitplan",
+      "schedulePlaceholder": "Zum Beispiel täglich von 10:00 bis 14:00 Uhr",
+      "target": "Zielgruppe",
+      "targetPlaceholder": "Beschreiben Sie die Zielgruppe",
+      "capacity": "Gruppengröße",
+      "capacityPlaceholder": "Zum Beispiel 10 Personen",
+      "location": "Ort",
+      "locationPlaceholder": "Adresse oder Ort eingeben",
+      "features": "Programminhalte",
+      "featuresHint": "Schreiben Sie jeden Punkt in eine neue Zeile",
+      "featuresPlaceholder": "Praktische Übungen\nUnterstützung durch Lehrkräfte\nZertifikat",
+      "required": "erforderlich",
+      "delete": "Programm löschen",
+      "cancel": "Abbrechen",
+      "create": "Programm erstellen",
+      "save": "Änderungen speichern",
+      "saving": "Wird gespeichert...",
+      "titleRequired": "Bitte geben Sie einen ukrainischen Programmtitel ein.",
+      "invalidImage": "Wählen Sie eine gültige Bilddatei aus.",
+      "imageTooLarge": "Das Bild darf nicht größer als 12 MB sein.",
+      "imageUploaded": "Das Bild wurde hochgeladen.",
+      "uploadError": "Das Bild konnte nicht hochgeladen werden.",
+      "saveError": "Das Programm konnte nicht gespeichert werden.",
+      "deleteError": "Das Programm konnte nicht gelöscht werden."
+    },
+    "eventModal": {
+      "createTitle": "Veranstaltung erstellen",
+      "editTitle": "Veranstaltung bearbeiten",
+      "close": "Formular schließen",
+      "date": "Datum",
+      "time": "Uhrzeit",
+      "location": "Ort",
+      "eventTitle": "Veranstaltungstitel",
+      "titlePlaceholder": "Veranstaltungstitel eingeben...",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Beschreiben Sie die Veranstaltung...",
+      "mainImage": "Hauptbild",
+      "changeImage": "Ändern",
+      "removeImage": "Entfernen",
+      "addImage": "Klicken, um ein Foto hinzuzufügen",
+      "uploading": "Wird hochgeladen...",
+      "deleteEvent": "Veranstaltung löschen",
+      "cancel": "Abbrechen",
+      "publish": "Veröffentlichen",
+      "saveChanges": "Änderungen speichern",
+      "saving": "Wird gespeichert...",
+      "titleRequired": "Bitte geben Sie einen ukrainischen Veranstaltungstitel ein.",
+      "uploadError": "Das Bild konnte nicht hochgeladen werden.",
+      "saveError": "Die Veranstaltung konnte nicht gespeichert werden.",
+      "deleteError": "Die Veranstaltung konnte nicht gelöscht werden."
+    },
+    "lessonModal": {
+      "admin": "Berehynja Admin",
+      "createTitle": "Programm erstellen",
+      "editTitle": "Programm bearbeiten",
+      "close": "Schließen",
+      "contentLanguage": "Eingabesprache",
+      "illustration": "Programmbild",
+      "required": "erforderlich",
+      "upload": "Bild auswählen",
+      "replace": "Ersetzen",
+      "remove": "Entfernen",
+      "uploading": "Wird hochgeladen...",
+      "title": "Kurstitel",
+      "titlePlaceholder": "Zum Beispiel Malen",
+      "description": "Programmbeschreibung",
+      "descriptionPlaceholder": "Beschreiben Sie den Kurs kurz...",
+      "accent": "Akzentfarbe",
+      "icon": "Programmsymbol",
+      "groups": "Zielgruppen",
+      "oneGroup": "mindestens eine auswählen",
+      "noGroups": "Es wurden noch keine Altersgruppen hinzugefügt.",
+      "cancel": "Abbrechen",
+      "create": "Programm erstellen",
+      "save": "Änderungen speichern",
+      "saving": "Wird gespeichert...",
+      "delete": "Programm löschen",
+      "deleteTitle": "Programm löschen?",
+      "deleteMessage": "Diese Aktion kann nicht rückgängig gemacht werden. Das Programm wird dauerhaft gelöscht.",
+      "deleting": "Wird gelöscht...",
+      "confirmDelete": "Ja, löschen",
+      "uploaded": "Das Bild wurde hochgeladen.",
+      "uploadError": "Das Bild konnte nicht hochgeladen werden.",
+      "validation": "Füllen Sie den ukrainischen Titel aus, laden Sie ein Bild hoch und wählen Sie eine Altersgruppe.",
+      "saved": "Das Programm wurde gespeichert.",
+      "saveError": "Das Programm konnte nicht gespeichert werden.",
+      "deleted": "Das Programm wurde gelöscht.",
+      "deleteError": "Das Programm konnte nicht gelöscht werden."
+    },
+    "mediaModal": {
+      "admin": "Berehynja Admin",
+      "addPhoto": "Foto hinzufügen",
+      "addVideo": "Video hinzufügen",
+      "forEvent": "Für die Veranstaltung",
+      "close": "Schließen",
+      "photoLabel": "Foto",
+      "photoHint": "JPG, PNG, WEBP oder AVIF, bis zu 10 MB",
+      "choosePhoto": "Foto auswählen",
+      "replacePhoto": "Foto ersetzen",
+      "videoLabel": "YouTube-Link",
+      "videoHint": "Fügen Sie den vollständigen Link von YouTube oder youtu.be ein.",
+      "videoPlaceholder": "https://www.youtube.com/watch?v=...",
+      "cancel": "Abbrechen",
+      "savePhoto": "Foto hinzufügen",
+      "saveVideo": "Video hinzufügen",
+      "uploading": "Wird hochgeladen...",
+      "saving": "Wird gespeichert...",
+      "invalidImage": "Wählen Sie eine gültige Bilddatei aus.",
+      "imageTooLarge": "Das Bild darf nicht größer als 10 MB sein.",
+      "invalidVideo": "Geben Sie einen gültigen YouTube-Link ein.",
+      "successPhoto": "Das Foto wurde hinzugefügt.",
+      "successVideo": "Das Video wurde hinzugefügt.",
+      "error": "Die Mediendatei konnte nicht gespeichert werden."
+    },
+    "partnerModal": {
+      "admin": "Berehynja Admin",
+      "title": "Partner hinzufügen",
+      "close": "Schließen",
+      "logo": "Partnerlogo",
+      "required": "erforderlich",
+      "uploadLogo": "Logo hochladen",
+      "replaceLogo": "Ersetzen",
+      "removeLogo": "Entfernen",
+      "uploading": "Wird hochgeladen...",
+      "language": "Eingabesprache",
+      "name": "Name des Partners",
+      "namePlaceholder": "Namen des Partners eingeben",
+      "website": "Website-Link",
+      "websitePlaceholder": "https://example.com",
+      "websiteHint": "Optional. Verwenden Sie einen vollständigen Link mit https://",
+      "invalidWebsite": "Geben Sie einen gültigen Link ein, der mit https:// beginnt.",
+      "cancel": "Abbrechen",
+      "save": "Partner speichern",
+      "saving": "Wird gespeichert...",
+      "uploaded": "Das Logo wurde hochgeladen.",
+      "uploadError": "Das Logo konnte nicht hochgeladen werden.",
+      "validation": "Laden Sie ein Logo hoch und geben Sie den ukrainischen Namen ein.",
+      "success": "Der Partner wurde hinzugefügt.",
+      "saveError": "Der Partner konnte nicht gespeichert werden."
+    },
+    "teamMemberModal": {
+      "admin": "Berehynja Admin",
+      "createTitle": "Neues Teammitglied",
+      "editTitle": "Profil bearbeiten",
+      "close": "Schließen",
+      "language": "Eingabesprache",
+      "photo": "Profilfoto",
+      "choosePhoto": "Foto auswählen",
+      "changePhoto": "Ersetzen",
+      "removePhoto": "Entfernen",
+      "usePlaceholder": "Platzhalter verwenden",
+      "cropTitle": "Foto anpassen",
+      "cropHint": "Verschieben Sie das Foto und passen Sie den Zoom an.",
+      "zoom": "Zoom",
+      "apply": "Übernehmen",
+      "uploading": "Wird hochgeladen...",
+      "invalidImage": "Wählen Sie eine gültige Bilddatei aus.",
+      "imageTooLarge": "Das Bild darf nicht größer als 12 MB sein.",
+      "uploadSuccess": "Das Foto wurde hochgeladen.",
+      "uploadError": "Das Foto konnte nicht verarbeitet oder hochgeladen werden.",
+      "name": "Vor- und Nachname",
+      "namePlaceholder": "Vor- und Nachnamen eingeben",
+      "role": "Position",
+      "rolePlaceholder": "Position eingeben",
+      "education": "Ausbildung",
+      "educationPlaceholder": "Bildungseinrichtung, Fachrichtung...",
+      "skills": "Berufliche Fähigkeiten",
+      "skillPlaceholder": "Zum Beispiel Fundraising",
+      "addSkill": "Fähigkeit hinzufügen",
+      "removeSkill": "Fähigkeit entfernen",
+      "skillLimit": "Maximal 6 Fähigkeiten pro Sprache",
+      "description": "Erfahrung und Expertise",
+      "descriptionPlaceholder": "Beschreiben Sie kurz Erfahrung und Expertise...",
+      "required": "erforderlich",
+      "cancel": "Abbrechen",
+      "create": "Zum Team hinzufügen",
+      "save": "Änderungen speichern",
+      "saving": "Wird gespeichert...",
+      "validation": "Füllen Sie Name und Position auf Ukrainisch aus.",
+      "saved": "Das Profil wurde gespeichert.",
+      "saveError": "Das Profil konnte nicht gespeichert werden.",
+      "delete": "Profil löschen",
+      "deleteTitle": "Profil löschen?",
+      "deleteMessage": "Diese Aktion kann nicht rückgängig gemacht werden. Das Profil wird dauerhaft gelöscht.",
+      "confirmDelete": "Ja, löschen",
+      "deleting": "Wird gelöscht...",
+      "deleted": "Das Profil wurde gelöscht.",
+      "deleteError": "Das Profil konnte nicht gelöscht werden."
+    }
+  },
+  "common": {
+    "confirmModal": {
+      "close": "Schließen",
+      "cancel": "Abbrechen",
+      "confirm": "Ja, löschen",
+      "loading": "Wird gelöscht..."
+    },
+    "editTextModal": {
+      "admin": "Berehynja Admin",
+      "defaultTitle": "Bereich bearbeiten",
+      "close": "Schließen",
+      "language": "Eingabesprache",
+      "sharedImage": "Für alle Sprachen gemeinsam",
+      "uploadImage": "Bild hochladen",
+      "replaceImage": "Ersetzen",
+      "removeImage": "Entfernen",
+      "uploading": "Wird hochgeladen...",
+      "cancel": "Abbrechen",
+      "save": "Änderungen speichern",
+      "saving": "Wird gespeichert...",
+      "uploadSuccess": "Das Bild wurde hochgeladen.",
+      "uploadError": "Das Bild konnte nicht hochgeladen werden.",
+      "invalidImage": "Wählen Sie eine gültige Bilddatei aus.",
+      "imageTooLarge": "Das Bild darf nicht größer als 12 MB sein.",
+      "requiredError": "Füllen Sie alle erforderlichen Textfelder in jeder Sprache aus.",
+      "saved": "Die Daten wurden aktualisiert.",
+      "saveError": "Die Änderungen konnten nicht gespeichert werden.",
+      "required": "erforderlich"
     }
   }
 }
