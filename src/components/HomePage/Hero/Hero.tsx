@@ -10,42 +10,9 @@ import { EditTextModal, type FieldConfig } from "../../Modals/EditTextModal";
 import { useAuth } from "../../AuthProvider/useAuth";
 import EditButton from "../../Buttons/EditButton";
 import { PageLoader } from "../../ui/PageLoader";
-import type { LangKey } from "../../../types/types";
 
 const HERO_BANNER_CACHE_KEY = "berehynia-hero-banner";
 
-const HERO_INTERFACE_TEXT = {
-  donate: {
-    ua: "Благодійність",
-    de: "Spenden",
-    en: "Donate",
-  },
-  join: {
-    ua: "Приєднатися",
-    de: "Mitmachen",
-    en: "Join us",
-  },
-  bannerField: {
-    ua: "Фонове зображення",
-    de: "Hintergrundbild",
-    en: "Background image",
-  },
-  titleField: {
-    ua: "Головний заголовок",
-    de: "Hauptüberschrift",
-    en: "Main heading",
-  },
-  descriptionField: {
-    ua: "Опис під заголовком",
-    de: "Beschreibung unter der Überschrift",
-    en: "Description below the heading",
-  },
-  editModalTitle: {
-    ua: "Редагування головного екрана",
-    de: "Startbildschirm bearbeiten",
-    en: "Edit hero section",
-  },
-};
 
 const getInitialBanner = (): string | null => {
   if (typeof window === "undefined") return null;
@@ -66,7 +33,7 @@ const getHeroSrcSet = (url: string) =>
     .join(", ");
 
 export const Hero = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { isAdmin } = useAuth();
   const { getText, isLoading, data } = useFirebaseContent("home");
 
@@ -79,13 +46,6 @@ export const Hero = () => {
   const [isPageReady, setIsPageReady] = useState(false);
   const [hasLoadingTimedOut, setHasLoadingTimedOut] = useState(false);
   const transitionTimeoutRef = useRef<number | null>(null);
-
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
-    "-",
-  )[0];
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
 
   const title = getText("hero.title", t("home.welcome"));
   const description = getText("hero.description", t("home.description"));
@@ -174,23 +134,23 @@ export const Hero = () => {
   const isHeroReady = (isPageReady && !isLoading) || hasLoadingTimedOut;
 
   const heroFields: FieldConfig[] = [
-    {
-      key: "bannerImage",
-      label: HERO_INTERFACE_TEXT.bannerField[currentLang],
-      type: "image" as unknown as FieldConfig["type"],
-      mediaCategory: "banners",
-    } as unknown as FieldConfig,
-    {
-      key: "title",
-      label: HERO_INTERFACE_TEXT.titleField[currentLang],
-      type: "input",
-    },
-    {
-      key: "description",
-      label: HERO_INTERFACE_TEXT.descriptionField[currentLang],
-      type: "textarea",
-    },
-  ];
+  {
+    key: "bannerImage",
+    label: t("home.heroUi.bannerField"),
+    type: "image",
+    mediaCategory: "banners",
+  },
+  {
+    key: "title",
+    label: t("home.heroUi.titleField"),
+    type: "input",
+  },
+  {
+    key: "description",
+    label: t("home.heroUi.descriptionField"),
+    type: "textarea",
+  },
+];
 
   return (
     <>
@@ -267,7 +227,7 @@ export const Hero = () => {
                 size={20}
                 className="fill-current group-hover:animate-pulse"
               />
-              <span>{HERO_INTERFACE_TEXT.donate[currentLang]}</span>
+              <span>{t("home.heroUi.donate")}</span>
             </button>
 
             <button
@@ -276,7 +236,7 @@ export const Hero = () => {
               className="group font-nunito flex cursor-pointer items-center justify-center gap-4 rounded-2xl border border-white/30 bg-white/10 px-10 py-5 text-sm tracking-widest text-white uppercase backdrop-blur-md transition-all hover:bg-white hover:text-blue-900 md:text-base"
             >
               <UserPlus size={20} />
-              <span>{HERO_INTERFACE_TEXT.join[currentLang]}</span>
+              <span>{t("home.heroUi.join")}</span>
               <ArrowRight
                 size={20}
                 className="-translate-x-4 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
@@ -298,7 +258,7 @@ export const Hero = () => {
         onClose={() => setIsEditOpen(false)}
         documentName="home"
         sectionName="hero"
-        modalTitle={HERO_INTERFACE_TEXT.editModalTitle[currentLang]}
+        modalTitle={t("home.heroUi.editModalTitle")}
         initialData={data?.hero as Record<string, unknown>}
         fields={heroFields}
       />

@@ -15,8 +15,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { useAuth } from "../AuthProvider/useAuth";
 import { SocialMedia } from "../SocialMedia/SocialMedia";
-import type { LangKey } from "../../types/types";
-
 interface FooterSectionProps {
   title: string;
   isOpen: boolean;
@@ -72,41 +70,17 @@ const FooterSection = ({
   </section>
 );
 
-const FOOTER_STATIC_TEXT = {
-  description: {
-    ua: "Ми створюємо простір для розвитку, підтримки та єднання української громади. Разом ми сильніші.",
-    de: "Wir schaffen einen Raum für Entwicklung, Unterstützung und Zusammenhalt der ukrainischen Gemeinschaft. Gemeinsam sind wir stärker.",
-    en: "We create a space for growth, support and unity for the Ukrainian community. Together we are stronger.",
-  },
-  cityCountry: {
-    ua: "Бад-Ейнгаузен, Німеччина",
-    de: "Bad Oeynhausen, Deutschland",
-    en: "Bad Oeynhausen, Germany",
-  },
-  community: {
-    ua: "для української громади",
-    de: "für die ukrainische Gemeinschaft",
-    en: "for the Ukrainian community",
-  },
-} satisfies Record<string, Record<LangKey, string>>;
-
 export const Footer = () => {
   const [isOpenContacts, setIsOpenContacts] = useState(false);
   const [isOpenAddress, setIsOpenAddress] = useState(false);
   const [clickCount, setClickCount] = useState(0);
 
   const screenWidth = useWindowSize();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { isAdmin } = useAuth();
   const navigate = useNavigate();
   const isMobile = screenWidth < 768;
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
-    .split("-")[0]
-    .toLowerCase();
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
 
   const handleHeartClick = () => {
     if (isAdmin) return;
@@ -148,7 +122,7 @@ export const Footer = () => {
             </div>
 
             <p className="max-w-md text-base leading-7 font-medium text-gray-300 md:text-lg md:leading-8">
-              {FOOTER_STATIC_TEXT.description[currentLang]}
+              {t("footer.description")}
             </p>
 
             {!isMobile && <SocialMedia />}
@@ -203,7 +177,7 @@ export const Footer = () => {
                 />
               </div>
               <span className="font-semibold">
-                {FOOTER_STATIC_TEXT.cityCountry[currentLang]}
+                {t("footer.cityCountry")}
               </span>
             </a>
 
@@ -251,7 +225,7 @@ export const Footer = () => {
               }
               fill={clickCount > 0 ? "currentColor" : "none"}
             />
-            {FOOTER_STATIC_TEXT.community[currentLang]}
+            {t("footer.community")}
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8">

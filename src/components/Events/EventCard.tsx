@@ -12,23 +12,24 @@ interface EventCardProps {
   priority?: boolean;
 }
 
-const EVENT_CARD_TEXT = {
-  details: {
-    ua: "Детальніше",
-    de: "Mehr erfahren",
-    en: "Learn more",
-  },
-  edit: {
-    ua: "Редагувати подію",
-    de: "Veranstaltung bearbeiten",
-    en: "Edit event",
-  },
-};
-
 const DATE_LOCALES: Record<LangKey, string> = {
   ua: "uk-UA",
   de: "de-DE",
   en: "en-US",
+};
+
+const getCurrentLanguage = (language: string): LangKey => {
+  const normalizedLanguage = language.split("-")[0].toLowerCase();
+
+  if (
+    normalizedLanguage === "ua" ||
+    normalizedLanguage === "de" ||
+    normalizedLanguage === "en"
+  ) {
+    return normalizedLanguage;
+  }
+
+  return "ua";
 };
 
 export const EventCard = ({
@@ -37,17 +38,15 @@ export const EventCard = ({
   priority = false,
 }: EventCardProps) => {
   const { isAdmin } = useAuth();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
-    "-",
-  )[0];
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
+  const currentLang = getCurrentLanguage(
+    i18n.resolvedLanguage || i18n.language,
+  );
 
-  const title = event.titles[currentLang] || event.titles.ua;
-  const description = event.descriptions[currentLang] || event.descriptions.ua;
+  const title = event.titles[currentLang]?.trim() || event.titles.ua;
+  const description =
+    event.descriptions[currentLang]?.trim() || event.descriptions.ua;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -67,8 +66,8 @@ export const EventCard = ({
         <button
           type="button"
           onClick={() => onEdit(event)}
-          aria-label={`${EVENT_CARD_TEXT.edit[currentLang]}: ${title}`}
-          title={EVENT_CARD_TEXT.edit[currentLang]}
+          aria-label={`${t("events.card.edit")}: ${title}`}
+          title={t("events.card.edit")}
           className="absolute top-4 right-4 z-20 flex size-11 cursor-pointer items-center justify-center rounded-xl border border-white/60 bg-white/90 text-gray-700 shadow-md backdrop-blur-md transition-all duration-300 hover:border-blue-600 hover:bg-blue-600 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
         >
           <Pencil size={18} aria-hidden="true" />
@@ -133,11 +132,11 @@ export const EventCard = ({
 
         <Link
           to={`/events/${event.id}`}
-          aria-label={`${EVENT_CARD_TEXT.details[currentLang]}: ${title}`}
+          aria-label={`${t("events.card.details")}: ${title}`}
           className="group/btn mt-auto flex items-center justify-center gap-3 rounded-2xl bg-gray-900 px-6 py-4 text-sm font-bold text-white shadow-sm transition-all hover:bg-blue-600 hover:shadow-lg active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
         >
           <span className="tracking-wider uppercase">
-            {EVENT_CARD_TEXT.details[currentLang]}
+            {t("events.card.details")}
           </span>
           <span
             aria-hidden="true"

@@ -9,36 +9,11 @@ import { PageLoader } from "../../ui/PageLoader";
 import { programsService } from "../../../services/programsService";
 import type { AgeGroup } from "../../../types/ageGroup";
 import type { Program } from "../../../types/program";
-import type { LangKey } from "../../../types/types";
-
 interface LessonsGridProps {
   programs: Program[];
   ageGroups: AgeGroup[];
   setPrograms: Dispatch<SetStateAction<Program[]>>;
 }
-
-const LESSONS_GRID_TEXT = {
-  title: {
-    ua: "Всі програми",
-    de: "Alle Programme",
-    en: "All programs",
-  },
-  add: {
-    ua: "Додати програму",
-    de: "Programm hinzufügen",
-    en: "Add program",
-  },
-  empty: {
-    ua: "Поки що немає доступних програм.",
-    de: "Derzeit sind keine Programme verfügbar.",
-    en: "There are currently no programs available.",
-  },
-  confirmDelete: {
-    ua: "Видалити цю програму?",
-    de: "Dieses Programm löschen?",
-    en: "Delete this program?",
-  },
-};
 
 export function LessonsGrid({
   programs,
@@ -46,17 +21,11 @@ export function LessonsGrid({
   setPrograms,
 }: LessonsGridProps) {
   const { isAdmin } = useAuth();
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [editingProgram, setEditingProgram] = useState<Program | null>(null);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
-    "-",
-  )[0];
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
 
   const handleCloseModal = () => {
     if (isProcessing) return;
@@ -106,7 +75,7 @@ export function LessonsGrid({
   const handleDeleteProgram = async (id: string) => {
     if (
       isProcessing ||
-      !window.confirm(LESSONS_GRID_TEXT.confirmDelete[currentLang])
+      !window.confirm(t("programs.lessonsGrid.confirmDelete"))
     ) {
       return;
     }
@@ -140,14 +109,14 @@ export function LessonsGrid({
         id="all-programs-title"
         className="text-preset-2 mb-10 text-center font-semibold text-gray-800"
       >
-        {LESSONS_GRID_TEXT.title[currentLang]}
+        {t("programs.kids.list.title")}
       </h2>
 
       <div className="grid w-full auto-rows-fr grid-cols-1 items-stretch gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4">
         {isAdmin && (
           <AddEvent
             onClick={handleOpenCreate}
-            label={LESSONS_GRID_TEXT.add[currentLang]}
+            label={t("programs.kids.list.add")}
           />
         )}
 
@@ -164,7 +133,7 @@ export function LessonsGrid({
             role="status"
             className="col-span-full py-10 text-center text-gray-600"
           >
-            {LESSONS_GRID_TEXT.empty[currentLang]}
+            {t("programs.kids.list.empty")}
           </p>
         )}
       </div>

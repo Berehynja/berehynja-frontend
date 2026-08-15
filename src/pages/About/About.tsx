@@ -12,7 +12,7 @@ export const About = () => {
     <div className="font-nunito w-full">
       <header className="flex flex-col items-center justify-center gap-6 py-8 md:flex-row md:gap-10 md:py-12">
         <div className="flex shrink-0 flex-col items-center justify-center">
-          <h1 className="text-preset-2 pb-4 text-center font-semibold tracking-tight text-slate-950">
+          <h1 className="text-preset-2 pb-1 text-center font-semibold tracking-tight text-slate-950">
             {t("about.aboutUs")}
           </h1>
           <div
@@ -21,7 +21,7 @@ export const About = () => {
           />
         </div>
 
-        <p className="text-preset-4 max-w-4xl px-2 text-center leading-7 font-medium text-slate-600 md:px-0 md:text-left md:leading-8">
+        <p className="text-preset-4 max-w-4xl px-2 text-center leading-6 font-medium text-slate-600 md:px-0 md:text-left ">
           {t("about.missionDescription")}
         </p>
       </header>

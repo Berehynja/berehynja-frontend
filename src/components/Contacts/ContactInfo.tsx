@@ -10,108 +10,19 @@ import {
   subscribeToContacts,
 } from "../../services/contactService";
 import type { ContactData } from "../../types/contactData";
-import type { LangKey } from "../../types/types";
 
 interface ContactInfoProps {
   onContactsChange?: (contacts: ContactData) => void;
 }
 
-const CONTACT_INFO_TEXT = {
-  title: {
-    ua: "Контакти",
-    de: "Kontakte",
-    en: "Contacts",
-  },
-  email: {
-    ua: "Напишіть нам",
-    de: "Schreiben Sie uns",
-    en: "Write to us",
-  },
-  phone: {
-    ua: "Зателефонуйте",
-    de: "Rufen Sie uns an",
-    en: "Call us",
-  },
-  address: {
-    ua: "Наша адреса",
-    de: "Unsere Adresse",
-    en: "Our address",
-  },
-  socials: {
-    ua: "Ми в соцмережах",
-    de: "Wir in sozialen Netzwerken",
-    en: "Find us online",
-  },
-  editContacts: {
-    ua: "Редагувати контакти",
-    de: "Kontakte bearbeiten",
-    en: "Edit contacts",
-  },
-  saveContacts: {
-    ua: "Зберегти контакти",
-    de: "Kontakte speichern",
-    en: "Save contacts",
-  },
-  edit: {
-    ua: "Редагувати",
-    de: "Bearbeiten",
-    en: "Edit",
-  },
-  save: {
-    ua: "Зберегти",
-    de: "Speichern",
-    en: "Save",
-  },
-  emailPlaceholder: {
-    ua: "Електронна адреса",
-    de: "E-Mail-Adresse",
-    en: "Email address",
-  },
-  phonePlaceholder: {
-    ua: "Номер телефону",
-    de: "Telefonnummer",
-    en: "Phone number",
-  },
-  addressPlaceholder: {
-    ua: "Вулиця та номер будинку",
-    de: "Straße und Hausnummer",
-    en: "Street and house number",
-  },
-  cityPlaceholder: {
-    ua: "Місто",
-    de: "Stadt",
-    en: "City",
-  },
-  mapPlaceholder: {
-    ua: "Посилання або координати: 50.1109, 8.6821",
-    de: "Link oder Koordinaten: 50.1109, 8.6821",
-    en: "Link or coordinates: 50.1109, 8.6821",
-  },
-  saved: {
-    ua: "Контакти оновлено!",
-    de: "Kontakte wurden aktualisiert!",
-    en: "Contacts updated!",
-  },
-  saveError: {
-    ua: "Не вдалося оновити контакти.",
-    de: "Kontakte konnten nicht aktualisiert werden.",
-    en: "Could not update contacts.",
-  },
-};
 
 export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
   const { isAdmin } = useAuth();
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
   const [contacts, setContacts] = useState<ContactData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
-    .split("-")[0]
-    .toLowerCase();
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
 
   useEffect(() => {
     const unsubscribe = subscribeToContacts((data) => {
@@ -138,10 +49,10 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
     try {
       await saveContacts(contacts);
       setIsEditing(false);
-      toast.success(CONTACT_INFO_TEXT.saved[currentLang]);
+      toast.success(t("contact.info.saved"));
     } catch (error) {
       console.error("Contact save error:", error);
-      toast.error(CONTACT_INFO_TEXT.saveError[currentLang]);
+      toast.error(t("contact.info.saveError"));
     } finally {
       setIsSaving(false);
     }
@@ -150,8 +61,8 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
   if (!contacts) return null;
 
   const actionLabel = isEditing
-    ? CONTACT_INFO_TEXT.saveContacts[currentLang]
-    : CONTACT_INFO_TEXT.editContacts[currentLang];
+    ? t("contact.info.saveContacts")
+    : t("contact.info.editContacts");
 
   return (
     <section
@@ -163,7 +74,7 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
           id="contact-info-title"
           className="text-preset-3 font-semibold tracking-tight text-slate-950"
         >
-          {CONTACT_INFO_TEXT.title[currentLang]}
+          {t("contact.info.title")}
         </h2>
 
         {isAdmin && (
@@ -174,8 +85,8 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
             aria-label={actionLabel}
             title={
               isEditing
-                ? CONTACT_INFO_TEXT.save[currentLang]
-                : CONTACT_INFO_TEXT.edit[currentLang]
+                ? t("contact.info.save")
+                : t("contact.info.edit")
             }
             className={`flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border shadow-sm transition-all disabled:cursor-not-allowed disabled:opacity-60 ${
               isEditing
@@ -202,7 +113,7 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
 
           <div className="flex min-w-0 flex-1 flex-col">
             <p className="mb-1 text-base font-semibold text-slate-700 transition-colors group-hover:text-blue-700">
-              {CONTACT_INFO_TEXT.email[currentLang]}
+              {t("contact.info.email")}
             </p>
 
             {isEditing ? (
@@ -211,8 +122,8 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
                 name="email"
                 value={contacts.email}
                 onChange={handleChange}
-                aria-label={CONTACT_INFO_TEXT.email[currentLang]}
-                placeholder={CONTACT_INFO_TEXT.emailPlaceholder[currentLang]}
+                aria-label={t("contact.info.email")}
+                placeholder={t("contact.info.emailPlaceholder")}
                 className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
               />
             ) : (
@@ -233,7 +144,7 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
 
           <div className="min-w-0 flex-1">
             <p className="mb-1 text-base font-semibold text-slate-700 transition-colors group-hover:text-blue-700">
-              {CONTACT_INFO_TEXT.phone[currentLang]}
+              {t("contact.info.phone")}
             </p>
 
             {isEditing ? (
@@ -242,8 +153,8 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
                 name="phone"
                 value={contacts.phone}
                 onChange={handleChange}
-                aria-label={CONTACT_INFO_TEXT.phone[currentLang]}
-                placeholder={CONTACT_INFO_TEXT.phonePlaceholder[currentLang]}
+                aria-label={t("contact.info.phone")}
+                placeholder={t("contact.info.phonePlaceholder")}
                 className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
               />
             ) : (
@@ -264,7 +175,7 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
 
           <div className="min-w-0 flex-1">
             <p className="mb-1 text-base font-semibold text-slate-700 transition-colors group-hover:text-blue-700">
-              {CONTACT_INFO_TEXT.address[currentLang]}
+              {t("contact.info.address")}
             </p>
 
             {isEditing ? (
@@ -273,10 +184,8 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
                   name="address"
                   value={contacts.address}
                   onChange={handleChange}
-                  aria-label={CONTACT_INFO_TEXT.addressPlaceholder[currentLang]}
-                  placeholder={
-                    CONTACT_INFO_TEXT.addressPlaceholder[currentLang]
-                  }
+                  aria-label={t("contact.info.addressPlaceholder")}
+                  placeholder={t("contact.info.addressPlaceholder")}
                   className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                 />
 
@@ -284,8 +193,8 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
                   name="city"
                   value={contacts.city}
                   onChange={handleChange}
-                  aria-label={CONTACT_INFO_TEXT.cityPlaceholder[currentLang]}
-                  placeholder={CONTACT_INFO_TEXT.cityPlaceholder[currentLang]}
+                  aria-label={t("contact.info.cityPlaceholder")}
+                  placeholder={t("contact.info.cityPlaceholder")}
                   className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base font-medium text-blue-700 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                 />
 
@@ -293,8 +202,8 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
                   name="mapUrl"
                   value={contacts.mapUrl || ""}
                   onChange={handleChange}
-                  aria-label={CONTACT_INFO_TEXT.mapPlaceholder[currentLang]}
-                  placeholder={CONTACT_INFO_TEXT.mapPlaceholder[currentLang]}
+                  aria-label={t("contact.info.mapPlaceholder")}
+                  placeholder={t("contact.info.mapPlaceholder")}
                   className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                 />
               </div>
@@ -310,7 +219,7 @@ export const ContactInfo = ({ onContactsChange }: ContactInfoProps) => {
 
         <li className="mt-auto flex flex-col items-center gap-5 rounded-2xl border border-slate-100 bg-slate-50/70 p-5 md:items-start">
           <span className="text-base font-semibold text-slate-700">
-            {CONTACT_INFO_TEXT.socials[currentLang]}
+            {t("contact.info.socials")}
           </span>
 
           <div className="transition-transform duration-300 hover:scale-105">

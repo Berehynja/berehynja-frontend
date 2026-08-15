@@ -11,52 +11,6 @@ import {
 import type { WorkingSchedule } from "../../types/workingSchedule";
 import type { LangKey } from "../../types/types";
 
-const WORKING_HOURS_TEXT = {
-  title: { ua: "Робочі години", de: "Öffnungszeiten", en: "Opening hours" },
-  closed: { ua: "Зачинено", de: "Geschlossen", en: "Closed" },
-  add: { ua: "Додати період", de: "Zeitraum hinzufügen", en: "Add period" },
-  save: {
-    ua: "Зберегти графік",
-    de: "Zeitplan speichern",
-    en: "Save schedule",
-  },
-  toggleClosed: {
-    ua: "Змінити статус",
-    de: "Status ändern",
-    en: "Change status",
-  },
-  remove: {
-    ua: "Видалити період",
-    de: "Zeitraum löschen",
-    en: "Remove period",
-  },
-  periodPlaceholder: {
-    ua: "Період...",
-    de: "Zeitraum...",
-    en: "Period...",
-  },
-  labelPlaceholder: {
-    ua: "Опис...",
-    de: "Beschreibung...",
-    en: "Description...",
-  },
-  empty: {
-    ua: "Графік поки не заповнений",
-    de: "Der Zeitplan ist noch nicht ausgefüllt",
-    en: "The schedule has not been filled in yet",
-  },
-  saved: {
-    ua: "Графік збережено!",
-    de: "Zeitplan gespeichert!",
-    en: "Schedule saved!",
-  },
-  saveError: {
-    ua: "Не вдалося зберегти графік.",
-    de: "Der Zeitplan konnte nicht gespeichert werden.",
-    en: "The schedule could not be saved.",
-  },
-};
-
 export const WorkingHours = () => {
   const { isAdmin } = useAuth();
   const { i18n, t } = useTranslation();
@@ -129,10 +83,10 @@ export const WorkingHours = () => {
 
     try {
       await saveSchedule(items);
-      toast.success(WORKING_HOURS_TEXT.saved[currentLang]);
+      toast.success(t("contact.workingHours.saved"));
     } catch (error) {
       console.error("Schedule save error:", error);
-      toast.error(WORKING_HOURS_TEXT.saveError[currentLang]);
+      toast.error(t("contact.workingHours.saveError"));
     } finally {
       setIsSaving(false);
     }
@@ -163,7 +117,7 @@ export const WorkingHours = () => {
             id="working-hours-title"
             className="text-[clamp(1.35rem,2.4vw,1.75rem)] leading-tight font-semibold tracking-tight whitespace-nowrap text-white"
           >
-            {WORKING_HOURS_TEXT.title[currentLang]}
+            {t("contact.workingHours.title")}
           </h2>
         </div>
 
@@ -206,8 +160,8 @@ export const WorkingHours = () => {
               <button
                 type="button"
                 onClick={addItem}
-                aria-label={WORKING_HOURS_TEXT.add[currentLang]}
-                title={WORKING_HOURS_TEXT.add[currentLang]}
+                aria-label={t("contact.workingHours.add")}
+                title={t("contact.workingHours.add")}
                 className="flex size-10 cursor-pointer items-center justify-center rounded-xl border border-blue-400/30 bg-blue-500/15 text-blue-300 transition-all hover:border-blue-300 hover:bg-blue-500 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300"
               >
                 <Plus size={20} aria-hidden="true" />
@@ -217,8 +171,8 @@ export const WorkingHours = () => {
                 type="button"
                 onClick={onSave}
                 disabled={isSaving}
-                aria-label={WORKING_HOURS_TEXT.save[currentLang]}
-                title={WORKING_HOURS_TEXT.save[currentLang]}
+                aria-label={t("contact.workingHours.save")}
+                title={t("contact.workingHours.save")}
                 className="flex size-10 cursor-pointer items-center justify-center rounded-xl border border-green-400/30 bg-green-500/15 text-green-300 transition-all hover:border-green-300 hover:bg-green-500 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-300 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Save
@@ -235,7 +189,7 @@ export const WorkingHours = () => {
       <div className="space-y-3">
         {items.length === 0 && (
           <p className="rounded-2xl border border-white/10 bg-white/5 px-5 py-8 text-center text-base font-medium text-white/75">
-            {WORKING_HOURS_TEXT.empty[currentLang]}
+            {t("contact.workingHours.empty")}
           </p>
         )}
 
@@ -252,8 +206,8 @@ export const WorkingHours = () => {
                     onClick={() =>
                       handleUpdate(item.id, { isClosed: !item.isClosed })
                     }
-                    aria-label={WORKING_HOURS_TEXT.toggleClosed[currentLang]}
-                    title={WORKING_HOURS_TEXT.toggleClosed[currentLang]}
+                    aria-label={t("contact.workingHours.toggleClosed")}
+                    title={t("contact.workingHours.toggleClosed")}
                     className={`flex size-9 cursor-pointer items-center justify-center rounded-xl border transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-300 ${
                       item.isClosed
                         ? "border-red-400 bg-red-500 text-white"
@@ -266,8 +220,8 @@ export const WorkingHours = () => {
                   <button
                     type="button"
                     onClick={() => removeItem(item.id)}
-                    aria-label={WORKING_HOURS_TEXT.remove[currentLang]}
-                    title={WORKING_HOURS_TEXT.remove[currentLang]}
+                    aria-label={t("contact.workingHours.remove")}
+                    title={t("contact.workingHours.remove")}
                     className="flex size-9 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/65 transition-all hover:border-red-400/50 hover:bg-red-500/10 hover:text-red-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-300"
                   >
                     <Trash2 size={16} aria-hidden="true" />
@@ -279,26 +233,26 @@ export const WorkingHours = () => {
                 {isAdmin ? (
                   <div className="mx-auto flex max-w-xl flex-col gap-2 md:mx-0">
                     <input
-                      aria-label={`${WORKING_HOURS_TEXT.periodPlaceholder[currentLang]} ${editLang}`}
+                      aria-label={`${t("contact.workingHours.periodPlaceholder")} ${editLang}`}
                       className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-center text-base font-semibold tracking-wide text-blue-200 uppercase outline-none transition-all placeholder:text-white/45 focus:border-blue-400 focus:bg-white/10 focus:ring-4 focus:ring-blue-500/10 md:text-left"
                       value={item.days[editLang]}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
                         handleLangUpdate(item.id, "days", event.target.value)
                       }
                       placeholder={
-                        WORKING_HOURS_TEXT.periodPlaceholder[currentLang]
+                        t("contact.workingHours.periodPlaceholder")
                       }
                     />
 
                     <input
-                      aria-label={`${WORKING_HOURS_TEXT.labelPlaceholder[currentLang]} ${editLang}`}
+                      aria-label={`${t("contact.workingHours.labelPlaceholder")} ${editLang}`}
                       className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-center text-base font-medium text-white outline-none transition-all placeholder:text-white/45 focus:border-blue-400 focus:bg-white/10 focus:ring-4 focus:ring-blue-500/10 md:text-left"
                       value={item.label[editLang]}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
                         handleLangUpdate(item.id, "label", event.target.value)
                       }
                       placeholder={
-                        WORKING_HOURS_TEXT.labelPlaceholder[currentLang]
+                        t("contact.workingHours.labelPlaceholder")
                       }
                     />
                   </div>
@@ -326,17 +280,17 @@ export const WorkingHours = () => {
               <div className="order-3 flex min-w-32 shrink-0 items-center justify-center md:justify-end">
                 {item.isClosed ? (
                   <span className="inline-flex min-h-8 min-w-25 items-center justify-center rounded-full border border-red-400/50 bg-red-500/20 px-4 text-sm font-semibold tracking-wide text-red-200 uppercase">
-                    {WORKING_HOURS_TEXT.closed[currentLang]}
+                    {t("contact.workingHours.closed")}
                   </span>
                 ) : isAdmin ? (
                   <input
-                    aria-label="Time"
+                    aria-label={t("contact.workingHours.timePlaceholder")}
                     className="w-36 rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-center text-base font-semibold text-white outline-none transition-all focus:border-blue-400 focus:bg-white/10 focus:ring-4 focus:ring-blue-500/10"
                     value={item.time}
                     onChange={(event: ChangeEvent<HTMLInputElement>) =>
                       handleUpdate(item.id, { time: event.target.value })
                     }
-                    placeholder="00:00 - 00:00"
+                    placeholder={t("contact.workingHours.timePlaceholder")}
                   />
                 ) : (
                   <span className="rounded-xl bg-white/5 px-4 py-2 text-base font-semibold tracking-tight whitespace-nowrap text-white">
@@ -350,7 +304,7 @@ export const WorkingHours = () => {
       </div>
 
       <p className="mt-7 text-center text-sm leading-6 font-medium text-white/70 italic">
-        * {t("schedule.disclaimer") || "Графік може змінюватися у святкові дні"}
+        * {t("contact.workingHours.disclaimer") || "Графік може змінюватися у святкові дні"}
       </p>
     </section>
   );

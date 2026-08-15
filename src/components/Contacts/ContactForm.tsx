@@ -11,8 +11,6 @@ import {
   User,
 } from "lucide-react";
 
-import type { LangKey } from "../../types/types";
-
 export interface ContactFormData {
   name: string;
   email: string;
@@ -27,81 +25,8 @@ interface ContactFormProps {
   onSubmit?: (data: ContactFormData) => void | Promise<void>;
 }
 
-const CONTACT_TEXT = {
-  ua: {
-    title: "Напишіть нам",
-    description:
-      "Маєте запитання або ідею? Залиште повідомлення, і ми зв’яжемося з вами.",
-    name: "Повне ім’я",
-    namePlaceholder: "Ваше ім’я та прізвище",
-    email: "Електронна адреса",
-    phone: "Телефон",
-    optional: "необов’язково",
-    message: "Ваше повідомлення",
-    messagePlaceholder: "Напишіть ваше повідомлення...",
-    required: "обов’язково",
-    privacyBefore: "Я погоджуюся з обробкою моїх даних відповідно до",
-    privacyLink: "Політики конфіденційності",
-    privacyRequired:
-      "Щоб надіслати повідомлення, підтвердьте згоду на обробку даних.",
-    submit: "Відправити повідомлення",
-    submitting: "Відправляємо...",
-    submitError: "Не вдалося надіслати повідомлення. Спробуйте ще раз.",
-    successTitle: "Повідомлення надіслано",
-    successText: "Дякуємо! Ми зв’яжемося з вами найближчим часом.",
-    sendAnother: "Надіслати ще одне",
-  },
-  de: {
-    title: "Schreiben Sie uns",
-    description:
-      "Haben Sie eine Frage oder eine Idee? Hinterlassen Sie uns eine Nachricht und wir melden uns bei Ihnen.",
-    name: "Vollständiger Name",
-    namePlaceholder: "Ihr Vor- und Nachname",
-    email: "E-Mail-Adresse",
-    phone: "Telefon",
-    optional: "optional",
-    message: "Ihre Nachricht",
-    messagePlaceholder: "Schreiben Sie Ihre Nachricht...",
-    required: "erforderlich",
-    privacyBefore: "Ich stimme der Verarbeitung meiner Daten gemäß der",
-    privacyLink: "Datenschutzerklärung",
-    privacyRequired:
-      "Bitte stimmen Sie der Datenverarbeitung zu, um die Nachricht zu senden.",
-    submit: "Nachricht senden",
-    submitting: "Wird gesendet...",
-    submitError:
-      "Die Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
-    successTitle: "Nachricht gesendet",
-    successText: "Vielen Dank! Wir melden uns in Kürze bei Ihnen.",
-    sendAnother: "Weitere Nachricht senden",
-  },
-  en: {
-    title: "Write to us",
-    description:
-      "Have a question or an idea? Leave us a message and we will contact you.",
-    name: "Full name",
-    namePlaceholder: "Your full name",
-    email: "Email address",
-    phone: "Phone",
-    optional: "optional",
-    message: "Your message",
-    messagePlaceholder: "Write your message...",
-    required: "required",
-    privacyBefore: "I agree to the processing of my data according to the",
-    privacyLink: "Privacy Policy",
-    privacyRequired:
-      "Please agree to data processing before sending the message.",
-    submit: "Send message",
-    submitting: "Sending...",
-    submitError: "The message could not be sent. Please try again.",
-    successTitle: "Message sent",
-    successText: "Thank you! We will contact you shortly.",
-    sendAnother: "Send another message",
-  },
-} as const;
-
 export const ContactForm = ({ onSubmit }: ContactFormProps) => {
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
   const fieldId = useId();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -113,13 +38,6 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
-    .split("-")[0]
-    .toLowerCase();
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
-  const text = CONTACT_TEXT[currentLang];
 
   const resetForm = () => {
     setName("");
@@ -183,16 +101,16 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
           id={`${fieldId}-success-title`}
           className="text-preset-3 font-semibold tracking-tight text-slate-950"
         >
-          {text.successTitle}
+          {t("contact.form.successTitle")}
         </h2>
-        <p className="mt-3 max-w-md text-slate-700">{text.successText}</p>
+        <p className="mt-3 max-w-md text-slate-700">{t("contact.form.successText")}</p>
 
         <button
           type="button"
           onClick={resetForm}
           className="mt-7 cursor-pointer rounded-2xl border border-emerald-200 bg-white px-6 py-3 text-sm font-semibold text-emerald-700 shadow-sm transition hover:border-emerald-300 hover:shadow-md"
         >
-          {text.sendAnother}
+          {t("contact.form.sendAnother")}
         </button>
       </section>
     );
@@ -208,9 +126,9 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
           id={`${fieldId}-title`}
           className="text-preset-3 font-semibold tracking-tight text-slate-950"
         >
-          {text.title}
+          {t("contact.form.title")}
         </h2>
-        <p className="mt-3 max-w-2xl text-slate-600">{text.description}</p>
+        <p className="mt-3 max-w-2xl text-slate-600">{t("contact.form.description")}</p>
       </header>
 
       <form
@@ -221,8 +139,8 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <FormFieldLabel
             htmlFor={`${fieldId}-name`}
-            label={text.name}
-            requiredLabel={text.required}
+            label={t("contact.form.name")}
+            requiredLabel={t("contact.form.required")}
           >
             <User
               size={18}
@@ -238,15 +156,15 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               autoComplete="name"
               required
               minLength={2}
-              placeholder={text.namePlaceholder}
+              placeholder={t("contact.form.namePlaceholder")}
               className={inputClassName}
             />
           </FormFieldLabel>
 
           <FormFieldLabel
             htmlFor={`${fieldId}-email`}
-            label={text.email}
-            requiredLabel={text.required}
+            label={t("contact.form.email")}
+            requiredLabel={t("contact.form.required")}
           >
             <Mail
               size={18}
@@ -262,7 +180,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               autoComplete="email"
               inputMode="email"
               required
-              placeholder="your@email.com"
+              placeholder={t("contact.form.emailPlaceholder")}
               className={inputClassName}
             />
           </FormFieldLabel>
@@ -270,8 +188,8 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
 
         <FormFieldLabel
           htmlFor={`${fieldId}-phone`}
-          label={text.phone}
-          optionalLabel={text.optional}
+          label={t("contact.form.phone")}
+          optionalLabel={t("contact.form.optional")}
         >
           <Phone
             size={18}
@@ -286,7 +204,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
             onChange={(event) => setPhone(event.target.value)}
             autoComplete="tel"
             inputMode="tel"
-            placeholder="+49..."
+            placeholder={t("contact.form.phonePlaceholder")}
             className={inputClassName}
           />
         </FormFieldLabel>
@@ -296,8 +214,8 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
             htmlFor={`${fieldId}-message`}
             className="mb-2 block text-sm font-semibold text-slate-800"
           >
-            {text.message}
-            <span className="ml-1 text-xs text-blue-600">{text.required}</span>
+            {t("contact.form.message")}
+            <span className="ml-1 text-xs text-blue-600">{t("contact.form.required")}</span>
           </label>
           <div className="relative">
             <MessageSquare
@@ -313,7 +231,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               onChange={(event) => setMessage(event.target.value)}
               required
               minLength={5}
-              placeholder={text.messagePlaceholder}
+              placeholder={t("contact.form.messagePlaceholder")}
               className="min-h-40 w-full resize-y rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 font-medium text-slate-950 shadow-sm outline-none transition placeholder:font-normal placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
             />
           </div>
@@ -340,7 +258,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
             className="mt-1 size-4 shrink-0 cursor-pointer accent-blue-600"
           />
           <span>
-            {text.privacyBefore}{" "}
+            {t("contact.form.privacyBefore")}{" "}
             <Link
               to="/privacy"
               target="_blank"
@@ -348,7 +266,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               onClick={(event) => event.stopPropagation()}
               className="font-semibold text-blue-700 underline transition hover:text-blue-800"
             >
-              {text.privacyLink}
+              {t("contact.form.privacyLink")}
             </Link>
             .
           </span>
@@ -360,13 +278,13 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
             role="alert"
             className="text-sm font-semibold text-red-700"
           >
-            {text.privacyRequired}
+            {t("contact.form.privacyRequired")}
           </p>
         )}
 
         {submitError && (
           <p role="alert" className="text-sm font-semibold text-red-700">
-            {text.submitError}
+            {t("contact.form.submitError")}
           </p>
         )}
 
@@ -389,7 +307,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
             />
           )}
-          {isSubmitting ? text.submitting : text.submit}
+          {isSubmitting ? t("contact.form.submitting") : t("contact.form.submit")}
         </button>
       </form>
     </section>

@@ -207,7 +207,7 @@ export const Impressum = () => {
       <header className="flex flex-col items-center justify-center gap-6 py-8 md:flex-row md:gap-10 md:py-12">
         {/* Назва сторінки */}
         <div className="flex max-w-full shrink-0 flex-col items-center justify-center">
-          <h1 className="pb-4 text-center text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
+          <h1 className="pb-1 text-center text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
             Impressum
           </h1>
 
@@ -230,7 +230,7 @@ export const Impressum = () => {
                 placeholder={text.headerPlaceholder}
               />
             ) : (
-              <p className="text-center text-base leading-7 font-medium whitespace-pre-line text-slate-600 md:text-left md:text-lg md:leading-8">
+              <p className="text-center text-base leading-6 font-medium whitespace-pre-line text-slate-600 md:text-left md:text-lg">
                 {legalData.headerDescription}
               </p>
             )}

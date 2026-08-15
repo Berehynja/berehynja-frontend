@@ -13,41 +13,16 @@ import {
   updateEvent,
 } from "../../services/eventsService";
 import type { Event } from "../../types/event";
-import type { LangKey } from "../../types/types";
-
-const EVENT_LIST_TEXT = {
-  add: {
-    ua: "Додати подію",
-    de: "Veranstaltung hinzufügen",
-    en: "Add event",
-  },
-  empty: {
-    ua: "Наразі немає подій.",
-    de: "Derzeit gibt es keine Veranstaltungen.",
-    en: "There are currently no events.",
-  },
-  confirmDelete: {
-    ua: "Видалити цю подію?",
-    de: "Diese Veranstaltung löschen?",
-    en: "Delete this event?",
-  },
-};
 
 export const EventList = () => {
   const { isAdmin } = useAuth();
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
-    "-",
-  )[0];
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -82,7 +57,7 @@ export const EventList = () => {
   const handleDeleteEvent = async (eventId: string) => {
     if (
       isProcessing ||
-      !window.confirm(EVENT_LIST_TEXT.confirmDelete[currentLang])
+      !window.confirm(t("events.list.confirmDelete"))
     ) {
       return;
     }
@@ -150,7 +125,7 @@ export const EventList = () => {
             <li className="min-h-80">
               <AddEvent
                 onClick={handleOpenCreate}
-                label={EVENT_LIST_TEXT.add[currentLang]}
+                label={t("events.list.add")}
               />
             </li>
           )}
@@ -168,7 +143,7 @@ export const EventList = () => {
 
       {!isLoading && reversedEvents.length === 0 && !isAdmin && (
         <p className="py-12 text-center text-gray-500">
-          {EVENT_LIST_TEXT.empty[currentLang]}
+          {t("events.list.empty")}
         </p>
       )}
     </>

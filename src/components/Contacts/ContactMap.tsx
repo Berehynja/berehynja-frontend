@@ -3,39 +3,11 @@ import { ExternalLink, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import type { ContactData } from "../../types/contactData";
-import type { LangKey } from "../../types/types";
 
 interface ContactMapProps {
   contacts: ContactData | null;
 }
 
-const MAP_TEXT = {
-  title: {
-    ua: "Наше розташування",
-    de: "Unser Standort",
-    en: "Our location",
-  },
-  description: {
-    ua: "Карта завантажиться після вашого підтвердження та підключить зовнішній сервіс Google Maps.",
-    de: "Die Karte wird nach Ihrer Bestätigung geladen und stellt eine Verbindung zu Google Maps her.",
-    en: "The map will load after your confirmation and connect to the external Google Maps service.",
-  },
-  loadMap: {
-    ua: "Показати карту",
-    de: "Karte anzeigen",
-    en: "Show map",
-  },
-  openMap: {
-    ua: "Відкрити в Google Maps",
-    de: "In Google Maps öffnen",
-    en: "Open in Google Maps",
-  },
-  unavailable: {
-    ua: "Адресу для карти ще не налаштовано",
-    de: "Die Adresse für die Karte ist noch nicht eingerichtet",
-    en: "The map address has not been configured yet",
-  },
-};
 
 const isSafeHttpsUrl = (value?: string) => {
   if (!value) return false;
@@ -93,15 +65,8 @@ const extractCoordinates = (value: string) => {
 };
 
 export const ContactMap = ({ contacts }: ContactMapProps) => {
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
   const [isMapLoaded, setIsMapLoaded] = useState(false);
-
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
-    "-",
-  )[0];
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
 
   const addressQuery = [contacts?.address, contacts?.city]
     .filter(Boolean)
@@ -127,7 +92,7 @@ export const ContactMap = ({ contacts }: ContactMapProps) => {
 
   return (
     <section
-      aria-label={MAP_TEXT.title[currentLang]}
+      aria-label={t("contact.map.title")}
       className="font-nunito relative min-h-80 overflow-hidden rounded-4xl border border-slate-200 bg-slate-50 shadow-[0_18px_50px_rgba(15,23,42,0.12)] md:min-h-96"
     >
       {mapEmbedUrl && isMapLoaded ? (
@@ -136,7 +101,7 @@ export const ContactMap = ({ contacts }: ContactMapProps) => {
             className="absolute inset-0 h-full w-full border-0"
             src={mapEmbedUrl}
             loading="lazy"
-            title={MAP_TEXT.title[currentLang]}
+            title={t("contact.map.title")}
             referrerPolicy="no-referrer-when-downgrade"
             allowFullScreen
           />
@@ -148,7 +113,7 @@ export const ContactMap = ({ contacts }: ContactMapProps) => {
               rel="noopener noreferrer"
               className="absolute right-4 bottom-4 inline-flex cursor-pointer items-center gap-2 rounded-xl border border-white/50 bg-white/90 px-4 py-2.5 text-base font-semibold text-slate-800 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
             >
-              {MAP_TEXT.openMap[currentLang]}
+              {t("contact.map.openMap")}
               <ExternalLink size={16} aria-hidden="true" />
             </a>
           )}
@@ -160,13 +125,13 @@ export const ContactMap = ({ contacts }: ContactMapProps) => {
           </div>
 
           <h2 className="text-preset-3 font-semibold tracking-tight text-slate-950">
-            {MAP_TEXT.title[currentLang]}
+            {t("contact.map.title")}
           </h2>
 
           <p className="text-preset-4 mt-3 max-w-md leading-7 font-medium text-slate-600 md:leading-8">
             {mapEmbedUrl
-              ? MAP_TEXT.description[currentLang]
-              : MAP_TEXT.unavailable[currentLang]}
+              ? t("contact.map.description")
+              : t("contact.map.unavailable")}
           </p>
 
           {mapEmbedUrl && (
@@ -176,7 +141,7 @@ export const ContactMap = ({ contacts }: ContactMapProps) => {
               className="mt-6 inline-flex cursor-pointer items-center gap-2 rounded-2xl bg-slate-950 px-6 py-3 text-base font-semibold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
             >
               <MapPin size={18} aria-hidden="true" />
-              {MAP_TEXT.loadMap[currentLang]}
+              {t("contact.map.loadMap")}
             </button>
           )}
         </div>

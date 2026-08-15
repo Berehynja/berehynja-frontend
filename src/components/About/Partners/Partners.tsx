@@ -12,70 +12,14 @@ import {
   subscribeToPartners,
 } from "../../../services/partnerService";
 import type { Partner } from "../../../types/partners";
-import type { LangKey } from "../../../types/types";
-
-const PARTNERS_TEXT = {
-  add: {
-    ua: "Додати партнера",
-    de: "Partner hinzufügen",
-    en: "Add partner",
-  },
-  empty: {
-    ua: "Партнери незабаром з’являться.",
-    de: "Partner werden bald hinzugefügt.",
-    en: "Partners will be added soon.",
-  },
-  delete: {
-    ua: "Видалити партнера",
-    de: "Partner löschen",
-    en: "Delete partner",
-  },
-  confirmDelete: {
-    ua: "Видалити цього партнера?",
-    de: "Diesen Partner löschen?",
-    en: "Delete this partner?",
-  },
-  openWebsite: {
-    ua: "Відкрити сайт партнера",
-    de: "Partner-Website öffnen",
-    en: "Open partner website",
-  },
-  added: {
-    ua: "Партнера додано!",
-    de: "Partner wurde hinzugefügt!",
-    en: "Partner added!",
-  },
-  deleted: {
-    ua: "Партнера видалено!",
-    de: "Partner wurde gelöscht!",
-    en: "Partner deleted!",
-  },
-  addError: {
-    ua: "Не вдалося додати партнера.",
-    de: "Der Partner konnte nicht hinzugefügt werden.",
-    en: "The partner could not be added.",
-  },
-  deleteError: {
-    ua: "Не вдалося видалити партнера.",
-    de: "Der Partner konnte nicht gelöscht werden.",
-    en: "The partner could not be deleted.",
-  },
-};
 
 export const Partners = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { isAdmin } = useAuth();
   const [partners, setPartners] = useState<Partner[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
-    "-",
-  )[0];
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
 
   useEffect(() => {
     const unsubscribe = subscribeToPartners((partnersData) => {
@@ -94,10 +38,10 @@ export const Partners = () => {
     try {
       await addPartner(newPartner);
       setIsModalOpen(false);
-      toast.success(PARTNERS_TEXT.added[currentLang]);
+      toast.success(t("about.partners.added"));
     } catch (error) {
       console.error("Partner creation error:", error);
-      toast.error(PARTNERS_TEXT.addError[currentLang]);
+      toast.error(t("about.partners.addError"));
     } finally {
       setIsProcessing(false);
     }
@@ -106,7 +50,7 @@ export const Partners = () => {
   const handleDelete = async (id: string) => {
     if (
       isProcessing ||
-      !window.confirm(PARTNERS_TEXT.confirmDelete[currentLang])
+      !window.confirm(t("about.partners.confirmDelete"))
     ) {
       return;
     }
@@ -115,10 +59,10 @@ export const Partners = () => {
 
     try {
       await deletePartner(id);
-      toast.success(PARTNERS_TEXT.deleted[currentLang]);
+      toast.success(t("about.partners.deleted"));
     } catch (error) {
       console.error("Partner deletion error:", error);
-      toast.error(PARTNERS_TEXT.deleteError[currentLang]);
+      toast.error(t("about.partners.deleteError"));
     } finally {
       setIsProcessing(false);
     }
@@ -136,11 +80,6 @@ export const Partners = () => {
           <h2 className="text-preset-2 font-nunito text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
             {t("about.ourPartners")}
           </h2>
-
-          <div
-            aria-hidden="true"
-            className="mx-auto mt-4 h-1 w-14 rounded-full bg-linear-to-r from-blue-500 to-yellow-400"
-          />
         </header>
 
         {!isLoading && (partners.length > 0 || isAdmin) && (
@@ -156,15 +95,17 @@ export const Partners = () => {
                     <Plus size={22} aria-hidden="true" />
                   </span>
                   <span className="text-center text-xs font-bold md:text-sm">
-                    {PARTNERS_TEXT.add[currentLang]}
+                    {t("about.partners.add")}
                   </span>
                 </button>
               </li>
             )}
 
             {partners.map((partner) => {
+              const partnerLanguage =
+                t("about.partners.language") as keyof typeof partner.name;
               const partnerName =
-                partner.name[currentLang] || partner.name.ua || "Partner";
+                partner.name[partnerLanguage] ?? partner.name.ua ?? "Partner";
 
               const logoContent = partner.logo ? (
                 <img
@@ -194,7 +135,7 @@ export const Partners = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       title={partnerName}
-                      aria-label={`${PARTNERS_TEXT.openWebsite[currentLang]}: ${partnerName}`}
+                      aria-label={`${t("about.partners.website")}: ${partnerName}`}
                       className={cardClassName}
                     >
                       {logoContent}
@@ -213,8 +154,8 @@ export const Partners = () => {
                     <button
                       type="button"
                       onClick={() => void handleDelete(partner.id!)}
-                      aria-label={`${PARTNERS_TEXT.delete[currentLang]}: ${partnerName}`}
-                      title={PARTNERS_TEXT.delete[currentLang]}
+                      aria-label={`${t("about.partners.delete")}: ${partnerName}`}
+                      title={t("about.partners.delete")}
                       className="absolute top-2 right-2 z-20 flex size-11 cursor-pointer items-center justify-center rounded-xl border border-red-100 bg-white/95 text-red-600 shadow-md backdrop-blur transition-all duration-200 hover:border-red-600 hover:bg-red-600 hover:text-white active:scale-95 focus-visible:ring-3 focus-visible:ring-red-500/30 focus-visible:outline-none md:top-2.5 md:right-2.5"
                     >
                       <Trash2 size={17} aria-hidden="true" />
@@ -228,7 +169,7 @@ export const Partners = () => {
 
         {!isLoading && partners.length === 0 && !isAdmin && (
           <div className="flex min-h-36 items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-6 text-center text-sm font-medium text-slate-600">
-            {PARTNERS_TEXT.empty[currentLang]}
+            {t("about.partners.empty")}
           </div>
         )}
       </div>
