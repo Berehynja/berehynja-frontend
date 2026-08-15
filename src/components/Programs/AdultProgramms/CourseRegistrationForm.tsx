@@ -8,9 +8,6 @@ import {
   ShieldCheck,
   User,
 } from "lucide-react";
-
-import type { LangKey } from "../../../types/types";
-
 export interface CourseRegistrationData {
   courseId: string;
   courseTitle: string;
@@ -19,99 +16,18 @@ export interface CourseRegistrationData {
   phone: string;
   acceptedPrivacy: boolean;
 }
-
 interface CourseRegistrationFormProps {
   courseId: string;
   courseTitle: string;
   onSubmit: (data: CourseRegistrationData) => void | Promise<void>;
 }
 
-const FORM_TEXT = {
-  eyebrow: {
-    ua: "Реєстрація на курс",
-    de: "Kursanmeldung",
-    en: "Course registration",
-  },
-  title: {
-    ua: "Зробіть перший крок",
-    de: "Machen Sie den ersten Schritt",
-    en: "Take the first step",
-  },
-  description: {
-    ua: "Залиште контактні дані — ми зв’яжемося з вами та розповімо про наступні кроки.",
-    de: "Hinterlassen Sie Ihre Kontaktdaten – wir melden uns bei Ihnen und erklären die nächsten Schritte.",
-    en: "Leave your contact details and we will contact you with the next steps.",
-  },
-  selectedCourse: {
-    ua: "Обраний курс",
-    de: "Ausgewählter Kurs",
-    en: "Selected course",
-  },
-  fullName: {
-    ua: "Ім’я та прізвище",
-    de: "Vor- und Nachname",
-    en: "Full name",
-  },
-  fullNamePlaceholder: {
-    ua: "Наприклад, Олена Іваненко",
-    de: "Zum Beispiel Anna Schmidt",
-    en: "For example, Anna Smith",
-  },
-  email: { ua: "Email", de: "E-Mail", en: "Email" },
-  emailPlaceholder: {
-    ua: "name@example.com",
-    de: "name@beispiel.de",
-    en: "name@example.com",
-  },
-  phone: { ua: "Телефон", de: "Telefon", en: "Phone" },
-  phonePlaceholder: {
-    ua: "+49 123 4567890",
-    de: "+49 123 4567890",
-    en: "+49 123 4567890",
-  },
-  privacy: {
-    ua: "Я погоджуюся на обробку моїх даних для зв’язку щодо цього курсу.",
-    de: "Ich stimme der Verarbeitung meiner Daten zur Kontaktaufnahme bezüglich dieses Kurses zu.",
-    en: "I agree to the processing of my data for contact regarding this course.",
-  },
-  privacyRequired: {
-    ua: "Щоб надіслати заявку, підтвердьте згоду на обробку даних.",
-    de: "Bitte stimmen Sie der Datenverarbeitung zu, um die Anmeldung zu senden.",
-    en: "Please agree to data processing before sending the registration.",
-  },
-  submit: {
-    ua: "Записатися на курс",
-    de: "Zum Kurs anmelden",
-    en: "Register for the course",
-  },
-  submitting: {
-    ua: "Надсилаємо...",
-    de: "Wird gesendet...",
-    en: "Sending...",
-  },
-  successTitle: {
-    ua: "Заявку надіслано",
-    de: "Anmeldung gesendet",
-    en: "Registration sent",
-  },
-  successText: {
-    ua: "Дякуємо! Ми зв’яжемося з вами найближчим часом.",
-    de: "Vielen Dank! Wir melden uns in Kürze bei Ihnen.",
-    en: "Thank you! We will contact you shortly.",
-  },
-  submitError: {
-    ua: "Не вдалося надіслати заявку. Спробуйте ще раз.",
-    de: "Die Anmeldung konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
-    en: "Registration could not be sent. Please try again.",
-  },
-};
-
 export const CourseRegistrationForm = ({
   courseId,
   courseTitle,
   onSubmit,
 }: CourseRegistrationFormProps) => {
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
   const fieldId = useId();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -122,19 +38,13 @@ export const CourseRegistrationForm = ({
   const [submitError, setSubmitError] = useState("");
   const [privacyError, setPrivacyError] = useState("");
 
-  const detectedLanguage = (
-    i18n.resolvedLanguage || i18n.language
-  ).split("-")[0];
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (isSubmitting) return;
 
     if (!acceptedPrivacy) {
-      setPrivacyError(FORM_TEXT.privacyRequired[currentLang]);
+      setPrivacyError(t("courseRegistration.privacyRequired"));
       return;
     }
 
@@ -159,7 +69,7 @@ export const CourseRegistrationForm = ({
       setAcceptedPrivacy(false);
     } catch (error) {
       console.error("Course registration error:", error);
-      setSubmitError(FORM_TEXT.submitError[currentLang]);
+      setSubmitError(t("courseRegistration.submitError"));
     } finally {
       setIsSubmitting(false);
     }
@@ -176,10 +86,10 @@ export const CourseRegistrationForm = ({
         </div>
 
         <h3 className="text-2xl font-black text-slate-950">
-          {FORM_TEXT.successTitle[currentLang]}
+          {t("courseRegistration.successTitle")}
         </h3>
         <p className="mt-3 max-w-md leading-7 text-slate-700">
-          {FORM_TEXT.successText[currentLang]}
+          {t("courseRegistration.successText")}
         </p>
       </div>
     );
@@ -201,24 +111,24 @@ export const CourseRegistrationForm = ({
       <div className="mb-8">
         <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-xs font-black tracking-[0.14em] text-blue-700 uppercase">
           <ShieldCheck size={16} aria-hidden="true" />
-          {FORM_TEXT.eyebrow[currentLang]}
+          {t("courseRegistration.eyebrow")}
         </div>
 
         <h2
           id={`${fieldId}-title`}
           className="text-3xl leading-tight font-black text-slate-950 sm:text-4xl"
         >
-          {FORM_TEXT.title[currentLang]}
+          {t("courseRegistration.title")}
         </h2>
 
         <p className="mt-4 max-w-2xl leading-7 text-slate-700">
-          {FORM_TEXT.description[currentLang]}
+          {t("courseRegistration.description")}
         </p>
       </div>
 
       <div className="mb-7 rounded-2xl border border-blue-100 bg-blue-50/70 px-5 py-4">
         <span className="block text-xs font-black tracking-[0.14em] text-blue-700 uppercase">
-          {FORM_TEXT.selectedCourse[currentLang]}
+          {t("courseRegistration.selectedCourse")}
         </span>
         <span className="mt-1 block text-lg font-bold text-slate-950">
           {courseTitle}
@@ -231,7 +141,7 @@ export const CourseRegistrationForm = ({
             htmlFor={`${fieldId}-name`}
             className="mb-2 block text-sm font-bold text-slate-800"
           >
-            {FORM_TEXT.fullName[currentLang]}
+            {t("courseRegistration.fullName")}
           </label>
           <div className="relative">
             <User
@@ -247,7 +157,7 @@ export const CourseRegistrationForm = ({
               autoComplete="name"
               required
               minLength={2}
-              placeholder={FORM_TEXT.fullNamePlaceholder[currentLang]}
+              placeholder={t("courseRegistration.fullNamePlaceholder")}
               className={inputClassName}
             />
           </div>
@@ -259,7 +169,7 @@ export const CourseRegistrationForm = ({
               htmlFor={`${fieldId}-email`}
               className="mb-2 block text-sm font-bold text-slate-800"
             >
-              {FORM_TEXT.email[currentLang]}
+              {t("courseRegistration.email")}
             </label>
             <div className="relative">
               <Mail
@@ -275,7 +185,7 @@ export const CourseRegistrationForm = ({
                 autoComplete="email"
                 inputMode="email"
                 required
-                placeholder={FORM_TEXT.emailPlaceholder[currentLang]}
+                placeholder={t("courseRegistration.emailPlaceholder")}
                 className={inputClassName}
               />
             </div>
@@ -286,7 +196,7 @@ export const CourseRegistrationForm = ({
               htmlFor={`${fieldId}-phone`}
               className="mb-2 block text-sm font-bold text-slate-800"
             >
-              {FORM_TEXT.phone[currentLang]}
+              {t("courseRegistration.phone")}
             </label>
             <div className="relative">
               <Phone
@@ -303,7 +213,7 @@ export const CourseRegistrationForm = ({
                 inputMode="tel"
                 required
                 minLength={6}
-                placeholder={FORM_TEXT.phonePlaceholder[currentLang]}
+                placeholder={t("courseRegistration.phonePlaceholder")}
                 className={inputClassName}
               />
             </div>
@@ -322,7 +232,7 @@ export const CourseRegistrationForm = ({
             aria-describedby={privacyError ? `${fieldId}-privacy-error` : undefined}
             className="mt-1 size-4 shrink-0 cursor-pointer accent-blue-600"
           />
-          <span>{FORM_TEXT.privacy[currentLang]}</span>
+          <span>{t("courseRegistration.privacy")}</span>
         </label>
 
         {privacyError && (
@@ -353,8 +263,8 @@ export const CourseRegistrationForm = ({
         >
           <Send size={19} aria-hidden="true" />
           {isSubmitting
-            ? FORM_TEXT.submitting[currentLang]
-            : FORM_TEXT.submit[currentLang]}
+            ? t("courseRegistration.submitting")
+            : t("courseRegistration.submit")}
         </button>
       </form>
     </section>

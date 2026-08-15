@@ -24,87 +24,23 @@ import {
 import type { ProgramAdults } from "../../../types/program";
 import type { LangKey } from "../../../types/types";
 
-const PROGRAMS_LIST_TEXT = {
-  period: {
-    ua: "Період",
-    de: "Zeitraum",
-    en: "Period",
-  },
-  duration: {
-    ua: "Тривалість",
-    de: "Dauer",
-    en: "Duration",
-  },
-  schedule: {
-    ua: "Графік",
-    de: "Zeitplan",
-    en: "Schedule",
-  },
-  group: {
-    ua: "Група",
-    de: "Gruppe",
-    en: "Group",
-  },
-  location: {
-    ua: "Локація",
-    de: "Ort",
-    en: "Location",
-  },
-  details: {
-    ua: "Детальніше",
-    de: "Mehr erfahren",
-    en: "Learn more",
-  },
-  edit: {
-    ua: "Редагувати програму",
-    de: "Programm bearbeiten",
-    en: "Edit program",
-  },
-  add: {
-    ua: "Додати програму",
-    de: "Programm hinzufügen",
-    en: "Add program",
-  },
-  empty: {
-    ua: "Наразі немає доступних програм.",
-    de: "Derzeit sind keine Programme verfügbar.",
-    en: "There are currently no programs available.",
-  },
-  confirmDelete: {
-    ua: "Видалити цю програму?",
-    de: "Dieses Programm löschen?",
-    en: "Delete this program?",
-  },
-  added: {
-    ua: "Програму додано!",
-    de: "Programm wurde hinzugefügt!",
-    en: "Program added!",
-  },
-  updated: {
-    ua: "Програму оновлено!",
-    de: "Programm wurde aktualisiert!",
-    en: "Program updated!",
-  },
-  deleted: {
-    ua: "Програму видалено!",
-    de: "Programm wurde gelöscht!",
-    en: "Program deleted!",
-  },
-  saveError: {
-    ua: "Не вдалося зберегти програму.",
-    de: "Das Programm konnte nicht gespeichert werden.",
-    en: "The program could not be saved.",
-  },
-  deleteError: {
-    ua: "Не вдалося видалити програму.",
-    de: "Das Programm konnte nicht gelöscht werden.",
-    en: "The program could not be deleted.",
-  },
+const getCurrentLanguage = (language: string): LangKey => {
+  const normalizedLanguage = language.split("-")[0].toLowerCase();
+
+  if (
+    normalizedLanguage === "ua" ||
+    normalizedLanguage === "de" ||
+    normalizedLanguage === "en"
+  ) {
+    return normalizedLanguage;
+  }
+
+  return "ua";
 };
 
 export const ProgramsList = () => {
   const { isAdmin } = useAuth();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [programs, setPrograms] = useState<ProgramAdults[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -113,26 +49,30 @@ export const ProgramsList = () => {
     null,
   );
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
-    "-",
-  )[0];
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
+  const currentLang = getCurrentLanguage(
+    i18n.resolvedLanguage || i18n.language,
+  );
 
   useEffect(() => {
+    let isActive = true;
+
     const loadPrograms = async () => {
       try {
         const data = await fetchProgramsAdults();
-        setPrograms(data);
+
+        if (isActive) setPrograms(data);
       } catch (error) {
         console.error("Programs loading error:", error);
       } finally {
-        setIsLoading(false);
+        if (isActive) setIsLoading(false);
       }
     };
 
     void loadPrograms();
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   const handleOpenCreate = () => {
@@ -169,18 +109,18 @@ export const ProgramsList = () => {
           ),
         );
 
-        toast.success(PROGRAMS_LIST_TEXT.updated[currentLang]);
+        toast.success(t("programs.adults.list.updated"));
       } else {
         const newProgram = await addProgramAdults(formData);
         setPrograms((currentPrograms) => [...currentPrograms, newProgram]);
-        toast.success(PROGRAMS_LIST_TEXT.added[currentLang]);
+        toast.success(t("programs.adults.list.added"));
       }
 
       setEditingProgram(null);
       setIsModalOpen(false);
     } catch (error) {
       console.error("Program save error:", error);
-      toast.error(PROGRAMS_LIST_TEXT.saveError[currentLang]);
+      toast.error(t("programs.adults.list.saveError"));
     } finally {
       setIsProcessing(false);
     }
@@ -189,7 +129,7 @@ export const ProgramsList = () => {
   const handleDelete = async (id: string) => {
     if (
       isProcessing ||
-      !window.confirm(PROGRAMS_LIST_TEXT.confirmDelete[currentLang])
+      !window.confirm(t("programs.adults.list.confirmDelete"))
     ) {
       return;
     }
@@ -203,10 +143,10 @@ export const ProgramsList = () => {
       );
       setEditingProgram(null);
       setIsModalOpen(false);
-      toast.success(PROGRAMS_LIST_TEXT.deleted[currentLang]);
+      toast.success(t("programs.adults.list.deleted"));
     } catch (error) {
       console.error("Program deletion error:", error);
-      toast.error(PROGRAMS_LIST_TEXT.deleteError[currentLang]);
+      toast.error(t("programs.adults.list.deleteError"));
     } finally {
       setIsProcessing(false);
     }
@@ -222,23 +162,25 @@ export const ProgramsList = () => {
             <li className="min-h-80">
               <AddEvent
                 onClick={handleOpenCreate}
-                label={PROGRAMS_LIST_TEXT.add[currentLang]}
+                label={t("programs.adults.list.add")}
               />
             </li>
           )}
 
           {programs.map((program, index) => {
-            const title = program.title[currentLang] || program.title.ua;
+            const title =
+              program.title[currentLang]?.trim() || program.title.ua;
             const description =
-              program.description[currentLang] || program.description.ua;
+              program.description[currentLang]?.trim() ||
+              program.description.ua;
             const duration =
-              program.duration[currentLang] || program.duration.ua;
+              program.duration[currentLang]?.trim() || program.duration.ua;
             const intensity =
-              program.intensity[currentLang] || program.intensity.ua;
+              program.intensity[currentLang]?.trim() || program.intensity.ua;
             const capacity =
-              program.capacity[currentLang] || program.capacity.ua;
+              program.capacity[currentLang]?.trim() || program.capacity.ua;
             const location =
-              program.location[currentLang] || program.location.ua;
+              program.location[currentLang]?.trim() || program.location.ua;
 
             return (
               <li
@@ -249,8 +191,8 @@ export const ProgramsList = () => {
                   <button
                     type="button"
                     onClick={() => handleOpenEdit(program)}
-                    aria-label={`${PROGRAMS_LIST_TEXT.edit[currentLang]}: ${title}`}
-                    title={PROGRAMS_LIST_TEXT.edit[currentLang]}
+                    aria-label={`${t("programs.adults.list.edit")}: ${title}`}
+                    title={t("programs.adults.list.edit")}
                     className="absolute top-4 right-4 z-20 flex size-11 cursor-pointer items-center justify-center rounded-xl border border-white/60 bg-white/90 text-gray-700 shadow-md backdrop-blur-md transition-all duration-300 hover:border-blue-600 hover:bg-blue-600 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                   >
                     <Pencil size={18} aria-hidden="true" />
@@ -275,7 +217,7 @@ export const ProgramsList = () => {
                   {program.dateRange && (
                     <div className="absolute right-4 bottom-4 flex flex-col items-center justify-center rounded-2xl border border-white/40 bg-white/85 px-4 py-3 text-center shadow-lg backdrop-blur-md">
                       <span className="mb-0.5 text-[11px] font-black tracking-widest text-blue-700 uppercase">
-                        {PROGRAMS_LIST_TEXT.period[currentLang]}
+                        {t("programs.adults.list.period")}
                       </span>
                       <span className="text-sm font-black text-gray-900 uppercase">
                         {program.dateRange}
@@ -296,70 +238,39 @@ export const ProgramsList = () => {
                   )}
 
                   <dl className="mb-6 grid gap-3 border-t border-gray-100 pt-5 text-sm">
-                    <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3">
-                      <dt className="flex items-center gap-2 font-semibold text-gray-500">
-                        <Calendar
-                          size={17}
-                          className="shrink-0 text-blue-600"
-                          aria-hidden="true"
-                        />
-                        {PROGRAMS_LIST_TEXT.duration[currentLang]}:
-                      </dt>
-                      <dd className="min-w-0 text-right font-bold wrap-break-word text-gray-800">
-                        {duration}
-                      </dd>
-                    </div>
-
-                    <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3">
-                      <dt className="flex items-center gap-2 font-semibold text-gray-500">
-                        <Clock
-                          size={17}
-                          className="shrink-0 text-orange-600"
-                          aria-hidden="true"
-                        />
-                        {PROGRAMS_LIST_TEXT.schedule[currentLang]}:
-                      </dt>
-                      <dd className="min-w-0 text-right font-bold wrap-break-word text-gray-800">
-                        {intensity}
-                      </dd>
-                    </div>
-
-                    <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3">
-                      <dt className="flex items-center gap-2 font-semibold text-gray-500">
-                        <Users
-                          size={17}
-                          className="shrink-0 text-emerald-600"
-                          aria-hidden="true"
-                        />
-                        {PROGRAMS_LIST_TEXT.group[currentLang]}:
-                      </dt>
-                      <dd className="min-w-0 text-right font-bold wrap-break-word text-gray-800">
-                        {capacity}
-                      </dd>
-                    </div>
-
-                    <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3">
-                      <dt className="flex items-center gap-2 font-semibold text-gray-500">
-                        <MapPin
-                          size={17}
-                          className="shrink-0 text-red-600"
-                          aria-hidden="true"
-                        />
-                        {PROGRAMS_LIST_TEXT.location[currentLang]}:
-                      </dt>
-                      <dd className="min-w-0 text-right font-bold wrap-break-word text-gray-800">
-                        {location}
-                      </dd>
-                    </div>
+                    <ProgramDetail
+                      icon={Calendar}
+                      iconClassName="text-blue-600"
+                      label={t("programs.adults.list.duration")}
+                      value={duration}
+                    />
+                    <ProgramDetail
+                      icon={Clock}
+                      iconClassName="text-orange-600"
+                      label={t("programs.adults.list.schedule")}
+                      value={intensity}
+                    />
+                    <ProgramDetail
+                      icon={Users}
+                      iconClassName="text-emerald-600"
+                      label={t("programs.adults.list.group")}
+                      value={capacity}
+                    />
+                    <ProgramDetail
+                      icon={MapPin}
+                      iconClassName="text-red-600"
+                      label={t("programs.adults.list.location")}
+                      value={location}
+                    />
                   </dl>
 
                   <Link
                     to={`/programs/adults/${program.id}`}
-                    aria-label={`${PROGRAMS_LIST_TEXT.details[currentLang]}: ${title}`}
+                    aria-label={`${t("programs.adults.list.details")}: ${title}`}
                     className="group/link mt-auto flex items-center justify-center gap-3 rounded-2xl bg-gray-900 px-6 py-4 text-sm font-bold text-white shadow-sm transition-all hover:bg-blue-600 hover:shadow-lg active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                   >
                     <span className="tracking-wider uppercase">
-                      {PROGRAMS_LIST_TEXT.details[currentLang]}
+                      {t("programs.adults.list.details")}
                     </span>
                     <ArrowRight
                       size={18}
@@ -376,7 +287,7 @@ export const ProgramsList = () => {
 
       {!isLoading && programs.length === 0 && !isAdmin && (
         <p className="py-12 text-center text-gray-500">
-          {PROGRAMS_LIST_TEXT.empty[currentLang]}
+          {t("programs.adults.list.empty")}
         </p>
       )}
 
@@ -392,3 +303,31 @@ export const ProgramsList = () => {
     </>
   );
 };
+
+interface ProgramDetailProps {
+  icon: typeof Calendar;
+  iconClassName: string;
+  label: string;
+  value: string;
+}
+
+const ProgramDetail = ({
+  icon: Icon,
+  iconClassName,
+  label,
+  value,
+}: ProgramDetailProps) => (
+  <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3">
+    <dt className="flex items-center gap-2 font-semibold text-gray-500">
+      <Icon
+        size={17}
+        className={`shrink-0 ${iconClassName}`}
+        aria-hidden="true"
+      />
+      {label}:
+    </dt>
+    <dd className="min-w-0 text-right font-bold wrap-break-word text-gray-800">
+      {value || "—"}
+    </dd>
+  </div>
+);

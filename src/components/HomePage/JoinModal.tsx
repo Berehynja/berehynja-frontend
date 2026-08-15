@@ -7,10 +7,15 @@ import {
   UserPlus,
   X,
 } from "lucide-react";
-import { useEffect, useId, useCallback, useState, type FormEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useState,
+  type FormEvent,
+} from "react";
 import { useTranslation } from "react-i18next";
-
-import type { LangKey } from "../../types/types";
+import { Link } from "react-router-dom";
 
 export interface JoinFormData {
   fullName: string;
@@ -26,79 +31,12 @@ interface JoinModalProps {
   onSubmit?: (data: JoinFormData) => void | Promise<void>;
 }
 
-const JOIN_TEXT = {
-  dialogLabel: {
-    ua: "Форма приєднання",
-    de: "Beitrittsformular",
-    en: "Join form",
-  },
-  close: { ua: "Закрити форму", de: "Formular schließen", en: "Close form" },
-  title: { ua: "Приєднатися", de: "Mitmachen", en: "Join us" },
-  subtitle: {
-    ua: "Станьте частиною Berehynja",
-    de: "Werden Sie Teil von Berehynja",
-    en: "Become part of Berehynja",
-  },
-  fullName: {
-    ua: "Повне ім’я *",
-    de: "Vollständiger Name *",
-    en: "Full name *",
-  },
-  fullNamePlaceholder: {
-    ua: "Ваше прізвище та ім’я",
-    de: "Ihr Vor- und Nachname",
-    en: "Your full name",
-  },
-  email: { ua: "E-mail *", de: "E-Mail *", en: "Email *" },
-  phone: { ua: "Телефон", de: "Telefon", en: "Phone" },
-  optional: { ua: "(за бажанням)", de: "(optional)", en: "(optional)" },
-  message: {
-    ua: "Чим ви хотіли б допомогти?",
-    de: "Wie möchten Sie helfen?",
-    en: "How would you like to help?",
-  },
-  messagePlaceholder: {
-    ua: "Напишіть трохи про себе або ваші ідеї...",
-    de: "Erzählen Sie uns etwas über sich oder Ihre Ideen...",
-    en: "Tell us a little about yourself or your ideas...",
-  },
-  privacyBefore: {
-    ua: "Я погоджуюся з обробкою моїх даних відповідно до",
-    de: "Ich stimme der Verarbeitung meiner Daten gemäß der",
-    en: "I agree to the processing of my data according to the",
-  },
-  privacyLink: {
-    ua: "Політики конфіденційності",
-    de: "Datenschutzerklärung",
-    en: "Privacy Policy",
-  },
-  privacyRequired: {
-    ua: "Щоб надіслати заявку, підтвердьте згоду на обробку даних.",
-    de: "Bitte stimmen Sie der Datenverarbeitung zu, um die Anfrage zu senden.",
-    en: "Please agree to data processing before sending the application.",
-  },
-  submitError: {
-    ua: "Не вдалося надіслати заявку. Спробуйте ще раз.",
-    de: "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
-    en: "The application could not be sent. Please try again.",
-  },
-  submit: {
-    ua: "Надіслати заявку",
-    de: "Anfrage senden",
-    en: "Send application",
-  },
-  submitting: { ua: "Надсилаємо...", de: "Wird gesendet...", en: "Sending..." },
-  successTitle: { ua: "Дякуємо!", de: "Vielen Dank!", en: "Thank you!" },
-  successText: {
-    ua: "Ми отримали вашу заявку. Наш координатор зв’яжеться з вами найближчим часом.",
-    de: "Wir haben Ihre Anfrage erhalten. Unser Koordinator wird sich in Kürze bei Ihnen melden.",
-    en: "We received your application. Our coordinator will contact you shortly.",
-  },
-};
-
 export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
   const fieldId = useId();
+  const titleId = `${fieldId}-title`;
+  const privacyErrorId = `${fieldId}-privacy-error`;
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -108,13 +46,6 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
   const [submitError, setSubmitError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
-    "-",
-  )[0];
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
 
   const resetForm = useCallback(() => {
     setFullName("");
@@ -194,7 +125,7 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={JOIN_TEXT.dialogLabel[currentLang]}
+      aria-labelledby={titleId}
       className="fixed inset-0 z-9999 flex items-center justify-center p-4"
     >
       <div
@@ -208,12 +139,13 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
           aria-hidden="true"
           className="absolute inset-x-0 top-0 h-1.5 bg-linear-to-r from-blue-600 via-blue-500 to-yellow-400"
         />
+
         <button
           type="button"
           onClick={handleClose}
-          aria-label={JOIN_TEXT.close[currentLang]}
-          title={JOIN_TEXT.close[currentLang]}
-          className="absolute top-5 right-5 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all hover:border-blue-300 hover:text-blue-600 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:top-7 md:right-7"
+          aria-label={t("joinModal.close")}
+          title={t("joinModal.close")}
+          className="absolute top-5 right-5 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all hover:border-blue-300 hover:text-blue-700 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:top-7 md:right-7"
         >
           <X size={22} aria-hidden="true" />
         </button>
@@ -224,15 +156,16 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
               <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-700 shadow-sm ring-1 ring-blue-100">
                 <UserPlus size={28} aria-hidden="true" />
               </div>
+
               <div>
-                <h3
-                  id={`${fieldId}-title`}
-                  className="font-nunito text-3xl leading-tight font-black text-slate-950"
+                <h2
+                  id={titleId}
+                  className="text-2xl leading-tight font-semibold tracking-tight text-slate-950 md:text-3xl"
                 >
-                  {JOIN_TEXT.title[currentLang]}
-                </h3>
-                <p className="mt-1 text-sm leading-6 text-slate-600">
-                  {JOIN_TEXT.subtitle[currentLang]}
+                  {t("joinModal.title")}
+                </h2>
+                <p className="mt-2 text-base leading-7 font-medium text-slate-600">
+                  {t("joinModal.subtitle")}
                 </p>
               </div>
             </div>
@@ -241,10 +174,11 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
               <div>
                 <label
                   htmlFor={`${fieldId}-name`}
-                  className="mb-2 block text-sm font-bold text-slate-800"
+                  className="mb-2 block text-sm font-semibold text-slate-800 md:text-base"
                 >
-                  {JOIN_TEXT.fullName[currentLang]}
+                  {t("joinModal.fullName")}
                 </label>
+
                 <div className="relative">
                   <User
                     aria-hidden="true"
@@ -259,8 +193,8 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                     value={fullName}
                     onChange={(event) => setFullName(event.target.value)}
                     autoComplete="name"
-                    placeholder={JOIN_TEXT.fullNamePlaceholder[currentLang]}
-                    className="w-full rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                    placeholder={t("joinModal.fullNamePlaceholder")}
+                    className="w-full rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 text-base text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                   />
                 </div>
               </div>
@@ -269,9 +203,9 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                 <div>
                   <label
                     htmlFor={`${fieldId}-email`}
-                    className="mb-2 block text-sm font-bold text-slate-800"
+                    className="mb-2 block text-sm font-semibold text-slate-800 md:text-base"
                   >
-                    {JOIN_TEXT.email[currentLang]}
+                    {t("joinModal.email")}
                   </label>
                   <input
                     id={`${fieldId}-email`}
@@ -281,26 +215,27 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                     onChange={(event) => setEmail(event.target.value)}
                     autoComplete="email"
                     inputMode="email"
-                    placeholder="mail@example.com"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-5 py-3.5 text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                    placeholder={t("joinModal.emailPlaceholder")}
+                    className="w-full rounded-2xl border border-slate-200 bg-white px-5 py-3.5 text-base text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor={`${fieldId}-phone`}
-                    className="mb-2 block text-sm font-bold text-slate-800"
+                    className="mb-2 block text-sm font-semibold text-slate-800 md:text-base"
                   >
-                    {JOIN_TEXT.phone[currentLang]}{" "}
+                    {t("joinModal.phone")} {" "}
                     <span className="font-normal text-slate-500 lowercase">
-                      {JOIN_TEXT.optional[currentLang]}
+                      {t("joinModal.optional")}
                     </span>
                   </label>
+
                   <div className="relative">
                     <Phone
                       aria-hidden="true"
                       className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-500"
-                      size={16}
+                      size={18}
                     />
                     <input
                       id={`${fieldId}-phone`}
@@ -309,8 +244,8 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                       onChange={(event) => setPhone(event.target.value)}
                       autoComplete="tel"
                       inputMode="tel"
-                      placeholder="+49..."
-                      className="w-full rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                      placeholder={t("joinModal.phonePlaceholder")}
+                      className="w-full rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 text-base text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                     />
                   </div>
                 </div>
@@ -319,10 +254,11 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
               <div>
                 <label
                   htmlFor={`${fieldId}-message`}
-                  className="mb-2 block text-sm font-bold text-slate-800"
+                  className="mb-2 block text-sm font-semibold text-slate-800 md:text-base"
                 >
-                  {JOIN_TEXT.message[currentLang]}
+                  {t("joinModal.message")}
                 </label>
+
                 <div className="relative">
                   <MessageSquare
                     aria-hidden="true"
@@ -334,13 +270,13 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                     rows={3}
                     value={message}
                     onChange={(event) => setMessage(event.target.value)}
-                    placeholder={JOIN_TEXT.messagePlaceholder[currentLang]}
-                    className="w-full resize-none rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                    placeholder={t("joinModal.messagePlaceholder")}
+                    className="w-full resize-none rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 text-base text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                   />
                 </div>
               </div>
 
-              <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700 transition-colors hover:border-blue-200 hover:bg-blue-50/50">
+              <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 font-medium text-slate-700 transition-colors hover:border-blue-200 hover:bg-blue-50/50 md:text-base md:leading-7">
                 <input
                   type="checkbox"
                   checked={acceptedPrivacy}
@@ -348,57 +284,57 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                     setAcceptedPrivacy(event.target.checked);
                     if (event.target.checked) setPrivacyError(false);
                   }}
-                  aria-invalid={Boolean(privacyError)}
-                  aria-describedby={
-                    privacyError ? `${fieldId}-privacy-error` : undefined
-                  }
+                  aria-invalid={privacyError}
+                  aria-describedby={privacyError ? privacyErrorId : undefined}
                   className="mt-1 size-4 shrink-0 cursor-pointer accent-blue-600"
                 />
                 <span>
-                  {JOIN_TEXT.privacyBefore[currentLang]}{" "}
-                  <a
-                    href="privacy"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-bold underline transition-colors hover:text-blue-600"
+                  {t("joinModal.privacyBefore")} {" "}
+                  <Link
+                    to="/privacy"
+                    className="font-semibold text-blue-700 underline underline-offset-2 transition-colors hover:text-blue-800"
                     onClick={(event) => event.stopPropagation()}
                   >
-                    {JOIN_TEXT.privacyLink[currentLang]}
-                  </a>
+                    {t("joinModal.privacyLink")}
+                  </Link>
                   .
                 </span>
               </label>
 
               {privacyError && (
                 <p
-                  id={`${fieldId}-privacy-error`}
+                  id={privacyErrorId}
                   role="alert"
-                  className="text-sm font-bold text-red-700"
+                  className="text-sm leading-6 font-semibold text-red-700 md:text-base"
                 >
-                  {JOIN_TEXT.privacyRequired[currentLang]}
+                  {t("joinModal.privacyRequired")}
                 </p>
               )}
 
               {submitError && (
-                <p role="alert" className="text-sm font-bold text-red-700">
-                  {JOIN_TEXT.submitError[currentLang]}
+                <p
+                  role="alert"
+                  className="text-sm leading-6 font-semibold text-red-700 md:text-base"
+                >
+                  {t("joinModal.submitError")}
                 </p>
               )}
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                aria-disabled={isSubmitting}
-                className={`group font-nunito flex w-full items-center justify-center gap-3 rounded-2xl bg-slate-950 px-6 py-4 font-black text-white shadow-lg transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:cursor-not-allowed disabled:opacity-60 ${
+                aria-disabled={isSubmitting || !acceptedPrivacy}
+                aria-describedby={privacyError ? privacyErrorId : undefined}
+                className={`group flex w-full cursor-pointer items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-semibold shadow-lg transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:cursor-wait disabled:opacity-60 ${
                   acceptedPrivacy
-                    ? "cursor-pointer hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl"
-                    : "cursor-not-allowed opacity-60"
+                    ? "bg-slate-950 text-white hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl"
+                    : "bg-slate-300 text-slate-700 hover:bg-slate-400"
                 }`}
               >
                 <span>
                   {isSubmitting
-                    ? JOIN_TEXT.submitting[currentLang]
-                    : JOIN_TEXT.submit[currentLang]}
+                    ? t("joinModal.submitting")
+                    : t("joinModal.submit")}
                 </span>
                 <Send
                   size={18}
@@ -409,15 +345,21 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
             </form>
           </div>
         ) : (
-          <div className="animate-in fade-in zoom-in py-10 text-center duration-500">
+          <div
+            aria-live="polite"
+            className="animate-in fade-in zoom-in py-10 text-center duration-500"
+          >
             <div className="mx-auto mb-6 flex size-20 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 shadow-sm ring-1 ring-emerald-100">
               <CheckCircle2 size={44} aria-hidden="true" />
             </div>
-            <h3 className="font-nunito mb-4 text-3xl font-black text-slate-950">
-              {JOIN_TEXT.successTitle[currentLang]}
-            </h3>
-            <p className="font-nunito mx-auto max-w-sm leading-7 text-slate-600">
-              {JOIN_TEXT.successText[currentLang]}
+            <h2
+              id={titleId}
+              className="mb-4 text-2xl font-semibold tracking-tight text-slate-950 md:text-3xl"
+            >
+              {t("joinModal.successTitle")}
+            </h2>
+            <p className="mx-auto max-w-md text-base leading-7 font-medium text-slate-600 md:text-lg md:leading-8">
+              {t("joinModal.successText")}
             </p>
           </div>
         )}
