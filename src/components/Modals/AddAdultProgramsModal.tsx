@@ -62,145 +62,6 @@ const LANGUAGES: Array<{ key: LangKey; label: string }> = [
   { key: "en", label: "EN" },
 ];
 
-const TEXT = {
-  ua: {
-    admin: "Berehynja Admin",
-    createTitle: "Створення програми",
-    editTitle: "Редагування програми",
-    close: "Закрити",
-    image: "Головне зображення",
-    addImage: "Додати обкладинку",
-    changeImage: "Замінити",
-    removeImage: "Прибрати",
-    uploading: "Завантаження...",
-    imageHint: "JPG, PNG, WEBP або AVIF, до 12 МБ",
-    language: "Мова заповнення",
-    period: "Період проведення",
-    periodPlaceholder: "Наприклад, 15.05 – 25.05",
-    duration: "Тривалість",
-    durationPlaceholder: "Наприклад, 10 днів",
-    name: "Назва програми",
-    namePlaceholder: "Введіть назву програми",
-    description: "Короткий опис",
-    descriptionPlaceholder: "Опишіть програму кількома реченнями...",
-    schedule: "Графік",
-    schedulePlaceholder: "Наприклад, щодня з 10:00 до 14:00",
-    target: "Для кого",
-    targetPlaceholder: "Опишіть цільову аудиторію",
-    capacity: "Місткість групи",
-    capacityPlaceholder: "Наприклад, 10 осіб",
-    location: "Локація",
-    locationPlaceholder: "Введіть адресу або назву місця",
-    features: "Особливості програми",
-    featuresHint: "Кожен пункт записуйте з нового рядка",
-    featuresPlaceholder: "Практичні заняття\nПідтримка викладача\nСертифікат",
-    required: "обов’язково",
-    delete: "Видалити програму",
-    cancel: "Скасувати",
-    create: "Створити програму",
-    save: "Зберегти зміни",
-    saving: "Збереження...",
-    titleRequired: "Додайте українську назву програми.",
-    invalidImage: "Оберіть коректний файл зображення.",
-    imageTooLarge: "Розмір зображення не повинен перевищувати 12 МБ.",
-    imageUploaded: "Зображення завантажено.",
-    uploadError: "Не вдалося завантажити зображення.",
-    saveError: "Не вдалося зберегти програму.",
-    deleteError: "Не вдалося видалити програму.",
-  },
-  de: {
-    admin: "Berehynja Admin",
-    createTitle: "Programm erstellen",
-    editTitle: "Programm bearbeiten",
-    close: "Schließen",
-    image: "Hauptbild",
-    addImage: "Titelbild hinzufügen",
-    changeImage: "Ersetzen",
-    removeImage: "Entfernen",
-    uploading: "Wird hochgeladen...",
-    imageHint: "JPG, PNG, WEBP oder AVIF, bis zu 12 MB",
-    language: "Eingabesprache",
-    period: "Zeitraum",
-    periodPlaceholder: "Zum Beispiel 15.05 – 25.05",
-    duration: "Dauer",
-    durationPlaceholder: "Zum Beispiel 10 Tage",
-    name: "Programmtitel",
-    namePlaceholder: "Programmtitel eingeben",
-    description: "Kurzbeschreibung",
-    descriptionPlaceholder: "Beschreiben Sie das Programm in wenigen Sätzen...",
-    schedule: "Zeitplan",
-    schedulePlaceholder: "Zum Beispiel täglich von 10:00 bis 14:00 Uhr",
-    target: "Zielgruppe",
-    targetPlaceholder: "Beschreiben Sie die Zielgruppe",
-    capacity: "Gruppengröße",
-    capacityPlaceholder: "Zum Beispiel 10 Personen",
-    location: "Ort",
-    locationPlaceholder: "Adresse oder Ort eingeben",
-    features: "Programminhalte",
-    featuresHint: "Schreiben Sie jeden Punkt in eine neue Zeile",
-    featuresPlaceholder:
-      "Praktische Übungen\nUnterstützung durch Lehrkräfte\nZertifikat",
-    required: "erforderlich",
-    delete: "Programm löschen",
-    cancel: "Abbrechen",
-    create: "Programm erstellen",
-    save: "Änderungen speichern",
-    saving: "Wird gespeichert...",
-    titleRequired: "Bitte geben Sie einen ukrainischen Programmtitel ein.",
-    invalidImage: "Wählen Sie eine gültige Bilddatei aus.",
-    imageTooLarge: "Das Bild darf nicht größer als 12 MB sein.",
-    imageUploaded: "Das Bild wurde hochgeladen.",
-    uploadError: "Das Bild konnte nicht hochgeladen werden.",
-    saveError: "Das Programm konnte nicht gespeichert werden.",
-    deleteError: "Das Programm konnte nicht gelöscht werden.",
-  },
-  en: {
-    admin: "Berehynja Admin",
-    createTitle: "Create program",
-    editTitle: "Edit program",
-    close: "Close",
-    image: "Main image",
-    addImage: "Add cover image",
-    changeImage: "Replace",
-    removeImage: "Remove",
-    uploading: "Uploading...",
-    imageHint: "JPG, PNG, WEBP or AVIF, up to 12 MB",
-    language: "Content language",
-    period: "Program period",
-    periodPlaceholder: "For example, 15.05 – 25.05",
-    duration: "Duration",
-    durationPlaceholder: "For example, 10 days",
-    name: "Program title",
-    namePlaceholder: "Enter the program title",
-    description: "Short description",
-    descriptionPlaceholder: "Describe the program in a few sentences...",
-    schedule: "Schedule",
-    schedulePlaceholder: "For example, daily from 10:00 to 14:00",
-    target: "Target group",
-    targetPlaceholder: "Describe the target audience",
-    capacity: "Group capacity",
-    capacityPlaceholder: "For example, 10 people",
-    location: "Location",
-    locationPlaceholder: "Enter the address or place",
-    features: "Program features",
-    featuresHint: "Enter each item on a new line",
-    featuresPlaceholder: "Practical sessions\nInstructor support\nCertificate",
-    required: "required",
-    delete: "Delete program",
-    cancel: "Cancel",
-    create: "Create program",
-    save: "Save changes",
-    saving: "Saving...",
-    titleRequired: "Please enter the Ukrainian program title.",
-    invalidImage: "Choose a valid image file.",
-    imageTooLarge: "The image must not exceed 12 MB.",
-    imageUploaded: "The image has been uploaded.",
-    uploadError: "The image could not be uploaded.",
-    saveError: "The program could not be saved.",
-    deleteError: "The program could not be deleted.",
-  },
-} as const;
-
 const MAX_IMAGE_SIZE = 12 * 1024 * 1024;
 
 const createEmptyProgram = (): ProgramAdults => ({
@@ -246,17 +107,11 @@ export const AddProgramModal = ({
   onDelete,
   programToEdit,
 }: AddProgramModalProps) => {
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
+  const tr = (key: string) => t(`admin.adultProgramModal.${key}`);
   const modalTitleId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
-    .split("-")[0]
-    .toLowerCase();
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
-  const text = TEXT[currentLang];
 
   const [activeLang, setActiveLang] = useState<LangKey>("ua");
   const [formData, setFormData] = useState<ProgramAdults>(() =>
@@ -321,13 +176,13 @@ export const AddProgramModal = ({
     if (!file || isBusy) return;
 
     if (!file.type.startsWith("image/")) {
-      toast.error(text.invalidImage);
+      toast.error(tr("invalidImage"));
       event.target.value = "";
       return;
     }
 
     if (file.size > MAX_IMAGE_SIZE) {
-      toast.error(text.imageTooLarge);
+      toast.error(tr("imageTooLarge"));
       event.target.value = "";
       return;
     }
@@ -341,10 +196,10 @@ export const AddProgramModal = ({
         formData.title.ua.trim() || "adult-program",
       );
       setFormData((previous) => ({ ...previous, image: result.url }));
-      toast.success(text.imageUploaded);
+      toast.success(tr("imageUploaded"));
     } catch (error) {
       console.error("Program image upload error:", error);
-      toast.error(text.uploadError);
+      toast.error(tr("uploadError"));
     } finally {
       setIsUploading(false);
       event.target.value = "";
@@ -357,7 +212,7 @@ export const AddProgramModal = ({
 
     if (!formData.title.ua.trim()) {
       setActiveLang("ua");
-      toast.error(text.titleRequired);
+      toast.error(tr("titleRequired"));
       return;
     }
 
@@ -418,7 +273,7 @@ export const AddProgramModal = ({
       await onSave(normalizedProgram);
     } catch (error) {
       console.error("Program save error:", error);
-      toast.error(text.saveError);
+      toast.error(tr("saveError"));
     } finally {
       setIsSubmitting(false);
     }
@@ -433,7 +288,7 @@ export const AddProgramModal = ({
       await onDelete(programToEdit.id);
     } catch (error) {
       console.error("Program delete error:", error);
-      toast.error(text.deleteError);
+      toast.error(tr("deleteError"));
     } finally {
       setIsDeleting(false);
     }
@@ -441,36 +296,36 @@ export const AddProgramModal = ({
 
   if (!isOpen) return null;
 
-  const modalTitle = programToEdit ? text.editTitle : text.createTitle;
+  const modalTitle = programToEdit ? tr("editTitle") : tr("createTitle");
   const languageIsFilled = (language: LangKey) =>
     Boolean(formData.title[language].trim());
 
   const detailFields: DetailFieldConfig[] = [
     {
       field: "intensity",
-      label: text.schedule,
-      placeholder: text.schedulePlaceholder,
+      label: tr("schedule"),
+      placeholder: tr("schedulePlaceholder"),
       icon: Clock,
       iconClassName: "text-orange-500",
     },
     {
       field: "target",
-      label: text.target,
-      placeholder: text.targetPlaceholder,
+      label: tr("target"),
+      placeholder: tr("targetPlaceholder"),
       icon: Target,
       iconClassName: "text-violet-600",
     },
     {
       field: "capacity",
-      label: text.capacity,
-      placeholder: text.capacityPlaceholder,
+      label: tr("capacity"),
+      placeholder: tr("capacityPlaceholder"),
       icon: Users,
       iconClassName: "text-emerald-600",
     },
     {
       field: "location",
-      label: text.location,
-      placeholder: text.locationPlaceholder,
+      label: tr("location"),
+      placeholder: tr("locationPlaceholder"),
       icon: MapPin,
       iconClassName: "text-red-500",
     },
@@ -483,7 +338,7 @@ export const AddProgramModal = ({
     <div className="font-nunito fixed inset-0 z-9999 flex items-center justify-center p-4 md:p-6">
       <button
         type="button"
-        aria-label={text.close}
+        aria-label={tr("close")}
         onClick={handleClose}
         className="absolute inset-0 cursor-default bg-slate-950/65 backdrop-blur-sm"
       />
@@ -494,42 +349,49 @@ export const AddProgramModal = ({
         aria-labelledby={modalTitleId}
         className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-4xl flex-col overflow-hidden rounded-4xl border border-white/70 bg-white shadow-[0_32px_90px_rgba(15,23,42,0.35)]"
       >
-        <header className="flex shrink-0 items-center justify-between gap-4 border-b border-slate-200 px-5 py-4 md:px-8 md:py-5">
-          <div className="min-w-0">
-            <p className="mb-1 text-[11px] font-black tracking-[0.2em] text-blue-600 uppercase">
-              {text.admin}
-            </p>
-            <h2
-              id={modalTitleId}
-              className="truncate text-xl font-semibold tracking-tight text-slate-950 md:text-2xl"
-            >
-              {modalTitle}
-            </h2>
+        <header className="flex shrink-0 items-center justify-between gap-4 bg-linear-to-br from-blue-600 to-blue-900 px-5 py-5 text-white md:px-8 md:py-6">
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-yellow-300 shadow-inner backdrop-blur-md">
+              <ListChecks size={24} aria-hidden="true" />
+            </div>
+
+            <div className="min-w-0">
+              <p className="mb-1 text-xs font-semibold tracking-[0.18em] text-blue-100 uppercase">
+                {tr("admin")}
+              </p>
+              <h2
+                id={modalTitleId}
+                className="truncate text-xl font-semibold tracking-tight text-white md:text-2xl"
+              >
+                {modalTitle}
+              </h2>
+            </div>
           </div>
 
           <button
             type="button"
             onClick={handleClose}
             disabled={isBusy}
-            aria-label={text.close}
-            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label={tr("close")}
+            title={tr("close")}
+            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-white/15 bg-black/10 text-white shadow-sm backdrop-blur-md transition hover:bg-black/20 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <X size={21} />
+            <X size={21} aria-hidden="true" />
           </button>
         </header>
 
         <form
           id="adult-program-form"
           onSubmit={handleSubmit}
-          className="overflow-y-auto px-5 py-6 md:px-8 md:py-7"
+          className="overflow-y-auto bg-slate-50/60 px-5 py-6 md:px-8 md:py-7"
         >
           <div className="space-y-7">
             <section>
               <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
-                <h3 className="text-sm font-extrabold text-slate-800">
-                  {text.image}
+                <h3 className="text-sm font-semibold text-slate-800">
+                  {tr("image")}
                 </h3>
-                <span className="text-xs text-slate-500">{text.imageHint}</span>
+                <span className="text-xs text-slate-500">{tr("imageHint")}</span>
               </div>
 
               <input
@@ -543,7 +405,7 @@ export const AddProgramModal = ({
 
               {formData.image ? (
                 <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-100">
-                  <div className="aspect-16/6 max-h-72 overflow-hidden">
+                  <div className="aspect-[16/6] max-h-72 overflow-hidden">
                     <img
                       src={formData.image}
                       alt={formData.title[activeLang] || modalTitle}
@@ -556,14 +418,14 @@ export const AddProgramModal = ({
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
                       disabled={isBusy}
-                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-extrabold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {isUploading ? (
                         <Loader2 size={16} className="animate-spin" />
                       ) : (
                         <Upload size={16} />
                       )}
-                      {isUploading ? text.uploading : text.changeImage}
+                      {isUploading ? tr("uploading") : tr("changeImage")}
                     </button>
 
                     <button
@@ -575,10 +437,10 @@ export const AddProgramModal = ({
                         }))
                       }
                       disabled={isBusy}
-                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-xs font-extrabold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       <Trash2 size={16} />
-                      {text.removeImage}
+                      {tr("removeImage")}
                     </button>
                   </div>
                 </div>
@@ -596,8 +458,8 @@ export const AddProgramModal = ({
                       <ImageIcon size={24} />
                     )}
                   </span>
-                  <span className="text-sm font-extrabold text-slate-900">
-                    {isUploading ? text.uploading : text.addImage}
+                  <span className="text-sm font-semibold text-slate-900">
+                    {isUploading ? tr("uploading") : tr("addImage")}
                   </span>
                 </button>
               )}
@@ -606,14 +468,14 @@ export const AddProgramModal = ({
             <section aria-labelledby={`${modalTitleId}-language`}>
               <p
                 id={`${modalTitleId}-language`}
-                className="mb-3 text-xs font-black tracking-[0.15em] text-slate-500 uppercase"
+                className="mb-3 text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
               >
-                {text.language}
+                {tr("language")}
               </p>
 
               <div
                 role="tablist"
-                aria-label={text.language}
+                aria-label={tr("language")}
                 className="grid grid-cols-3 gap-1 rounded-2xl bg-slate-100 p-1.5"
               >
                 {LANGUAGES.map(({ key, label }) => (
@@ -623,7 +485,7 @@ export const AddProgramModal = ({
                     role="tab"
                     aria-selected={activeLang === key}
                     onClick={() => setActiveLang(key)}
-                    className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-extrabold transition ${
+                    className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-semibold transition ${
                       activeLang === key
                         ? "bg-white text-blue-700 shadow-sm"
                         : "text-slate-500 hover:text-slate-900"
@@ -640,9 +502,9 @@ export const AddProgramModal = ({
 
             <div className="grid gap-5 md:grid-cols-2">
               <label className="block">
-                <span className="mb-2 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-800">
                   <Calendar size={17} className="text-blue-600" />
-                  {text.period}
+                  {tr("period")}
                 </span>
                 <input
                   type="text"
@@ -653,15 +515,15 @@ export const AddProgramModal = ({
                       dateRange: event.target.value,
                     }))
                   }
-                  placeholder={text.periodPlaceholder}
+                  placeholder={tr("periodPlaceholder")}
                   className={inputClassName}
                 />
               </label>
 
               <label className="block">
-                <span className="mb-2 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-800">
                   <Hourglass size={17} className="text-blue-600" />
-                  {text.duration} ({activeLang.toUpperCase()})
+                  {tr("duration")} ({activeLang.toUpperCase()})
                 </span>
                 <input
                   type="text"
@@ -669,18 +531,18 @@ export const AddProgramModal = ({
                   onChange={(event) =>
                     handleLocalizedChange("duration", event.target.value)
                   }
-                  placeholder={text.durationPlaceholder}
+                  placeholder={tr("durationPlaceholder")}
                   className={inputClassName}
                 />
               </label>
             </div>
 
             <label className="block">
-              <span className="mb-2 block text-sm font-extrabold text-slate-800">
-                {text.name} ({activeLang.toUpperCase()})
+              <span className="mb-2 block text-sm font-semibold text-slate-800">
+                {tr("name")} ({activeLang.toUpperCase()})
                 {activeLang === "ua" && (
                   <span className="ml-2 text-xs text-blue-600">
-                    {text.required}
+                    {tr("required")}
                   </span>
                 )}
               </span>
@@ -690,14 +552,14 @@ export const AddProgramModal = ({
                 onChange={(event) =>
                   handleLocalizedChange("title", event.target.value)
                 }
-                placeholder={text.namePlaceholder}
+                placeholder={tr("namePlaceholder")}
                 className={inputClassName}
               />
             </label>
 
             <label className="block">
-              <span className="mb-2 block text-sm font-extrabold text-slate-800">
-                {text.description} ({activeLang.toUpperCase()})
+              <span className="mb-2 block text-sm font-semibold text-slate-800">
+                {tr("description")} ({activeLang.toUpperCase()})
               </span>
               <textarea
                 rows={4}
@@ -705,7 +567,7 @@ export const AddProgramModal = ({
                 onChange={(event) =>
                   handleLocalizedChange("description", event.target.value)
                 }
-                placeholder={text.descriptionPlaceholder}
+                placeholder={tr("descriptionPlaceholder")}
                 className="w-full resize-y rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 leading-7 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
               />
             </label>
@@ -714,7 +576,7 @@ export const AddProgramModal = ({
               {detailFields.map(
                 ({ field, label, placeholder, icon: Icon, iconClassName }) => (
                   <label key={field} className="block">
-                    <span className="mb-2 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                    <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-800">
                       <Icon size={17} className={iconClassName} />
                       {label} ({activeLang.toUpperCase()})
                     </span>
@@ -733,18 +595,18 @@ export const AddProgramModal = ({
             </div>
 
             <label className="block">
-              <span className="mb-1 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+              <span className="mb-1 flex items-center gap-2 text-sm font-semibold text-slate-800">
                 <ListChecks size={18} className="text-blue-600" />
-                {text.features} ({activeLang.toUpperCase()})
+                {tr("features")} ({activeLang.toUpperCase()})
               </span>
               <span className="mb-2 block text-xs text-slate-500">
-                {text.featuresHint}
+                {tr("featuresHint")}
               </span>
               <textarea
                 rows={5}
                 value={(formData.features?.[activeLang] ?? []).join("\n")}
                 onChange={(event) => handleFeaturesChange(event.target.value)}
-                placeholder={text.featuresPlaceholder}
+                placeholder={tr("featuresPlaceholder")}
                 className="w-full resize-y rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 leading-7 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
               />
             </label>
@@ -758,14 +620,14 @@ export const AddProgramModal = ({
                 type="button"
                 onClick={handleDelete}
                 disabled={isBusy}
-                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-extrabold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
+                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
               >
                 {isDeleting ? (
                   <Loader2 size={18} className="animate-spin" />
                 ) : (
                   <Trash2 size={18} />
                 )}
-                {text.delete}
+                {tr("delete")}
               </button>
             )}
           </div>
@@ -775,16 +637,16 @@ export const AddProgramModal = ({
               type="button"
               onClick={handleClose}
               disabled={isBusy}
-              className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+              className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {text.cancel}
+              {tr("cancel")}
             </button>
 
             <button
               type="submit"
               form="adult-program-form"
               disabled={isBusy}
-              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
+              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
             >
               {isSubmitting ? (
                 <Loader2 size={18} className="animate-spin" />
@@ -792,10 +654,10 @@ export const AddProgramModal = ({
                 <Check size={18} />
               )}
               {isSubmitting
-                ? text.saving
+                ? tr("saving")
                 : programToEdit
-                  ? text.save
-                  : text.create}
+                  ? tr("save")
+                  : tr("create")}
             </button>
           </div>
         </footer>

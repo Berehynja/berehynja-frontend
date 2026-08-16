@@ -21,7 +21,6 @@ import {
   subscribeToBankDetails,
   type BankDetails,
 } from "../../../services/bankService";
-import type { LangKey } from "../../../types/types";
 
 interface DonationModalProps {
   isOpen: boolean;
@@ -36,102 +35,10 @@ const EMPTY_BANK_DETAILS: BankDetails = {
   purpose: "",
 };
 
-const DONATION_TEXT = {
-  dialogLabel: {
-    ua: "Банківські реквізити для благодійного внеску",
-    de: "Bankverbindung für eine Spende",
-    en: "Bank details for a donation",
-  },
-  title: {
-    ua: "Підтримайте нас",
-    de: "Unterstützen Sie uns",
-    en: "Support us",
-  },
-  subtitle: {
-    ua: "Ваша допомога важлива",
-    de: "Ihre Hilfe ist wichtig",
-    en: "Your help matters",
-  },
-  bankLabel: {
-    ua: "Банк та отримувач",
-    de: "Bank und Empfänger",
-    en: "Bank and recipient",
-  },
-  bankPlaceholder: {
-    ua: "Назва банку",
-    de: "Bankname",
-    en: "Bank name",
-  },
-  namePlaceholder: {
-    ua: "Отримувач",
-    de: "Empfänger",
-    en: "Recipient",
-  },
-  purposeLabel: {
-    ua: "Призначення платежу",
-    de: "Verwendungszweck",
-    en: "Payment reference",
-  },
-  secureBadge: {
-    ua: "Безпечний переказ",
-    de: "Sichere Überweisung",
-    en: "Secure transfer",
-  },
-  save: {
-    ua: "Зберегти",
-    de: "Speichern",
-    en: "Save",
-  },
-  edit: {
-    ua: "Редагувати",
-    de: "Bearbeiten",
-    en: "Edit",
-  },
-  close: {
-    ua: "Закрити реквізити",
-    de: "Bankverbindung schließen",
-    en: "Close bank details",
-  },
-  copyIban: {
-    ua: "Копіювати IBAN",
-    de: "IBAN kopieren",
-    en: "Copy IBAN",
-  },
-  copied: {
-    ua: "Скопійовано!",
-    de: "Kopiert!",
-    en: "Copied!",
-  },
-  notSpecified: {
-    ua: "Не вказано",
-    de: "Nicht angegeben",
-    en: "Not specified",
-  },
-  noDetails: {
-    ua: "Банківські реквізити ще не налаштовані.",
-    de: "Die Bankverbindung wurde noch nicht eingerichtet.",
-    en: "Bank details have not been configured yet.",
-  },
-  saved: {
-    ua: "Реквізити збережено!",
-    de: "Bankverbindung wurde gespeichert!",
-    en: "Bank details saved!",
-  },
-  saveError: {
-    ua: "Не вдалося зберегти реквізити.",
-    de: "Die Bankverbindung konnte nicht gespeichert werden.",
-    en: "The bank details could not be saved.",
-  },
-  copyError: {
-    ua: "Не вдалося скопіювати IBAN.",
-    de: "Die IBAN konnte nicht kopiert werden.",
-    en: "The IBAN could not be copied.",
-  },
-};
-
 export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
   const { isAdmin } = useAuth();
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
+  const tr = (key: string) => t(`donationModal.${key}`);
   const titleId = useId();
   const copiedTimeoutRef = useRef<number | null>(null);
   const [copied, setCopied] = useState(false);
@@ -141,12 +48,6 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
   const [bankDetails, setBankDetails] =
     useState<BankDetails>(EMPTY_BANK_DETAILS);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
-    "-",
-  )[0];
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
 
   const handleClose = useCallback(() => {
     if (isSaving) return;
@@ -218,7 +119,7 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
       }, 2000);
     } catch (error) {
       console.error("IBAN copy error:", error);
-      toast.error(DONATION_TEXT.copyError[currentLang]);
+      toast.error(tr("copyError"));
     }
   };
 
@@ -230,10 +131,10 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
     try {
       await saveBankDetails(bankDetails);
       setIsEditing(false);
-      toast.success(DONATION_TEXT.saved[currentLang]);
+      toast.success(tr("saved"));
     } catch (error) {
       console.error("Bank details save error:", error);
-      toast.error(DONATION_TEXT.saveError[currentLang]);
+      toast.error(tr("saveError"));
     } finally {
       setIsSaving(false);
     }
@@ -248,7 +149,7 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}
-      aria-label={DONATION_TEXT.dialogLabel[currentLang]}
+      aria-label={tr("dialogLabel")}
       className="fixed inset-0 z-9999 flex items-center justify-center p-4"
     >
       <div
@@ -270,11 +171,11 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
               </div>
 
               <div className="min-w-0">
-                <h2 id={titleId} className="text-xl font-black tracking-tight">
-                  {DONATION_TEXT.title[currentLang]}
+                <h2 id={titleId} className="text-xl font-semibold tracking-tight">
+                  {tr("title")}
                 </h2>
                 <p className="mt-0.5 text-sm font-medium text-blue-100">
-                  {DONATION_TEXT.subtitle[currentLang]}
+                  {tr("subtitle")}
                 </p>
               </div>
             </div>
@@ -287,13 +188,13 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                   disabled={isSaving}
                   aria-label={
                     isEditing
-                      ? DONATION_TEXT.save[currentLang]
-                      : DONATION_TEXT.edit[currentLang]
+                      ? tr("save")
+                      : tr("edit")
                   }
                   title={
                     isEditing
-                      ? DONATION_TEXT.save[currentLang]
-                      : DONATION_TEXT.edit[currentLang]
+                      ? tr("save")
+                      : tr("edit")
                   }
                   className={`flex size-10 cursor-pointer items-center justify-center rounded-xl border border-white/20 text-white shadow-sm backdrop-blur-md transition-all disabled:cursor-not-allowed disabled:opacity-60 ${
                     isEditing
@@ -319,8 +220,8 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                 type="button"
                 onClick={handleClose}
                 disabled={isSaving}
-                aria-label={DONATION_TEXT.close[currentLang]}
-                title={DONATION_TEXT.close[currentLang]}
+                aria-label={tr("close")}
+                title={tr("close")}
                 className="flex size-10 cursor-pointer items-center justify-center rounded-xl border border-white/15 bg-black/10 text-white backdrop-blur-md transition-colors hover:bg-black/20 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <X size={20} aria-hidden="true" />
@@ -344,8 +245,8 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                 <div className="mb-4">
                   <div className="mb-2 flex items-center gap-2 text-slate-500">
                     <Landmark size={15} aria-hidden="true" />
-                    <span className="text-[11px] font-black tracking-widest uppercase">
-                      {DONATION_TEXT.bankLabel[currentLang]}
+                    <span className="text-xs font-semibold tracking-widest uppercase">
+                      {tr("bankLabel")}
                     </span>
                   </div>
 
@@ -356,8 +257,8 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                         onChange={(event) =>
                           updateBankDetails("bank", event.target.value)
                         }
-                        aria-label={DONATION_TEXT.bankPlaceholder[currentLang]}
-                        placeholder={DONATION_TEXT.bankPlaceholder[currentLang]}
+                        aria-label={tr("bankPlaceholder")}
+                        placeholder={tr("bankPlaceholder")}
                         className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none transition-all focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                       />
                       <input
@@ -365,8 +266,8 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                         onChange={(event) =>
                           updateBankDetails("name", event.target.value)
                         }
-                        aria-label={DONATION_TEXT.namePlaceholder[currentLang]}
-                        placeholder={DONATION_TEXT.namePlaceholder[currentLang]}
+                        aria-label={tr("namePlaceholder")}
+                        placeholder={tr("namePlaceholder")}
                         className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none transition-all focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
                       />
                     </div>
@@ -374,7 +275,7 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                     <div>
                       <p className="text-base leading-tight font-bold text-slate-950">
                         {bankDetails.bank ||
-                          DONATION_TEXT.notSpecified[currentLang]}
+                          tr("notSpecified")}
                       </p>
                       {bankDetails.name && (
                         <p className="mt-1 text-sm font-medium text-slate-600">
@@ -393,7 +294,7 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                 <div>
                   <div className="mb-2 flex items-center gap-2 text-slate-500">
                     <CreditCard size={15} aria-hidden="true" />
-                    <span className="text-[11px] font-black tracking-widest uppercase">
+                    <span className="text-xs font-semibold tracking-widest uppercase">
                       IBAN
                     </span>
                   </div>
@@ -428,20 +329,20 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                               aria-hidden="true"
                             />
                             <span className="text-emerald-700">
-                              {DONATION_TEXT.copied[currentLang]}
+                              {tr("copied")}
                             </span>
                           </>
                         ) : (
                           <>
                             <Copy size={16} aria-hidden="true" />
-                            {DONATION_TEXT.copyIban[currentLang]}
+                            {tr("copyIban")}
                           </>
                         )}
                       </button>
                     </div>
                   ) : (
                     <p className="text-sm text-slate-600">
-                      {DONATION_TEXT.noDetails[currentLang]}
+                      {tr("noDetails")}
                     </p>
                   )}
                 </div>
@@ -449,7 +350,7 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                 {isEditing && (
                   <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-blue-100 bg-blue-50/60 p-4">
                     <label className="block">
-                      <span className="mb-1 block text-[11px] font-black tracking-widest text-slate-600 uppercase">
+                      <span className="mb-1 block text-xs font-semibold tracking-widest text-slate-600 uppercase">
                         BIC (SWIFT)
                       </span>
                       <input
@@ -462,8 +363,8 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                     </label>
 
                     <label className="block">
-                      <span className="mb-1 block text-[11px] font-black tracking-widest text-slate-600 uppercase">
-                        {DONATION_TEXT.purposeLabel[currentLang]}
+                      <span className="mb-1 block text-xs font-semibold tracking-widest text-slate-600 uppercase">
+                        {tr("purposeLabel")}
                       </span>
                       <input
                         value={bankDetails.purpose}
@@ -485,7 +386,7 @@ export const DonationModal = ({ isOpen, onClose }: DonationModalProps) => {
                     <div className="mt-5 flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1.5 text-emerald-800">
                       <ShieldCheck size={14} aria-hidden="true" />
                       <span className="text-xs font-bold tracking-wide uppercase">
-                        {DONATION_TEXT.secureBadge[currentLang]}
+                        {tr("secureBadge")}
                       </span>
                     </div>
                   )}

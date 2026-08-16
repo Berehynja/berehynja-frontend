@@ -2,7 +2,6 @@ import { useEffect, useId, useRef, useState, type MouseEvent } from "react";
 import { AlertTriangle, Loader2, Trash2, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import type { LangKey } from "../../types/types";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -16,27 +15,6 @@ interface ConfirmModalProps {
   loadingLabel?: string;
 }
 
-const TEXT = {
-  ua: {
-    close: "Закрити",
-    cancel: "Скасувати",
-    confirm: "Так, видалити",
-    loading: "Видалення...",
-  },
-  de: {
-    close: "Schließen",
-    cancel: "Abbrechen",
-    confirm: "Ja, löschen",
-    loading: "Wird gelöscht...",
-  },
-  en: {
-    close: "Close",
-    cancel: "Cancel",
-    confirm: "Yes, delete",
-    loading: "Deleting...",
-  },
-} as const;
-
 export function ConfirmModal({
   isOpen,
   onClose,
@@ -48,20 +26,14 @@ export function ConfirmModal({
   confirmLabel,
   loadingLabel,
 }: ConfirmModalProps) {
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
+  const tr = (key: string) => t(`common.confirmModal.${key}`);
   const titleId = useId();
   const messageId = useId();
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
   const isBusyRef = useRef(false);
   const [isConfirming, setIsConfirming] = useState(false);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
-    .split("-")[0]
-    .toLowerCase();
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
-  const text = TEXT[currentLang];
   const isBusy = isLoading || isConfirming;
   isBusyRef.current = isBusy;
 
@@ -130,7 +102,7 @@ export function ConfirmModal({
           <div className="min-w-0 flex-1 pt-1">
             <h2
               id={titleId}
-              className="text-lg font-semibold tracking-tight text-slate-950 md:text-xl"
+              className="text-lg font-semibold text-slate-950 md:text-xl"
             >
               {title}
             </h2>
@@ -140,7 +112,7 @@ export function ConfirmModal({
             type="button"
             onClick={onClose}
             disabled={isBusy}
-            aria-label={text.close}
+            aria-label={tr("close")}
             className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-red-100 bg-white text-slate-500 shadow-sm transition hover:border-red-200 hover:bg-red-100 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <X size={19} />
@@ -162,16 +134,16 @@ export function ConfirmModal({
             type="button"
             onClick={onClose}
             disabled={isBusy}
-            className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+            className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {cancelLabel ?? text.cancel}
+            {cancelLabel ?? tr("cancel")}
           </button>
 
           <button
             type="button"
             onClick={handleConfirm}
             disabled={isBusy}
-            className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-red-600 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-red-200 transition hover:bg-red-700 disabled:cursor-wait disabled:opacity-60 disabled:shadow-none"
+            className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-red-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-red-200 transition hover:bg-red-700 disabled:cursor-wait disabled:opacity-60 disabled:shadow-none"
           >
             {isBusy ? (
               <Loader2 size={18} className="animate-spin" />
@@ -179,8 +151,8 @@ export function ConfirmModal({
               <Trash2 size={18} />
             )}
             {isBusy
-              ? (loadingLabel ?? text.loading)
-              : (confirmLabel ?? text.confirm)}
+              ? (loadingLabel ?? tr("loading"))
+              : (confirmLabel ?? tr("confirm"))}
           </button>
         </footer>
       </div>

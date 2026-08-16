@@ -40,91 +40,6 @@ const LANGUAGES: Array<{ key: LangKey; label: string }> = [
   { key: "en", label: "EN" },
 ];
 
-const TEXT = {
-  ua: {
-    admin: "Berehynja Admin",
-    title: "Додати партнера",
-    close: "Закрити",
-    logo: "Логотип партнера",
-    required: "обов’язково",
-    uploadLogo: "Завантажити логотип",
-    replaceLogo: "Замінити",
-    removeLogo: "Прибрати",
-    uploading: "Завантаження...",
-    language: "Мова заповнення",
-    name: "Назва партнера",
-    namePlaceholder: "Введіть назву партнера",
-    website: "Посилання на сайт",
-    websitePlaceholder: "https://example.com",
-    websiteHint:
-      "Необов’язкове поле. Використовуйте повне посилання з https://",
-    invalidWebsite: "Введіть коректне посилання, яке починається з https://",
-    cancel: "Скасувати",
-    save: "Зберегти партнера",
-    saving: "Збереження...",
-    uploaded: "Логотип завантажено.",
-    uploadError: "Не вдалося завантажити логотип.",
-    validation: "Додайте логотип і введіть назву партнера українською.",
-    success: "Партнера додано.",
-    saveError: "Не вдалося зберегти партнера.",
-  },
-  de: {
-    admin: "Berehynja Admin",
-    title: "Partner hinzufügen",
-    close: "Schließen",
-    logo: "Partnerlogo",
-    required: "erforderlich",
-    uploadLogo: "Logo hochladen",
-    replaceLogo: "Ersetzen",
-    removeLogo: "Entfernen",
-    uploading: "Wird hochgeladen...",
-    language: "Eingabesprache",
-    name: "Name des Partners",
-    namePlaceholder: "Namen des Partners eingeben",
-    website: "Website-Link",
-    websitePlaceholder: "https://example.com",
-    websiteHint:
-      "Optional. Verwenden Sie einen vollständigen Link mit https://",
-    invalidWebsite:
-      "Geben Sie einen gültigen Link ein, der mit https:// beginnt.",
-    cancel: "Abbrechen",
-    save: "Partner speichern",
-    saving: "Wird gespeichert...",
-    uploaded: "Das Logo wurde hochgeladen.",
-    uploadError: "Das Logo konnte nicht hochgeladen werden.",
-    validation:
-      "Laden Sie ein Logo hoch und geben Sie den ukrainischen Namen ein.",
-    success: "Der Partner wurde hinzugefügt.",
-    saveError: "Der Partner konnte nicht gespeichert werden.",
-  },
-  en: {
-    admin: "Berehynja Admin",
-    title: "Add partner",
-    close: "Close",
-    logo: "Partner logo",
-    required: "required",
-    uploadLogo: "Upload logo",
-    replaceLogo: "Replace",
-    removeLogo: "Remove",
-    uploading: "Uploading...",
-    language: "Content language",
-    name: "Partner name",
-    namePlaceholder: "Enter the partner name",
-    website: "Website link",
-    websitePlaceholder: "https://example.com",
-    websiteHint: "Optional. Use a complete link beginning with https://",
-    invalidWebsite: "Enter a valid link beginning with https://",
-    cancel: "Cancel",
-    save: "Save partner",
-    saving: "Saving...",
-    uploaded: "The logo has been uploaded.",
-    uploadError: "The logo could not be uploaded.",
-    validation: "Upload a logo and enter the Ukrainian partner name.",
-    success: "The partner has been added.",
-    saveError: "The partner could not be saved.",
-  },
-} as const;
-
 const isValidWebsite = (value: string) => {
   if (!value.trim()) return true;
 
@@ -141,18 +56,12 @@ export const AddPartnerModal = ({
   onClose,
   onSave,
 }: AddPartnerModalProps) => {
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
+  const tr = (key: string) => t(`admin.partnerModal.${key}`);
   const modalTitleId = useId();
   const fileInputId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
-    .split("-")[0]
-    .toLowerCase();
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
-  const text = TEXT[currentLang];
 
   const [names, setNames] = useState<LocalizedName>({ ...EMPTY_NAMES });
   const [link, setLink] = useState("");
@@ -209,7 +118,7 @@ export const AddPartnerModal = ({
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      toast.error(text.uploadError);
+      toast.error(tr("uploadError"));
       event.target.value = "";
       return;
     }
@@ -221,10 +130,10 @@ export const AddPartnerModal = ({
         names.ua.trim() || names[editLang].trim() || "partner_logo";
       const result = await uploadMedia(file, "partners", folderName);
       setLogo(result.url);
-      toast.success(text.uploaded);
+      toast.success(tr("uploaded"));
     } catch (error) {
       console.error("Partner logo upload error:", error);
-      toast.error(text.uploadError);
+      toast.error(tr("uploadError"));
     } finally {
       setIsUploading(false);
       event.target.value = "";
@@ -242,13 +151,13 @@ export const AddPartnerModal = ({
 
     if (!names.ua.trim() || !logo) {
       setEditLang("ua");
-      toast.error(text.validation);
+      toast.error(tr("validation"));
       return;
     }
 
     if (!isValidWebsite(link)) {
       setShowLinkError(true);
-      toast.error(text.invalidWebsite);
+      toast.error(tr("invalidWebsite"));
       return;
     }
 
@@ -265,12 +174,12 @@ export const AddPartnerModal = ({
         link: link.trim() || undefined,
       });
 
-      toast.success(text.success);
+      toast.success(tr("success"));
       resetForm();
       onClose();
     } catch (error) {
       console.error("Partner save error:", error);
-      toast.error(text.saveError);
+      toast.error(tr("saveError"));
     } finally {
       setIsSaving(false);
     }
@@ -285,7 +194,7 @@ export const AddPartnerModal = ({
     <div className="font-nunito fixed inset-0 z-9999 flex items-center justify-center p-4 md:p-6">
       <button
         type="button"
-        aria-label={text.close}
+        aria-label={tr("close")}
         onClick={handleClose}
         className="absolute inset-0 cursor-default bg-slate-950/65 backdrop-blur-sm"
       />
@@ -296,40 +205,51 @@ export const AddPartnerModal = ({
         aria-labelledby={modalTitleId}
         className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-xl flex-col overflow-hidden rounded-4xl border border-white/70 bg-white shadow-[0_32px_90px_rgba(15,23,42,0.35)]"
       >
-        <header className="flex shrink-0 items-center justify-between gap-4 border-b border-slate-200 px-5 py-5 md:px-7">
-          <div>
-            <p className="mb-1 text-[11px] font-black tracking-[0.2em] text-blue-600 uppercase">
-              {text.admin}
-            </p>
-            <h2
-              id={modalTitleId}
-              className="truncate text-xl font-semibold tracking-tight text-slate-950 md:text-2xl"
-            >
-              {text.title}
-            </h2>
+        <header className="flex shrink-0 items-center justify-between gap-4 bg-linear-to-br from-blue-600 to-blue-900 px-5 py-5 text-white md:px-7 md:py-6">
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-yellow-300 shadow-inner backdrop-blur-md">
+              <ImageIcon size={24} aria-hidden="true" />
+            </div>
+
+            <div className="min-w-0">
+              <p className="mb-1 text-xs font-semibold tracking-[0.18em] text-blue-100 uppercase">
+                {tr("admin")}
+              </p>
+              <h2
+                id={modalTitleId}
+                className="truncate text-xl font-semibold tracking-tight text-white md:text-2xl"
+              >
+                {tr("title")}
+              </h2>
+            </div>
           </div>
 
           <button
             type="button"
             onClick={handleClose}
             disabled={isBusy}
-            aria-label={text.close}
-            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label={tr("close")}
+            title={tr("close")}
+            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-white/15 bg-black/10 text-white shadow-sm backdrop-blur-md transition hover:bg-black/20 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            <X size={21} />
+            <X size={21} aria-hidden="true" />
           </button>
         </header>
 
-        <form onSubmit={handleSubmit} className="overflow-y-auto">
+        <form
+          id="partner-form"
+          onSubmit={handleSubmit}
+          className="min-h-0 flex-1 overflow-y-auto bg-slate-50/60"
+        >
           <div className="space-y-7 px-5 py-6 md:px-7 md:py-7">
             <section>
               <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
                 <div className="flex items-baseline gap-2">
-                  <h3 className="text-sm font-extrabold text-slate-800">
-                    {text.logo}
+                  <h3 className="text-sm font-semibold text-slate-800">
+                    {tr("logo")}
                   </h3>
                   <span className="text-xs font-bold text-blue-600">
-                    {text.required}
+                    {tr("required")}
                   </span>
                 </div>
               </div>
@@ -359,24 +279,24 @@ export const AddPartnerModal = ({
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
                       disabled={isUploading}
-                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-extrabold text-slate-700 transition hover:bg-slate-50 disabled:cursor-wait disabled:opacity-60"
+                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-wait disabled:opacity-60"
                     >
                       {isUploading ? (
                         <Loader2 size={16} className="animate-spin" />
                       ) : (
                         <Upload size={16} />
                       )}
-                      {isUploading ? text.uploading : text.replaceLogo}
+                      {isUploading ? tr("uploading") : tr("replaceLogo")}
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setLogo("")}
                       disabled={isUploading}
-                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-xs font-extrabold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       <Trash2 size={16} />
-                      {text.removeLogo}
+                      {tr("removeLogo")}
                     </button>
                   </div>
                 </div>
@@ -394,8 +314,8 @@ export const AddPartnerModal = ({
                       <ImageIcon size={25} />
                     )}
                   </span>
-                  <span className="text-sm font-extrabold text-slate-900">
-                    {isUploading ? text.uploading : text.uploadLogo}
+                  <span className="text-sm font-semibold text-slate-900">
+                    {isUploading ? tr("uploading") : tr("uploadLogo")}
                   </span>
                 </button>
               )}
@@ -404,14 +324,14 @@ export const AddPartnerModal = ({
             <section aria-labelledby={`${modalTitleId}-language`}>
               <p
                 id={`${modalTitleId}-language`}
-                className="mb-3 text-xs font-black tracking-[0.15em] text-slate-500 uppercase"
+                className="mb-3 text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
               >
-                {text.language}
+                {tr("language")}
               </p>
 
               <div
                 role="tablist"
-                aria-label={text.language}
+                aria-label={tr("language")}
                 className="grid grid-cols-3 gap-1 rounded-2xl bg-slate-100 p-1.5"
               >
                 {LANGUAGES.map(({ key, label }) => (
@@ -421,7 +341,7 @@ export const AddPartnerModal = ({
                     role="tab"
                     aria-selected={editLang === key}
                     onClick={() => setEditLang(key)}
-                    className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-extrabold transition ${
+                    className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-semibold transition ${
                       editLang === key
                         ? "bg-white text-blue-700 shadow-sm"
                         : "text-slate-500 hover:text-slate-900"
@@ -437,11 +357,11 @@ export const AddPartnerModal = ({
             </section>
 
             <label className="block">
-              <span className="mb-2 block text-sm font-extrabold text-slate-800">
-                {text.name} ({editLang.toUpperCase()})
+              <span className="mb-2 block text-sm font-semibold text-slate-800">
+                {tr("name")} ({editLang.toUpperCase()})
                 {editLang === "ua" && (
                   <span className="ml-2 text-xs text-blue-600">
-                    {text.required}
+                    {tr("required")}
                   </span>
                 )}
               </span>
@@ -454,14 +374,14 @@ export const AddPartnerModal = ({
                     [editLang]: event.target.value,
                   }))
                 }
-                placeholder={text.namePlaceholder}
+                placeholder={tr("namePlaceholder")}
                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
               />
             </label>
 
             <label className="block">
-              <span className="mb-2 block text-sm font-extrabold text-slate-800">
-                {text.website}
+              <span className="mb-2 block text-sm font-semibold text-slate-800">
+                {tr("website")}
               </span>
 
               <span className="relative block">
@@ -475,7 +395,7 @@ export const AddPartnerModal = ({
                   value={link}
                   onChange={handleLinkChange}
                   onBlur={() => setShowLinkError(!isValidWebsite(link))}
-                  placeholder={text.websitePlaceholder}
+                  placeholder={tr("websitePlaceholder")}
                   aria-invalid={showLinkError}
                   aria-describedby={`${modalTitleId}-link-hint`}
                   className={`w-full rounded-2xl border bg-slate-50 py-3.5 pr-4 pl-12 text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-4 ${
@@ -492,25 +412,28 @@ export const AddPartnerModal = ({
                   showLinkError ? "font-bold text-red-600" : "text-slate-500"
                 }`}
               >
-                {showLinkError ? text.invalidWebsite : text.websiteHint}
+                {showLinkError ? tr("invalidWebsite") : tr("websiteHint")}
               </span>
             </label>
           </div>
 
-          <footer className="flex flex-col-reverse gap-2 border-t border-slate-200 bg-slate-50 px-5 py-4 md:flex-row md:justify-end md:px-7">
+        </form>
+
+        <footer className="flex shrink-0 flex-col-reverse gap-2 border-t border-slate-200 bg-slate-50 px-5 py-4 md:flex-row md:justify-end md:px-7">
             <button
               type="button"
               onClick={handleClose}
               disabled={isBusy}
-              className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+              className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {text.cancel}
+              {tr("cancel")}
             </button>
 
             <button
               type="submit"
+              form="partner-form"
               disabled={isBusy || !canSubmit}
-              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
+              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
             >
               {isSaving || isUploading ? (
                 <Loader2 size={18} className="animate-spin" />
@@ -518,13 +441,12 @@ export const AddPartnerModal = ({
                 <Check size={18} />
               )}
               {isSaving
-                ? text.saving
+                ? tr("saving")
                 : isUploading
-                  ? text.uploading
-                  : text.save}
+                  ? tr("uploading")
+                  : tr("save")}
             </button>
-          </footer>
-        </form>
+        </footer>
       </div>
     </div>
   );

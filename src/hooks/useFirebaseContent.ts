@@ -1,59 +1,83 @@
 import { doc, onSnapshot, type DocumentData } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+
 import { db } from "../firebase";
+import type { LangKey } from "../types/types";
+
+const SUPPORTED_LANGUAGES: LangKey[] = ["ua", "de", "en"];
+
+const resolveLanguage = (language?: string): LangKey => {
+  const languageCode = (language || "ua").split("-")[0].toLowerCase();
+
+  if (languageCode === "uk") return "ua";
+
+  return SUPPORTED_LANGUAGES.includes(languageCode as LangKey)
+    ? (languageCode as LangKey)
+    : "ua";
+};
 
 export function useFirebaseContent(documentName: string) {
   const { i18n } = useTranslation();
   const [data, setData] = useState<DocumentData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 1. Слухаємо документ у реальному часі (onSnapshot замість getDoc)
   useEffect(() => {
     setIsLoading(true);
-    const docRef = doc(db, "pages", documentName);
 
-    // onSnapshot автоматично оновлює стейт data, коли в базі щось змінюється
+    const documentReference = doc(db, "pages", documentName);
     const unsubscribe = onSnapshot(
-      docRef,
-      (docSnap) => {
-        if (docSnap.exists()) {
-          setData(docSnap.data());
-        } else {
-          setData(null);
-        }
+      documentReference,
+      (documentSnapshot) => {
+        setData(documentSnapshot.exists() ? documentSnapshot.data() : null);
         setIsLoading(false);
       },
       (error) => {
-        console.error(`Помилка завантаження контенту для ${documentName}`, error);
+        console.error(
+          `Помилка завантаження контенту для ${documentName}`,
+          error,
+        );
         setIsLoading(false);
-      }
+      },
     );
 
-    // Відписуємось від Firebase, коли користувач йде зі сторінки
-    return () => unsubscribe();
+    return unsubscribe;
   }, [documentName]);
 
-  // 2. Метод для зручного отримання тексту
-  const getText = (path: string, fallbackText: string) => {
-    if (!data) {
-      return fallbackText;
-    }
+  const getText = useCallback(
+    (path: string, fallbackText: string) => {
+      if (!data) return fallbackText;
 
-    const keys = path.split(".");
-    let currentLevel = data;
+      const value = path.split(".").reduce<unknown>((currentValue, key) => {
+        if (
+          !currentValue ||
+          typeof currentValue !== "object" ||
+          !(key in currentValue)
+        ) {
+          return undefined;
+        }
 
-    for (const key of keys) {
-      if (!currentLevel || typeof currentLevel !== "object" || !(key in currentLevel)) {
-        return fallbackText;
-      }
-      currentLevel = currentLevel[key];
-    }
+        return (currentValue as Record<string, unknown>)[key];
+      }, data);
 
-    const localizedText = currentLevel[i18n.language];
-    return localizedText || fallbackText;
-  };
+      // Підтримка старих записів, де текст зберігався звичайним рядком.
+      if (typeof value === "string") return value || fallbackText;
 
-  // 👇 Додали повернення `data`, щоб використовувати його у формі редагування
+      if (!value || typeof value !== "object") return fallbackText;
+
+      const currentLanguage = resolveLanguage(
+        i18n.resolvedLanguage || i18n.language,
+      );
+      const localizedValue = (value as Partial<Record<LangKey, unknown>>)[
+        currentLanguage
+      ];
+
+      return typeof localizedValue === "string" && localizedValue.trim()
+        ? localizedValue
+        : fallbackText;
+    },
+    [data, i18n.language, i18n.resolvedLanguage],
+  );
+
   return { getText, isLoading, data };
 }

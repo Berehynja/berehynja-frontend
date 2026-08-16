@@ -1,32 +1,29 @@
 import { Briefcase, Heart, HouseHeart, School, Users } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
-import { EditTextModal } from "../../Modals/EditTextModal";
-import { useState } from "react";
-import { useFirebaseContent } from "../../../hooks/useFirebaseContent";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+import { EditTextModal } from "../../Modals/EditTextModal";
+import { useFirebaseContent } from "../../../hooks/useFirebaseContent";
 import { useAuth } from "../../AuthProvider/useAuth";
 import EditButton from "../../Buttons/EditButton";
+import type { LangKey } from "../../../types/types";
 
-// 1. Налаштування анімації контейнера (керує чергою)
+const EDITOR_LANGUAGES: LangKey[] = ["ua", "de", "en"];
+
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.25, // Затримка 0.25с між появою кожної картки
-    },
+    transition: { staggerChildren: 0.25 },
   },
 };
 
-// 2. Налаштування анімації окремої картки (виїзд знизу)
 const cardVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 50, // Початкова позиція: зміщена на 50px вниз
-  },
+  hidden: { opacity: 0, y: 50 },
   visible: {
     opacity: 1,
-    y: 0, // Кінцева позиція: на своєму місці
+    y: 0,
     transition: {
       type: "spring",
       stiffness: 50,
@@ -66,52 +63,106 @@ const cardsConfig = [
     className:
       "bg-Orange-2 shadow-card flex flex-col gap-4 rounded-lg p-8 md:col-span-2 xl:col-start-3 xl:row-start-2",
   },
-];
+] as const;
+
+type LocalizedText = Record<LangKey, string>;
+
+const getNestedValue = (source: unknown, path: string): unknown => {
+  return path.split(".").reduce<unknown>((currentValue, key) => {
+    if (
+      !currentValue ||
+      typeof currentValue !== "object" ||
+      !(key in currentValue)
+    ) {
+      return undefined;
+    }
+
+    return (currentValue as Record<string, unknown>)[key];
+  }, source);
+};
 
 export default function OurMission() {
-  // const [isEditOpen, setIsEditOpen] = useState(false);
   const [isTitleOpen, setIsTitleOpen] = useState(false);
   const [activeCard, setActiveCard] = useState<string | null>(null);
-
-  const openTitleEditor = () => setIsTitleOpen(true);
-  const closeTitleEditor = () => setIsTitleOpen(false);
-
-  const openCardEditor = (cardId: string) => {
-    setActiveCard(cardId);
-  };
-
-  const closeCardEditor = () => {
-    setActiveCard(null);
-  };
+  const [translationsVersion, setTranslationsVersion] = useState(0);
 
   const { getText, isLoading, data } = useFirebaseContent("home");
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isAdmin } = useAuth();
 
-  const mainTitle = getText("ourMission.title", t("ourMission.title"));
-  const selectedCard = activeCard ? data?.ourMission?.cards?.[activeCard] : null;
+  useEffect(() => {
+    let isMounted = true;
 
-  // const missionFields: FieldConfig[] = [
-  //   { key: "title", label: "Головний заголовок секції", type: "input" },
-  //   ...cardsConfig.flatMap((card) => [
-  //     { key: `cards.${card.id}.title`, label: `Заголовок (${card.id})`, type: "input" as const },
-  //     {
-  //       key: `cards.${card.id}.subtitle`,
-  //       label: `Підзаголовок (${card.id})`,
-  //       type: "input" as const,
-  //     },
-  //     { key: `cards.${card.id}.lead`, label: `Лідабзац (${card.id})`, type: "textarea" as const },
-  //     {
-  //       key: `cards.${card.id}.text`,
-  //       label: `Основний текст (${card.id})`,
-  //       type: "textarea" as const,
-  //     },
-  //   ]),
-  // ];
+    void i18n.loadLanguages(EDITOR_LANGUAGES).then(() => {
+      if (isMounted) {
+        setTranslationsVersion((version) => version + 1);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [i18n]);
+
+  const editorData = useMemo(() => {
+    const getEditorText = (path: string): LocalizedText => {
+      const storedValue = getNestedValue(data, path);
+      const storedTranslations =
+        storedValue && typeof storedValue === "object"
+          ? (storedValue as Partial<Record<LangKey, unknown>>)
+          : {};
+
+      return EDITOR_LANGUAGES.reduce<LocalizedText>(
+        (result, language) => {
+          const storedLanguageValue = storedTranslations[language];
+
+          if (
+            typeof storedLanguageValue === "string" &&
+            storedLanguageValue.trim()
+          ) {
+            result[language] = storedLanguageValue;
+            return result;
+          }
+
+          // Підтримка старого формату, де рядок вважався українським.
+          if (language === "ua" && typeof storedValue === "string") {
+            result.ua = storedValue;
+            return result;
+          }
+
+          const translatedValue = i18n.getFixedT(language)(path, {
+            defaultValue: "",
+          });
+
+          result[language] =
+            typeof translatedValue === "string" ? translatedValue : "";
+          return result;
+        },
+        { ua: "", de: "", en: "" },
+      );
+    };
+
+    const cardData = activeCard
+      ? {
+          title: getEditorText(`ourMission.cards.${activeCard}.title`),
+          subtitle: getEditorText(`ourMission.cards.${activeCard}.subtitle`),
+          lead: getEditorText(`ourMission.cards.${activeCard}.lead`),
+          text: getEditorText(`ourMission.cards.${activeCard}.text`),
+        }
+      : {};
+
+    return {
+      card: cardData,
+      title: {
+        title: getEditorText("ourMission.title"),
+      },
+    };
+  }, [activeCard, data, i18n, translationsVersion]);
+
+  const mainTitle = getText("ourMission.title", t("ourMission.title"));
 
   return (
     <section className="relative my-10 overflow-hidden">
-      {/* Анімація заголовка */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -125,7 +176,7 @@ export default function OurMission() {
 
             {isAdmin && (
               <EditButton
-                onClick={openTitleEditor}
+                onClick={() => setIsTitleOpen(true)}
                 className="top-0 -right-1/3 h-8 w-8 border border-gray-200 bg-white text-gray-700 shadow hover:scale-110 hover:bg-blue-600 hover:text-white"
                 size={36}
               />
@@ -134,13 +185,12 @@ export default function OurMission() {
         </div>
       </motion.div>
 
-      {/* Контейнер гріда */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.15 }} // Почнеться, коли видно 15% секції
-        className="mx-auto my-10 grid max-w-[375px] gap-8 px-4 md:grid md:max-w-full md:grid-cols-2 xl:grid-cols-4 xl:gap-y-6"
+        viewport={{ once: true, amount: 0.15 }}
+        className="mx-auto my-10 grid max-w-[375px] gap-8 px-4 md:max-w-full md:grid-cols-2 xl:grid-cols-4 xl:gap-y-6"
       >
         {cardsConfig.map((card) => {
           const titlePath = `ourMission.cards.${card.id}.title`;
@@ -156,11 +206,12 @@ export default function OurMission() {
             >
               {isAdmin && (
                 <EditButton
-                  onClick={() => openCardEditor(card.id)}
+                  onClick={() => setActiveCard(card.id)}
                   className="top-4 right-4 h-12 w-12 border border-gray-200 bg-white text-gray-700 shadow-xl hover:scale-110 hover:bg-blue-600 hover:text-white"
                   size={36}
                 />
               )}
+
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full border border-black bg-gray-100">
                   {card.icon}
@@ -170,24 +221,31 @@ export default function OurMission() {
                     {isLoading ? "..." : getText(titlePath, t(titlePath))}
                   </h3>
                   <p className="text-preset-5 mt-1 text-gray-400">
-                    {isLoading ? "..." : getText(subtitlePath, t(subtitlePath))}
+                    {isLoading
+                      ? "..."
+                      : getText(subtitlePath, t(subtitlePath))}
                   </p>
                 </div>
               </div>
-              <p className="text-preset-4">{isLoading ? "..." : getText(leadPath, t(leadPath))}</p>
-              <p className="text-preset-5">{isLoading ? "..." : getText(textPath, t(textPath))}</p>
+
+              <p className="text-preset-4">
+                {isLoading ? "..." : getText(leadPath, t(leadPath))}
+              </p>
+              <p className="text-preset-5">
+                {isLoading ? "..." : getText(textPath, t(textPath))}
+              </p>
             </motion.aside>
           );
         })}
       </motion.div>
 
       <EditTextModal
-        isOpen={!!activeCard}
-        onClose={closeCardEditor}
+        isOpen={Boolean(activeCard)}
+        onClose={() => setActiveCard(null)}
         documentName="home"
         sectionName={`ourMission.cards.${activeCard}`}
         modalTitle="Редагування картки"
-        initialData={selectedCard ?? {}}
+        initialData={editorData.card}
         fields={[
           { key: "title", label: "Заголовок", type: "input" },
           { key: "subtitle", label: "Підзаголовок", type: "input" },
@@ -198,18 +256,12 @@ export default function OurMission() {
 
       <EditTextModal
         isOpen={isTitleOpen}
-        onClose={closeTitleEditor}
+        onClose={() => setIsTitleOpen(false)}
         documentName="home"
         sectionName="ourMission"
         modalTitle="Редагування заголовку"
-        initialData={data?.ourMission}
-        fields={[
-          {
-            key: "title",
-            label: "Заголовок",
-            type: "input",
-          },
-        ]}
+        initialData={editorData.title}
+        fields={[{ key: "title", label: "Заголовок", type: "input" }]}
       />
     </section>
   );

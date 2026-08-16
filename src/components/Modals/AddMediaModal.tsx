@@ -20,7 +20,6 @@ import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 
 import { uploadMedia } from "../../services/cloudinaryService";
-import type { LangKey } from "../../types/types";
 
 interface AddMediaModalProps {
   isOpen: boolean;
@@ -30,85 +29,6 @@ interface AddMediaModalProps {
   type: "image" | "video";
   subFolder?: string;
 }
-
-const TEXT = {
-  ua: {
-    admin: "Berehynja Admin",
-    addPhoto: "Додати фотографію",
-    addVideo: "Додати відео",
-    forEvent: "Для події",
-    close: "Закрити",
-    photoLabel: "Фотографія",
-    photoHint: "JPG, PNG, WEBP або AVIF, до 10 МБ",
-    choosePhoto: "Вибрати фотографію",
-    replacePhoto: "Замінити фотографію",
-    videoLabel: "Посилання на YouTube",
-    videoHint: "Вставте повне посилання на відео з YouTube або youtu.be.",
-    videoPlaceholder: "https://www.youtube.com/watch?v=...",
-    cancel: "Скасувати",
-    savePhoto: "Додати фотографію",
-    saveVideo: "Додати відео",
-    uploading: "Завантаження...",
-    saving: "Збереження...",
-    invalidImage: "Оберіть коректний файл зображення.",
-    imageTooLarge: "Розмір зображення не повинен перевищувати 10 МБ.",
-    invalidVideo: "Введіть коректне посилання на YouTube.",
-    successPhoto: "Фотографію додано.",
-    successVideo: "Відео додано.",
-    error: "Не вдалося зберегти медіафайл.",
-  },
-  de: {
-    admin: "Berehynja Admin",
-    addPhoto: "Foto hinzufügen",
-    addVideo: "Video hinzufügen",
-    forEvent: "Für die Veranstaltung",
-    close: "Schließen",
-    photoLabel: "Foto",
-    photoHint: "JPG, PNG, WEBP oder AVIF, bis zu 10 MB",
-    choosePhoto: "Foto auswählen",
-    replacePhoto: "Foto ersetzen",
-    videoLabel: "YouTube-Link",
-    videoHint:
-      "Fügen Sie den vollständigen Link von YouTube oder youtu.be ein.",
-    videoPlaceholder: "https://www.youtube.com/watch?v=...",
-    cancel: "Abbrechen",
-    savePhoto: "Foto hinzufügen",
-    saveVideo: "Video hinzufügen",
-    uploading: "Wird hochgeladen...",
-    saving: "Wird gespeichert...",
-    invalidImage: "Wählen Sie eine gültige Bilddatei aus.",
-    imageTooLarge: "Das Bild darf nicht größer als 10 MB sein.",
-    invalidVideo: "Geben Sie einen gültigen YouTube-Link ein.",
-    successPhoto: "Das Foto wurde hinzugefügt.",
-    successVideo: "Das Video wurde hinzugefügt.",
-    error: "Die Mediendatei konnte nicht gespeichert werden.",
-  },
-  en: {
-    admin: "Berehynja Admin",
-    addPhoto: "Add photo",
-    addVideo: "Add video",
-    forEvent: "For event",
-    close: "Close",
-    photoLabel: "Photo",
-    photoHint: "JPG, PNG, WEBP or AVIF, up to 10 MB",
-    choosePhoto: "Choose photo",
-    replacePhoto: "Replace photo",
-    videoLabel: "YouTube link",
-    videoHint: "Paste the full video link from YouTube or youtu.be.",
-    videoPlaceholder: "https://www.youtube.com/watch?v=...",
-    cancel: "Cancel",
-    savePhoto: "Add photo",
-    saveVideo: "Add video",
-    uploading: "Uploading...",
-    saving: "Saving...",
-    invalidImage: "Choose a valid image file.",
-    imageTooLarge: "The image must not exceed 10 MB.",
-    invalidVideo: "Enter a valid YouTube link.",
-    successPhoto: "The photo has been added.",
-    successVideo: "The video has been added.",
-    error: "The media file could not be saved.",
-  },
-} as const;
 
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
 
@@ -136,18 +56,12 @@ export const AddMediaModal = ({
   title,
   subFolder,
 }: AddMediaModalProps) => {
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
+  const tr = (key: string) => t(`admin.mediaModal.${key}`);
   const modalTitleId = useId();
   const fileInputId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
-    .split("-")[0]
-    .toLowerCase();
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
-  const text = TEXT[currentLang];
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState("");
@@ -213,13 +127,13 @@ export const AddMediaModal = ({
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      toast.error(text.invalidImage);
+      toast.error(tr("invalidImage"));
       event.target.value = "";
       return;
     }
 
     if (file.size > MAX_IMAGE_SIZE) {
-      toast.error(text.imageTooLarge);
+      toast.error(tr("imageTooLarge"));
       event.target.value = "";
       return;
     }
@@ -237,13 +151,13 @@ export const AddMediaModal = ({
     if (isUploading) return;
 
     if (type === "image" && !imageFile) {
-      toast.error(text.invalidImage);
+      toast.error(tr("invalidImage"));
       return;
     }
 
     if (type === "video" && !isValidYouTubeUrl(videoUrl)) {
       setShowVideoError(true);
-      toast.error(text.invalidVideo);
+      toast.error(tr("invalidVideo"));
       return;
     }
 
@@ -257,17 +171,17 @@ export const AddMediaModal = ({
           subFolder || title,
         );
         await onUpload(result.url, result.public_id);
-        toast.success(text.successPhoto);
+        toast.success(tr("successPhoto"));
       } else {
         await onUpload(videoUrl.trim());
-        toast.success(text.successVideo);
+        toast.success(tr("successVideo"));
       }
 
       resetForm();
       onClose();
     } catch (error) {
       console.error("Media upload error:", error);
-      toast.error(text.error);
+      toast.error(tr("error"));
     } finally {
       setIsUploading(false);
     }
@@ -282,7 +196,7 @@ export const AddMediaModal = ({
     <div className="font-nunito fixed inset-0 z-9999 flex items-center justify-center p-4 md:p-6">
       <button
         type="button"
-        aria-label={text.close}
+        aria-label={tr("close")}
         onClick={handleClose}
         className="absolute inset-0 cursor-default bg-slate-950/65 backdrop-blur-sm"
       />
@@ -293,47 +207,62 @@ export const AddMediaModal = ({
         aria-labelledby={modalTitleId}
         className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-xl flex-col overflow-hidden rounded-4xl border border-white/70 bg-white shadow-[0_32px_90px_rgba(15,23,42,0.35)]"
       >
-        <header className="flex shrink-0 items-start justify-between gap-4 border-b border-slate-200 px-5 py-5 md:px-7">
-          <div className="min-w-0">
-            <p className="mb-1 text-[11px] font-black tracking-[0.2em] text-blue-600 uppercase">
-              {text.admin}
-            </p>
-            <h2
-              id={modalTitleId}
-              className="truncate text-xl font-semibold tracking-tight text-slate-950 md:text-2xl"
-            >
-              {type === "image" ? text.addPhoto : text.addVideo}
-            </h2>
-            <p className="mt-1 truncate text-sm text-slate-500">
-              {text.forEvent}:{" "}
-              <span className="font-bold text-slate-700">{title}</span>
-            </p>
+        <header className="flex shrink-0 items-center justify-between gap-4 bg-linear-to-br from-blue-600 to-blue-900 px-5 py-5 text-white md:px-7 md:py-6">
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-yellow-300 shadow-inner backdrop-blur-md">
+              {type === "image" ? (
+                <ImagePlus size={24} aria-hidden="true" />
+              ) : (
+                <Video size={24} aria-hidden="true" />
+              )}
+            </div>
+
+            <div className="min-w-0">
+              <p className="mb-1 text-xs font-semibold tracking-[0.18em] text-blue-100 uppercase">
+                {tr("admin")}
+              </p>
+              <h2
+                id={modalTitleId}
+                className="truncate text-xl font-semibold tracking-tight text-white md:text-2xl"
+              >
+                {type === "image" ? tr("addPhoto") : tr("addVideo")}
+              </h2>
+              <p className="mt-1 truncate text-sm text-blue-100">
+                {tr("forEvent")}:{" "}
+                <span className="font-semibold text-white">{title}</span>
+              </p>
+            </div>
           </div>
 
           <button
             type="button"
             onClick={handleClose}
             disabled={isUploading}
-            aria-label={text.close}
-            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label={tr("close")}
+            title={tr("close")}
+            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-white/15 bg-black/10 text-white shadow-sm backdrop-blur-md transition hover:bg-black/20 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            <X size={21} />
+            <X size={21} aria-hidden="true" />
           </button>
         </header>
 
-        <form onSubmit={handleSubmit} className="overflow-y-auto">
+        <form
+          id="media-form"
+          onSubmit={handleSubmit}
+          className="min-h-0 flex-1 overflow-y-auto bg-slate-50/60"
+        >
           <div className="px-5 py-6 md:px-7 md:py-7">
             {type === "image" ? (
               <div>
                 <div className="mb-3 flex items-center justify-between gap-4">
                   <label
                     htmlFor={fileInputId}
-                    className="text-sm font-extrabold text-slate-800"
+                    className="text-sm font-semibold text-slate-800"
                   >
-                    {text.photoLabel}
+                    {tr("photoLabel")}
                   </label>
                   <span className="text-right text-xs text-slate-500">
-                    {text.photoHint}
+                    {tr("photoHint")}
                   </span>
                 </div>
 
@@ -348,7 +277,7 @@ export const AddMediaModal = ({
 
                 {imagePreview ? (
                   <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-100">
-                    <div className="aspect-4/3 max-h-80 overflow-hidden">
+                    <div className="aspect-[4/3] max-h-80 overflow-hidden">
                       <img
                         src={imagePreview}
                         alt=""
@@ -368,9 +297,9 @@ export const AddMediaModal = ({
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
                         disabled={isUploading}
-                        className="shrink-0 cursor-pointer rounded-xl border border-slate-200 px-3 py-2 text-xs font-extrabold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="shrink-0 cursor-pointer rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
                       >
-                        {text.replacePhoto}
+                        {tr("replacePhoto")}
                       </button>
                     </div>
                   </div>
@@ -383,19 +312,19 @@ export const AddMediaModal = ({
                     <span className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-white text-blue-600 shadow-sm">
                       <ImagePlus size={27} />
                     </span>
-                    <span className="text-sm font-extrabold text-slate-900">
-                      {text.choosePhoto}
+                    <span className="text-sm font-semibold text-slate-900">
+                      {tr("choosePhoto")}
                     </span>
                     <span className="mt-2 text-xs text-slate-500">
-                      {text.photoHint}
+                      {tr("photoHint")}
                     </span>
                   </button>
                 )}
               </div>
             ) : (
               <label className="block">
-                <span className="mb-2 block text-sm font-extrabold text-slate-800">
-                  {text.videoLabel}
+                <span className="mb-2 block text-sm font-semibold text-slate-800">
+                  {tr("videoLabel")}
                 </span>
 
                 <span className="relative block">
@@ -413,7 +342,7 @@ export const AddMediaModal = ({
                         Boolean(videoUrl.trim()) && !isVideoValid,
                       )
                     }
-                    placeholder={text.videoPlaceholder}
+                    placeholder={tr("videoPlaceholder")}
                     aria-invalid={showVideoError}
                     aria-describedby={`${modalTitleId}-video-hint`}
                     className={`w-full rounded-2xl border bg-slate-50 py-3.5 pr-4 pl-12 text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-4 ${
@@ -430,7 +359,7 @@ export const AddMediaModal = ({
                     showVideoError ? "font-bold text-red-600" : "text-slate-500"
                   }`}
                 >
-                  {showVideoError ? text.invalidVideo : text.videoHint}
+                  {showVideoError ? tr("invalidVideo") : tr("videoHint")}
                 </span>
 
                 <span className="mt-6 flex items-center gap-3 rounded-2xl border border-blue-100 bg-blue-50 p-4 text-blue-700">
@@ -441,20 +370,23 @@ export const AddMediaModal = ({
             )}
           </div>
 
-          <footer className="flex flex-col-reverse gap-2 border-t border-slate-200 bg-slate-50 px-5 py-4 md:flex-row md:justify-end md:px-7">
+        </form>
+
+        <footer className="flex shrink-0 flex-col-reverse gap-2 border-t border-slate-200 bg-slate-50 px-5 py-4 md:flex-row md:justify-end md:px-7">
             <button
               type="button"
               onClick={handleClose}
               disabled={isUploading}
-              className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+              className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {text.cancel}
+              {tr("cancel")}
             </button>
 
             <button
               type="submit"
+              form="media-form"
               disabled={isUploading || !canSubmit}
-              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
+              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
             >
               {isUploading ? (
                 <Loader2 size={18} className="animate-spin" />
@@ -463,14 +395,13 @@ export const AddMediaModal = ({
               )}
               {isUploading
                 ? type === "image"
-                  ? text.uploading
-                  : text.saving
+                  ? tr("uploading")
+                  : tr("saving")
                 : type === "image"
-                  ? text.savePhoto
-                  : text.saveVideo}
+                  ? tr("savePhoto")
+                  : tr("saveVideo")}
             </button>
-          </footer>
-        </form>
+        </footer>
       </div>
     </div>
   );

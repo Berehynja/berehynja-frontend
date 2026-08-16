@@ -134,42 +134,41 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
         onMouseDown={handleClose}
       />
 
-      <div className="animate-in zoom-in-95 font-nunito relative max-h-[calc(100dvh-2rem)] w-full max-w-3xl overflow-y-auto rounded-4xl border border-slate-200 bg-white p-6 shadow-[0_28px_90px_rgba(15,23,42,0.28)] duration-300 md:p-8 lg:p-10">
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-1.5 bg-linear-to-r from-blue-600 via-blue-500 to-yellow-400"
-        />
+      <div className="animate-in zoom-in-95 font-nunito relative flex max-h-[calc(100dvh-2rem)] w-full max-w-3xl flex-col overflow-hidden rounded-4xl border border-white/70 bg-white shadow-[0_28px_90px_rgba(15,23,42,0.3)] duration-300">
+        <header className="flex shrink-0 items-center justify-between gap-4 bg-linear-to-br from-blue-600 to-blue-900 px-5 py-5 text-white md:px-8 md:py-6">
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-yellow-300 shadow-inner backdrop-blur-md">
+              <UserPlus size={25} aria-hidden="true" />
+            </div>
 
-        <button
-          type="button"
-          onClick={handleClose}
-          aria-label={t("joinModal.close")}
-          title={t("joinModal.close")}
-          className="absolute top-5 right-5 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-all hover:border-blue-300 hover:text-blue-700 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:top-7 md:right-7"
-        >
-          <X size={22} aria-hidden="true" />
-        </button>
+            <div className="min-w-0">
+              <h2
+                id={titleId}
+                className="truncate text-xl font-semibold tracking-tight text-white md:text-2xl"
+              >
+                {t("joinModal.title")}
+              </h2>
+              <p className="mt-1 text-sm leading-6 font-medium text-blue-100">
+                {t("joinModal.subtitle")}
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleClose}
+            aria-label={t("joinModal.close")}
+            title={t("joinModal.close")}
+            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-white/15 bg-black/10 text-white shadow-sm backdrop-blur-md transition hover:bg-black/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            <X size={21} aria-hidden="true" />
+          </button>
+        </header>
+
+        <div className="flex-1 overflow-y-auto bg-slate-50/60 p-5 md:p-8">
 
         {!isSubmitted ? (
           <div className="text-left">
-            <div className="mb-8 flex items-center gap-4 pr-12">
-              <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-700 shadow-sm ring-1 ring-blue-100">
-                <UserPlus size={28} aria-hidden="true" />
-              </div>
-
-              <div>
-                <h2
-                  id={titleId}
-                  className="text-2xl leading-tight font-semibold tracking-tight text-slate-950 md:text-3xl"
-                >
-                  {t("joinModal.title")}
-                </h2>
-                <p className="mt-2 text-base leading-7 font-medium text-slate-600">
-                  {t("joinModal.subtitle")}
-                </p>
-              </div>
-            </div>
-
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <label
@@ -352,17 +351,15 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
             <div className="mx-auto mb-6 flex size-20 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 shadow-sm ring-1 ring-emerald-100">
               <CheckCircle2 size={44} aria-hidden="true" />
             </div>
-            <h2
-              id={titleId}
-              className="mb-4 text-2xl font-semibold tracking-tight text-slate-950 md:text-3xl"
-            >
+            <h3 className="mb-4 text-2xl font-semibold tracking-tight text-slate-950 md:text-3xl">
               {t("joinModal.successTitle")}
-            </h2>
+            </h3>
             <p className="mx-auto max-w-md text-base leading-7 font-medium text-slate-600 md:text-lg md:leading-8">
               {t("joinModal.successText")}
             </p>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

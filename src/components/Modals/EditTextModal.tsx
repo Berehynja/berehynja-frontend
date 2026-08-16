@@ -55,76 +55,6 @@ const LANGUAGES: Array<{ key: LangKey; label: string }> = [
   { key: "en", label: "EN" },
 ];
 
-const TEXT = {
-  ua: {
-    admin: "Berehynja Admin",
-    defaultTitle: "Редагування секції",
-    close: "Закрити",
-    language: "Мова заповнення",
-    sharedImage: "Спільне для всіх мов",
-    uploadImage: "Завантажити зображення",
-    replaceImage: "Замінити",
-    removeImage: "Прибрати",
-    uploading: "Завантаження...",
-    cancel: "Скасувати",
-    save: "Зберегти зміни",
-    saving: "Збереження...",
-    uploadSuccess: "Зображення завантажено.",
-    uploadError: "Не вдалося завантажити зображення.",
-    invalidImage: "Оберіть коректний файл зображення.",
-    imageTooLarge: "Розмір зображення не повинен перевищувати 12 МБ.",
-    requiredError: "Заповніть усі обов’язкові текстові поля для кожної мови.",
-    saved: "Дані успішно оновлено.",
-    saveError: "Не вдалося зберегти зміни.",
-    required: "обов’язково",
-  },
-  de: {
-    admin: "Berehynja Admin",
-    defaultTitle: "Bereich bearbeiten",
-    close: "Schließen",
-    language: "Eingabesprache",
-    sharedImage: "Für alle Sprachen gemeinsam",
-    uploadImage: "Bild hochladen",
-    replaceImage: "Ersetzen",
-    removeImage: "Entfernen",
-    uploading: "Wird hochgeladen...",
-    cancel: "Abbrechen",
-    save: "Änderungen speichern",
-    saving: "Wird gespeichert...",
-    uploadSuccess: "Das Bild wurde hochgeladen.",
-    uploadError: "Das Bild konnte nicht hochgeladen werden.",
-    invalidImage: "Wählen Sie eine gültige Bilddatei aus.",
-    imageTooLarge: "Das Bild darf nicht größer als 12 MB sein.",
-    requiredError:
-      "Füllen Sie alle erforderlichen Textfelder in jeder Sprache aus.",
-    saved: "Die Daten wurden aktualisiert.",
-    saveError: "Die Änderungen konnten nicht gespeichert werden.",
-    required: "erforderlich",
-  },
-  en: {
-    admin: "Berehynja Admin",
-    defaultTitle: "Edit section",
-    close: "Close",
-    language: "Content language",
-    sharedImage: "Shared across all languages",
-    uploadImage: "Upload image",
-    replaceImage: "Replace",
-    removeImage: "Remove",
-    uploading: "Uploading...",
-    cancel: "Cancel",
-    save: "Save changes",
-    saving: "Saving...",
-    uploadSuccess: "The image has been uploaded.",
-    uploadError: "The image could not be uploaded.",
-    invalidImage: "Choose a valid image file.",
-    imageTooLarge: "The image must not exceed 12 MB.",
-    requiredError: "Complete every required text field in each language.",
-    saved: "The data has been updated.",
-    saveError: "The changes could not be saved.",
-    required: "required",
-  },
-} as const;
-
 const MAX_IMAGE_SIZE = 12 * 1024 * 1024;
 
 const EMPTY_TEXT: MultilingualText = { ua: "", de: "", en: "" };
@@ -186,7 +116,8 @@ export const EditTextModal = ({
   initialData,
   fields,
 }: EditTextModalProps) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const tr = (key: string) => t(`common.editTextModal.${key}`);
   const modalTitleId = useId();
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
@@ -196,7 +127,6 @@ export const EditTextModal = ({
   const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
     ? (detectedLanguage as LangKey)
     : "ua";
-  const text = TEXT[currentLang];
 
   const [activeLang, setActiveLang] = useState<LangKey>("ua");
   const [formData, setFormData] = useState<Record<string, MultilingualText>>(
@@ -276,13 +206,13 @@ export const EditTextModal = ({
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      toast.error(text.invalidImage);
+      toast.error(tr("invalidImage"));
       event.target.value = "";
       return;
     }
 
     if (file.size > MAX_IMAGE_SIZE) {
-      toast.error(text.imageTooLarge);
+      toast.error(tr("imageTooLarge"));
       event.target.value = "";
       return;
     }
@@ -297,10 +227,10 @@ export const EditTextModal = ({
         ...previous,
         [fieldKey]: response.url,
       }));
-      toast.success(text.uploadSuccess);
+      toast.success(tr("uploadSuccess"));
     } catch (error) {
       console.error("Section image upload error:", error);
-      toast.error(text.uploadError);
+      toast.error(tr("uploadError"));
     } finally {
       setIsUploading((previous) => ({ ...previous, [fieldKey]: false }));
       event.target.value = "";
@@ -325,7 +255,7 @@ export const EditTextModal = ({
 
     if (incompleteLanguage) {
       setActiveLang(incompleteLanguage);
-      toast.error(text.requiredError);
+      toast.error(tr("requiredError"));
       return;
     }
 
@@ -351,11 +281,11 @@ export const EditTextModal = ({
       });
 
       await updateDoc(documentReference, updatePayload);
-      toast.success(text.saved);
+      toast.success(tr("saved"));
       onClose();
     } catch (error) {
       console.error("Section save error:", error);
-      toast.error(text.saveError);
+      toast.error(tr("saveError"));
     } finally {
       setIsSaving(false);
     }
@@ -364,15 +294,15 @@ export const EditTextModal = ({
   if (!isOpen) return null;
 
   const resolvedModalTitle = modalTitle
-    ? resolveLocalizedLabel(modalTitle, currentLang, text.defaultTitle)
-    : text.defaultTitle;
+    ? resolveLocalizedLabel(modalTitle, currentLang, tr("defaultTitle"))
+    : tr("defaultTitle");
   const hasTextFields = fields.some((field) => field.type !== "image");
 
   return (
     <div className="font-nunito fixed inset-0 z-9999 flex items-center justify-center p-4 md:p-6">
       <button
         type="button"
-        aria-label={text.close}
+        aria-label={tr("close")}
         onClick={handleClose}
         className="absolute inset-0 cursor-default bg-slate-950/65 backdrop-blur-sm"
       />
@@ -383,51 +313,58 @@ export const EditTextModal = ({
         aria-labelledby={modalTitleId}
         className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-3xl flex-col overflow-hidden rounded-4xl border border-white/70 bg-white shadow-[0_32px_90px_rgba(15,23,42,0.35)]"
       >
-        <header className="flex shrink-0 items-start justify-between gap-4 border-b border-slate-200 px-5 py-4 md:px-8 md:py-5">
-          <div className="min-w-0">
-            <p className="mb-1 text-[11px] font-black tracking-[0.2em] text-blue-600 uppercase">
-              {text.admin}
-            </p>
-            <h2
-              id={modalTitleId}
-              className="truncate text-xl font-semibold tracking-tight text-slate-950 md:text-2xl"
-            >
-              {resolvedModalTitle}
-            </h2>
-            <p className="mt-1 truncate text-xs font-bold text-slate-400">
-              {documentName} / {sectionName}
-            </p>
+        <header className="flex shrink-0 items-center justify-between gap-4 bg-linear-to-br from-blue-600 to-blue-900 px-5 py-5 text-white md:px-8 md:py-6">
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-yellow-300 shadow-inner backdrop-blur-md">
+              <ImageIcon size={24} aria-hidden="true" />
+            </div>
+
+            <div className="min-w-0">
+              <p className="mb-1 text-xs font-semibold tracking-[0.18em] text-blue-100 uppercase">
+                {tr("admin")}
+              </p>
+              <h2
+                id={modalTitleId}
+                className="truncate text-xl font-semibold tracking-tight text-white md:text-2xl"
+              >
+                {resolvedModalTitle}
+              </h2>
+              <p className="mt-1 truncate text-sm font-medium text-blue-100">
+                {documentName} / {sectionName}
+              </p>
+            </div>
           </div>
 
           <button
             type="button"
             onClick={handleClose}
             disabled={isBusy}
-            aria-label={text.close}
-            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label={tr("close")}
+            title={tr("close")}
+            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-white/15 bg-black/10 text-white shadow-sm backdrop-blur-md transition hover:bg-black/20 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            <X size={21} />
+            <X size={21} aria-hidden="true" />
           </button>
         </header>
 
         <form
           id="edit-section-form"
           onSubmit={handleSave}
-          className="overflow-y-auto px-5 py-6 md:px-8 md:py-7"
+          className="overflow-y-auto bg-slate-50/60 px-5 py-6 md:px-8 md:py-7"
         >
           <div className="space-y-7">
             {hasTextFields && (
               <section aria-labelledby={`${modalTitleId}-language`}>
                 <p
                   id={`${modalTitleId}-language`}
-                  className="mb-3 text-xs font-black tracking-[0.15em] text-slate-500 uppercase"
+                  className="mb-3 text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
                 >
-                  {text.language}
+                  {tr("language")}
                 </p>
 
                 <div
                   role="tablist"
-                  aria-label={text.language}
+                  aria-label={tr("language")}
                   className="grid grid-cols-3 gap-1 rounded-2xl bg-slate-100 p-1.5"
                 >
                   {LANGUAGES.map(({ key, label }) => (
@@ -437,7 +374,7 @@ export const EditTextModal = ({
                       role="tab"
                       aria-selected={activeLang === key}
                       onClick={() => setActiveLang(key)}
-                      className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-extrabold transition ${
+                      className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-semibold transition ${
                         activeLang === key
                           ? "bg-white text-blue-700 shadow-sm"
                           : "text-slate-500 hover:text-slate-900"
@@ -468,11 +405,11 @@ export const EditTextModal = ({
                 return (
                   <section key={field.key}>
                     <div className="mb-3 flex flex-wrap items-baseline gap-2">
-                      <h3 className="text-sm font-extrabold text-slate-800">
+                      <h3 className="text-sm font-semibold text-slate-800">
                         {fieldLabel}
                       </h3>
                       <span className="text-xs font-bold text-blue-600">
-                        {text.sharedImage}
+                        {tr("sharedImage")}
                       </span>
                     </div>
 
@@ -507,7 +444,7 @@ export const EditTextModal = ({
                               fileInputRefs.current[field.key]?.click()
                             }
                             disabled={fieldIsUploading}
-                            className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-extrabold text-slate-700 transition hover:bg-slate-50 disabled:cursor-wait disabled:opacity-60"
+                            className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-wait disabled:opacity-60"
                           >
                             {fieldIsUploading ? (
                               <Loader2 size={16} className="animate-spin" />
@@ -515,8 +452,8 @@ export const EditTextModal = ({
                               <UploadCloud size={16} />
                             )}
                             {fieldIsUploading
-                              ? text.uploading
-                              : text.replaceImage}
+                              ? tr("uploading")
+                              : tr("replaceImage")}
                           </button>
 
                           <button
@@ -528,10 +465,10 @@ export const EditTextModal = ({
                               }))
                             }
                             disabled={fieldIsUploading}
-                            className="inline-flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-xs font-extrabold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+                            className="inline-flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
                           >
                             <Trash2 size={16} />
-                            {text.removeImage}
+                            {tr("removeImage")}
                           </button>
                         </div>
                       </div>
@@ -551,8 +488,8 @@ export const EditTextModal = ({
                             <ImageIcon size={25} />
                           )}
                         </span>
-                        <span className="text-sm font-extrabold text-slate-900">
-                          {fieldIsUploading ? text.uploading : text.uploadImage}
+                        <span className="text-sm font-semibold text-slate-900">
+                          {fieldIsUploading ? tr("uploading") : tr("uploadImage")}
                         </span>
                       </button>
                     )}
@@ -568,11 +505,11 @@ export const EditTextModal = ({
 
               return (
                 <label key={field.key} className="block">
-                  <span className="mb-2 block text-sm font-extrabold text-slate-800">
+                  <span className="mb-2 block text-sm font-semibold text-slate-800">
                     {fieldLabel} ({activeLang.toUpperCase()})
                     {isRequired && (
                       <span className="ml-2 text-xs text-blue-600">
-                        {text.required}
+                        {tr("required")}
                       </span>
                     )}
                   </span>
@@ -609,23 +546,23 @@ export const EditTextModal = ({
             type="button"
             onClick={handleClose}
             disabled={isBusy}
-            className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+            className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {text.cancel}
+            {tr("cancel")}
           </button>
 
           <button
             type="submit"
             form="edit-section-form"
             disabled={isBusy}
-            className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
+            className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
           >
             {isSaving ? (
               <Loader2 size={18} className="animate-spin" />
             ) : (
               <Check size={18} />
             )}
-            {isSaving ? text.saving : text.save}
+            {isSaving ? tr("saving") : tr("save")}
           </button>
         </footer>
       </div>

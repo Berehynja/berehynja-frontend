@@ -1,5 +1,21 @@
-import { useCallback, useEffect, useId, useState, type ChangeEvent, type FormEvent } from "react";
-import { Calendar, CheckCircle2, Clock, Loader2, MapPin, Plus, Trash2, X } from "lucide-react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
+import {
+  Calendar,
+  CheckCircle2,
+  Clock,
+  Loader2,
+  MapPin,
+  Plus,
+  Trash2,
+  X,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 
@@ -57,129 +73,6 @@ const createFormData = (event?: Event | null): Event => {
   };
 };
 
-const EVENT_MODAL_TEXT = {
-  createTitle: {
-    ua: "Створення події",
-    de: "Veranstaltung erstellen",
-    en: "Create event",
-  },
-  editTitle: {
-    ua: "Редагування події",
-    de: "Veranstaltung bearbeiten",
-    en: "Edit event",
-  },
-  close: {
-    ua: "Закрити форму",
-    de: "Formular schließen",
-    en: "Close form",
-  },
-  date: {
-    ua: "Дата",
-    de: "Datum",
-    en: "Date",
-  },
-  time: {
-    ua: "Час",
-    de: "Uhrzeit",
-    en: "Time",
-  },
-  location: {
-    ua: "Локація",
-    de: "Ort",
-    en: "Location",
-  },
-  eventTitle: {
-    ua: "Назва події",
-    de: "Veranstaltungstitel",
-    en: "Event title",
-  },
-  titlePlaceholder: {
-    ua: "Введіть назву події...",
-    de: "Veranstaltungstitel eingeben...",
-    en: "Enter event title...",
-  },
-  description: {
-    ua: "Опис",
-    de: "Beschreibung",
-    en: "Description",
-  },
-  descriptionPlaceholder: {
-    ua: "Опишіть подію детальніше...",
-    de: "Beschreiben Sie die Veranstaltung...",
-    en: "Describe the event...",
-  },
-  mainImage: {
-    ua: "Головне зображення",
-    de: "Hauptbild",
-    en: "Main image",
-  },
-  changeImage: {
-    ua: "Змінити",
-    de: "Ändern",
-    en: "Change",
-  },
-  removeImage: {
-    ua: "Видалити",
-    de: "Entfernen",
-    en: "Remove",
-  },
-  addImage: {
-    ua: "Натисніть, щоб додати фото",
-    de: "Klicken, um ein Foto hinzuzufügen",
-    en: "Click to add a photo",
-  },
-  uploading: {
-    ua: "Завантаження...",
-    de: "Wird hochgeladen...",
-    en: "Uploading...",
-  },
-  deleteEvent: {
-    ua: "Видалити подію",
-    de: "Veranstaltung löschen",
-    en: "Delete event",
-  },
-  cancel: {
-    ua: "Скасувати",
-    de: "Abbrechen",
-    en: "Cancel",
-  },
-  publish: {
-    ua: "Опублікувати",
-    de: "Veröffentlichen",
-    en: "Publish",
-  },
-  saveChanges: {
-    ua: "Зберегти зміни",
-    de: "Änderungen speichern",
-    en: "Save changes",
-  },
-  saving: {
-    ua: "Збереження...",
-    de: "Wird gespeichert...",
-    en: "Saving...",
-  },
-  titleRequired: {
-    ua: "Додайте українську назву події.",
-    de: "Bitte geben Sie einen ukrainischen Veranstaltungstitel ein.",
-    en: "Please add the Ukrainian event title.",
-  },
-  uploadError: {
-    ua: "Не вдалося завантажити зображення.",
-    de: "Das Bild konnte nicht hochgeladen werden.",
-    en: "The image could not be uploaded.",
-  },
-  saveError: {
-    ua: "Не вдалося зберегти подію.",
-    de: "Die Veranstaltung konnte nicht gespeichert werden.",
-    en: "The event could not be saved.",
-  },
-  deleteError: {
-    ua: "Не вдалося видалити подію.",
-    de: "Die Veranstaltung konnte nicht gelöscht werden.",
-    en: "The event could not be deleted.",
-  },
-};
-
 export const AddEventModal = ({
   isOpen,
   onClose,
@@ -187,18 +80,17 @@ export const AddEventModal = ({
   onDelete,
   eventToEdit,
 }: AddEventModalProps) => {
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
+  const tr = (key: string) => t(`admin.eventModal.${key}`);
   const titleId = useId();
   const [activeLang, setActiveLang] = useState<LangKey>("ua");
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [formData, setFormData] = useState<Event>(() => createFormData(eventToEdit));
+  const [formData, setFormData] = useState<Event>(() =>
+    createFormData(eventToEdit),
+  );
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split("-")[0];
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
 
   const isBusy = isUploading || isSubmitting || isDeleting;
 
@@ -248,14 +140,18 @@ export const AddEventModal = ({
     setIsUploading(true);
 
     try {
-      const result = await uploadMedia(file, "banners", formData.titles.ua.trim() || "event");
+      const result = await uploadMedia(
+        file,
+        "banners",
+        formData.titles.ua.trim() || "event",
+      );
       setFormData((currentData) => ({
         ...currentData,
         imageBanner: result.url,
       }));
     } catch (error) {
       console.error("Event banner upload error:", error);
-      toast.error(EVENT_MODAL_TEXT.uploadError[currentLang]);
+      toast.error(tr("uploadError"));
     } finally {
       setIsUploading(false);
       event.target.value = "";
@@ -268,7 +164,7 @@ export const AddEventModal = ({
 
     if (!formData.titles.ua.trim()) {
       setActiveLang("ua");
-      toast.error(EVENT_MODAL_TEXT.titleRequired[currentLang]);
+      toast.error(tr("titleRequired"));
       return;
     }
 
@@ -278,7 +174,7 @@ export const AddEventModal = ({
       await onSave(formData);
     } catch (error) {
       console.error("Event form submission error:", error);
-      toast.error(EVENT_MODAL_TEXT.saveError[currentLang]);
+      toast.error(tr("saveError"));
     } finally {
       setIsSubmitting(false);
     }
@@ -293,19 +189,20 @@ export const AddEventModal = ({
       await onDelete(eventToEdit.id);
     } catch (error) {
       console.error("Event form deletion error:", error);
-      toast.error(EVENT_MODAL_TEXT.deleteError[currentLang]);
+      toast.error(tr("deleteError"));
     } finally {
       setIsDeleting(false);
     }
   };
 
-  const isLanguageFilled = (language: LangKey) => formData.titles[language].trim().length > 2;
+  const isLanguageFilled = (language: LangKey) =>
+    formData.titles[language].trim().length > 2;
 
   if (!isOpen) return null;
 
   const modalTitle = eventToEdit
-    ? EVENT_MODAL_TEXT.editTitle[currentLang]
-    : EVENT_MODAL_TEXT.createTitle[currentLang];
+    ? tr("editTitle")
+    : tr("createTitle");
 
   return (
     <div
@@ -321,40 +218,51 @@ export const AddEventModal = ({
       />
 
       <div className="animate-in zoom-in-95 font-nunito relative flex max-h-[calc(100dvh-2rem)] w-full max-w-3xl flex-col overflow-hidden rounded-4xl border border-slate-200 bg-white shadow-[0_28px_90px_rgba(15,23,42,0.3)] duration-200">
-        <header className="flex shrink-0 items-start justify-between gap-5 border-b border-slate-100 px-6 py-5 md:px-8 md:py-6">
-          <div className="min-w-0">
-            <h2
-              id={titleId}
-              className="text-xl font-semibold tracking-tight text-slate-950 md:text-2xl"
-            >
-              {modalTitle}
-            </h2>
-            <p className="mt-1 text-[11px] font-black tracking-[0.2em] text-blue-700 uppercase">
-              Berehynja Admin
-            </p>
+        <header className="flex shrink-0 items-center justify-between gap-4 bg-linear-to-br from-blue-600 to-blue-900 px-5 py-5 text-white md:px-8 md:py-6">
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-yellow-300 shadow-inner backdrop-blur-md">
+              <Calendar size={24} aria-hidden="true" />
+            </div>
+
+            <div className="min-w-0">
+              <p className="mb-1 text-xs font-semibold tracking-[0.18em] text-blue-100 uppercase">
+                Berehynja Admin
+              </p>
+              <h2
+                id={titleId}
+                className="truncate text-xl font-semibold tracking-tight text-white md:text-2xl"
+              >
+                {modalTitle}
+              </h2>
+            </div>
           </div>
 
           <button
             type="button"
             onClick={handleClose}
             disabled={isBusy}
-            aria-label={EVENT_MODAL_TEXT.close[currentLang]}
-            title={EVENT_MODAL_TEXT.close[currentLang]}
-            className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 shadow-sm transition-all hover:border-blue-300 hover:text-blue-700 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label={tr("close")}
+            title={tr("close")}
+            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-white/15 bg-black/10 text-white shadow-sm backdrop-blur-md transition hover:bg-black/20 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             <X size={22} aria-hidden="true" />
           </button>
         </header>
 
         <form
+          id="event-form"
           onSubmit={handleSubmit}
-          className="flex flex-1 flex-col gap-6 overflow-y-auto p-6 md:p-8"
+          className="flex flex-1 flex-col gap-6 overflow-y-auto bg-slate-50/60 p-5 md:p-8"
         >
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <label className="flex flex-col gap-2">
-              <span className="ml-1 flex items-center gap-2 text-[11px] font-black tracking-wider text-slate-600 uppercase">
-                <Calendar size={15} className="text-blue-600" aria-hidden="true" />
-                {EVENT_MODAL_TEXT.date[currentLang]}
+              <span className="ml-1 flex items-center gap-2 text-sm font-semibold text-slate-700">
+                <Calendar
+                  size={15}
+                  className="text-blue-600"
+                  aria-hidden="true"
+                />
+                {tr("date")}
               </span>
               <input
                 name="date"
@@ -367,16 +275,18 @@ export const AddEventModal = ({
                   }))
                 }
                 required
-                className={`w-full rounded-xl border-2 border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold shadow-sm transition-all outline-none focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100 ${
-                  formData.date ? "text-slate-950" : "text-slate-400"
-                }`}
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base font-medium text-slate-950 shadow-sm outline-none transition-all focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
               />
             </label>
 
             <label className="flex flex-col gap-2">
-              <span className="ml-1 flex items-center gap-2 text-[11px] font-black tracking-wider text-slate-600 uppercase">
-                <Clock size={15} className="text-purple-600" aria-hidden="true" />
-                {EVENT_MODAL_TEXT.time[currentLang]}
+              <span className="ml-1 flex items-center gap-2 text-sm font-semibold text-slate-700">
+                <Clock
+                  size={15}
+                  className="text-purple-600"
+                  aria-hidden="true"
+                />
+                {tr("time")}
               </span>
               <input
                 name="time"
@@ -388,14 +298,14 @@ export const AddEventModal = ({
                     time: event.target.value,
                   }))
                 }
-                className="w-full rounded-xl border-2 border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base font-medium text-slate-950 shadow-sm outline-none transition-all placeholder:text-slate-500 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
               />
             </label>
 
             <label className="flex flex-col gap-2">
-              <span className="ml-1 flex items-center gap-2 text-[11px] font-black tracking-wider text-slate-600 uppercase">
+              <span className="ml-1 flex items-center gap-2 text-sm font-semibold text-slate-700">
                 <MapPin size={15} className="text-red-600" aria-hidden="true" />
-                {EVENT_MODAL_TEXT.location[currentLang]}
+                {tr("location")}
               </span>
               <input
                 name="location"
@@ -407,7 +317,7 @@ export const AddEventModal = ({
                     location: event.target.value,
                   }))
                 }
-                className="w-full rounded-xl border-2 border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base font-medium text-slate-950 shadow-sm outline-none transition-all placeholder:text-slate-500 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
               />
             </label>
           </div>
@@ -424,7 +334,7 @@ export const AddEventModal = ({
                 role="tab"
                 aria-selected={activeLang === language}
                 onClick={() => setActiveLang(language)}
-                className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-bold uppercase transition-all ${
+                className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold uppercase transition-all ${
                   activeLang === language
                     ? "bg-white text-blue-700 shadow-sm"
                     : "text-slate-600 hover:text-slate-950"
@@ -432,7 +342,11 @@ export const AddEventModal = ({
               >
                 {language}
                 {isLanguageFilled(language) && (
-                  <CheckCircle2 size={14} className="text-emerald-600" aria-hidden="true" />
+                  <CheckCircle2
+                    size={14}
+                    className="text-emerald-600"
+                    aria-hidden="true"
+                  />
                 )}
               </button>
             ))}
@@ -440,34 +354,40 @@ export const AddEventModal = ({
 
           <div className="flex flex-col gap-4">
             <label className="flex flex-col gap-2">
-              <span className="ml-1 text-[11px] font-black tracking-wider text-slate-600 uppercase">
-                {EVENT_MODAL_TEXT.eventTitle[currentLang]} ({activeLang})
+              <span className="ml-1 text-sm font-semibold text-slate-700">
+                {tr("eventTitle")} ({activeLang})
               </span>
               <input
                 value={formData.titles[activeLang]}
-                onChange={(event) => handleLocalizedChange("titles", event.target.value)}
-                placeholder={EVENT_MODAL_TEXT.titlePlaceholder[currentLang]}
-                className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-lg font-bold text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-400 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                onChange={(event) =>
+                  handleLocalizedChange("titles", event.target.value)
+                }
+                placeholder={tr("titlePlaceholder")}
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base font-medium text-slate-950 shadow-sm outline-none transition-all placeholder:text-slate-400 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
               />
             </label>
 
             <label className="flex flex-col gap-2">
-              <span className="ml-1 text-[11px] font-black tracking-wider text-slate-600 uppercase">
-                {EVENT_MODAL_TEXT.description[currentLang]} ({activeLang})
+              <span className="ml-1 text-sm font-semibold text-slate-700">
+                {tr("description")} ({activeLang})
               </span>
               <textarea
                 rows={4}
                 value={formData.descriptions[activeLang]}
-                onChange={(event) => handleLocalizedChange("descriptions", event.target.value)}
-                placeholder={EVENT_MODAL_TEXT.descriptionPlaceholder[currentLang]}
-                className="w-full resize-y rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-sm leading-7 font-medium text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-400 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                onChange={(event) =>
+                  handleLocalizedChange("descriptions", event.target.value)
+                }
+                placeholder={
+                  tr("descriptionPlaceholder")
+                }
+                className="w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base leading-7 font-medium text-slate-950 shadow-sm outline-none transition-all placeholder:text-slate-400 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
               />
             </label>
           </div>
 
           <div className="flex flex-col gap-2">
-            <span className="ml-1 text-[11px] font-black tracking-wider text-slate-600 uppercase">
-              {EVENT_MODAL_TEXT.mainImage[currentLang]}
+            <span className="ml-1 text-sm font-semibold text-slate-700">
+              {tr("mainImage")}
             </span>
 
             {formData.imageBanner ? (
@@ -479,10 +399,10 @@ export const AddEventModal = ({
                 />
 
                 <div className="absolute inset-x-0 bottom-0 flex items-center justify-end gap-2 bg-linear-to-t from-slate-950/80 to-transparent p-4 pt-10">
-                  <label className="cursor-pointer rounded-xl bg-white px-4 py-2 text-xs font-bold text-slate-950 shadow-sm transition-colors hover:bg-blue-50">
+                  <label className="cursor-pointer rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-950 shadow-sm transition-colors hover:bg-blue-50">
                     {isUploading
-                      ? EVENT_MODAL_TEXT.uploading[currentLang]
-                      : EVENT_MODAL_TEXT.changeImage[currentLang]}
+                      ? tr("uploading")
+                      : tr("changeImage")}
                     <input
                       type="file"
                       accept="image/*"
@@ -501,9 +421,9 @@ export const AddEventModal = ({
                       }))
                     }
                     disabled={isBusy}
-                    className="cursor-pointer rounded-xl bg-red-600 px-4 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="cursor-pointer rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    {EVENT_MODAL_TEXT.removeImage[currentLang]}
+                    {tr("removeImage")}
                   </button>
                 </div>
               </div>
@@ -511,15 +431,19 @@ export const AddEventModal = ({
               <label className="group flex h-32 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 text-slate-600 transition-all hover:border-blue-500 hover:bg-blue-50 hover:text-blue-700">
                 <span className="flex size-11 items-center justify-center rounded-xl bg-white text-blue-600 shadow-sm transition-transform group-hover:scale-110">
                   {isUploading ? (
-                    <Loader2 size={21} className="animate-spin" aria-hidden="true" />
+                    <Loader2
+                      size={21}
+                      className="animate-spin"
+                      aria-hidden="true"
+                    />
                   ) : (
                     <Plus size={22} aria-hidden="true" />
                   )}
                 </span>
-                <span className="text-xs font-black tracking-widest uppercase">
+                <span className="text-sm font-semibold">
                   {isUploading
-                    ? EVENT_MODAL_TEXT.uploading[currentLang]
-                    : EVENT_MODAL_TEXT.addImage[currentLang]}
+                    ? tr("uploading")
+                    : tr("addImage")}
                 </span>
                 <input
                   type="file"
@@ -532,21 +456,27 @@ export const AddEventModal = ({
             )}
           </div>
 
-          <footer className="mt-2 flex flex-col gap-4 border-t border-slate-100 pt-6 md:flex-row md:items-center md:justify-between">
+        </form>
+
+        <footer className="flex shrink-0 flex-col gap-3 border-t border-slate-200 bg-slate-50 px-5 py-4 md:flex-row md:items-center md:justify-between md:px-8">
             <div>
               {eventToEdit?.id && onDelete && (
                 <button
                   type="button"
                   onClick={() => void handleDelete()}
                   disabled={isBusy}
-                  className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-3 text-xs font-bold tracking-widest text-red-600 uppercase transition-colors hover:bg-red-50 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
+                  className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
                 >
                   {isDeleting ? (
-                    <Loader2 size={17} className="animate-spin" aria-hidden="true" />
+                    <Loader2
+                      size={17}
+                      className="animate-spin"
+                      aria-hidden="true"
+                    />
                   ) : (
                     <Trash2 size={17} aria-hidden="true" />
                   )}
-                  {EVENT_MODAL_TEXT.deleteEvent[currentLang]}
+                  {tr("deleteEvent")}
                 </button>
               )}
             </div>
@@ -556,30 +486,34 @@ export const AddEventModal = ({
                 type="button"
                 onClick={handleClose}
                 disabled={isBusy}
-                className="cursor-pointer rounded-xl px-6 py-3 text-xs font-bold tracking-widest text-slate-600 uppercase transition-all hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+                className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition-all hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {EVENT_MODAL_TEXT.cancel[currentLang]}
+                {tr("cancel")}
               </button>
 
               <button
                 type="submit"
+                form="event-form"
                 disabled={isBusy}
-                className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-blue-600 px-8 py-3 text-xs font-bold tracking-widest text-white uppercase shadow-lg shadow-blue-200 transition-all hover:bg-blue-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
+                className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition-all hover:bg-blue-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 size={16} className="animate-spin" aria-hidden="true" />
-                    {EVENT_MODAL_TEXT.saving[currentLang]}
+                    <Loader2
+                      size={16}
+                      className="animate-spin"
+                      aria-hidden="true"
+                    />
+                    {tr("saving")}
                   </>
                 ) : eventToEdit ? (
-                  EVENT_MODAL_TEXT.saveChanges[currentLang]
+                  tr("saveChanges")
                 ) : (
-                  EVENT_MODAL_TEXT.publish[currentLang]
+                  tr("publish")
                 )}
               </button>
             </div>
-          </footer>
-        </form>
+        </footer>
       </div>
     </div>
   );

@@ -45,159 +45,6 @@ const LANGUAGES: Array<{ key: LangKey; label: string }> = [
   { key: "en", label: "EN" },
 ];
 
-const TEXT = {
-  ua: {
-    admin: "Berehynja Admin",
-    createTitle: "Новий член команди",
-    editTitle: "Редагування профілю",
-    close: "Закрити",
-    language: "Мова заповнення",
-    photo: "Фото профілю",
-    choosePhoto: "Вибрати фото",
-    changePhoto: "Замінити",
-    removePhoto: "Прибрати",
-    usePlaceholder: "Використати заглушку",
-    cropTitle: "Налаштування фото",
-    cropHint: "Перемістіть фото та відрегулюйте масштаб",
-    zoom: "Масштаб",
-    apply: "Застосувати",
-    uploading: "Завантаження...",
-    invalidImage: "Оберіть коректний файл зображення.",
-    imageTooLarge: "Розмір зображення не повинен перевищувати 12 МБ.",
-    uploadSuccess: "Фото завантажено.",
-    uploadError: "Не вдалося обробити або завантажити фото.",
-    name: "Ім’я та прізвище",
-    namePlaceholder: "Введіть ім’я та прізвище",
-    role: "Посада",
-    rolePlaceholder: "Введіть посаду",
-    education: "Освіта",
-    educationPlaceholder: "Навчальний заклад, спеціальність...",
-    skills: "Професійні навички",
-    skillPlaceholder: "Наприклад, фандрейзинг",
-    addSkill: "Додати навичку",
-    removeSkill: "Видалити навичку",
-    skillLimit: "Максимум 6 навичок для кожної мови",
-    description: "Досвід та експертиза",
-    descriptionPlaceholder: "Коротко опишіть досвід та експертизу...",
-    required: "обов’язково",
-    cancel: "Скасувати",
-    create: "Додати до команди",
-    save: "Зберегти зміни",
-    saving: "Збереження...",
-    validation: "Заповніть ім’я та посаду українською мовою.",
-    saved: "Профіль збережено.",
-    saveError: "Не вдалося зберегти профіль.",
-    delete: "Видалити профіль",
-    deleteTitle: "Видалити профіль?",
-    deleteMessage:
-      "Цю дію неможливо скасувати. Профіль буде видалено назавжди.",
-    confirmDelete: "Так, видалити",
-    deleting: "Видалення...",
-    deleted: "Профіль видалено.",
-    deleteError: "Не вдалося видалити профіль.",
-  },
-  de: {
-    admin: "Berehynja Admin",
-    createTitle: "Neues Teammitglied",
-    editTitle: "Profil bearbeiten",
-    close: "Schließen",
-    language: "Eingabesprache",
-    photo: "Profilfoto",
-    choosePhoto: "Foto auswählen",
-    changePhoto: "Ersetzen",
-    removePhoto: "Entfernen",
-    usePlaceholder: "Platzhalter verwenden",
-    cropTitle: "Foto anpassen",
-    cropHint: "Verschieben Sie das Foto und passen Sie den Zoom an.",
-    zoom: "Zoom",
-    apply: "Übernehmen",
-    uploading: "Wird hochgeladen...",
-    invalidImage: "Wählen Sie eine gültige Bilddatei aus.",
-    imageTooLarge: "Das Bild darf nicht größer als 12 MB sein.",
-    uploadSuccess: "Das Foto wurde hochgeladen.",
-    uploadError: "Das Foto konnte nicht verarbeitet oder hochgeladen werden.",
-    name: "Vor- und Nachname",
-    namePlaceholder: "Vor- und Nachnamen eingeben",
-    role: "Position",
-    rolePlaceholder: "Position eingeben",
-    education: "Ausbildung",
-    educationPlaceholder: "Bildungseinrichtung, Fachrichtung...",
-    skills: "Berufliche Fähigkeiten",
-    skillPlaceholder: "Zum Beispiel Fundraising",
-    addSkill: "Fähigkeit hinzufügen",
-    removeSkill: "Fähigkeit entfernen",
-    skillLimit: "Maximal 6 Fähigkeiten pro Sprache",
-    description: "Erfahrung und Expertise",
-    descriptionPlaceholder: "Beschreiben Sie kurz Erfahrung und Expertise...",
-    required: "erforderlich",
-    cancel: "Abbrechen",
-    create: "Zum Team hinzufügen",
-    save: "Änderungen speichern",
-    saving: "Wird gespeichert...",
-    validation: "Füllen Sie Name und Position auf Ukrainisch aus.",
-    saved: "Das Profil wurde gespeichert.",
-    saveError: "Das Profil konnte nicht gespeichert werden.",
-    delete: "Profil löschen",
-    deleteTitle: "Profil löschen?",
-    deleteMessage:
-      "Diese Aktion kann nicht rückgängig gemacht werden. Das Profil wird dauerhaft gelöscht.",
-    confirmDelete: "Ja, löschen",
-    deleting: "Wird gelöscht...",
-    deleted: "Das Profil wurde gelöscht.",
-    deleteError: "Das Profil konnte nicht gelöscht werden.",
-  },
-  en: {
-    admin: "Berehynja Admin",
-    createTitle: "New team member",
-    editTitle: "Edit profile",
-    close: "Close",
-    language: "Content language",
-    photo: "Profile photo",
-    choosePhoto: "Choose photo",
-    changePhoto: "Replace",
-    removePhoto: "Remove",
-    usePlaceholder: "Use placeholder",
-    cropTitle: "Adjust photo",
-    cropHint: "Move the photo and adjust the zoom.",
-    zoom: "Zoom",
-    apply: "Apply",
-    uploading: "Uploading...",
-    invalidImage: "Choose a valid image file.",
-    imageTooLarge: "The image must not exceed 12 MB.",
-    uploadSuccess: "The photo has been uploaded.",
-    uploadError: "The photo could not be processed or uploaded.",
-    name: "Full name",
-    namePlaceholder: "Enter the full name",
-    role: "Position",
-    rolePlaceholder: "Enter the position",
-    education: "Education",
-    educationPlaceholder: "Institution, qualification...",
-    skills: "Professional skills",
-    skillPlaceholder: "For example, fundraising",
-    addSkill: "Add skill",
-    removeSkill: "Remove skill",
-    skillLimit: "Maximum 6 skills for each language",
-    description: "Experience and expertise",
-    descriptionPlaceholder: "Briefly describe experience and expertise...",
-    required: "required",
-    cancel: "Cancel",
-    create: "Add to team",
-    save: "Save changes",
-    saving: "Saving...",
-    validation: "Enter the Ukrainian name and position.",
-    saved: "The profile has been saved.",
-    saveError: "The profile could not be saved.",
-    delete: "Delete profile",
-    deleteTitle: "Delete profile?",
-    deleteMessage:
-      "This action cannot be undone. The profile will be permanently deleted.",
-    confirmDelete: "Yes, delete",
-    deleting: "Deleting...",
-    deleted: "The profile has been deleted.",
-    deleteError: "The profile could not be deleted.",
-  },
-} as const;
-
 const MAX_FILE_SIZE = 12 * 1024 * 1024;
 
 const emptyMember = (): TeamMember => ({
@@ -234,18 +81,12 @@ export const AddTeamMemberModal = ({
   onDelete,
   memberToEdit,
 }: AddTeamMemberModalProps) => {
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
+  const tr = (key: string) => t(`admin.teamMemberModal.${key}`);
   const modalTitleId = useId();
   const fileInputId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
-    .split("-")[0]
-    .toLowerCase();
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
-  const text = TEXT[currentLang];
 
   const [activeLang, setActiveLang] = useState<LangKey>("ua");
   const [formData, setFormData] = useState<TeamMember>(() =>
@@ -374,13 +215,13 @@ export const AddTeamMemberModal = ({
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      toast.error(text.invalidImage);
+      toast.error(tr("invalidImage"));
       event.target.value = "";
       return;
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      toast.error(text.imageTooLarge);
+      toast.error(tr("imageTooLarge"));
       event.target.value = "";
       return;
     }
@@ -411,10 +252,10 @@ export const AddTeamMemberModal = ({
 
       setFormData((previous) => ({ ...previous, image: result.url }));
       closeCropper();
-      toast.success(text.uploadSuccess);
+      toast.success(tr("uploadSuccess"));
     } catch (error) {
       console.error("Team photo crop or upload error:", error);
-      toast.error(text.uploadError);
+      toast.error(tr("uploadError"));
     } finally {
       setIsUploading(false);
     }
@@ -426,7 +267,7 @@ export const AddTeamMemberModal = ({
 
     if (!formData.name.ua.trim() || !formData.role.ua.trim()) {
       setActiveLang("ua");
-      toast.error(text.validation);
+      toast.error(tr("validation"));
       return;
     }
 
@@ -463,11 +304,11 @@ export const AddTeamMemberModal = ({
 
     try {
       await onSave(cleanedMember);
-      toast.success(text.saved);
+      toast.success(tr("saved"));
       onClose();
     } catch (error) {
       console.error("Team member save error:", error);
-      toast.error(text.saveError);
+      toast.error(tr("saveError"));
     } finally {
       setIsSaving(false);
     }
@@ -480,12 +321,12 @@ export const AddTeamMemberModal = ({
 
     try {
       await onDelete(memberToEdit.id);
-      toast.success(text.deleted);
+      toast.success(tr("deleted"));
       setIsDeleteModalOpen(false);
       onClose();
     } catch (error) {
       console.error("Team member delete error:", error);
-      toast.error(text.deleteError);
+      toast.error(tr("deleteError"));
     } finally {
       setIsDeleting(false);
     }
@@ -500,7 +341,7 @@ export const AddTeamMemberModal = ({
     <div className="font-nunito fixed inset-0 z-9999 flex items-center justify-center p-4 md:p-6">
       <button
         type="button"
-        aria-label={text.close}
+        aria-label={tr("close")}
         onClick={handleClose}
         className="absolute inset-0 cursor-default bg-slate-950/65 backdrop-blur-sm"
       />
@@ -511,40 +352,47 @@ export const AddTeamMemberModal = ({
         aria-labelledby={modalTitleId}
         className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-4xl flex-col overflow-hidden rounded-4xl border border-white/70 bg-white shadow-[0_32px_90px_rgba(15,23,42,0.35)]"
       >
-        <header className="flex shrink-0 items-center justify-between gap-4 border-b border-slate-200 px-5 py-4 md:px-8 md:py-5">
-          <div className="min-w-0">
-            <p className="mb-1 text-[11px] font-black tracking-[0.2em] text-blue-600 uppercase">
-              {text.admin}
-            </p>
-            <h2
-              id={modalTitleId}
-              className="truncate text-xl font-semibold tracking-tight text-slate-950 md:text-2xl"
-            >
-              {memberToEdit ? text.editTitle : text.createTitle}
-            </h2>
+        <header className="flex shrink-0 items-center justify-between gap-4 bg-linear-to-br from-blue-600 to-blue-900 px-5 py-5 text-white md:px-8 md:py-6">
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-yellow-300 shadow-inner backdrop-blur-md">
+              <User size={25} aria-hidden="true" />
+            </div>
+
+            <div className="min-w-0">
+              <p className="mb-1 text-xs font-semibold tracking-[0.18em] text-blue-100 uppercase">
+                {tr("admin")}
+              </p>
+              <h2
+                id={modalTitleId}
+                className="truncate text-xl font-semibold tracking-tight text-white md:text-2xl"
+              >
+                {memberToEdit ? tr("editTitle") : tr("createTitle")}
+              </h2>
+            </div>
           </div>
 
           <button
             type="button"
             onClick={handleClose}
             disabled={isBusy}
-            aria-label={text.close}
-            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label={tr("close")}
+            title={tr("close")}
+            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-white/15 bg-black/10 text-white shadow-sm backdrop-blur-md transition hover:bg-black/20 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            <X size={21} />
+            <X size={21} aria-hidden="true" />
           </button>
         </header>
 
         <form
           id="team-member-form"
           onSubmit={handleSubmit}
-          className="overflow-y-auto px-5 py-6 md:px-8 md:py-7"
+          className="overflow-y-auto bg-slate-50/60 px-5 py-6 md:px-8 md:py-7"
         >
           <div className="space-y-7">
             <div className="grid gap-6 border-b border-slate-200 pb-7 md:grid-cols-[220px_1fr] md:items-start">
               <section>
-                <h3 className="mb-3 text-sm font-extrabold text-slate-800">
-                  {text.photo}
+                <h3 className="mb-3 text-sm font-semibold text-slate-800">
+                  {tr("photo")}
                 </h3>
 
                 <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-50">
@@ -562,7 +410,7 @@ export const AddTeamMemberModal = ({
                         ) : (
                           <Camera size={34} strokeWidth={1.5} />
                         )}
-                        <span className="text-xs font-bold">{text.photo}</span>
+                        <span className="text-xs font-bold">{tr("photo")}</span>
                       </div>
                     )}
                   </div>
@@ -581,10 +429,10 @@ export const AddTeamMemberModal = ({
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
                       disabled={isBusy}
-                      className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-extrabold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       <Camera size={16} />
-                      {formData.image ? text.changePhoto : text.choosePhoto}
+                      {formData.image ? tr("changePhoto") : tr("choosePhoto")}
                     </button>
 
                     {formData.image ? (
@@ -597,10 +445,10 @@ export const AddTeamMemberModal = ({
                           }))
                         }
                         disabled={isBusy}
-                        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-extrabold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         <Trash2 size={16} />
-                        {text.removePhoto}
+                        {tr("removePhoto")}
                       </button>
                     ) : (
                       <button
@@ -611,10 +459,10 @@ export const AddTeamMemberModal = ({
                             image: "placeholder",
                           }))
                         }
-                        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-extrabold text-slate-600 transition hover:bg-slate-100"
+                        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-100"
                       >
                         <User size={16} />
-                        {text.usePlaceholder}
+                        {tr("usePlaceholder")}
                       </button>
                     )}
                   </div>
@@ -624,14 +472,14 @@ export const AddTeamMemberModal = ({
               <section aria-labelledby={`${modalTitleId}-language`}>
                 <p
                   id={`${modalTitleId}-language`}
-                  className="mb-3 text-xs font-black tracking-[0.15em] text-slate-500 uppercase"
+                  className="mb-3 text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
                 >
-                  {text.language}
+                  {tr("language")}
                 </p>
 
                 <div
                   role="tablist"
-                  aria-label={text.language}
+                  aria-label={tr("language")}
                   className="grid grid-cols-3 gap-1 rounded-2xl bg-slate-100 p-1.5"
                 >
                   {LANGUAGES.map(({ key, label }) => (
@@ -641,7 +489,7 @@ export const AddTeamMemberModal = ({
                       role="tab"
                       aria-selected={activeLang === key}
                       onClick={() => setActiveLang(key)}
-                      className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-extrabold transition ${
+                      className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-semibold transition ${
                         activeLang === key
                           ? "bg-white text-blue-700 shadow-sm"
                           : "text-slate-500 hover:text-slate-900"
@@ -661,12 +509,12 @@ export const AddTeamMemberModal = ({
 
                 <div className="mt-6 grid gap-5 md:grid-cols-2">
                   <label className="block">
-                    <span className="mb-2 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                    <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-800">
                       <User size={17} className="text-blue-600" />
-                      {text.name} ({activeLang.toUpperCase()})
+                      {tr("name")} ({activeLang.toUpperCase()})
                       {activeLang === "ua" && (
                         <span className="text-xs text-blue-600">
-                          {text.required}
+                          {tr("required")}
                         </span>
                       )}
                     </span>
@@ -676,18 +524,18 @@ export const AddTeamMemberModal = ({
                       onChange={(event) =>
                         handleTextChange("name", event.target.value)
                       }
-                      placeholder={text.namePlaceholder}
+                      placeholder={tr("namePlaceholder")}
                       className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
                     />
                   </label>
 
                   <label className="block">
-                    <span className="mb-2 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                    <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-800">
                       <Briefcase size={17} className="text-blue-600" />
-                      {text.role} ({activeLang.toUpperCase()})
+                      {tr("role")} ({activeLang.toUpperCase()})
                       {activeLang === "ua" && (
                         <span className="text-xs text-blue-600">
-                          {text.required}
+                          {tr("required")}
                         </span>
                       )}
                     </span>
@@ -697,7 +545,7 @@ export const AddTeamMemberModal = ({
                       onChange={(event) =>
                         handleTextChange("role", event.target.value)
                       }
-                      placeholder={text.rolePlaceholder}
+                      placeholder={tr("rolePlaceholder")}
                       className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
                     />
                   </label>
@@ -706,9 +554,9 @@ export const AddTeamMemberModal = ({
             </div>
 
             <label className="block">
-              <span className="mb-2 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+              <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-800">
                 <GraduationCap size={18} className="text-blue-600" />
-                {text.education} ({activeLang.toUpperCase()})
+                {tr("education")} ({activeLang.toUpperCase()})
               </span>
               <input
                 type="text"
@@ -716,7 +564,7 @@ export const AddTeamMemberModal = ({
                 onChange={(event) =>
                   handleTextChange("education", event.target.value)
                 }
-                placeholder={text.educationPlaceholder}
+                placeholder={tr("educationPlaceholder")}
                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
               />
             </label>
@@ -724,12 +572,12 @@ export const AddTeamMemberModal = ({
             <section className="rounded-3xl border border-slate-200 bg-slate-50 p-4 md:p-5">
               <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <h3 className="flex items-center gap-2 text-sm font-extrabold text-slate-800">
+                  <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-800">
                     <Wrench size={17} className="text-blue-600" />
-                    {text.skills} ({activeLang.toUpperCase()})
+                    {tr("skills")} ({activeLang.toUpperCase()})
                   </h3>
                   <p className="mt-1 text-xs text-slate-500">
-                    {text.skillLimit}
+                    {tr("skillLimit")}
                   </p>
                 </div>
 
@@ -737,10 +585,10 @@ export const AddTeamMemberModal = ({
                   type="button"
                   onClick={addSkill}
                   disabled={!canAddSkill}
-                  className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-blue-200 bg-white px-3 py-2 text-xs font-extrabold text-blue-700 transition hover:bg-blue-600 hover:text-white disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-400"
+                  className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-blue-200 bg-white px-3 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-600 hover:text-white disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-400"
                 >
                   <Plus size={15} />
-                  {text.addSkill}
+                  {tr("addSkill")}
                 </button>
               </div>
 
@@ -754,14 +602,14 @@ export const AddTeamMemberModal = ({
                         onChange={(event) =>
                           updateSkill(index, event.target.value)
                         }
-                        placeholder={text.skillPlaceholder}
+                        placeholder={tr("skillPlaceholder")}
                         className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                       />
                       <button
                         type="button"
                         onClick={() => removeSkill(index)}
-                        aria-label={text.removeSkill}
-                        title={text.removeSkill}
+                        aria-label={tr("removeSkill")}
+                        title={tr("removeSkill")}
                         className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-400 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600"
                       >
                         <Trash2 size={17} />
@@ -773,9 +621,9 @@ export const AddTeamMemberModal = ({
             </section>
 
             <label className="block">
-              <span className="mb-2 flex items-center gap-2 text-sm font-extrabold text-slate-800">
+              <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-800">
                 <Award size={18} className="text-amber-500" />
-                {text.description} ({activeLang.toUpperCase()})
+                {tr("description")} ({activeLang.toUpperCase()})
               </span>
               <textarea
                 rows={4}
@@ -783,7 +631,7 @@ export const AddTeamMemberModal = ({
                 onChange={(event) =>
                   handleTextChange("description", event.target.value)
                 }
-                placeholder={text.descriptionPlaceholder}
+                placeholder={tr("descriptionPlaceholder")}
                 className="w-full resize-y rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
               />
             </label>
@@ -797,10 +645,10 @@ export const AddTeamMemberModal = ({
                 type="button"
                 onClick={() => setIsDeleteModalOpen(true)}
                 disabled={isBusy}
-                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-extrabold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
+                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
               >
                 <Trash2 size={18} />
-                {text.delete}
+                {tr("delete")}
               </button>
             )}
           </div>
@@ -810,22 +658,22 @@ export const AddTeamMemberModal = ({
               type="button"
               onClick={handleClose}
               disabled={isBusy}
-              className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+              className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {text.cancel}
+              {tr("cancel")}
             </button>
             <button
               type="submit"
               form="team-member-form"
               disabled={isBusy}
-              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
+              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
             >
               {isSaving ? (
                 <Loader2 size={18} className="animate-spin" />
               ) : (
                 <Check size={18} />
               )}
-              {isSaving ? text.saving : memberToEdit ? text.save : text.create}
+              {isSaving ? tr("saving") : memberToEdit ? tr("save") : tr("create")}
             </button>
           </div>
         </footer>
@@ -839,24 +687,30 @@ export const AddTeamMemberModal = ({
             aria-labelledby={`${modalTitleId}-crop-title`}
             className="flex max-h-[calc(100dvh-2rem)] w-full max-w-xl flex-col overflow-hidden rounded-4xl border border-white/70 bg-white shadow-2xl"
           >
-            <header className="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-4 md:px-6">
-              <div>
-                <h3
-                  id={`${modalTitleId}-crop-title`}
-                  className="text-lg font-semibold tracking-tight text-slate-950 md:text-xl"
-                >
-                  {text.cropTitle}
-                </h3>
-                <p className="mt-1 text-sm text-slate-500">{text.cropHint}</p>
+            <header className="flex items-center justify-between gap-4 bg-linear-to-br from-blue-600 to-blue-900 px-5 py-5 text-white md:px-6">
+              <div className="flex min-w-0 items-center gap-4">
+                <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-yellow-300 shadow-inner backdrop-blur-md">
+                  <Camera size={22} aria-hidden="true" />
+                </div>
+                <div className="min-w-0">
+                  <h3
+                    id={`${modalTitleId}-crop-title`}
+                    className="text-lg font-semibold text-white"
+                  >
+                    {tr("cropTitle")}
+                  </h3>
+                  <p className="mt-1 text-sm text-blue-100">{tr("cropHint")}</p>
+                </div>
               </div>
               <button
                 type="button"
                 onClick={closeCropper}
                 disabled={isUploading}
-                aria-label={text.close}
-                className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+                aria-label={tr("close")}
+                title={tr("close")}
+                className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-white/15 bg-black/10 text-white backdrop-blur-md transition hover:bg-black/20 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <X size={19} />
+                <X size={19} aria-hidden="true" />
               </button>
             </header>
 
@@ -877,8 +731,8 @@ export const AddTeamMemberModal = ({
 
             <div className="space-y-4 px-5 py-4 md:px-6">
               <label className="block">
-                <span className="mb-2 block text-xs font-extrabold tracking-wide text-slate-600 uppercase">
-                  {text.zoom}
+                <span className="mb-2 block text-xs font-semibold tracking-wide text-slate-600 uppercase">
+                  {tr("zoom")}
                 </span>
                 <input
                   type="range"
@@ -896,22 +750,22 @@ export const AddTeamMemberModal = ({
                   type="button"
                   onClick={closeCropper}
                   disabled={isUploading}
-                  className="cursor-pointer rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="cursor-pointer rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {text.cancel}
+                  {tr("cancel")}
                 </button>
                 <button
                   type="button"
                   onClick={handleCropSave}
                   disabled={isUploading || !croppedAreaPixels}
-                  className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+                  className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400"
                 >
                   {isUploading ? (
                     <Loader2 size={18} className="animate-spin" />
                   ) : (
                     <Check size={18} />
                   )}
-                  {isUploading ? text.uploading : text.apply}
+                  {isUploading ? tr("uploading") : tr("apply")}
                 </button>
               </div>
             </div>
@@ -934,12 +788,12 @@ export const AddTeamMemberModal = ({
               <div>
                 <h3
                   id={`${modalTitleId}-delete-title`}
-                  className="text-lg font-semibold tracking-tight text-slate-950 md:text-xl"
+                  className="text-lg font-semibold text-slate-950"
                 >
-                  {text.deleteTitle}
+                  {tr("deleteTitle")}
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
-                  {text.deleteMessage}
+                  {tr("deleteMessage")}
                 </p>
               </div>
             </div>
@@ -949,18 +803,18 @@ export const AddTeamMemberModal = ({
                 type="button"
                 onClick={() => setIsDeleteModalOpen(false)}
                 disabled={isDeleting}
-                className="cursor-pointer rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+                className="cursor-pointer rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {text.cancel}
+                {tr("cancel")}
               </button>
               <button
                 type="button"
                 onClick={handleDelete}
                 disabled={isDeleting}
-                className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-extrabold text-white transition hover:bg-red-700 disabled:cursor-wait disabled:opacity-60"
+                className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-wait disabled:opacity-60"
               >
                 {isDeleting && <Loader2 size={17} className="animate-spin" />}
-                {isDeleting ? text.deleting : text.confirmDelete}
+                {isDeleting ? tr("deleting") : tr("confirmDelete")}
               </button>
             </div>
           </div>

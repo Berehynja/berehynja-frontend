@@ -53,129 +53,6 @@ const LANGUAGES: Array<{ key: LangKey; label: string }> = [
   { key: "en", label: "EN" },
 ];
 
-const TEXT = {
-  ua: {
-    admin: "Berehynja Admin",
-    createTitle: "Створення програми",
-    editTitle: "Редагування програми",
-    close: "Закрити",
-    contentLanguage: "Мова заповнення",
-    illustration: "Ілюстрація програми",
-    required: "обов’язково",
-    upload: "Вибрати зображення",
-    replace: "Замінити",
-    remove: "Прибрати",
-    uploading: "Завантаження...",
-    title: "Назва заняття",
-    titlePlaceholder: "Наприклад, малювання",
-    description: "Опис програми",
-    descriptionPlaceholder: "Коротко опишіть заняття...",
-    accent: "Колір акценту",
-    icon: "Іконка програми",
-    groups: "Цільові групи",
-    oneGroup: "виберіть щонайменше одну",
-    noGroups: "Вікові групи ще не додані.",
-    cancel: "Скасувати",
-    create: "Створити програму",
-    save: "Зберегти зміни",
-    saving: "Збереження...",
-    delete: "Видалити програму",
-    deleteTitle: "Видалити програму?",
-    deleteMessage:
-      "Цю дію неможливо скасувати. Програма буде видалена назавжди.",
-    deleting: "Видалення...",
-    confirmDelete: "Так, видалити",
-    uploaded: "Зображення завантажено.",
-    uploadError: "Не вдалося завантажити зображення.",
-    validation:
-      "Заповніть назву українською, додайте зображення та виберіть вікову групу.",
-    saved: "Програму збережено.",
-    saveError: "Не вдалося зберегти програму.",
-    deleted: "Програму видалено.",
-    deleteError: "Не вдалося видалити програму.",
-  },
-  de: {
-    admin: "Berehynja Admin",
-    createTitle: "Programm erstellen",
-    editTitle: "Programm bearbeiten",
-    close: "Schließen",
-    contentLanguage: "Eingabesprache",
-    illustration: "Programmbild",
-    required: "erforderlich",
-    upload: "Bild auswählen",
-    replace: "Ersetzen",
-    remove: "Entfernen",
-    uploading: "Wird hochgeladen...",
-    title: "Kurstitel",
-    titlePlaceholder: "Zum Beispiel Malen",
-    description: "Programmbeschreibung",
-    descriptionPlaceholder: "Beschreiben Sie den Kurs kurz...",
-    accent: "Akzentfarbe",
-    icon: "Programmsymbol",
-    groups: "Zielgruppen",
-    oneGroup: "mindestens eine auswählen",
-    noGroups: "Es wurden noch keine Altersgruppen hinzugefügt.",
-    cancel: "Abbrechen",
-    create: "Programm erstellen",
-    save: "Änderungen speichern",
-    saving: "Wird gespeichert...",
-    delete: "Programm löschen",
-    deleteTitle: "Programm löschen?",
-    deleteMessage:
-      "Diese Aktion kann nicht rückgängig gemacht werden. Das Programm wird dauerhaft gelöscht.",
-    deleting: "Wird gelöscht...",
-    confirmDelete: "Ja, löschen",
-    uploaded: "Das Bild wurde hochgeladen.",
-    uploadError: "Das Bild konnte nicht hochgeladen werden.",
-    validation:
-      "Füllen Sie den ukrainischen Titel aus, laden Sie ein Bild hoch und wählen Sie eine Altersgruppe.",
-    saved: "Das Programm wurde gespeichert.",
-    saveError: "Das Programm konnte nicht gespeichert werden.",
-    deleted: "Das Programm wurde gelöscht.",
-    deleteError: "Das Programm konnte nicht gelöscht werden.",
-  },
-  en: {
-    admin: "Berehynja Admin",
-    createTitle: "Create program",
-    editTitle: "Edit program",
-    close: "Close",
-    contentLanguage: "Content language",
-    illustration: "Program image",
-    required: "required",
-    upload: "Choose image",
-    replace: "Replace",
-    remove: "Remove",
-    uploading: "Uploading...",
-    title: "Lesson title",
-    titlePlaceholder: "For example, painting",
-    description: "Program description",
-    descriptionPlaceholder: "Briefly describe the lesson...",
-    accent: "Accent color",
-    icon: "Program icon",
-    groups: "Target groups",
-    oneGroup: "select at least one",
-    noGroups: "No age groups have been added yet.",
-    cancel: "Cancel",
-    create: "Create program",
-    save: "Save changes",
-    saving: "Saving...",
-    delete: "Delete program",
-    deleteTitle: "Delete program?",
-    deleteMessage:
-      "This action cannot be undone. The program will be permanently deleted.",
-    deleting: "Deleting...",
-    confirmDelete: "Yes, delete",
-    uploaded: "The image has been uploaded.",
-    uploadError: "The image could not be uploaded.",
-    validation:
-      "Enter the Ukrainian title, upload an image, and select an age group.",
-    saved: "The program has been saved.",
-    saveError: "The program could not be saved.",
-    deleted: "The program has been deleted.",
-    deleteError: "The program could not be deleted.",
-  },
-} as const;
-
 const EMPTY_LOCALIZED_TEXT: LocalizedText = { ua: "", de: "", en: "" };
 
 const normalizeLocalizedText = (value: unknown): LocalizedText => {
@@ -212,17 +89,11 @@ export function AddLessonModal({
   ageGroups,
   programToEdit,
 }: AddLessonModalProps) {
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
+  const tr = (key: string) => t(`admin.lessonModal.${key}`);
   const titleId = useId();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
-    .split("-")[0]
-    .toLowerCase();
-  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
-    ? (detectedLanguage as LangKey)
-    : "ua";
-  const text = TEXT[currentLang];
 
   const [activeLang, setActiveLang] = useState<LangKey>("ua");
   const [form, setForm] = useState<LessonFormState>(() =>
@@ -304,10 +175,10 @@ export function AddLessonModal({
       const result = await uploadMedia(file, "programs", folderName);
 
       setForm((previous) => ({ ...previous, image: result.url }));
-      toast.success(text.uploaded);
+      toast.success(tr("uploaded"));
     } catch (error) {
       console.error("Program image upload error:", error);
-      toast.error(text.uploadError);
+      toast.error(tr("uploadError"));
     } finally {
       setIsUploading(false);
       event.target.value = "";
@@ -320,7 +191,7 @@ export function AddLessonModal({
 
     if (!form.title.ua.trim() || !form.image || form.ageGroupIds.length === 0) {
       setActiveLang("ua");
-      toast.error(text.validation);
+      toast.error(tr("validation"));
       return;
     }
 
@@ -343,11 +214,11 @@ export function AddLessonModal({
         },
         programToEdit?.id,
       );
-      toast.success(text.saved);
+      toast.success(tr("saved"));
       onClose();
     } catch (error) {
       console.error("Program save error:", error);
-      toast.error(text.saveError);
+      toast.error(tr("saveError"));
     } finally {
       setIsSubmitting(false);
     }
@@ -360,12 +231,12 @@ export function AddLessonModal({
 
     try {
       await onDelete(programToEdit.id);
-      toast.success(text.deleted);
+      toast.success(tr("deleted"));
       setIsDeleteModalOpen(false);
       onClose();
     } catch (error) {
       console.error("Program delete error:", error);
-      toast.error(text.deleteError);
+      toast.error(tr("deleteError"));
     } finally {
       setIsDeleting(false);
     }
@@ -377,7 +248,7 @@ export function AddLessonModal({
     <div className="font-nunito fixed inset-0 z-9999 flex items-center justify-center p-4 md:p-6">
       <button
         type="button"
-        aria-label={text.close}
+        aria-label={tr("close")}
         onClick={handleClose}
         className="absolute inset-0 cursor-default bg-slate-950/65 backdrop-blur-sm"
       />
@@ -388,47 +259,54 @@ export function AddLessonModal({
         aria-labelledby={titleId}
         className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-3xl flex-col overflow-hidden rounded-4xl border border-white/70 bg-white shadow-[0_32px_90px_rgba(15,23,42,0.35)]"
       >
-        <header className="flex shrink-0 items-center justify-between gap-4 border-b border-slate-200 bg-white px-5 py-4 md:px-8 md:py-5">
-          <div className="min-w-0">
-            <p className="mb-1 text-[11px] font-black tracking-[0.2em] text-blue-600 uppercase">
-              {text.admin}
-            </p>
-            <h2
-              id={titleId}
-              className="text-lg font-semibold tracking-tight text-slate-950 md:text-xl"
-            >
-              {programToEdit ? text.editTitle : text.createTitle}
-            </h2>
+        <header className="flex shrink-0 items-center justify-between gap-4 bg-linear-to-br from-blue-600 to-blue-900 px-5 py-5 text-white md:px-8 md:py-6">
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-yellow-300 shadow-inner backdrop-blur-md">
+              <ImageIcon size={24} aria-hidden="true" />
+            </div>
+
+            <div className="min-w-0">
+              <p className="mb-1 text-xs font-semibold tracking-[0.18em] text-blue-100 uppercase">
+                {tr("admin")}
+              </p>
+              <h2
+                id={titleId}
+                className="truncate text-xl font-semibold tracking-tight text-white md:text-2xl"
+              >
+                {programToEdit ? tr("editTitle") : tr("createTitle")}
+              </h2>
+            </div>
           </div>
 
           <button
             type="button"
             onClick={handleClose}
             disabled={isBusy}
-            aria-label={text.close}
-            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label={tr("close")}
+            title={tr("close")}
+            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-white/15 bg-black/10 text-white shadow-sm backdrop-blur-md transition hover:bg-black/20 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            <X size={21} />
+            <X size={21} aria-hidden="true" />
           </button>
         </header>
 
         <form
           id="lesson-form"
           onSubmit={handleSubmit}
-          className="overflow-y-auto px-5 py-6 md:px-8 md:py-7"
+          className="overflow-y-auto bg-slate-50/60 px-5 py-6 md:px-8 md:py-7"
         >
           <div className="space-y-7">
             <section aria-labelledby={`${titleId}-language`}>
               <p
                 id={`${titleId}-language`}
-                className="mb-3 text-xs font-black tracking-[0.15em] text-slate-500 uppercase"
+                className="mb-3 text-sm font-semibold text-slate-700"
               >
-                {text.contentLanguage}
+                {tr("contentLanguage")}
               </p>
 
               <div
                 role="tablist"
-                aria-label={text.contentLanguage}
+                aria-label={tr("contentLanguage")}
                 className="grid grid-cols-3 gap-1 rounded-2xl bg-slate-100 p-1.5"
               >
                 {LANGUAGES.map(({ key, label }) => (
@@ -438,7 +316,7 @@ export function AddLessonModal({
                     role="tab"
                     aria-selected={activeLang === key}
                     onClick={() => setActiveLang(key)}
-                    className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-extrabold transition ${
+                    className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${
                       activeLang === key
                         ? "bg-white text-blue-700 shadow-sm"
                         : "text-slate-500 hover:text-slate-900"
@@ -455,17 +333,17 @@ export function AddLessonModal({
 
             <section>
               <div className="mb-3 flex flex-wrap items-baseline gap-2">
-                <h3 className="text-sm font-extrabold text-slate-800">
-                  {text.illustration}
+                <h3 className="text-sm font-semibold text-slate-800 md:text-base">
+                  {tr("illustration")}
                 </h3>
                 <span className="text-xs font-bold text-blue-600">
-                  {text.required}
+                  {tr("required")}
                 </span>
               </div>
 
               {form.image ? (
                 <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-100">
-                  <div className="aspect-16/7 overflow-hidden">
+                  <div className="aspect-[16/7] overflow-hidden">
                     <img
                       src={form.image}
                       alt=""
@@ -478,14 +356,14 @@ export function AddLessonModal({
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
                       disabled={isUploading}
-                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-extrabold text-slate-700 transition hover:bg-slate-50 disabled:cursor-wait disabled:opacity-60"
+                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-wait disabled:opacity-60"
                     >
                       {isUploading ? (
                         <Loader2 size={16} className="animate-spin" />
                       ) : (
                         <Upload size={16} />
                       )}
-                      {isUploading ? text.uploading : text.replace}
+                      {isUploading ? tr("uploading") : tr("replace")}
                     </button>
 
                     <button
@@ -494,10 +372,10 @@ export function AddLessonModal({
                         setForm((previous) => ({ ...previous, image: "" }))
                       }
                       disabled={isUploading}
-                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-xs font-extrabold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       <Trash2 size={16} />
-                      {text.remove}
+                      {tr("remove")}
                     </button>
                   </div>
                 </div>
@@ -515,8 +393,8 @@ export function AddLessonModal({
                       <ImageIcon size={24} />
                     )}
                   </span>
-                  <span className="text-sm font-extrabold text-slate-800">
-                    {isUploading ? text.uploading : text.upload}
+                  <span className="text-sm font-semibold text-slate-800 md:text-base">
+                    {isUploading ? tr("uploading") : tr("upload")}
                   </span>
                 </button>
               )}
@@ -532,11 +410,11 @@ export function AddLessonModal({
 
             <div className="grid gap-5 md:grid-cols-2">
               <label className="block md:col-span-2">
-                <span className="mb-2 block text-sm font-extrabold text-slate-800">
-                  {text.title} ({activeLang.toUpperCase()})
+                <span className="mb-2 block text-sm font-semibold text-slate-800 md:text-base">
+                  {tr("title")} ({activeLang.toUpperCase()})
                   {activeLang === "ua" && (
                     <span className="ml-2 text-xs text-blue-600">
-                      {text.required}
+                      {tr("required")}
                     </span>
                   )}
                 </span>
@@ -546,31 +424,31 @@ export function AddLessonModal({
                   onChange={(event) =>
                     updateLocalizedField("title", event.target.value)
                   }
-                  placeholder={text.titlePlaceholder}
+                  placeholder={tr("titlePlaceholder")}
                   required={activeLang === "ua"}
-                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                 />
               </label>
 
               <label className="block md:col-span-2">
-                <span className="mb-2 block text-sm font-extrabold text-slate-800">
-                  {text.description} ({activeLang.toUpperCase()})
+                <span className="mb-2 block text-sm font-semibold text-slate-800 md:text-base">
+                  {tr("description")} ({activeLang.toUpperCase()})
                 </span>
                 <textarea
                   value={form.description[activeLang]}
                   onChange={(event) =>
                     updateLocalizedField("description", event.target.value)
                   }
-                  placeholder={text.descriptionPlaceholder}
+                  placeholder={tr("descriptionPlaceholder")}
                   rows={4}
-                  className="w-full resize-y rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+                  className="w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                 />
               </label>
             </div>
 
             <section>
-              <h3 className="mb-3 text-sm font-extrabold text-slate-800">
-                {text.accent}
+              <h3 className="mb-3 text-sm font-semibold text-slate-800 md:text-base">
+                {tr("accent")}
               </h3>
               <div className="flex flex-wrap gap-2.5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
                 {Object.entries(COLORS).map(([name, hex]) => {
@@ -606,8 +484,8 @@ export function AddLessonModal({
             </section>
 
             <section>
-              <h3 className="mb-3 text-sm font-extrabold text-slate-800">
-                {text.icon}
+              <h3 className="mb-3 text-sm font-semibold text-slate-800 md:text-base">
+                {tr("icon")}
               </h3>
               <div className="grid grid-cols-5 gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-3 md:grid-cols-8">
                 {Object.entries(AVAILABLE_ICONS).map(([name, Icon]) => {
@@ -641,11 +519,11 @@ export function AddLessonModal({
 
             <section>
               <div className="mb-3 flex flex-wrap items-baseline gap-2">
-                <h3 className="text-sm font-extrabold text-slate-800">
-                  {text.groups}
+                <h3 className="text-sm font-semibold text-slate-800 md:text-base">
+                  {tr("groups")}
                 </h3>
                 <span className="text-xs font-bold text-blue-600">
-                  {text.oneGroup}
+                  {tr("oneGroup")}
                 </span>
               </div>
 
@@ -676,7 +554,7 @@ export function AddLessonModal({
                 </div>
               ) : (
                 <p className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 py-5 text-center text-sm text-slate-500">
-                  {text.noGroups}
+                  {tr("noGroups")}
                 </p>
               )}
             </section>
@@ -690,10 +568,10 @@ export function AddLessonModal({
                 type="button"
                 onClick={() => setIsDeleteModalOpen(true)}
                 disabled={isBusy}
-                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-extrabold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
+                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
               >
                 <Trash2 size={18} />
-                {text.delete}
+                {tr("delete")}
               </button>
             )}
           </div>
@@ -703,22 +581,22 @@ export function AddLessonModal({
               type="button"
               onClick={handleClose}
               disabled={isBusy}
-              className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+              className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {text.cancel}
+              {tr("cancel")}
             </button>
             <button
               type="submit"
               form="lesson-form"
               disabled={isBusy}
-              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
+              className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:shadow-none"
             >
               {isSubmitting && <Loader2 size={18} className="animate-spin" />}
               {isSubmitting
-                ? text.saving
+                ? tr("saving")
                 : programToEdit
-                  ? text.save
-                  : text.create}
+                  ? tr("save")
+                  : tr("create")}
             </button>
           </div>
         </footer>
@@ -739,12 +617,12 @@ export function AddLessonModal({
               <div>
                 <h3
                   id={`${titleId}-delete-title`}
-                  className="text-lg font-extrabold text-slate-950"
+                  className="text-lg font-semibold text-slate-950"
                 >
-                  {text.deleteTitle}
+                  {tr("deleteTitle")}
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
-                  {text.deleteMessage}
+                  {tr("deleteMessage")}
                 </p>
               </div>
             </div>
@@ -754,18 +632,18 @@ export function AddLessonModal({
                 type="button"
                 onClick={() => setIsDeleteModalOpen(false)}
                 disabled={isDeleting}
-                className="cursor-pointer rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-extrabold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+                className="cursor-pointer rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {text.cancel}
+                {tr("cancel")}
               </button>
               <button
                 type="button"
                 onClick={handleDelete}
                 disabled={isDeleting}
-                className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-extrabold text-white transition hover:bg-red-700 disabled:cursor-wait disabled:opacity-60"
+                className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-wait disabled:opacity-60"
               >
                 {isDeleting && <Loader2 size={17} className="animate-spin" />}
-                {isDeleting ? text.deleting : text.confirmDelete}
+                {isDeleting ? tr("deleting") : tr("confirmDelete")}
               </button>
             </div>
           </div>
