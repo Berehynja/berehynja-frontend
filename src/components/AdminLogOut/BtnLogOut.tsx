@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LogOut, ShieldCheck } from "lucide-react";
+import { LogOut } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
@@ -40,31 +40,20 @@ export default function AdminLogout() {
         disabled={isLoggingOut}
         aria-label={t("adminLogout.ariaLabel")}
         title={t("adminLogout.ariaLabel")}
-        className="group inline-flex h-13 w-22 shrink-0 cursor-pointer flex-col items-stretch justify-center gap-1 rounded-lg border border-slate-200 bg-white/95 px-2 py-1.5 text-[10px] leading-tight font-semibold text-slate-700 shadow-sm backdrop-blur-md transition-all duration-300 hover:border-red-200 hover:bg-red-50 hover:shadow-md active:scale-[0.97] focus-visible:ring-3 focus-visible:ring-blue-500/25 focus-visible:outline-none disabled:cursor-wait disabled:opacity-70"
+        className="group inline-flex h-13 shrink-0 cursor-pointer flex-col items-center justify-center gap-0.5 whitespace-nowrap rounded-xl border border-red-200 bg-red-50 px-3 text-red-600 shadow-sm backdrop-blur-md transition-[color,background-color,border-color,box-shadow,transform] duration-200 hover:border-red-600 hover:bg-red-600 hover:text-white hover:shadow-md active:scale-95 focus-visible:ring-3 focus-visible:ring-red-500/25 focus-visible:outline-none disabled:cursor-wait disabled:opacity-60"
       >
-        <span className="inline-flex items-center justify-center gap-2 whitespace-nowrap">
-          <ShieldCheck
-            size={16}
-            strokeWidth={2}
-            aria-hidden="true"
-            className="size-3.5 shrink-0 text-blue-600"
-          />
-          <span>{t("adminLogout.adminShort")}</span>
+        <span className="text-[9px] leading-none font-bold tracking-[0.12em] text-red-500/70 uppercase group-hover:text-red-100">
+          {t("adminLogout.adminMode")}
         </span>
 
-        <span
-          aria-hidden="true"
-          className="h-px w-full bg-slate-200 transition-colors group-hover:bg-red-200"
-        />
-
-        <span className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-red-600 group-hover:text-red-700">
+        <span className="inline-flex items-center justify-center gap-1.5 text-sm font-semibold">
           <LogOut
-            size={16}
+            size={18}
             strokeWidth={2}
             aria-hidden="true"
-            className="size-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5"
+            className="shrink-0 transition-transform duration-200 group-hover:translate-x-0.5"
           />
-          <span>{t("adminLogout.exitShort")}</span>
+          <span>Log out</span>
         </span>
       </button>
 
