@@ -17,7 +17,8 @@
     "heroUi": {
       "donate": "Donate",
       "join": "Join us",
-      "bannerField": "Background image",
+      "bannerField": "Desktop background image",
+      "mobileBannerField": "Mobile background image",
       "titleField": "Main heading",
       "descriptionField": "Description below the heading",
       "editModalTitle": "Edit hero section"
@@ -447,7 +448,9 @@
     "fullName": "Full name *",
     "fullNamePlaceholder": "Your full name",
     "email": "Email *",
+    "emailPlaceholder": "name@example.com",
     "phone": "Phone",
+    "phonePlaceholder": "+49 123 4567890",
     "optional": "(optional)",
     "message": "How would you like to help?",
     "messagePlaceholder": "Tell us a little about yourself or your ideas...",
