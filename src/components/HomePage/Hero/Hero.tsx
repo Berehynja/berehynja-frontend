@@ -12,13 +12,13 @@ import EditButton from "../../Buttons/EditButton";
 import { PageLoader } from "../../ui/PageLoader";
 
 const HERO_BANNER_CACHE_KEY = "berehynia-hero-banner";
+const HERO_MOBILE_BANNER_CACHE_KEY = "berehynia-hero-mobile-banner";
 
-
-const getInitialBanner = (): string | null => {
+const getInitialBanner = (cacheKey: string): string | null => {
   if (typeof window === "undefined") return null;
 
   try {
-    return window.localStorage.getItem(HERO_BANNER_CACHE_KEY);
+    return window.localStorage.getItem(cacheKey);
   } catch {
     return null;
   }
@@ -40,8 +40,14 @@ export const Hero = () => {
   const [isDonationOpen, setIsDonationOpen] = useState(false);
   const [isJoinOpen, setIsJoinOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [displayedBanner, setDisplayedBanner] = useState(getInitialBanner);
+  const [displayedBanner, setDisplayedBanner] = useState(() =>
+    getInitialBanner(HERO_BANNER_CACHE_KEY),
+  );
+  const [displayedMobileBanner, setDisplayedMobileBanner] = useState(() =>
+    getInitialBanner(HERO_MOBILE_BANNER_CACHE_KEY),
+  );
   const [nextBanner, setNextBanner] = useState<string | null>(null);
+  const [nextMobileBanner, setNextMobileBanner] = useState<string | null>(null);
   const [isNextBannerVisible, setIsNextBannerVisible] = useState(false);
   const [isPageReady, setIsPageReady] = useState(false);
   const [hasLoadingTimedOut, setHasLoadingTimedOut] = useState(false);
@@ -52,6 +58,9 @@ export const Hero = () => {
 
   const currentBanner =
     (data?.hero as Record<string, string>)?.bannerImage?.trim() || null;
+  const currentMobileBanner =
+    (data?.hero as Record<string, string>)?.bannerImageMobile?.trim() ||
+    currentBanner;
 
   useEffect(() => {
     if (isLoading) return;
@@ -61,17 +70,28 @@ export const Hero = () => {
       return;
     }
 
-    if (currentBanner === displayedBanner) return;
+    if (
+      currentBanner === displayedBanner &&
+      currentMobileBanner === displayedMobileBanner
+    ) {
+      return;
+    }
 
     if (transitionTimeoutRef.current !== null) {
       window.clearTimeout(transitionTimeoutRef.current);
       transitionTimeoutRef.current = null;
     }
 
-    // Додаємо URL до DOM одразу, без додаткової затримки через new Image().
     setIsNextBannerVisible(false);
     setNextBanner(currentBanner);
-  }, [currentBanner, displayedBanner, isLoading]);
+    setNextMobileBanner(currentMobileBanner);
+  }, [
+    currentBanner,
+    currentMobileBanner,
+    displayedBanner,
+    displayedMobileBanner,
+    isLoading,
+  ]);
 
   useEffect(() => {
     const safetyTimeoutId = window.setTimeout(() => {
@@ -89,9 +109,13 @@ export const Hero = () => {
     };
   }, []);
 
-  const cacheBanner = (bannerUrl: string) => {
+  const cacheBanner = (cacheKey: string, bannerUrl: string | null) => {
     try {
-      window.localStorage.setItem(HERO_BANNER_CACHE_KEY, bannerUrl);
+      if (bannerUrl) {
+        window.localStorage.setItem(cacheKey, bannerUrl);
+      } else {
+        window.localStorage.removeItem(cacheKey);
+      }
     } catch {
       // Кешування є лише додатковою оптимізацією.
     }
@@ -104,11 +128,16 @@ export const Hero = () => {
   const handleNextBannerLoad = () => {
     if (!nextBanner) return;
 
-    // На першому завантаженні прибираємо лоадер тільки після готовності банера.
     if (!displayedBanner) {
       setDisplayedBanner(nextBanner);
-      cacheBanner(nextBanner);
+      setDisplayedMobileBanner(nextMobileBanner || nextBanner);
+      cacheBanner(HERO_BANNER_CACHE_KEY, nextBanner);
+      cacheBanner(
+        HERO_MOBILE_BANNER_CACHE_KEY,
+        nextMobileBanner || nextBanner,
+      );
       setNextBanner(null);
+      setNextMobileBanner(null);
       setIsPageReady(true);
       return;
     }
@@ -118,8 +147,14 @@ export const Hero = () => {
 
     transitionTimeoutRef.current = window.setTimeout(() => {
       setDisplayedBanner(nextBanner);
-      cacheBanner(nextBanner);
+      setDisplayedMobileBanner(nextMobileBanner || nextBanner);
+      cacheBanner(HERO_BANNER_CACHE_KEY, nextBanner);
+      cacheBanner(
+        HERO_MOBILE_BANNER_CACHE_KEY,
+        nextMobileBanner || nextBanner,
+      );
       setNextBanner(null);
+      setNextMobileBanner(null);
       setIsNextBannerVisible(false);
       transitionTimeoutRef.current = null;
     }, 500);
@@ -127,6 +162,7 @@ export const Hero = () => {
 
   const handleNextBannerError = () => {
     setNextBanner(null);
+    setNextMobileBanner(null);
     setIsNextBannerVisible(false);
     setIsPageReady(true);
   };
@@ -134,114 +170,150 @@ export const Hero = () => {
   const isHeroReady = (isPageReady && !isLoading) || hasLoadingTimedOut;
 
   const heroFields: FieldConfig[] = [
-  {
-    key: "bannerImage",
-    label: t("home.heroUi.bannerField"),
-    type: "image",
-    mediaCategory: "banners",
-  },
-  {
-    key: "title",
-    label: t("home.heroUi.titleField"),
-    type: "input",
-  },
-  {
-    key: "description",
-    label: t("home.heroUi.descriptionField"),
-    type: "textarea",
-  },
-];
+    {
+      key: "bannerImage",
+      label: t("home.heroUi.bannerField"),
+      type: "image",
+      mediaCategory: "banners",
+    },
+    {
+      key: "bannerImageMobile",
+      label: t("home.heroUi.mobileBannerField", {
+        defaultValue: "Mobile banner",
+      }),
+      type: "image",
+      mediaCategory: "banners",
+    },
+    {
+      key: "title",
+      label: t("home.heroUi.titleField"),
+      type: "input",
+    },
+    {
+      key: "description",
+      label: t("home.heroUi.descriptionField"),
+      type: "textarea",
+    },
+  ];
 
   return (
     <>
       <PageLoader visible={!isHeroReady} />
 
-      <section className="relative flex min-h-[clamp(42rem,85svh,54rem)] w-full justify-center overflow-hidden rounded-b-3xl bg-linear-to-br from-slate-800 via-slate-900 to-blue-950">
+      <section className="relative isolate w-full overflow-hidden rounded-b-3xl bg-slate-950 text-white md:min-h-170">
         {displayedBanner && (
-          <img
-            src={getHeroImageUrl(displayedBanner, 1280)}
-            srcSet={getHeroSrcSet(displayedBanner)}
-            sizes="100vw"
-            alt=""
-            aria-hidden="true"
-            width={1920}
-            height={1080}
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-            onLoad={handleDisplayedBannerReady}
-            onError={handleDisplayedBannerReady}
-            className="absolute inset-0 h-full w-full object-cover object-[center_35%]"
-          />
+          <picture>
+            <source
+              media="(max-width: 767px)"
+              srcSet={getHeroSrcSet(
+                displayedMobileBanner || displayedBanner,
+              )}
+              sizes="100vw"
+            />
+            <img
+              src={getHeroImageUrl(displayedBanner, 1280)}
+              srcSet={getHeroSrcSet(displayedBanner)}
+              sizes="100vw"
+              alt=""
+              aria-hidden="true"
+              width={1920}
+              height={1080}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              onLoad={handleDisplayedBannerReady}
+              onError={handleDisplayedBannerReady}
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            />
+          </picture>
         )}
 
         {nextBanner && (
-          <img
-            src={getHeroImageUrl(nextBanner, 1280)}
-            srcSet={getHeroSrcSet(nextBanner)}
-            sizes="100vw"
-            alt=""
-            aria-hidden="true"
-            width={1920}
-            height={1080}
-            loading="eager"
-            fetchPriority={displayedBanner ? "auto" : "high"}
-            decoding="async"
-            onLoad={handleNextBannerLoad}
-            onError={handleNextBannerError}
-            className={`absolute inset-0 h-full w-full object-cover object-[center_35%] transition-opacity duration-500 ${
-              isNextBannerVisible || !displayedBanner
-                ? "opacity-100"
-                : "opacity-0"
-            }`}
-          />
+          <picture>
+            <source
+              media="(max-width: 767px)"
+              srcSet={getHeroSrcSet(nextMobileBanner || nextBanner)}
+              sizes="100vw"
+            />
+            <img
+              src={getHeroImageUrl(nextBanner, 1280)}
+              srcSet={getHeroSrcSet(nextBanner)}
+              sizes="100vw"
+              alt=""
+              aria-hidden="true"
+              width={1920}
+              height={1080}
+              loading="eager"
+              fetchPriority={displayedBanner ? "auto" : "high"}
+              decoding="async"
+              onLoad={handleNextBannerLoad}
+              onError={handleNextBannerError}
+              className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-500 ${
+                isNextBannerVisible || !displayedBanner
+                  ? "opacity-100"
+                  : "opacity-0"
+              }`}
+            />
+          </picture>
         )}
 
-        <div className="relative z-10 flex min-h-[clamp(42rem,85svh,54rem)] w-full max-w-120 flex-col items-start justify-between p-5 md:max-w-5xl md:p-6 lg:max-w-7xl lg:p-8 xl:max-w-full xl:p-10">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-linear-to-b from-slate-950/75 via-slate-950/10 to-slate-950/95 md:bg-linear-to-r md:from-slate-950/95 md:via-slate-950/68 md:to-slate-950/5"
+        />
+
+        <div className="relative z-10 mx-auto flex min-h-170 w-full max-w-360 flex-col px-5 pt-7 pb-8 md:justify-center md:px-10 md:py-16 lg:px-14 xl:px-18">
           {isAdmin && (
             <EditButton
               onClick={() => setIsEditOpen(true)}
-              className="top-2 right-4 h-12 w-12 border border-gray-200 bg-white text-gray-700 shadow-xl hover:scale-110 hover:bg-blue-600 hover:text-white"
+              className="top-3 right-3 h-11 w-11 border border-white/50 bg-white/90 text-slate-700 shadow-lg hover:scale-105 hover:bg-blue-600 hover:text-white md:top-5 md:right-5 md:h-12 md:w-12"
             />
           )}
 
-          <div className="mt-auto mb-auto w-full md:mt-0">
-            <h1 className="text-preset-1 font-nunito mb-6 align-sub tracking-tighter text-white uppercase drop-shadow-2xl md:text-4xl lg:text-5xl">
-              {isLoading ? "..." : title}
-            </h1>
-          </div>
+          <div className="max-w-2xl md:w-[48%] md:min-w-130">
+            <div className="w-fit max-w-full">
+              <h1 className="font-nunito text-[clamp(2rem,5.4vw,4.5rem)] leading-[1.04] font-semibold tracking-[-0.035em] text-balance text-white drop-shadow-lg">
+                {isLoading ? "..." : title}
+              </h1>
 
-          <div className="mt-auto mb-auto w-full md:mb-0">
-            <p className="text-preset-2 block w-full max-w-7xl rounded-3xl border border-white/10 bg-black/40 p-6 indent-8 text-xl leading-8 text-white backdrop-blur-md md:text-3xl md:leading-10">
+              <div
+                aria-hidden="true"
+                className="mt-4 h-1 w-full rounded-full bg-linear-to-r from-blue-500 to-yellow-400 md:mt-5"
+              />
+            </div>
+
+            <div aria-hidden="true" className="min-h-48 md:hidden" />
+
+            <p className="mt-5 max-w-xl rounded-2xl border border-white/12 bg-slate-950/35 p-4 text-base leading-7 font-medium text-white/90 shadow-xl backdrop-blur-sm md:mt-7 md:p-5 md:text-lg md:leading-8">
               {description}
             </p>
-          </div>
 
-          <div className="mt-8 flex w-full flex-col gap-4 md:w-auto md:flex-row md:gap-6">
-            <button
-              type="button"
-              onClick={() => setIsDonationOpen(true)}
-              className="group font-nunito flex cursor-pointer items-center justify-center gap-4 rounded-2xl bg-yellow-400 px-10 py-5 text-sm tracking-widest text-gray-900 uppercase shadow-xl transition-all hover:scale-105 hover:bg-yellow-500 md:text-base"
-            >
-              <Heart
-                size={20}
-                className="fill-current group-hover:animate-pulse"
-              />
-              <span>{t("home.heroUi.donate")}</span>
-            </button>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row md:mt-9 md:gap-4">
+              <button
+                type="button"
+                onClick={() => setIsDonationOpen(true)}
+                className="group font-nunito flex min-h-13 cursor-pointer items-center justify-center gap-3 rounded-xl bg-yellow-400 px-7 py-3.5 text-sm font-bold tracking-wider text-slate-950 uppercase shadow-lg transition-all hover:-translate-y-0.5 hover:bg-yellow-300 hover:shadow-xl active:translate-y-0"
+              >
+                <Heart
+                  size={19}
+                  className="fill-current group-hover:animate-pulse"
+                />
+                <span>{t("home.heroUi.donate")}</span>
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setIsJoinOpen(true)}
-              className="group font-nunito flex cursor-pointer items-center justify-center gap-4 rounded-2xl border border-white/30 bg-white/10 px-10 py-5 text-sm tracking-widest text-white uppercase backdrop-blur-md transition-all hover:bg-white hover:text-blue-900 md:text-base"
-            >
-              <UserPlus size={20} />
-              <span>{t("home.heroUi.join")}</span>
-              <ArrowRight
-                size={20}
-                className="-translate-x-4 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
-              />
-            </button>
+              <button
+                type="button"
+                onClick={() => setIsJoinOpen(true)}
+                className="group font-nunito flex min-h-13 cursor-pointer items-center justify-center gap-3 rounded-xl border border-white/35 bg-white/10 px-7 py-3.5 text-sm font-bold tracking-wider text-white uppercase backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:text-blue-950 active:translate-y-0"
+              >
+                <UserPlus size={19} />
+                <span>{t("home.heroUi.join")}</span>
+                <ArrowRight
+                  size={18}
+                  className="transition-transform group-hover:translate-x-1"
+                />
+              </button>
+            </div>
           </div>
         </div>
       </section>

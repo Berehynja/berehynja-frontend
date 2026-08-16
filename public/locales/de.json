@@ -17,7 +17,8 @@
     "heroUi": {
       "donate": "Spenden",
       "join": "Mitmachen",
-      "bannerField": "Hintergrundbild",
+      "bannerField": "Hintergrundbild für Desktop",
+      "mobileBannerField": "Hintergrundbild für Mobilgeräte",
       "titleField": "Hauptüberschrift",
       "descriptionField": "Beschreibung unter der Überschrift",
       "editModalTitle": "Startbildschirm bearbeiten"
@@ -447,7 +448,9 @@
     "fullName": "Vollständiger Name *",
     "fullNamePlaceholder": "Ihr Vor- und Nachname",
     "email": "E-Mail *",
+    "emailPlaceholder": "name@example.com",
     "phone": "Telefon",
+    "phonePlaceholder": "+49 123 4567890",
     "optional": "(optional)",
     "message": "Wie möchten Sie helfen?",
     "messagePlaceholder": "Erzählen Sie uns etwas über sich oder Ihre Ideen...",

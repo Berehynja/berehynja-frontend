@@ -17,7 +17,8 @@
     "heroUi": {
       "donate": "Благодійність",
       "join": "Приєднатися",
-      "bannerField": "Фонове зображення",
+      "bannerField": "Фонове зображення для комп’ютера",
+      "mobileBannerField": "Фонове зображення для мобільних пристроїв",
       "titleField": "Головний заголовок",
       "descriptionField": "Опис під заголовком",
       "editModalTitle": "Редагування головного екрана"
@@ -447,7 +448,9 @@
     "fullName": "Повне ім’я *",
     "fullNamePlaceholder": "Ваше прізвище та ім’я",
     "email": "E-mail *",
+    "emailPlaceholder": "name@example.com",
     "phone": "Телефон",
+    "phonePlaceholder": "+49 123 4567890",
     "optional": "(за бажанням)",
     "message": "Чим ви хотіли б допомогти?",
     "messagePlaceholder": "Напишіть трохи про себе або ваші ідеї...",

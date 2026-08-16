@@ -185,7 +185,7 @@ export const Footer = () => {
               href="https://www.google.com/maps/search/?api=1&query=Weserstraße+24+32545+Bad+Oeynhausen"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex cursor-pointer items-start gap-4 transition-all hover:text-blue-300"
+              className="group flex cursor-pointer items-center gap-4 transition-all hover:text-blue-300"
             >
               <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white/5 transition-colors group-hover:bg-blue-500/20">
                 <MapPin
