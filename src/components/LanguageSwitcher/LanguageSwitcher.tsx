@@ -52,7 +52,7 @@ export const LanguageSwitcher = ({
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setIsOpen(false);
       }}
-      className={`font-nunito flex w-26 flex-col gap-3 overflow-hidden rounded-xl border px-3 py-2 shadow-sm transition-all duration-300 lg:absolute lg:top-2 lg:right-0 lg:w-23 lg:rounded-sm lg:border-transparent lg:bg-white lg:px-2.5 lg:py-1.5 lg:text-slate-900 lg:shadow-none ${
+      className={`font-nunito flex w-26 flex-col gap-3 overflow-hidden rounded-xl border px-3 py-2 shadow-sm transition-all duration-300 lg:absolute lg:top-0 lg:right-0 lg:w-23 lg:rounded-sm lg:border-transparent lg:bg-white lg:px-2.5 lg:py-1.5 lg:text-slate-900 lg:shadow-none ${
         isOpen ? "max-h-40 lg:max-h-45" : "max-h-10 lg:max-h-7.5"
       } ${
         isDark
