@@ -1,80 +1,119 @@
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { ChevronUp } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import Flag from "react-country-flag";
-import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
-const languagesArr = ["UA", "EN", "DE"];
+import type { MenuTheme } from "../Header/HeaderNav";
 
-export const LanguageSwitcher = () => {
-  const [isOpenBurger, setIsOpenBurger] = useState(false);
+interface LanguageSwitcherProps {
+  variant?: MenuTheme;
+}
 
-  const { i18n } = useTranslation();
+const LANGUAGES = ["UA", "EN", "DE"];
+
+export const LanguageSwitcher = ({
+  variant = "light",
+}: LanguageSwitcherProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { pathname } = useLocation();
+  const isDark = variant === "dark";
+
+  const currentLanguage = (i18n.resolvedLanguage || i18n.language)
+    .split("-")[0]
+    .toUpperCase();
 
   useEffect(() => {
-    document.documentElement.lang = i18n.language;
-  }, [i18n.language]);
+    document.documentElement.lang =
+      currentLanguage === "UA" ? "uk" : currentLanguage.toLowerCase();
+  }, [currentLanguage]);
 
-  const onClickHandler = () => setIsOpenBurger(!isOpenBurger);
+  const changeLanguage = (language: string) => {
+    setIsOpen(false);
 
-  const onBlurHandler = () => setIsOpenBurger(false);
+    const nextLanguage = language.toLowerCase();
+    void i18n.changeLanguage(nextLanguage);
 
-  const indicatorHandler = (lng: string) => {
-    setIsOpenBurger(false);
-    const newLang = lng.toLowerCase();
-    i18n.changeLanguage(newLang);
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("lang", nextLanguage);
 
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams?.set("lang", lng.toLowerCase());
-
-    navigate({ pathname, search: newSearchParams.toString() });
+    navigate({ pathname, search: nextSearchParams.toString() });
   };
+
+  const getCountryCode = (language: string) =>
+    language === "EN" ? "GB" : language;
 
   return (
     <div
-      className={`font-nunito ease flex w-22 flex-col gap-3 overflow-hidden rounded-sm bg-white px-2.5 py-1.5 transition-all duration-400 lg:absolute lg:top-2 lg:right-0 lg:w-23 ${isOpenBurger ? "max-h-45" : "max-h-7.5"}`}
       tabIndex={0}
-      onBlur={onBlurHandler}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setIsOpen(false);
+      }}
+      className={`font-nunito flex w-26 flex-col gap-3 overflow-hidden rounded-xl border px-3 py-2 shadow-sm transition-all duration-300 lg:absolute lg:top-2 lg:right-0 lg:w-23 lg:rounded-sm lg:border-transparent lg:bg-white lg:px-2.5 lg:py-1.5 lg:text-slate-900 lg:shadow-none ${
+        isOpen ? "max-h-40 lg:max-h-45" : "max-h-10 lg:max-h-7.5"
+      } ${
+        isDark
+          ? "border-white/15 bg-white/10 text-white"
+          : "border-slate-200 bg-white/90 text-slate-800"
+      }`}
     >
       <button
-        className="group flex w-full cursor-pointer items-center justify-center"
-        onClick={onClickHandler}
+        type="button"
+        aria-expanded={isOpen}
+        aria-label={t("common.selectLanguage", {
+          defaultValue: "Select language",
+        })}
+        onClick={() => setIsOpen((open) => !open)}
+        className="group flex min-h-6 w-full cursor-pointer items-center justify-center font-semibold"
       >
         <Flag
-          className="mr-1.5 h-3.5 w-5 rounded-xs"
-          countryCode={i18n.language === "en" ? "GB" : i18n.language}
+          className="mr-2 h-3.5 w-5 rounded-xs"
+          countryCode={getCountryCode(currentLanguage)}
           svg
-          alt="flag"
-          aria-label="current language"
+          alt=""
+          aria-hidden="true"
         />
-        <span className="transition-colors duration-200 group-hover:text-blue-600">
-          {i18n.language.toUpperCase()}
+        <span className="transition-colors group-hover:text-blue-400 lg:group-hover:text-blue-700">
+          {currentLanguage}
         </span>
         <ChevronUp
-          className={`ease ml-auto h-5 w-5 transition-transform duration-200 ${isOpenBurger ? "rotate-x-0" : "rotate-x-180"} transition-colors duration-200 group-hover:stroke-blue-600`}
+          size={19}
+          aria-hidden="true"
+          className={`ml-auto transition-all duration-200 group-hover:text-blue-400 lg:group-hover:text-blue-700 ${
+            isOpen ? "rotate-0" : "rotate-180"
+          }`}
         />
       </button>
-      {languagesArr
-        .filter((lng) => lng !== i18n.language.toUpperCase())
-        .map((lng) => (
+
+      {LANGUAGES.filter((language) => language !== currentLanguage).map(
+        (language) => (
           <button
-            className="group flex w-full cursor-pointer items-center justify-start transition-colors duration-200"
-            key={lng}
-            onClick={() => indicatorHandler(lng)}
-            aria-label="change language"
+            type="button"
+            key={language}
+            onClick={() => changeLanguage(language)}
+            aria-label={t("common.changeLanguage", {
+              defaultValue: `Change language to ${language}`,
+            })}
+            className={`group flex min-h-7 w-full cursor-pointer items-center rounded-lg px-1 font-semibold transition-colors ${
+              isDark
+                ? "hover:bg-white/10 hover:text-blue-200"
+                : "hover:bg-blue-50 hover:text-blue-700"
+            } lg:hover:bg-blue-50 lg:hover:text-blue-700`}
           >
             <Flag
-              className="mr-1.5 h-3.5 w-5 rounded-xs"
-              countryCode={lng === "EN" ? "GB" : lng}
+              className="mr-2 h-3.5 w-5 rounded-xs"
+              countryCode={getCountryCode(language)}
               svg
-              alt="flag"
+              alt=""
+              aria-hidden="true"
             />
-            <span className="group-hover:text-blue-600">{lng}</span>
+            <span>{language}</span>
           </button>
-        ))}
+        ),
+      )}
     </div>
   );
 };
