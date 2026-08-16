@@ -36,6 +36,20 @@
       "default": "Die Anmeldung ist fehlgeschlagen. Bitte versuchen Sie es erneut."
     }
   },
+  "adminLogout": {
+    "adminShort": "Admin",
+    "adminMode": "Admin-Modus",
+    "exitShort": "Abmelden",
+    "logout": "Abmelden",
+    "ariaLabel": "Vom Admin-Modus abmelden",
+    "confirmTitle": "Admin-Modus verlassen?",
+    "confirmMessage": "Möchten Sie den Admin-Modus wirklich verlassen? Um die Website erneut zu bearbeiten, müssen Sie sich wieder mit Ihrem Administratorkonto anmelden.",
+    "cancel": "Abbrechen",
+    "confirm": "Abmelden",
+    "loggingOut": "Abmeldung läuft...",
+    "success": "Sie haben den Admin-Modus verlassen.",
+    "error": "Die Abmeldung ist fehlgeschlagen. Bitte versuchen Sie es erneut."
+  },
   "home": {
     "welcome": "Willkommen bei «Berehynja»!",
     "description": "«Berehynja» ist ein ukrainischer Raum in Deutschland, geschaffen für Kinder, Jugendliche und Erwachsene, die sich gezwungenermaßen fern von ihrem Zuhause wiedergefunden haben. Wir vereinen ukrainische Familien, helfen, die Sprache, Kultur und Traditionen zu bewahren und unterstützen jene, die den Weg der Anpassung und Integration in eine neue Umgebung gehen.",

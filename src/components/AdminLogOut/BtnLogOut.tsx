@@ -1,21 +1,32 @@
 import { useState } from "react";
 import { LogOut, ShieldCheck } from "lucide-react";
+import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
-import { logout } from "../AdminLogOut/AdminLogOut";
-import { PageLoader } from "../ui/PageLoader";
+import { logout } from "./AdminLogOut";
+import { ConfirmModal } from "../Modals/ConfirmModal";
 
 export default function AdminLogout() {
+  const { t } = useTranslation();
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const handleLogout = async () => {
+  const handleCloseConfirm = () => {
+    if (isLoggingOut) return;
+    setIsConfirmOpen(false);
+  };
+
+  const handleConfirmLogout = async () => {
     if (isLoggingOut) return;
 
     setIsLoggingOut(true);
 
     try {
       await logout();
-    } catch (error) {
-      console.error("Logout error:", error);
+      setIsConfirmOpen(false);
+      toast.success(t("adminLogout.success"));
+    } catch {
+      toast.error(t("adminLogout.error"));
     } finally {
       setIsLoggingOut(false);
     }
@@ -23,14 +34,12 @@ export default function AdminLogout() {
 
   return (
     <>
-      <PageLoader visible={isLoggingOut} />
-
       <button
         type="button"
-        onClick={handleLogout}
+        onClick={() => setIsConfirmOpen(true)}
         disabled={isLoggingOut}
-        aria-label={isLoggingOut ? "Logging out" : "Log out of admin mode"}
-        title="Log out of admin mode"
+        aria-label={t("adminLogout.ariaLabel")}
+        title={t("adminLogout.ariaLabel")}
         className="group inline-flex cursor-pointer flex-col items-stretch justify-center gap-1 rounded-md border border-slate-200 bg-white/95 px-2 py-1.5 text-[10px] font-semibold text-slate-700 shadow-sm backdrop-blur-md transition-all duration-200 hover:border-red-200 hover:bg-red-50 hover:shadow-md active:scale-[0.97] focus-visible:ring-3 focus-visible:ring-blue-500/25 focus-visible:outline-none disabled:cursor-wait disabled:opacity-70 sm:gap-1.5 sm:rounded-lg sm:px-3 sm:py-2 sm:text-xs"
       >
         <span className="inline-flex items-center justify-center gap-2 whitespace-nowrap">
@@ -40,8 +49,8 @@ export default function AdminLogout() {
             aria-hidden="true"
             className="size-3.5 shrink-0 text-blue-600 sm:size-4"
           />
-          <span className="sm:hidden">Admin</span>
-          <span className="hidden sm:inline">Admin mode</span>
+          <span className="sm:hidden">{t("adminLogout.adminShort")}</span>
+          <span className="hidden sm:inline">{t("adminLogout.adminMode")}</span>
         </span>
 
         <span
@@ -56,10 +65,23 @@ export default function AdminLogout() {
             aria-hidden="true"
             className="size-3.5 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 sm:size-4"
           />
-          <span className="sm:hidden">Exit</span>
-          <span className="hidden sm:inline">Log out</span>
+          <span className="sm:hidden">{t("adminLogout.exitShort")}</span>
+          <span className="hidden sm:inline">{t("adminLogout.logout")}</span>
         </span>
       </button>
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={handleCloseConfirm}
+        onConfirm={handleConfirmLogout}
+        isLoading={isLoggingOut}
+        title={t("adminLogout.confirmTitle")}
+        message={t("adminLogout.confirmMessage")}
+        cancelLabel={t("adminLogout.cancel")}
+        confirmLabel={t("adminLogout.confirm")}
+        loadingLabel={t("adminLogout.loggingOut")}
+        confirmIcon={<LogOut size={18} aria-hidden="true" />}
+      />
     </>
   );
 }

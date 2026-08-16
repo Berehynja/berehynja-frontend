@@ -1,4 +1,11 @@
-import { useEffect, useId, useRef, useState, type MouseEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type MouseEvent,
+  type ReactNode,
+} from "react";
 import { AlertTriangle, Loader2, Trash2, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -13,6 +20,7 @@ interface ConfirmModalProps {
   cancelLabel?: string;
   confirmLabel?: string;
   loadingLabel?: string;
+  confirmIcon?: ReactNode;
 }
 
 export function ConfirmModal({
@@ -25,6 +33,7 @@ export function ConfirmModal({
   cancelLabel,
   confirmLabel,
   loadingLabel,
+  confirmIcon,
 }: ConfirmModalProps) {
   const { t } = useTranslation();
   const tr = (key: string) => t(`common.confirmModal.${key}`);
@@ -148,7 +157,7 @@ export function ConfirmModal({
             {isBusy ? (
               <Loader2 size={18} className="animate-spin" />
             ) : (
-              <Trash2 size={18} />
+              (confirmIcon ?? <Trash2 size={18} />)
             )}
             {isBusy
               ? (loadingLabel ?? tr("loading"))
