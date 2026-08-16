@@ -36,6 +36,20 @@
       "default": "Unable to sign in. Please try again."
     }
   },
+  "adminLogout": {
+    "adminShort": "Admin",
+    "adminMode": "Admin mode",
+    "exitShort": "Exit",
+    "logout": "Log out",
+    "ariaLabel": "Log out of admin mode",
+    "confirmTitle": "Exit admin mode?",
+    "confirmMessage": "Are you sure you want to leave admin mode? To edit the website again, you will need to sign in with your administrator account.",
+    "cancel": "Cancel",
+    "confirm": "Log out",
+    "loggingOut": "Logging out...",
+    "success": "You have left admin mode.",
+    "error": "Unable to log out. Please try again."
+  },
   "home": {
     "welcome": "Welcome to «Berehynja»! test test",
     "description": "«Berehynja» is a Ukrainian space in Germany created for children, teenagers, and adults who were forced to find themselves far from home. We bring Ukrainian families together, help preserve their language, culture, and traditions, and support those who are going through the process of adaptation and integration into a new environment.",
