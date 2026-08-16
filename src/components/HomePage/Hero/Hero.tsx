@@ -288,11 +288,11 @@ export const Hero = () => {
               {description}
             </p>
 
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row md:mt-9 md:gap-4">
+            <div className="mt-7 grid w-full max-w-xl grid-cols-1 gap-3 sm:grid-cols-2 md:mt-9 md:gap-4">
               <button
                 type="button"
                 onClick={() => setIsDonationOpen(true)}
-                className="group font-nunito flex min-h-13 cursor-pointer items-center justify-center gap-3 rounded-xl bg-yellow-400 px-7 py-3.5 text-sm font-bold tracking-wider text-slate-950 uppercase shadow-lg transition-all hover:-translate-y-0.5 hover:bg-yellow-300 hover:shadow-xl active:translate-y-0"
+                className="group font-nunito flex min-h-13 w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-yellow-400 px-7 py-3.5 text-sm font-bold tracking-wider text-slate-950 uppercase shadow-lg transition-all hover:-translate-y-0.5 hover:bg-yellow-300 hover:shadow-xl active:translate-y-0"
               >
                 <Heart
                   size={19}
@@ -304,7 +304,7 @@ export const Hero = () => {
               <button
                 type="button"
                 onClick={() => setIsJoinOpen(true)}
-                className="group font-nunito flex min-h-13 cursor-pointer items-center justify-center gap-3 rounded-xl border border-white/35 bg-white/10 px-7 py-3.5 text-sm font-bold tracking-wider text-white uppercase backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:text-blue-950 active:translate-y-0"
+                className="group font-nunito flex min-h-13 w-full cursor-pointer items-center justify-center gap-3 rounded-xl border border-white/35 bg-white/10 px-7 py-3.5 text-sm font-bold tracking-wider text-white uppercase backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:text-blue-950 active:translate-y-0"
               >
                 <UserPlus size={19} />
                 <span>{t("home.heroUi.join")}</span>

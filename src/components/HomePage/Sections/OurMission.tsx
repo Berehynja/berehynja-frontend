@@ -150,18 +150,20 @@ export default function OurMission() {
         transition={{ duration: 0.35, ease: "easeOut" }}
         className="text-center"
       >
-        <div className="relative inline-flex">
+        <div
+          className={`relative mx-auto w-fit max-w-full ${isAdmin ? "pr-12" : ""}`}
+        >
           <h2 className="text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
             {mainTitle}
-
-            {isAdmin && (
-              <EditButton
-                onClick={() => setIsTitleOpen(true)}
-                className="top-0 -right-1/3 h-8 w-8 border border-gray-200 bg-white text-gray-700 shadow hover:scale-110 hover:bg-blue-600 hover:text-white"
-                size={36}
-              />
-            )}
           </h2>
+
+          {isAdmin && (
+            <EditButton
+              onClick={() => setIsTitleOpen(true)}
+              className="top-1/2 right-0 -translate-y-1/2 border border-gray-200 bg-white text-gray-700 shadow hover:scale-105 hover:bg-blue-600 hover:text-white"
+              size={36}
+            />
+          )}
         </div>
       </motion.div>
 

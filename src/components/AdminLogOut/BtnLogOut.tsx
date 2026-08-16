@@ -40,17 +40,16 @@ export default function AdminLogout() {
         disabled={isLoggingOut}
         aria-label={t("adminLogout.ariaLabel")}
         title={t("adminLogout.ariaLabel")}
-        className="group inline-flex cursor-pointer flex-col items-stretch justify-center gap-1 rounded-md border border-slate-200 bg-white/95 px-2 py-1.5 text-[10px] font-semibold text-slate-700 shadow-sm backdrop-blur-md transition-all duration-200 hover:border-red-200 hover:bg-red-50 hover:shadow-md active:scale-[0.97] focus-visible:ring-3 focus-visible:ring-blue-500/25 focus-visible:outline-none disabled:cursor-wait disabled:opacity-70 sm:gap-1.5 sm:rounded-lg sm:px-3 sm:py-2 sm:text-xs"
+        className="group inline-flex h-13 w-22 shrink-0 cursor-pointer flex-col items-stretch justify-center gap-1 rounded-lg border border-slate-200 bg-white/95 px-2 py-1.5 text-[10px] leading-tight font-semibold text-slate-700 shadow-sm backdrop-blur-md transition-all duration-300 hover:border-red-200 hover:bg-red-50 hover:shadow-md active:scale-[0.97] focus-visible:ring-3 focus-visible:ring-blue-500/25 focus-visible:outline-none disabled:cursor-wait disabled:opacity-70"
       >
         <span className="inline-flex items-center justify-center gap-2 whitespace-nowrap">
           <ShieldCheck
             size={16}
             strokeWidth={2}
             aria-hidden="true"
-            className="size-3.5 shrink-0 text-blue-600 sm:size-4"
+            className="size-3.5 shrink-0 text-blue-600"
           />
-          <span className="sm:hidden">{t("adminLogout.adminShort")}</span>
-          <span className="hidden sm:inline">{t("adminLogout.adminMode")}</span>
+          <span>{t("adminLogout.adminShort")}</span>
         </span>
 
         <span
@@ -63,10 +62,9 @@ export default function AdminLogout() {
             size={16}
             strokeWidth={2}
             aria-hidden="true"
-            className="size-3.5 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 sm:size-4"
+            className="size-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5"
           />
-          <span className="sm:hidden">{t("adminLogout.exitShort")}</span>
-          <span className="hidden sm:inline">{t("adminLogout.logout")}</span>
+          <span>{t("adminLogout.exitShort")}</span>
         </span>
       </button>
 
