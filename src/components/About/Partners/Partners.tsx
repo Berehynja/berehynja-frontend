@@ -136,11 +136,6 @@ export const Partners = () => {
           <h2 className="text-preset-2 font-nunito text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
             {t("about.ourPartners")}
           </h2>
-
-          <div
-            aria-hidden="true"
-            className="mx-auto mt-4 h-1 w-14 rounded-full bg-linear-to-r from-blue-500 to-yellow-400"
-          />
         </header>
 
         {!isLoading && (partners.length > 0 || isAdmin) && (

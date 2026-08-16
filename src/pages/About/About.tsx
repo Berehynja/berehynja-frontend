@@ -28,9 +28,7 @@ export const About = () => {
 
       <StatuteManager />
 
-      <section className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
-        <OurStory />
-      </section>
+      <OurStory />
 
       <MembersList />
 
