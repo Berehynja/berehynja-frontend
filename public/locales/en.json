@@ -10,6 +10,32 @@
     "events": "Events",
     "contact": "Contact"
   },
+  "adminLogin": {
+    "panelTitle": "Secure website management",
+    "panelDescription": "Sign in to manage content, programs, events and other Berehynja sections.",
+    "securityNote": "Access is restricted to authorized administrators only.",
+    "eyebrow": "Secure area",
+    "title": "Administrator login",
+    "description": "Enter your administrator account credentials.",
+    "email": "Email address",
+    "emailPlaceholder": "admin@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submit": "Sign in",
+    "submitting": "Signing in...",
+    "backHome": "Return to home page",
+    "success": "You have signed in successfully.",
+    "errors": {
+      "required": "Enter your email address and password.",
+      "invalidEmail": "Enter a valid email address.",
+      "invalidCredentials": "The email address or password is incorrect.",
+      "tooManyRequests": "Too many unsuccessful attempts. Please try again later.",
+      "network": "Unable to connect to the server. Check your internet connection.",
+      "default": "Unable to sign in. Please try again."
+    }
+  },
   "home": {
     "welcome": "Welcome to «Berehynja»! test test",
     "description": "«Berehynja» is a Ukrainian space in Germany created for children, teenagers, and adults who were forced to find themselves far from home. We bring Ukrainian families together, help preserve their language, culture, and traditions, and support those who are going through the process of adaptation and integration into a new environment.",

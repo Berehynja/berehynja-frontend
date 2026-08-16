@@ -155,8 +155,8 @@ export function HowWeHelp() {
   const mainTitle = getText("howWeHelp.title", t("howWeHelp.title"));
 
   return (
-    <section className="relative my-6 overflow-hidden">
-      <div className="relative mx-auto max-w-93.75 px-4 py-6 md:max-w-full">
+    <section className="relative my-10 overflow-hidden">
+      <div className="relative mx-auto w-full px-3 py-8 md:px-4 md:py-10">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -165,7 +165,7 @@ export function HowWeHelp() {
           className="relative text-center"
         >
           <div className="relative inline-flex">
-            <h2 className="text-preset-2 mt-0.5 font-semibold xl:mt-2.5">
+            <h2 className="text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
               {isLoading ? "..." : mainTitle}
 
               {isAdmin && (
@@ -184,7 +184,7 @@ export function HowWeHelp() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="mt-10 grid gap-8 md:grid-cols-2 xl:grid-cols-4"
+          className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-4"
         >
           {featuresConfig.map((item) => {
             const titlePath = `howWeHelp.cards.${item.id}.title`;
@@ -194,19 +194,19 @@ export function HowWeHelp() {
               <motion.div
                 key={item.id}
                 variants={cardVariants}
-                className={`shadow-card relative h-62.5 w-full rounded-sm border-t-4 bg-white px-8 py-7 ${item.borderColor}`}
+                className={`relative flex min-h-68 w-full flex-col overflow-hidden rounded-2xl border border-slate-200 border-t-4 bg-white p-6 pb-20 shadow-[0_12px_32px_rgba(15,23,42,0.08)] transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_20px_46px_rgba(15,23,42,0.13)] md:rounded-3xl md:p-7 md:pb-20 ${item.borderColor}`}
               >
-                <h3 className="text-preset-3 font-semibold">
+                <h3 className="pr-10 text-xl leading-tight font-semibold text-slate-950 md:text-2xl">
                   {isLoading ? "..." : getText(titlePath, t(titlePath))}
                 </h3>
-                <p className="text-preset-5 mt-5 font-light">
+                <p className="mt-4 text-base leading-7 font-medium text-slate-600">
                   {isLoading
                     ? "..."
                     : getText(descriptionPath, t(descriptionPath))}
                 </p>
 
                 <div
-                  className={`absolute right-8 bottom-8 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 ${item.iconColor}`}
+                  className={`absolute right-6 bottom-6 flex size-12 items-center justify-center rounded-2xl bg-slate-100 shadow-sm md:right-7 md:bottom-7 ${item.iconColor}`}
                 >
                   <item.Icon className="h-6 w-6" aria-hidden="true" />
                 </div>

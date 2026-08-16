@@ -36,32 +36,30 @@ const cardsConfig = [
   {
     id: "mission",
     icon: <HouseHeart />,
-    className:
-      "bg-Blue-2 shadow-card bg-decor relative flex flex-col gap-4 rounded-lg p-8 md:col-span-2 xl:col-span-2",
+    className: "bg-Blue-2 bg-decor md:col-span-2 xl:col-span-2",
   },
   {
     id: "children",
     icon: <School />,
-    className:
-      "bg-Blue-2 shadow-card flex flex-col gap-4 rounded-lg p-8 md:row-start-2 xl:col-start-3 xl:row-start-1",
+    className: "bg-Blue-2 md:row-start-2 xl:col-start-3 xl:row-start-1",
   },
   {
     id: "community",
     icon: <Users />,
     className:
-      "bg-Blue-2 text-grey-500 shadow-card flex flex-col gap-4 rounded-lg p-8 md:row-start-2 xl:col-start-4 xl:row-start-1",
+      "bg-Blue-2 text-grey-500 md:row-start-2 xl:col-start-4 xl:row-start-1",
   },
   {
     id: "adults",
     icon: <Briefcase />,
     className:
-      "bg-Orange-2 shadow-card flex flex-col gap-4 rounded-lg p-8 md:col-span-2 xl:col-start-1 xl:row-start-2",
+      "bg-Orange-2 md:col-span-2 xl:col-start-1 xl:row-start-2",
   },
   {
     id: "summary",
     icon: <Heart />,
     className:
-      "bg-Orange-2 shadow-card flex flex-col gap-4 rounded-lg p-8 md:col-span-2 xl:col-start-3 xl:row-start-2",
+      "bg-Orange-2 md:col-span-2 xl:col-start-3 xl:row-start-2",
   },
 ] as const;
 
@@ -162,7 +160,7 @@ export default function OurMission() {
   const mainTitle = getText("ourMission.title", t("ourMission.title"));
 
   return (
-    <section className="relative my-10 overflow-hidden">
+    <section className="relative my-12 overflow-hidden">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -171,7 +169,7 @@ export default function OurMission() {
         className="text-center"
       >
         <div className="relative inline-flex">
-          <h2 className="text-preset-2 font-semibold">
+          <h2 className="text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
             {mainTitle}
 
             {isAdmin && (
@@ -190,7 +188,7 @@ export default function OurMission() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.15 }}
-        className="mx-auto my-10 grid max-w-[375px] gap-8 px-4 md:max-w-full md:grid-cols-2 xl:grid-cols-4 xl:gap-y-6"
+        className="mx-auto my-10 grid w-full auto-rows-fr gap-5 px-3 md:grid-cols-2 md:gap-6 md:px-4 xl:grid-cols-4"
       >
         {cardsConfig.map((card) => {
           const titlePath = `ourMission.cards.${card.id}.title`;
@@ -202,7 +200,7 @@ export default function OurMission() {
             <motion.aside
               key={card.id}
               variants={cardVariants}
-              className={`${card.className} relative`}
+              className={`${card.className} group relative flex h-full flex-col gap-4 overflow-hidden rounded-3xl border border-slate-200/80 p-6 shadow-[0_12px_32px_rgba(15,23,42,0.08)] transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_20px_46px_rgba(15,23,42,0.13)] md:p-8`}
             >
               {isAdmin && (
                 <EditButton
@@ -212,15 +210,15 @@ export default function OurMission() {
                 />
               )}
 
-              <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-black bg-gray-100">
+              <div className="flex items-center gap-4 pr-10">
+                <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-white/70 bg-white/70 text-slate-800 shadow-sm">
                   {card.icon}
                 </div>
-                <div>
-                  <h3 className="text-preset-3 mt-5">
+                <div className="min-w-0">
+                  <h3 className="text-xl leading-tight font-semibold text-slate-950 md:text-2xl">
                     {isLoading ? "..." : getText(titlePath, t(titlePath))}
                   </h3>
-                  <p className="text-preset-5 mt-1 text-gray-400">
+                  <p className="mt-1 text-sm leading-6 font-semibold text-slate-500 md:text-base">
                     {isLoading
                       ? "..."
                       : getText(subtitlePath, t(subtitlePath))}
@@ -228,10 +226,10 @@ export default function OurMission() {
                 </div>
               </div>
 
-              <p className="text-preset-4">
+              <p className="text-base leading-7 font-semibold text-slate-800 md:text-lg md:leading-8">
                 {isLoading ? "..." : getText(leadPath, t(leadPath))}
               </p>
-              <p className="text-preset-5">
+              <p className="text-base leading-7 font-medium text-slate-600">
                 {isLoading ? "..." : getText(textPath, t(textPath))}
               </p>
             </motion.aside>

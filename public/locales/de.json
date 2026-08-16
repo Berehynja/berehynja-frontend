@@ -10,6 +10,32 @@
     "events": "Veranstaltungen",
     "contact": "Kontakt"
   },
+  "adminLogin": {
+    "panelTitle": "Sichere Website-Verwaltung",
+    "panelDescription": "Melden Sie sich an, um Inhalte, Programme, Veranstaltungen und weitere Bereiche von Berehynja zu verwalten.",
+    "securityNote": "Der Zugriff ist ausschließlich autorisierten Administratoren gestattet.",
+    "eyebrow": "Geschützter Bereich",
+    "title": "Administrator-Anmeldung",
+    "description": "Geben Sie die Zugangsdaten Ihres Administratorkontos ein.",
+    "email": "E-Mail-Adresse",
+    "emailPlaceholder": "admin@example.com",
+    "password": "Passwort",
+    "passwordPlaceholder": "Passwort eingeben",
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort ausblenden",
+    "submit": "Anmelden",
+    "submitting": "Anmeldung läuft...",
+    "backHome": "Zurück zur Startseite",
+    "success": "Sie wurden erfolgreich angemeldet.",
+    "errors": {
+      "required": "Geben Sie Ihre E-Mail-Adresse und Ihr Passwort ein.",
+      "invalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
+      "invalidCredentials": "E-Mail-Adresse oder Passwort ist falsch.",
+      "tooManyRequests": "Zu viele fehlgeschlagene Versuche. Bitte versuchen Sie es später erneut.",
+      "network": "Keine Verbindung zum Server. Überprüfen Sie Ihre Internetverbindung.",
+      "default": "Die Anmeldung ist fehlgeschlagen. Bitte versuchen Sie es erneut."
+    }
+  },
   "home": {
     "welcome": "Willkommen bei «Berehynja»!",
     "description": "«Berehynja» ist ein ukrainischer Raum in Deutschland, geschaffen für Kinder, Jugendliche und Erwachsene, die sich gezwungenermaßen fern von ihrem Zuhause wiedergefunden haben. Wir vereinen ukrainische Familien, helfen, die Sprache, Kultur und Traditionen zu bewahren und unterstützen jene, die den Weg der Anpassung und Integration in eine neue Umgebung gehen.",
