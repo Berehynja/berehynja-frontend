@@ -107,7 +107,7 @@ export const ProgramsSection = () => {
   if (loading) return <PageLoader visible />;
 
   return (
-    <section className="font-nunito mb-20 w-full md:p-4">
+    <section className="font-nunito w-full md:p-4">
       <div className="mb-12 flex items-center justify-between text-center">
         <h2 className="text-preset-2 font-nunito w-full text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl">
           {texts.sectionTitle[currentLang]}

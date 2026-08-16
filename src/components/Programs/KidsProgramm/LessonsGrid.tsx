@@ -101,7 +101,7 @@ export function LessonsGrid({
   return (
     <section
       aria-labelledby="all-programs-title"
-      className="font-nunito mb-25 w-full"
+      className="font-nunito w-full"
     >
       <PageLoader visible={isProcessing} />
 

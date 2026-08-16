@@ -210,7 +210,7 @@ export const Impressum = () => {
   };
 
   return (
-    <div className="font-nunito mx-auto w-full max-w-6xl px-3 pb-14 md:px-6 md:pb-20">
+    <div className="font-nunito mx-auto w-full max-w-6xl px-3 md:px-6 ">
       <PageLoader visible={isLoading} />
 
       <header className="flex flex-col items-center justify-center gap-6 py-8 md:flex-row md:gap-10 md:py-12">

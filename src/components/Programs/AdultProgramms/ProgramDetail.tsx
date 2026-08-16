@@ -106,7 +106,7 @@ export const ProgramDetail = () => {
   }
 
   return (
-    <div className="font-nunito w-full pb-20 text-left">
+    <div className="font-nunito w-full text-left">
       <PageLoader visible={isSaving} />
       <div className="mx-auto max-w-7xl px-4 pt-8">
         <Link

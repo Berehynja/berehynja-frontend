@@ -45,7 +45,7 @@ export const Layout = () => {
       <Header />
 
       <main className="font-nunito">
-        <div className="mx-auto flex w-full max-w-120 flex-col items-center justify-center px-3 md:max-w-5xl md:px-4 lg:max-w-7xl lg:px-8 xl:max-w-360 xl:px-10">
+        <div className="mx-auto flex w-full max-w-120 flex-col items-center justify-center px-3 pb-16 md:max-w-5xl md:px-4 md:pb-20 lg:max-w-7xl lg:px-8 xl:max-w-360 xl:px-10">
           <Suspense fallback={<PageLoader visible />}>
             <Outlet />
           </Suspense>

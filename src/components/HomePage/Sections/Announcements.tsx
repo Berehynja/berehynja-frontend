@@ -93,7 +93,7 @@ export const Announcements = () => {
   );
 
   return (
-    <section className="max-w-full px-4 mb-20 font-nunito">
+    <section className="max-w-full px-4 font-nunito">
       <div className="mb-12 flex items-center text-center justify-between">
         <h2 className="text-3xl md:text-4xl w-full text-preset-2 font-nunito text-gray-900">
           {texts.sectionTitle[currentLang]}

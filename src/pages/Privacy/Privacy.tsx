@@ -210,7 +210,7 @@ export const Privacy = () => {
   const dateLocale = currentLang === "de" ? "de-DE" : currentLang === "en" ? "en-GB" : "uk-UA";
 
   return (
-    <div className="font-nunito mx-auto w-full max-w-7xl px-3 pb-16 md:px-6 md:pb-24">
+    <div className="font-nunito mx-auto w-full max-w-7xl px-3 md:px-6 ">
       <header className="flex flex-col items-start justify-center gap-6 border-b border-slate-200 py-8 md:flex-row md:gap-10 md:py-12">
         <div className="flex max-w-full shrink-0 flex-col items-center justify-center">
           <h1 className="pb-1 text-center text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
