@@ -50,9 +50,10 @@ export const LanguageSwitcher = ({
     <div
       tabIndex={0}
       onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) setIsOpen(false);
+        if (!event.currentTarget.contains(event.relatedTarget))
+          setIsOpen(false);
       }}
-      className={`font-nunito flex w-26 flex-col gap-3 overflow-hidden rounded-xl border px-3 py-2 shadow-sm transition-all duration-300 lg:absolute lg:top-0 lg:right-0 lg:w-23 lg:rounded-sm lg:border-transparent lg:bg-white lg:px-2.5 lg:py-1.5 lg:text-slate-900 lg:shadow-none ${
+      className={`font-nunito flex w-26 flex-col gap-3 overflow-hidden rounded-xl border px-3 py-2 shadow-sm transition-[max-height] duration-300 lg:absolute lg:top-0 lg:right-0 lg:w-23 lg:rounded-sm lg:border-transparent lg:bg-white lg:px-2.5 lg:py-1.5 lg:text-slate-900 lg:shadow-none ${
         isOpen ? "max-h-40 lg:max-h-45" : "max-h-10 lg:max-h-7.5"
       } ${
         isDark
@@ -70,19 +71,19 @@ export const LanguageSwitcher = ({
         className="group flex min-h-6 w-full cursor-pointer items-center justify-center font-semibold"
       >
         <Flag
-          className="mr-2 h-3.5 w-5 rounded-xs"
+          className="mr-2 h-3.5 w-5 shrink-0 -translate-y-px rounded-xs"
           countryCode={getCountryCode(currentLanguage)}
           svg
           alt=""
           aria-hidden="true"
         />
-        <span className="transition-colors group-hover:text-blue-400 lg:group-hover:text-blue-700">
+        <span className="group-hover:text-blue-400 lg:group-hover:text-blue-700">
           {currentLanguage}
         </span>
         <ChevronUp
           size={19}
           aria-hidden="true"
-          className={`ml-auto transition-all duration-200 group-hover:text-blue-400 lg:group-hover:text-blue-700 ${
+          className={`ml-auto transition-transform duration-200 group-hover:text-blue-400 lg:group-hover:text-blue-700 ${
             isOpen ? "rotate-0" : "rotate-180"
           }`}
         />
@@ -97,14 +98,14 @@ export const LanguageSwitcher = ({
             aria-label={t("common.changeLanguage", {
               defaultValue: `Change language to ${language}`,
             })}
-            className={`group flex min-h-7 w-full cursor-pointer items-center rounded-lg px-1 font-semibold transition-colors ${
+            className={`group flex min-h-7 w-full cursor-pointer items-center rounded-lg px-1 font-semibold ${
               isDark
                 ? "hover:bg-white/10 hover:text-blue-200"
                 : "hover:bg-blue-50 hover:text-blue-700"
             } lg:hover:bg-blue-50 lg:hover:text-blue-700`}
           >
             <Flag
-              className="mr-2 h-3.5 w-5 rounded-xs"
+              className="mr-2 h-3.5 w-5 shrink-0 -translate-y-px rounded-xs"
               countryCode={getCountryCode(language)}
               svg
               alt=""

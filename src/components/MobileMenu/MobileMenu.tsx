@@ -59,10 +59,14 @@ export const MobileMenu = ({
     if (!mobMenuIsOpen) return;
 
     const previousOverflow = document.body.style.overflow;
-    previouslyFocusedElement.current = document.activeElement as HTMLElement | null;
+    previouslyFocusedElement.current =
+      document.activeElement as HTMLElement | null;
     document.body.style.overflow = "hidden";
 
-    const focusTimer = window.setTimeout(() => closeButtonRef.current?.focus(), 100);
+    const focusTimer = window.setTimeout(
+      () => closeButtonRef.current?.focus(),
+      100,
+    );
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -125,13 +129,11 @@ export const MobileMenu = ({
         aria-label={t("header.navigation", { defaultValue: "Main navigation" })}
         aria-hidden={!mobMenuIsOpen}
         inert={!mobMenuIsOpen}
-        className={`fixed inset-y-0 right-0 z-70 flex h-dvh w-[88vw] max-w-sm flex-col overflow-hidden border-l shadow-[-24px_0_70px_rgba(2,6,23,0.35)] transition-all duration-300 ease-out ${
+        className={`fixed inset-y-0 right-0 z-70 flex h-dvh w-[88vw] flex-col overflow-hidden border-l shadow-[-24px_0_70px_rgba(2,6,23,0.35)] transition-transform duration-300 ease-out min-[480px]:w-[70vw] min-[480px]:max-w-140 ${
           isDark
             ? "border-white/10 bg-[#0a192f] text-white"
             : "border-slate-200 bg-linear-to-br from-blue-50 via-white to-yellow-50 text-slate-900"
-        } ${
-          mobMenuIsOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        } ${mobMenuIsOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         <div className="h-1 shrink-0 bg-linear-to-r from-blue-500 to-yellow-400" />
 
@@ -161,7 +163,7 @@ export const MobileMenu = ({
             type="button"
             onClick={closeMenu}
             aria-label={t("common.close", { defaultValue: "Close menu" })}
-            className={`flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-xl border shadow-sm transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 ${
+            className={`flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-xl border shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 ${
               isDark
                 ? "border-white/10 bg-white/5 text-slate-300 hover:border-blue-400/40 hover:bg-blue-500/15 hover:text-white"
                 : "border-slate-200 bg-white/80 text-slate-600 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
@@ -205,17 +207,17 @@ export const MobileMenu = ({
                   defaultValue: "Switch menu theme",
                 })}
                 onClick={toggleTheme}
-                className={`relative h-7 w-13 cursor-pointer rounded-full border transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 ${
+                className={`relative h-7 w-13 cursor-pointer rounded-full border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 ${
                   isDark
                     ? "border-blue-400/40 bg-blue-500/30"
                     : "border-slate-300 bg-slate-200"
                 }`}
               >
                 <span
-                  className={`absolute top-0.5 size-5.5 rounded-full shadow-md transition-all duration-300 ${
+                  className={`absolute top-0.5 left-0.5 size-5.5 rounded-full shadow-md transition-transform duration-200 ease-out ${
                     isDark
-                      ? "left-6.5 bg-blue-300"
-                      : "left-0.5 bg-white"
+                      ? "translate-x-6.5 bg-blue-300"
+                      : "translate-x-0 bg-white"
                   }`}
                 />
               </button>
