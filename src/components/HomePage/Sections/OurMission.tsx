@@ -1,5 +1,5 @@
 import { Briefcase, Heart, HouseHeart, School, Users } from "lucide-react";
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -10,27 +10,6 @@ import EditButton from "../../Buttons/EditButton";
 import type { LangKey } from "../../../types/types";
 
 const EDITOR_LANGUAGES: LangKey[] = ["ua", "de", "en"];
-
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.25 },
-  },
-};
-
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 50,
-      damping: 20,
-    },
-  },
-};
 
 const cardsConfig = [
   {
@@ -53,13 +32,13 @@ const cardsConfig = [
     id: "adults",
     icon: <Briefcase />,
     className:
-      "bg-Orange-2 md:col-span-2 xl:col-start-1 xl:row-start-2",
+      "bg-Orange-2 self-start md:col-span-2 xl:col-start-1 xl:row-start-2",
   },
   {
     id: "summary",
     icon: <Heart />,
     className:
-      "bg-Orange-2 md:col-span-2 xl:col-start-3 xl:row-start-2",
+      "bg-Orange-2 self-start md:col-span-2 xl:col-start-3 xl:row-start-2",
   },
 ] as const;
 
@@ -103,6 +82,9 @@ export default function OurMission() {
   }, [i18n]);
 
   const editorData = useMemo(() => {
+    // Rebuild editor values after the additional translation files are loaded.
+    void translationsVersion;
+
     const getEditorText = (path: string): LocalizedText => {
       const storedValue = getNestedValue(data, path);
       const storedTranslations =
@@ -160,12 +142,12 @@ export default function OurMission() {
   const mainTitle = getText("ourMission.title", t("ourMission.title"));
 
   return (
-    <section className="relative my-12 overflow-hidden">
+    <section className="relative w-full overflow-visible">
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.35, ease: "easeOut" }}
         className="text-center"
       >
         <div className="relative inline-flex">
@@ -184,11 +166,11 @@ export default function OurMission() {
       </motion.div>
 
       <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.15 }}
-        className="mx-auto my-10 grid w-full auto-rows-fr gap-5 px-3 md:grid-cols-2 md:gap-6 md:px-4 xl:grid-cols-4"
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="mx-auto mt-10 grid w-full gap-5 px-3 md:grid-cols-2 md:gap-6 md:px-4 xl:grid-cols-4"
       >
         {cardsConfig.map((card) => {
           const titlePath = `ourMission.cards.${card.id}.title`;
@@ -197,10 +179,9 @@ export default function OurMission() {
           const textPath = `ourMission.cards.${card.id}.text`;
 
           return (
-            <motion.aside
+            <aside
               key={card.id}
-              variants={cardVariants}
-              className={`${card.className} group relative flex h-full flex-col gap-4 overflow-hidden rounded-3xl border border-slate-200/80 p-6 shadow-[0_12px_32px_rgba(15,23,42,0.08)] transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_20px_46px_rgba(15,23,42,0.13)] md:p-8`}
+              className={`${card.className} group relative flex flex-col gap-4 overflow-hidden rounded-3xl border border-slate-200/80 p-6 shadow-[0_8px_24px_rgba(15,23,42,0.08)] transition-all duration-500 ease-out hover:z-10 hover:-translate-y-2 hover:shadow-[0_26px_64px_rgba(15,23,42,0.22)] md:p-8`}
             >
               {isAdmin && (
                 <EditButton
@@ -232,7 +213,7 @@ export default function OurMission() {
               <p className="text-base leading-7 font-medium text-slate-600">
                 {isLoading ? "..." : getText(textPath, t(textPath))}
               </p>
-            </motion.aside>
+            </aside>
           );
         })}
       </motion.div>

@@ -1,5 +1,5 @@
 import { BookOpen, Calendar, Heart, Users } from "lucide-react";
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -37,27 +37,6 @@ const featuresConfig = [
     iconColor: "text-Red",
   },
 ] as const;
-
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2 },
-  },
-};
-
-const cardVariants: Variants = {
-  hidden: { opacity: 0, x: 100 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      type: "spring",
-      stiffness: 50,
-      damping: 20,
-    },
-  },
-};
 
 type LocalizedText = Record<LangKey, string>;
 
@@ -99,6 +78,9 @@ export function HowWeHelp() {
   }, [i18n]);
 
   const editorData = useMemo(() => {
+    // Rebuild editor values after the additional translation files are loaded.
+    void translationsVersion;
+
     const getEditorText = (path: string): LocalizedText => {
       const storedValue = getNestedValue(data, path);
       const storedTranslations =
@@ -155,13 +137,13 @@ export function HowWeHelp() {
   const mainTitle = getText("howWeHelp.title", t("howWeHelp.title"));
 
   return (
-    <section className="relative my-10 overflow-hidden">
-      <div className="relative mx-auto w-full px-3 py-8 md:px-4 md:py-10">
+    <section className="relative w-full overflow-visible">
+      <div className="relative mx-auto w-full px-3 md:px-4">
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
           className="relative text-center"
         >
           <div className="relative inline-flex">
@@ -180,10 +162,10 @@ export function HowWeHelp() {
         </motion.div>
 
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
           className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-4"
         >
           {featuresConfig.map((item) => {
@@ -191,10 +173,9 @@ export function HowWeHelp() {
             const descriptionPath = `howWeHelp.cards.${item.id}.description`;
 
             return (
-              <motion.div
+              <div
                 key={item.id}
-                variants={cardVariants}
-                className={`relative flex min-h-68 w-full flex-col overflow-hidden rounded-2xl border border-slate-200 border-t-4 bg-white p-6 pb-20 shadow-[0_12px_32px_rgba(15,23,42,0.08)] transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_20px_46px_rgba(15,23,42,0.13)] md:rounded-3xl md:p-7 md:pb-20 ${item.borderColor}`}
+                className={`relative flex min-h-68 w-full flex-col overflow-hidden rounded-2xl border border-slate-200 border-t-4 bg-white p-6 pb-20 shadow-[0_8px_24px_rgba(15,23,42,0.08)] transition-all duration-500 ease-out hover:z-10 hover:-translate-y-2 hover:shadow-[0_26px_64px_rgba(15,23,42,0.22)] md:rounded-3xl md:p-7 md:pb-20 ${item.borderColor}`}
               >
                 <h3 className="pr-10 text-xl leading-tight font-semibold text-slate-950 md:text-2xl">
                   {isLoading ? "..." : getText(titlePath, t(titlePath))}
@@ -218,7 +199,7 @@ export function HowWeHelp() {
                     size={36}
                   />
                 )}
-              </motion.div>
+              </div>
             );
           })}
         </motion.div>

@@ -22,7 +22,10 @@ import toast from "react-hot-toast";
 import { useAuth } from "../../components/AuthProvider/useAuth";
 import { PageLoader } from "../../components/ui/PageLoader";
 import { subscribeToContacts } from "../../services/contactService";
-import { saveImpressum, subscribeToImpressum } from "../../services/impressumService";
+import {
+  saveImpressum,
+  subscribeToImpressum,
+} from "../../services/impressumService";
 import type { ContactData } from "../../types/contactData";
 import type { ImpressumData } from "../../types/impressumData";
 import type { LangKey } from "../../types/types";
@@ -37,7 +40,8 @@ const INITIAL_DATA: ImpressumData = {
   website: "",
 };
 
-type EditableBlock = "header" | "representative" | "contact" | "register" | "responsible";
+type EditableBlock =
+  "header" | "representative" | "contact" | "register" | "responsible";
 
 const UI_TEXT = {
   ua: {
@@ -85,10 +89,13 @@ export const Impressum = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [legalData, setLegalData] = useState<ImpressumData>(INITIAL_DATA);
-  const [savedLegalData, setSavedLegalData] = useState<ImpressumData>(INITIAL_DATA);
+  const [savedLegalData, setSavedLegalData] =
+    useState<ImpressumData>(INITIAL_DATA);
   const [contacts, setContacts] = useState<ContactData | null>(null);
 
-  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split("-")[0].toLowerCase();
+  const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
+    .split("-")[0]
+    .toLowerCase();
   const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
     ? (detectedLanguage as LangKey)
     : "ua";
@@ -112,7 +119,9 @@ export const Impressum = () => {
     };
   }, []);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = event.target;
     setLegalData((previous) => ({ ...previous, [name]: value }));
   };
@@ -205,7 +214,6 @@ export const Impressum = () => {
       <PageLoader visible={isLoading} />
 
       <header className="flex flex-col items-center justify-center gap-6 py-8 md:flex-row md:gap-10 md:py-12">
-        {/* Назва сторінки */}
         <div className="flex max-w-full shrink-0 flex-col items-center justify-center">
           <h1 className="pb-1 text-center text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
             Impressum
@@ -217,33 +225,36 @@ export const Impressum = () => {
           />
         </div>
 
-        {/* Опис та його кнопка редагування */}
-        <div className="flex w-full max-w-4xl items-start gap-3 px-2 md:px-0">
-          <div className="min-w-0 flex-1">
-            {editingBlock === "header" ? (
-              <textarea
-                name="headerDescription"
-                value={legalData.headerDescription}
-                onChange={handleChange}
-                rows={4}
-                className={`${inputClassName} min-h-32 resize-y`}
-                placeholder={text.headerPlaceholder}
-              />
-            ) : (
-              <p className="text-center text-base leading-6 font-medium whitespace-pre-line text-slate-600 md:text-left md:text-lg">
-                {legalData.headerDescription}
-              </p>
-            )}
-          </div>
+        <div className="flex w-full min-w-0 max-w-4xl items-start gap-3">
+          {editingBlock === "header" ? (
+            <textarea
+              name="headerDescription"
+              value={legalData.headerDescription}
+              onChange={handleChange}
+              rows={3}
+              className={`${inputClassName} resize-y`}
+              placeholder={text.headerPlaceholder}
+            />
+          ) : (
+            <p className="min-w-0 flex-1 text-center text-base leading-7 font-medium whitespace-pre-line text-slate-600 md:text-left md:text-lg md:leading-8">
+              {legalData.headerDescription}
+            </p>
+          )}
 
-          <div className="shrink-0">{renderEditActions("header")}</div>
+          {renderEditActions("header")}
         </div>
       </header>
 
       <main className="space-y-10 md:space-y-12">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-          <LegalCard icon={Building2} title="Angaben gemäß § 5 TMG" accent="blue">
-            <p className="text-lg font-semibold text-slate-950 md:text-xl">Berehynja</p>
+          <LegalCard
+            icon={Building2}
+            title="Angaben gemäß § 5 TMG"
+            accent="blue"
+          >
+            <p className="text-lg font-semibold text-slate-950 md:text-xl">
+              Berehynja e.V.
+            </p>
             <div className="mt-4 flex items-start gap-3 text-slate-600">
               <MapPin size={18} className="mt-0.5 shrink-0 text-slate-400" />
               <address className="text-base leading-7 not-italic md:text-lg md:leading-8">
@@ -310,7 +321,7 @@ export const Impressum = () => {
                 <Mail size={18} className="mt-0.5 shrink-0 text-slate-400" />
                 <a
                   href={`mailto:${contacts?.email || "bereginia.badoeynhausen@gmail.com"}`}
-                  className="font-medium break-all transition hover:text-blue-700"
+                  className="break-all font-medium transition hover:text-blue-700"
                 >
                   {contacts?.email || "bereginia.badoeynhausen@gmail.com"}
                 </a>
@@ -332,7 +343,7 @@ export const Impressum = () => {
                     href={legalData.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="pt-3 font-medium break-all text-blue-700 transition hover:underline"
+                    className="break-all pt-3 font-medium text-blue-700 transition hover:underline"
                   >
                     {legalData.website}
                   </a>
@@ -389,7 +400,7 @@ export const Impressum = () => {
           <Info
             size={130}
             aria-hidden="true"
-            className="pointer-events-none absolute -top-4 -right-4 text-slate-900/[0.03]"
+            className="pointer-events-none absolute -top-4 -right-4 text-slate-900/3"
           />
 
           <div className="relative">
@@ -426,23 +437,26 @@ export const Impressum = () => {
 
           <div className="mt-7 grid grid-cols-1 gap-8 lg:grid-cols-3">
             <DisclaimerItem icon={ShieldCheck} title="Haftung für Inhalte">
-              Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten
-              nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als
-              Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde
+              Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene
+              Inhalte auf diesen Seiten nach den allgemeinen Gesetzen
+              verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter
+              jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde
               Informationen zu überwachen.
             </DisclaimerItem>
 
             <DisclaimerItem icon={LinkIcon} title="Haftung für Links">
-              Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir
-              keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr
-              übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter
+              Unser Angebot enthält Links zu externen Webseiten Dritter, auf
+              deren Inhalte wir keinen Einfluss haben. Deshalb können wir für
+              diese fremden Inhalte auch keine Gewähr übernehmen. Für die
+              Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter
               verantwortlich.
             </DisclaimerItem>
 
             <DisclaimerItem icon={Copyright} title="Urheberrecht">
-              Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten
-              unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung
-              und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der
+              Die durch die Seitenbetreiber erstellten Inhalte und Werke auf
+              diesen Seiten unterliegen dem deutschen Urheberrecht. Die
+              Vervielfältigung, Bearbeitung, Verbreitung und jede Art der
+              Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der
               schriftlichen Zustimmung.
             </DisclaimerItem>
           </div>
@@ -460,12 +474,18 @@ interface LegalCardProps {
   children: ReactNode;
 }
 
-const LegalCard = ({ icon: Icon, title, accent, action, children }: LegalCardProps) => {
+const LegalCard = ({
+  icon: Icon,
+  title,
+  accent,
+  action,
+  children,
+}: LegalCardProps) => {
   const isYellow = accent === "yellow";
 
   return (
     <section
-      className={`h-full rounded-3xl border border-t-4 border-slate-200 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.06)] md:p-7 ${
+      className={`h-full rounded-3xl border border-slate-200 border-t-4 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.06)] md:p-7 ${
         isYellow ? "border-t-yellow-400" : "border-t-blue-600"
       }`}
     >
@@ -473,7 +493,9 @@ const LegalCard = ({ icon: Icon, title, accent, action, children }: LegalCardPro
         <div className="flex min-w-0 items-center gap-3">
           <div
             className={`flex size-11 shrink-0 items-center justify-center rounded-xl ${
-              isYellow ? "bg-yellow-50 text-amber-600" : "bg-blue-50 text-blue-600"
+              isYellow
+                ? "bg-yellow-50 text-amber-600"
+                : "bg-blue-50 text-blue-600"
             }`}
           >
             <Icon size={20} />
@@ -487,7 +509,9 @@ const LegalCard = ({ icon: Icon, title, accent, action, children }: LegalCardPro
         {action}
       </div>
 
-      <div className="text-base leading-7 md:pl-14 md:text-lg md:leading-8">{children}</div>
+      <div className="text-base leading-7 md:pl-14 md:text-lg md:leading-8">
+        {children}
+      </div>
     </section>
   );
 };
@@ -520,12 +544,18 @@ interface DisclaimerItemProps {
   children: ReactNode;
 }
 
-const DisclaimerItem = ({ icon: Icon, title, children }: DisclaimerItemProps) => (
+const DisclaimerItem = ({
+  icon: Icon,
+  title,
+  children,
+}: DisclaimerItemProps) => (
   <article>
     <h3 className="mb-3 flex items-center gap-2 text-base font-semibold text-slate-900 md:text-lg">
       <Icon size={19} className="shrink-0 text-blue-600" />
       {title}
     </h3>
-    <p className="text-base leading-7 text-slate-600 md:text-lg md:leading-8">{children}</p>
+    <p className="text-base leading-7 text-slate-600 md:text-lg md:leading-8">
+      {children}
+    </p>
   </article>
 );
