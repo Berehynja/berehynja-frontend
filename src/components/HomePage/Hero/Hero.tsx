@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, Heart, UserPlus } from "lucide-react";
 
@@ -11,25 +11,29 @@ import { useAuth } from "../../AuthProvider/useAuth";
 import EditButton from "../../Buttons/EditButton";
 import { PageLoader } from "../../ui/PageLoader";
 
-const HERO_BANNER_CACHE_KEY = "berehynia-hero-banner";
-const HERO_MOBILE_BANNER_CACHE_KEY = "berehynia-hero-mobile-banner";
-
-const getInitialBanner = (cacheKey: string): string | null => {
-  if (typeof window === "undefined") return null;
-
-  try {
-    return window.localStorage.getItem(cacheKey);
-  } catch {
-    return null;
-  }
-};
+interface HeroMediaData {
+  bannerImage?: string;
+  bannerImageMobile?: string;
+  mobileBannerImage?: string;
+}
 
 const getHeroImageUrl = (url: string, width: number) =>
-  optimizeCloudinaryImage(url, `f_auto,q_auto:good,c_limit,w_${width}`);
+  optimizeCloudinaryImage(url, `c_limit,w_${width}/f_auto/q_auto:good`);
 
 const getHeroSrcSet = (url: string) =>
   [640, 960, 1280, 1600, 1920]
     .map((width) => `${getHeroImageUrl(url, width)} ${width}w`)
+    .join(", ");
+
+const getHeroMobileImageUrl = (url: string, width: number) =>
+  optimizeCloudinaryImage(
+    url,
+    `c_pad,g_center,b_auto,ar_1:2,w_${width}/f_auto/q_auto:good`,
+  );
+
+const getHeroMobileSrcSet = (url: string) =>
+  [480, 640, 768, 960]
+    .map((width) => `${getHeroMobileImageUrl(url, width)} ${width}w`)
     .join(", ");
 
 export const Hero = () => {
@@ -40,134 +44,55 @@ export const Hero = () => {
   const [isDonationOpen, setIsDonationOpen] = useState(false);
   const [isJoinOpen, setIsJoinOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [displayedBanner, setDisplayedBanner] = useState(() =>
-    getInitialBanner(HERO_BANNER_CACHE_KEY),
+  const [isMobileViewport, setIsMobileViewport] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(max-width: 767px)").matches
+      : false,
   );
-  const [displayedMobileBanner, setDisplayedMobileBanner] = useState(() =>
-    getInitialBanner(HERO_MOBILE_BANNER_CACHE_KEY),
-  );
-  const [nextBanner, setNextBanner] = useState<string | null>(null);
-  const [nextMobileBanner, setNextMobileBanner] = useState<string | null>(null);
-  const [isNextBannerVisible, setIsNextBannerVisible] = useState(false);
-  const [isPageReady, setIsPageReady] = useState(false);
+  const [isBannerReady, setIsBannerReady] = useState(false);
   const [hasLoadingTimedOut, setHasLoadingTimedOut] = useState(false);
-  const transitionTimeoutRef = useRef<number | null>(null);
 
   const title = getText("hero.title", t("home.welcome"));
   const description = getText("hero.description", t("home.description"));
 
-  const currentBanner =
-    (data?.hero as Record<string, string>)?.bannerImage?.trim() || null;
+  const heroMedia = (data?.hero ?? {}) as HeroMediaData;
+
+  const currentBanner = heroMedia.bannerImage?.trim() || null;
   const currentMobileBanner =
-    (data?.hero as Record<string, string>)?.bannerImageMobile?.trim() ||
+    heroMedia.bannerImageMobile?.trim() ||
+    heroMedia.mobileBannerImage?.trim() ||
     currentBanner;
 
-  useEffect(() => {
-    if (isLoading) return;
-
-    if (!currentBanner) {
-      setIsPageReady(true);
-      return;
-    }
-
-    if (
-      currentBanner === displayedBanner &&
-      currentMobileBanner === displayedMobileBanner
-    ) {
-      return;
-    }
-
-    if (transitionTimeoutRef.current !== null) {
-      window.clearTimeout(transitionTimeoutRef.current);
-      transitionTimeoutRef.current = null;
-    }
-
-    setIsNextBannerVisible(false);
-    setNextBanner(currentBanner);
-    setNextMobileBanner(currentMobileBanner);
-  }, [
-    currentBanner,
-    currentMobileBanner,
-    displayedBanner,
-    displayedMobileBanner,
-    isLoading,
-  ]);
+  const activeBanner = isMobileViewport
+    ? currentMobileBanner
+    : currentBanner;
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const handleViewportChange = () => setIsMobileViewport(mediaQuery.matches);
+
+    handleViewportChange();
+    mediaQuery.addEventListener("change", handleViewportChange);
+
+    return () =>
+      mediaQuery.removeEventListener("change", handleViewportChange);
+  }, []);
+
+  useEffect(() => {
+    setIsBannerReady(!activeBanner);
+    setHasLoadingTimedOut(false);
+
+    if (!activeBanner) return;
+
     const safetyTimeoutId = window.setTimeout(() => {
       setHasLoadingTimedOut(true);
     }, 8000);
 
     return () => window.clearTimeout(safetyTimeoutId);
-  }, []);
+  }, [activeBanner]);
 
-  useEffect(() => {
-    return () => {
-      if (transitionTimeoutRef.current !== null) {
-        window.clearTimeout(transitionTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  const cacheBanner = (cacheKey: string, bannerUrl: string | null) => {
-    try {
-      if (bannerUrl) {
-        window.localStorage.setItem(cacheKey, bannerUrl);
-      } else {
-        window.localStorage.removeItem(cacheKey);
-      }
-    } catch {
-      // Кешування є лише додатковою оптимізацією.
-    }
-  };
-
-  const handleDisplayedBannerReady = () => {
-    setIsPageReady(true);
-  };
-
-  const handleNextBannerLoad = () => {
-    if (!nextBanner) return;
-
-    if (!displayedBanner) {
-      setDisplayedBanner(nextBanner);
-      setDisplayedMobileBanner(nextMobileBanner || nextBanner);
-      cacheBanner(HERO_BANNER_CACHE_KEY, nextBanner);
-      cacheBanner(
-        HERO_MOBILE_BANNER_CACHE_KEY,
-        nextMobileBanner || nextBanner,
-      );
-      setNextBanner(null);
-      setNextMobileBanner(null);
-      setIsPageReady(true);
-      return;
-    }
-
-    setIsPageReady(true);
-    window.requestAnimationFrame(() => setIsNextBannerVisible(true));
-
-    transitionTimeoutRef.current = window.setTimeout(() => {
-      setDisplayedBanner(nextBanner);
-      setDisplayedMobileBanner(nextMobileBanner || nextBanner);
-      cacheBanner(HERO_BANNER_CACHE_KEY, nextBanner);
-      cacheBanner(
-        HERO_MOBILE_BANNER_CACHE_KEY,
-        nextMobileBanner || nextBanner,
-      );
-      setNextBanner(null);
-      setNextMobileBanner(null);
-      setIsNextBannerVisible(false);
-      transitionTimeoutRef.current = null;
-    }, 500);
-  };
-
-  const handleNextBannerError = () => {
-    setNextBanner(null);
-    setNextMobileBanner(null);
-    setIsNextBannerVisible(false);
-    setIsPageReady(true);
-  };
-
-  const isHeroReady = (isPageReady && !isLoading) || hasLoadingTimedOut;
+  const isHeroReady =
+    !isLoading && (isBannerReady || hasLoadingTimedOut || !activeBanner);
 
   const heroFields: FieldConfig[] = [
     {
@@ -182,7 +107,7 @@ export const Hero = () => {
         defaultValue: "Mobile banner",
       }),
       type: "image",
-      mediaCategory: "banners",
+      mediaCategory: "mobileBanners",
     },
     {
       key: "title",
@@ -201,60 +126,31 @@ export const Hero = () => {
       <PageLoader visible={!isHeroReady} />
 
       <section className="relative isolate w-full overflow-hidden rounded-b-3xl bg-slate-950 text-white md:min-h-170">
-        {displayedBanner && (
-          <picture>
-            <source
-              media="(max-width: 767px)"
-              srcSet={getHeroSrcSet(
-                displayedMobileBanner || displayedBanner,
-              )}
-              sizes="100vw"
-            />
-            <img
-              src={getHeroImageUrl(displayedBanner, 1280)}
-              srcSet={getHeroSrcSet(displayedBanner)}
-              sizes="100vw"
-              alt=""
-              aria-hidden="true"
-              width={1920}
-              height={1080}
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-              onLoad={handleDisplayedBannerReady}
-              onError={handleDisplayedBannerReady}
-              className="absolute inset-0 h-full w-full object-cover object-center"
-            />
-          </picture>
-        )}
-
-        {nextBanner && (
-          <picture>
-            <source
-              media="(max-width: 767px)"
-              srcSet={getHeroSrcSet(nextMobileBanner || nextBanner)}
-              sizes="100vw"
-            />
-            <img
-              src={getHeroImageUrl(nextBanner, 1280)}
-              srcSet={getHeroSrcSet(nextBanner)}
-              sizes="100vw"
-              alt=""
-              aria-hidden="true"
-              width={1920}
-              height={1080}
-              loading="eager"
-              fetchPriority={displayedBanner ? "auto" : "high"}
-              decoding="async"
-              onLoad={handleNextBannerLoad}
-              onError={handleNextBannerError}
-              className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-500 ${
-                isNextBannerVisible || !displayedBanner
-                  ? "opacity-100"
-                  : "opacity-0"
-              }`}
-            />
-          </picture>
+        {activeBanner && (
+          <img
+            key={`${isMobileViewport ? "mobile" : "desktop"}-${activeBanner}`}
+            src={
+              isMobileViewport
+                ? getHeroMobileImageUrl(activeBanner, 768)
+                : getHeroImageUrl(activeBanner, 1280)
+            }
+            srcSet={
+              isMobileViewport
+                ? getHeroMobileSrcSet(activeBanner)
+                : getHeroSrcSet(activeBanner)
+            }
+            sizes="100vw"
+            alt=""
+            aria-hidden="true"
+            width={isMobileViewport ? 960 : 1920}
+            height={isMobileViewport ? 1920 : 1080}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            onLoad={() => setIsBannerReady(true)}
+            onError={() => setIsBannerReady(true)}
+            className="absolute inset-0 h-full w-full object-cover object-center"
+          />
         )}
 
         <div

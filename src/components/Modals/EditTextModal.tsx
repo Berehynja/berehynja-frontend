@@ -57,7 +57,92 @@ const LANGUAGES: Array<{ key: LangKey; label: string }> = [
 
 const MAX_IMAGE_SIZE = 12 * 1024 * 1024;
 
+const BANNER_OUTPUT: Partial<
+  Record<MediaCategory, { width: number; height: number; suffix: string }>
+> = {
+  banners: { width: 1600, height: 900, suffix: "desktop" },
+  mobileBanners: { width: 960, height: 1920, suffix: "mobile" },
+};
+
 const EMPTY_TEXT: MultilingualText = { ua: "", de: "", en: "" };
+
+const loadImageFile = (file: File): Promise<HTMLImageElement> =>
+  new Promise((resolve, reject) => {
+    const objectUrl = URL.createObjectURL(file);
+    const image = new Image();
+
+    image.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      resolve(image);
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error("Unable to read the selected image"));
+    };
+    image.src = objectUrl;
+  });
+
+const prepareBannerImage = async (
+  file: File,
+  category: MediaCategory,
+): Promise<File> => {
+  const output = BANNER_OUTPUT[category];
+  if (!output) return file;
+
+  const image = await loadImageFile(file);
+  const targetRatio = output.width / output.height;
+  const sourceRatio = image.naturalWidth / image.naturalHeight;
+
+  let sourceX = 0;
+  let sourceY = 0;
+  let sourceWidth = image.naturalWidth;
+  let sourceHeight = image.naturalHeight;
+
+  if (sourceRatio > targetRatio) {
+    sourceWidth = image.naturalHeight * targetRatio;
+    sourceX = (image.naturalWidth - sourceWidth) / 2;
+  } else if (sourceRatio < targetRatio) {
+    sourceHeight = image.naturalWidth / targetRatio;
+    sourceY = (image.naturalHeight - sourceHeight) / 2;
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = output.width;
+  canvas.height = output.height;
+
+  const context = canvas.getContext("2d");
+  if (!context) throw new Error("Canvas is not supported by this browser");
+
+  context.imageSmoothingEnabled = true;
+  context.imageSmoothingQuality = "high";
+  context.drawImage(
+    image,
+    sourceX,
+    sourceY,
+    sourceWidth,
+    sourceHeight,
+    0,
+    0,
+    output.width,
+    output.height,
+  );
+
+  const blob = await new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob(
+      (result) =>
+        result ? resolve(result) : reject(new Error("Image conversion failed")),
+      "image/jpeg",
+      0.92,
+    );
+  });
+
+  const baseName = file.name.replace(/\.[^.]+$/, "");
+
+  return new File([blob], `${baseName}-${output.suffix}.jpg`, {
+    type: "image/jpeg",
+    lastModified: Date.now(),
+  });
+};
 
 const getNestedValue = (
   object: Record<string, unknown> | null | undefined,
@@ -120,6 +205,7 @@ export const EditTextModal = ({
   const tr = (key: string) => t(`common.editTextModal.${key}`);
   const modalTitleId = useId();
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
+  const localPreviewUrls = useRef<Record<string, string>>({});
 
   const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
     .split("-")[0]
@@ -140,6 +226,11 @@ export const EditTextModal = ({
   const isBusy = isSaving || hasActiveUpload;
 
   const initializeForm = useCallback(() => {
+    Object.values(localPreviewUrls.current).forEach((url) =>
+      URL.revokeObjectURL(url),
+    );
+    localPreviewUrls.current = {};
+
     const nextTextData: Record<string, MultilingualText> = {};
     const nextImageData: Record<string, string> = {};
 
@@ -168,6 +259,14 @@ export const EditTextModal = ({
   useEffect(() => {
     if (isOpen) initializeForm();
   }, [initializeForm, isOpen]);
+
+  useEffect(
+    () => () => {
+      Object.values(localPreviewUrls.current).forEach((url) =>
+        URL.revokeObjectURL(url),
+      );
+    },
+  );
 
   useEffect(() => {
     if (!isOpen) return;
@@ -219,17 +318,46 @@ export const EditTextModal = ({
 
     setIsUploading((previous) => ({ ...previous, [fieldKey]: true }));
 
+    const previousImageUrl = imageData[fieldKey] ?? "";
+    let previewUrl = "";
+
     try {
+      const preparedFile = await prepareBannerImage(file, category);
+
+      previewUrl = URL.createObjectURL(preparedFile);
+
+      const previousPreviewUrl = localPreviewUrls.current[fieldKey];
+      if (previousPreviewUrl) URL.revokeObjectURL(previousPreviewUrl);
+
+      localPreviewUrls.current[fieldKey] = previewUrl;
+      setImageData((previous) => ({
+        ...previous,
+        [fieldKey]: previewUrl,
+      }));
+
       const folderName = `${documentName}-${sectionName}`;
-      const response = await uploadMedia(file, category, folderName);
+      const response = await uploadMedia(preparedFile, category, folderName);
 
       setImageData((previous) => ({
         ...previous,
         [fieldKey]: response.url,
       }));
+
+      URL.revokeObjectURL(previewUrl);
+      delete localPreviewUrls.current[fieldKey];
       toast.success(tr("uploadSuccess"));
     } catch (error) {
       console.error("Section image upload error:", error);
+
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        delete localPreviewUrls.current[fieldKey];
+      }
+
+      setImageData((previous) => ({
+        ...previous,
+        [fieldKey]: previousImageUrl,
+      }));
       toast.error(tr("uploadError"));
     } finally {
       setIsUploading((previous) => ({ ...previous, [fieldKey]: false }));
@@ -401,6 +529,8 @@ export const EditTextModal = ({
                 const inputId = `${modalTitleId}-${field.key}`;
                 const fieldIsUploading = Boolean(isUploading[field.key]);
                 const imageUrl = imageData[field.key] ?? "";
+                const isMobileBanner =
+                  field.mediaCategory === "mobileBanners";
 
                 return (
                   <section key={field.key}>
@@ -429,12 +559,25 @@ export const EditTextModal = ({
 
                     {imageUrl ? (
                       <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-100">
-                        <div className="flex max-h-80 min-h-48 items-center justify-center overflow-hidden">
-                          <img
-                            src={imageUrl}
-                            alt=""
-                            className="max-h-80 w-full object-contain"
-                          />
+                        <div className="flex min-h-48 items-center justify-center overflow-hidden p-3">
+                          <div
+                            className={
+                              isMobileBanner
+                                ? "aspect-1/2 w-48 max-w-full overflow-hidden rounded-2xl bg-slate-200 shadow-sm"
+                                : "flex w-full items-center justify-center"
+                            }
+                          >
+                            <img
+                              key={imageUrl}
+                              src={imageUrl}
+                              alt=""
+                              className={
+                                isMobileBanner
+                                  ? "block h-full w-full object-contain"
+                                  : "block h-auto max-h-80 max-w-full object-contain"
+                              }
+                            />
+                          </div>
                         </div>
 
                         <div className="flex flex-wrap gap-2 border-t border-slate-200 bg-white p-3">

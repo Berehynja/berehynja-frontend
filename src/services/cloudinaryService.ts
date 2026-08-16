@@ -8,6 +8,7 @@ export type MediaCategory =
   | "programs"
   | "partners"
   | "banners"
+  | "mobileBanners"
   | "documents";
 
 interface UploadResponse {
@@ -15,29 +16,59 @@ interface UploadResponse {
   public_id: string;
 }
 
+interface UploadConfiguration {
+  preset: string;
+  folder: string;
+}
+
+const UPLOAD_CONFIG: Record<MediaCategory, UploadConfiguration> = {
+  events: {
+    preset: "event_photos",
+    folder: "events",
+  },
+  team: {
+    preset: "team_photos",
+    folder: "team",
+  },
+  programs: {
+    preset: "program_photos",
+    folder: "programs",
+  },
+  partners: {
+    preset: "partner_photos",
+    folder: "partners",
+  },
+  banners: {
+    preset: "banner_photos",
+    folder: "banners",
+  },
+  mobileBanners: {
+    preset: "mobile_banner_photos",
+    folder: "banners/mobile",
+  },
+  documents: {
+    preset: "doc_preset",
+    folder: "documents",
+  },
+};
+
 export const uploadMedia = async (
   file: File,
   category: MediaCategory,
   subFolder?: string,
   resourceType: "image" | "raw" = "image",
 ): Promise<UploadResponse> => {
+  const configuration = UPLOAD_CONFIG[category];
   const formData = new FormData();
 
   formData.append("file", file);
+  formData.append("upload_preset", configuration.preset);
 
-  const presets: Record<MediaCategory, string> = {
-    events: "event_photos",
-    team: "team_photos",
-    programs: "program_photos",
-    partners: "partner_photos",
-    banners: "banner_photos",
-    documents: "doc_preset",
-  };
+  const folder = subFolder
+    ? `${configuration.folder}/${subFolder}`
+    : configuration.folder;
 
-  formData.append("upload_preset", presets[category]);
-
-  const path = subFolder ? `${category}/${subFolder}` : category;
-  formData.append("folder", path);
+  formData.append("folder", folder);
 
   const url = `${UPLOAD_BASE_URL}/${resourceType}/upload`;
 
@@ -68,8 +99,8 @@ export const uploadMedia = async (
 };
 
 /**
- * Додає трансформації до URL зображення Cloudinary.
- * Для звичайних або локальних URL повертає оригінальне значення.
+ * Adds delivery transformations only to Cloudinary image URLs.
+ * Local and third-party URLs are returned unchanged.
  */
 export const optimizeCloudinaryImage = (
   url: string,
