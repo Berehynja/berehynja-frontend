@@ -98,7 +98,7 @@ export const LanguageSwitcher = ({
             aria-label={t("common.changeLanguage", {
               defaultValue: `Change language to ${language}`,
             })}
-            className={`group flex min-h-7 w-full cursor-pointer items-center rounded-lg px-1 font-semibold ${
+            className={`group flex min-h-7 w-full cursor-pointer items-center rounded-lg font-semibold ${
               isDark
                 ? "hover:bg-white/10 hover:text-blue-200"
                 : "hover:bg-blue-50 hover:text-blue-700"
