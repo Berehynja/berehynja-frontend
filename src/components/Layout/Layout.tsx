@@ -1,5 +1,5 @@
 import { Suspense, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { Header } from "../Header/Header";
@@ -10,15 +10,34 @@ import { PageLoader } from "../ui/PageLoader";
 
 export const Layout = () => {
   const { i18n } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const currentLanguage = (
-      i18n.resolvedLanguage || i18n.language
-    ).split("-")[0];
+    const searchParams = new URLSearchParams(location.search);
+    const currentLanguage = (i18n.resolvedLanguage || i18n.language).split("-")[0];
+    const documentLanguage = currentLanguage === "ua" ? "uk" : currentLanguage;
 
-    document.documentElement.lang =
-      currentLanguage === "ua" ? "uk" : currentLanguage;
-  }, [i18n.language, i18n.resolvedLanguage]);
+    document.documentElement.lang = documentLanguage;
+
+    if (searchParams.get("lang") !== currentLanguage) {
+      searchParams.set("lang", currentLanguage);
+
+      navigate(
+        {
+          pathname: location.pathname,
+          search: `?${searchParams.toString()}`,
+        },
+        { replace: true },
+      );
+    }
+  }, [
+    location.pathname,
+    location.search,
+    i18n.language,
+    i18n.resolvedLanguage,
+    navigate,
+  ]);
 
   return (
     <div className="layout">

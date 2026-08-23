@@ -108,7 +108,7 @@ export const Announcements = () => {
             <>
               <div className="relative h-64 overflow-hidden">
                 <img src={nextEvent.imageBanner} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" alt="" />
-                <div className="absolute top-6 left-6 flex flex-col items-center rounded-2xl bg-white/95 p-3 shadow-xl backdrop-blur-sm min-w-[70px]">
+                <div className="absolute top-6 left-6 flex flex-col items-center rounded-2xl bg-white/95 p-3 shadow-xl backdrop-blur-sm min-w-17.5">
                   <span className="text-blue-600 font-bold uppercase text-[10px] tracking-widest">
                     {new Date(nextEvent.date).toLocaleDateString(dateLocale, { month: 'short' })}
                   </span>

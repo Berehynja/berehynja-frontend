@@ -19,9 +19,9 @@ i18next
     },
 
     detection: {
-      order: ["path", "localStorage"],
-      lookupFromPathIndex: 0,
+      order: ["querystring", "localStorage"],
       caches: ["localStorage"],
+      lookupQuerystring: "lang",
     },
 
     interpolation: {
