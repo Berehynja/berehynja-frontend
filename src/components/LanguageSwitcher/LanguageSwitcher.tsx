@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ChevronUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Flag from "react-country-flag";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import type { MenuTheme } from "../Header/HeaderNav";
 
@@ -11,15 +11,17 @@ interface LanguageSwitcherProps {
 }
 
 const LANGUAGES = ["UA", "EN", "DE"];
+const SUPPORTED_LANGUAGES = ["ua", "en", "de"];
 
 export const LanguageSwitcher = ({
   variant = "light",
 }: LanguageSwitcherProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { i18n, t } = useTranslation();
+
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const { pathname } = useLocation();
+  const { pathname, search, hash } = useLocation();
+
   const isDark = variant === "dark";
 
   const currentLanguage = (i18n.resolvedLanguage || i18n.language)
@@ -35,12 +37,31 @@ export const LanguageSwitcher = ({
     setIsOpen(false);
 
     const nextLanguage = language.toLowerCase();
+
     void i18n.changeLanguage(nextLanguage);
 
-    const nextSearchParams = new URLSearchParams(searchParams);
-    nextSearchParams.set("lang", nextLanguage);
+    const segments = pathname.split("/").filter(Boolean);
 
-    navigate({ pathname, search: nextSearchParams.toString() });
+    if (
+      segments.length > 0 &&
+      SUPPORTED_LANGUAGES.includes(segments[0])
+    ) {
+      segments[0] = nextLanguage;
+    } else {
+      segments.unshift(nextLanguage);
+    }
+
+    // Удаляем старый ?lang=..., если он ещё остался в URL
+    const nextSearchParams = new URLSearchParams(search);
+    nextSearchParams.delete("lang");
+
+    const nextSearch = nextSearchParams.toString();
+
+    navigate({
+      pathname: `/${segments.join("/")}`,
+      search: nextSearch ? `?${nextSearch}` : "",
+      hash,
+    });
   };
 
   const getCountryCode = (language: string) =>
@@ -50,8 +71,9 @@ export const LanguageSwitcher = ({
     <div
       tabIndex={0}
       onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget))
+        if (!event.currentTarget.contains(event.relatedTarget)) {
           setIsOpen(false);
+        }
       }}
       className={`font-nunito flex w-26 flex-col gap-3 overflow-hidden rounded-xl border px-3 py-2 shadow-sm transition-[max-height] duration-300 lg:absolute lg:top-0 lg:right-0 lg:w-23 lg:rounded-sm lg:border-transparent lg:bg-white lg:px-2.5 lg:py-1.5 lg:text-slate-900 lg:shadow-none ${
         isOpen ? "max-h-40 lg:max-h-45" : "max-h-10 lg:max-h-7.5"
@@ -77,9 +99,11 @@ export const LanguageSwitcher = ({
           alt=""
           aria-hidden="true"
         />
+
         <span className="group-hover:text-blue-400 lg:group-hover:text-blue-700">
           {currentLanguage}
         </span>
+
         <ChevronUp
           size={19}
           aria-hidden="true"
@@ -111,6 +135,7 @@ export const LanguageSwitcher = ({
               alt=""
               aria-hidden="true"
             />
+
             <span>{language}</span>
           </button>
         ),
