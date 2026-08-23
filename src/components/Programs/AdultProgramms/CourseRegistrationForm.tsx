@@ -1,13 +1,16 @@
-import { useId, useState, type FormEvent } from "react";
-import { useTranslation } from "react-i18next";
 import {
   CheckCircle2,
+  CircleAlert,
   Mail,
   Phone,
   Send,
   ShieldCheck,
   User,
 } from "lucide-react";
+import { useId, useState, type FormEvent } from "react";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+
 export interface CourseRegistrationData {
   courseId: string;
   courseTitle: string;
@@ -16,11 +19,23 @@ export interface CourseRegistrationData {
   phone: string;
   acceptedPrivacy: boolean;
 }
+
 interface CourseRegistrationFormProps {
   courseId: string;
   courseTitle: string;
   onSubmit: (data: CourseRegistrationData) => void | Promise<void>;
 }
+
+interface RequiredIndicatorProps {
+  label: string;
+}
+
+const RequiredIndicator = ({ label }: RequiredIndicatorProps) => (
+  <span className="inline-flex shrink-0 items-center gap-1 text-xs font-semibold text-red-600">
+    {label}
+    <CircleAlert size={15} strokeWidth={2} aria-hidden="true" />
+  </span>
+);
 
 export const CourseRegistrationForm = ({
   courseId,
@@ -29,28 +44,53 @@ export const CourseRegistrationForm = ({
 }: CourseRegistrationFormProps) => {
   const { t } = useTranslation();
   const fieldId = useId();
+  const titleId = `${fieldId}-title`;
+  const nameErrorId = `${fieldId}-name-error`;
+  const emailErrorId = `${fieldId}-email-error`;
+  const phoneErrorId = `${fieldId}-phone-error`;
+  const privacyErrorId = `${fieldId}-privacy-error`;
+  const requiredLabel = t("common.editTextModal.required");
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
+  const [showValidationErrors, setShowValidationErrors] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState("");
-  const [privacyError, setPrivacyError] = useState("");
 
+  const isNameValid = fullName.trim().length >= 2;
+  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const isPhoneValid = phone.replace(/\D/g, "").length >= 6;
+  const isFormComplete =
+    isNameValid && isEmailValid && isPhoneValid && acceptedPrivacy;
+  const nameInvalid = showValidationErrors && !isNameValid;
+  const emailInvalid = showValidationErrors && !isEmailValid;
+  const phoneInvalid = showValidationErrors && !isPhoneValid;
+  const privacyInvalid = showValidationErrors && !acceptedPrivacy;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (isSubmitting) return;
 
-    if (!acceptedPrivacy) {
-      setPrivacyError(t("courseRegistration.privacyRequired"));
+    if (!isFormComplete) {
+      setShowValidationErrors(true);
+
+      const firstInvalidFieldId = !isNameValid
+        ? `${fieldId}-name`
+        : !isEmailValid
+          ? `${fieldId}-email`
+          : !isPhoneValid
+            ? `${fieldId}-phone`
+            : `${fieldId}-privacy`;
+
+      document.getElementById(firstInvalidFieldId)?.focus();
       return;
     }
 
     setIsSubmitting(true);
-    setSubmitError("");
-    setPrivacyError("");
+    setSubmitError(false);
 
     try {
       await onSubmit({
@@ -61,212 +101,287 @@ export const CourseRegistrationForm = ({
         phone: phone.trim(),
         acceptedPrivacy,
       });
-
       setIsSubmitted(true);
-      setFullName("");
-      setEmail("");
-      setPhone("");
-      setAcceptedPrivacy(false);
     } catch (error) {
       console.error("Course registration error:", error);
-      setSubmitError(t("courseRegistration.submitError"));
+      setSubmitError(true);
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const inputClassName =
+    "w-full rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 text-base text-slate-950 shadow-sm outline-none transition-[border-color,box-shadow] placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100";
+
   if (isSubmitted) {
     return (
-      <div
+      <section
         role="status"
-        className="font-nunito flex w-full flex-col items-center rounded-4xl border border-emerald-100 bg-emerald-50/70 px-6 py-12 text-center shadow-[0_20px_60px_rgba(15,23,42,0.08)] sm:px-10"
+        aria-live="polite"
+        className="font-nunito w-full overflow-hidden rounded-4xl border border-emerald-100 bg-white shadow-[0_28px_90px_rgba(15,23,42,0.24)]"
       >
-        <div className="mb-5 flex size-16 items-center justify-center rounded-full bg-white text-emerald-600 shadow-sm">
-          <CheckCircle2 size={34} aria-hidden="true" />
+        <div className="bg-linear-to-br from-emerald-500 to-emerald-700 px-6 py-8 text-center text-white md:px-10">
+          <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/25">
+            <CheckCircle2 size={34} aria-hidden="true" />
+          </div>
         </div>
-
-        <h3 className="text-2xl font-black text-slate-950">
-          {t("courseRegistration.successTitle")}
-        </h3>
-        <p className="mt-3 max-w-md leading-7 text-slate-700">
-          {t("courseRegistration.successText")}
-        </p>
-      </div>
+        <div className="px-6 py-10 text-center md:px-10 md:py-12">
+          <h2 className="text-2xl font-semibold tracking-tight text-slate-950 md:text-3xl">
+            {t("courseRegistration.successTitle")}
+          </h2>
+          <p className="mx-auto mt-4 max-w-md text-base leading-7 font-medium text-slate-600 md:text-lg md:leading-8">
+            {t("courseRegistration.successText")}
+          </p>
+        </div>
+      </section>
     );
   }
 
-  const inputClassName =
-    "w-full rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 text-base text-slate-950 shadow-sm outline-none transition placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100";
-
   return (
     <section
-      aria-labelledby={`${fieldId}-title`}
-      className="font-nunito relative w-full overflow-hidden rounded-4xl border border-slate-200 bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.12)] sm:p-8 lg:p-10"
+      aria-labelledby={titleId}
+      className="font-nunito w-full overflow-hidden rounded-4xl border border-white/70 bg-white shadow-[0_28px_90px_rgba(15,23,42,0.3)]"
     >
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-1.5 bg-linear-to-r from-blue-600 via-blue-500 to-yellow-400"
-      />
-
-      <div className="mb-8">
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-xs font-black tracking-[0.14em] text-blue-700 uppercase">
-          <ShieldCheck size={16} aria-hidden="true" />
-          {t("courseRegistration.eyebrow")}
+      <header className="bg-linear-to-br from-blue-600 to-blue-900 px-5 py-6 pr-16 text-white md:px-8 md:py-7 md:pr-20">
+        <div className="flex items-start gap-4">
+          <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-yellow-300 shadow-inner ring-1 ring-white/15 backdrop-blur-md">
+            <ShieldCheck size={25} aria-hidden="true" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs font-bold tracking-[0.14em] text-blue-100 uppercase">
+              {t("courseRegistration.eyebrow")}
+            </p>
+            <h2
+              id={titleId}
+              className="mt-1 text-2xl leading-tight font-semibold tracking-tight text-white md:text-3xl"
+            >
+              {t("courseRegistration.title")}
+            </h2>
+            <p className="mt-2 max-w-xl text-sm leading-6 font-medium text-blue-100 md:text-base md:leading-7">
+              {t("courseRegistration.description")}
+            </p>
+          </div>
         </div>
 
-        <h2
-          id={`${fieldId}-title`}
-          className="text-3xl leading-tight font-black text-slate-950 sm:text-4xl"
-        >
-          {t("courseRegistration.title")}
-        </h2>
+        <div className="mt-5 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-sm">
+          <span className="block text-[11px] font-bold tracking-[0.12em] text-blue-100 uppercase">
+            {t("courseRegistration.selectedCourse")}
+          </span>
+          <span className="mt-1 block text-base leading-6 font-semibold wrap-break-word text-white md:text-lg">
+            {courseTitle}
+          </span>
+        </div>
+      </header>
 
-        <p className="mt-4 max-w-2xl leading-7 text-slate-700">
-          {t("courseRegistration.description")}
-        </p>
-      </div>
+      <div className="bg-slate-50/60 p-5 md:p-8">
+        <form onSubmit={handleSubmit} noValidate className="space-y-5">
+          <div>
+            <div className="mb-2 flex items-center gap-1.5">
+              <label
+                htmlFor={`${fieldId}-name`}
+                className="text-sm font-semibold text-slate-800 md:text-base"
+              >
+                {t("courseRegistration.fullName")}
+              </label>
+              <RequiredIndicator label={requiredLabel} />
+            </div>
+            {nameInvalid && (
+              <p
+                id={nameErrorId}
+                role="alert"
+                className="mb-2 text-sm font-semibold text-red-700"
+              >
+                {t("courseRegistration.fullNameRequired", {
+                  defaultValue: "Вкажіть ім’я та прізвище.",
+                })}
+              </p>
+            )}
+            <div className="relative">
+              <User
+                size={19}
+                aria-hidden="true"
+                className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-500"
+              />
+              <input
+                id={`${fieldId}-name`}
+                type="text"
+                value={fullName}
+                onChange={(event) => setFullName(event.target.value)}
+                autoComplete="name"
+                required
+                minLength={2}
+                aria-invalid={nameInvalid}
+                aria-describedby={nameInvalid ? nameErrorId : undefined}
+                placeholder={t("courseRegistration.fullNamePlaceholder")}
+                className={`${inputClassName} ${nameInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""}`}
+              />
+            </div>
+          </div>
 
-      <div className="mb-7 rounded-2xl border border-blue-100 bg-blue-50/70 px-5 py-4">
-        <span className="block text-xs font-black tracking-[0.14em] text-blue-700 uppercase">
-          {t("courseRegistration.selectedCourse")}
-        </span>
-        <span className="mt-1 block text-lg font-bold text-slate-950">
-          {courseTitle}
-        </span>
-      </div>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            <div>
+              <div className="mb-2 flex items-center gap-1.5">
+                <label
+                  htmlFor={`${fieldId}-email`}
+                  className="text-sm font-semibold text-slate-800 md:text-base"
+                >
+                  {t("courseRegistration.email")}
+                </label>
+                <RequiredIndicator label={requiredLabel} />
+              </div>
+              {emailInvalid && (
+                <p
+                  id={emailErrorId}
+                  role="alert"
+                  className="mb-2 text-sm font-semibold text-red-700"
+                >
+                  {t("courseRegistration.emailInvalid", {
+                    defaultValue: "Вкажіть коректну електронну адресу.",
+                  })}
+                </p>
+              )}
+              <div className="relative">
+                <Mail
+                  size={19}
+                  aria-hidden="true"
+                  className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-500"
+                />
+                <input
+                  id={`${fieldId}-email`}
+                  type="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  autoComplete="email"
+                  inputMode="email"
+                  required
+                  aria-invalid={emailInvalid}
+                  aria-describedby={emailInvalid ? emailErrorId : undefined}
+                  placeholder={t("courseRegistration.emailPlaceholder")}
+                  className={`${inputClassName} ${emailInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""}`}
+                />
+              </div>
+            </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
+            <div>
+              <div className="mb-2 flex items-center gap-1.5">
+                <label
+                  htmlFor={`${fieldId}-phone`}
+                  className="text-sm font-semibold text-slate-800 md:text-base"
+                >
+                  {t("courseRegistration.phone")}
+                </label>
+                <RequiredIndicator label={requiredLabel} />
+              </div>
+              {phoneInvalid && (
+                <p
+                  id={phoneErrorId}
+                  role="alert"
+                  className="mb-2 text-sm font-semibold text-red-700"
+                >
+                  {t("courseRegistration.phoneInvalid", {
+                    defaultValue: "Вкажіть коректний номер телефону.",
+                  })}
+                </p>
+              )}
+              <div className="relative">
+                <Phone
+                  size={19}
+                  aria-hidden="true"
+                  className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-500"
+                />
+                <input
+                  id={`${fieldId}-phone`}
+                  type="tel"
+                  value={phone}
+                  onChange={(event) => setPhone(event.target.value)}
+                  autoComplete="tel"
+                  inputMode="tel"
+                  required
+                  minLength={6}
+                  aria-invalid={phoneInvalid}
+                  aria-describedby={phoneInvalid ? phoneErrorId : undefined}
+                  placeholder={t("courseRegistration.phonePlaceholder")}
+                  className={`${inputClassName} ${phoneInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""}`}
+                />
+              </div>
+            </div>
+          </div>
+
           <label
-            htmlFor={`${fieldId}-name`}
-            className="mb-2 block text-sm font-bold text-slate-800"
+            className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 text-sm leading-6 font-medium transition-colors md:text-base md:leading-7 ${
+              privacyInvalid
+                ? "border-red-300 bg-red-50 text-red-900"
+                : "border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50/50"
+            }`}
           >
-            {t("courseRegistration.fullName")}
+            <input
+              type="checkbox"
+              id={`${fieldId}-privacy`}
+              checked={acceptedPrivacy}
+              onChange={(event) => {
+                setAcceptedPrivacy(event.target.checked);
+              }}
+              aria-invalid={privacyInvalid}
+              aria-describedby={privacyInvalid ? privacyErrorId : undefined}
+              className="size-4 shrink-0 cursor-pointer accent-blue-600"
+            />
+            <span>
+              <span className="block">{t("courseRegistration.privacy")}</span>
+              <Link
+                to="/privacy"
+                onClick={(event) => event.stopPropagation()}
+                className="mt-1 inline-flex font-semibold text-blue-700 underline underline-offset-2 hover:text-blue-900"
+              >
+                {t("privacy.title")}
+              </Link>
+            </span>
           </label>
-          <div className="relative">
-            <User
+
+          {privacyInvalid && (
+            <p
+              id={privacyErrorId}
+              role="alert"
+              className="text-sm leading-6 font-semibold text-red-700 md:text-base"
+            >
+              {t("courseRegistration.privacyRequired")}
+            </p>
+          )}
+
+          {submitError && (
+            <p
+              role="alert"
+              className="text-sm leading-6 font-semibold text-red-700 md:text-base"
+            >
+              {t("courseRegistration.submitError")}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            aria-disabled={isSubmitting || !isFormComplete}
+            aria-describedby={privacyInvalid ? privacyErrorId : undefined}
+            className={`group flex w-full items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-semibold shadow-lg transition-[color,background-color,box-shadow,transform] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:opacity-60 ${
+              isSubmitting
+                ? "cursor-wait bg-blue-600 text-white"
+                : isFormComplete
+                  ? "cursor-pointer bg-blue-600 text-white hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl"
+                  : "cursor-pointer bg-slate-300 text-slate-600 hover:bg-slate-400"
+            }`}
+          >
+            <span>
+              {isSubmitting
+                ? t("courseRegistration.submitting")
+                : t("courseRegistration.submit")}
+            </span>
+            <Send
               size={19}
               aria-hidden="true"
-              className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-500"
+              className="transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-0.5"
             />
-            <input
-              id={`${fieldId}-name`}
-              type="text"
-              value={fullName}
-              onChange={(event) => setFullName(event.target.value)}
-              autoComplete="name"
-              required
-              minLength={2}
-              placeholder={t("courseRegistration.fullNamePlaceholder")}
-              className={inputClassName}
-            />
-          </div>
-        </div>
-
-        <div className="grid gap-5 md:grid-cols-2">
-          <div>
-            <label
-              htmlFor={`${fieldId}-email`}
-              className="mb-2 block text-sm font-bold text-slate-800"
-            >
-              {t("courseRegistration.email")}
-            </label>
-            <div className="relative">
-              <Mail
-                size={19}
-                aria-hidden="true"
-                className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-500"
-              />
-              <input
-                id={`${fieldId}-email`}
-                type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                autoComplete="email"
-                inputMode="email"
-                required
-                placeholder={t("courseRegistration.emailPlaceholder")}
-                className={inputClassName}
-              />
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor={`${fieldId}-phone`}
-              className="mb-2 block text-sm font-bold text-slate-800"
-            >
-              {t("courseRegistration.phone")}
-            </label>
-            <div className="relative">
-              <Phone
-                size={19}
-                aria-hidden="true"
-                className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-500"
-              />
-              <input
-                id={`${fieldId}-phone`}
-                type="tel"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
-                autoComplete="tel"
-                inputMode="tel"
-                required
-                minLength={6}
-                placeholder={t("courseRegistration.phonePlaceholder")}
-                className={inputClassName}
-              />
-            </div>
-          </div>
-        </div>
-
-        <label className="flex cursor-pointer items-start gap-3 rounded-2xl bg-slate-50 p-4 text-sm leading-6 text-slate-700">
-          <input
-            type="checkbox"
-            checked={acceptedPrivacy}
-            onChange={(event) => {
-              setAcceptedPrivacy(event.target.checked);
-              if (event.target.checked) setPrivacyError("");
-            }}
-            aria-invalid={Boolean(privacyError)}
-            aria-describedby={privacyError ? `${fieldId}-privacy-error` : undefined}
-            className="mt-1 size-4 shrink-0 cursor-pointer accent-blue-600"
-          />
-          <span>{t("courseRegistration.privacy")}</span>
-        </label>
-
-        {privacyError && (
-          <p
-            id={`${fieldId}-privacy-error`}
-            role="alert"
-            className="text-sm font-bold text-red-700"
-          >
-            {privacyError}
-          </p>
-        )}
-
-        {submitError && (
-          <p role="alert" className="text-sm font-bold text-red-700">
-            {submitError}
-          </p>
-        )}
-
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          aria-disabled={isSubmitting || !acceptedPrivacy}
-          className={`flex w-full items-center justify-center gap-3 rounded-2xl bg-slate-950 px-6 py-4 text-base font-black text-white shadow-lg transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 ${
-            acceptedPrivacy
-              ? "cursor-pointer hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl"
-              : "cursor-not-allowed opacity-60"
-          }`}
-        >
-          <Send size={19} aria-hidden="true" />
-          {isSubmitting
-            ? t("courseRegistration.submitting")
-            : t("courseRegistration.submit")}
-        </button>
-      </form>
+          </button>
+        </form>
+      </div>
     </section>
   );
 };
