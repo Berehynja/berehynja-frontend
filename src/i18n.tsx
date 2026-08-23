@@ -15,7 +15,7 @@ i18next
     showSupportNotice: false,
 
     backend: {
-      loadPath: "/berehynja-frontend/locales/{{lng}}.json",
+      loadPath: "/locales/{{lng}}.json",
     },
 
     detection: {
