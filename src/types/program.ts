@@ -23,6 +23,7 @@ export interface Program {
 
 export interface ProgramAdults {
   id: string;
+  isActive?: boolean;
   image: string;
   dateRange: string; // Залишаємо рядком, бо це зазвичай просто цифри (15.05 - 25.05)
   

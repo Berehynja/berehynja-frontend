@@ -17,6 +17,7 @@ import {
   ListChecks,
   Loader2,
   MapPin,
+  Power,
   Target,
   Trash2,
   Upload,
@@ -66,6 +67,7 @@ const MAX_IMAGE_SIZE = 12 * 1024 * 1024;
 
 const createEmptyProgram = (): ProgramAdults => ({
   id: "",
+  isActive: true,
   title: { ua: "", de: "", en: "" },
   description: { ua: "", de: "", en: "" },
   dateRange: "",
@@ -405,7 +407,7 @@ export const AddProgramModal = ({
 
               {formData.image ? (
                 <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-100">
-                  <div className="aspect-[16/6] max-h-72 overflow-hidden">
+                  <div className="aspect-16/6 max-h-72 overflow-hidden">
                     <img
                       src={formData.image}
                       alt={formData.title[activeLang] || modalTitle}
@@ -463,6 +465,70 @@ export const AddProgramModal = ({
                   </span>
                 </button>
               )}
+            </section>
+
+            <section className="rounded-3xl border border-slate-200 bg-white p-4 md:p-5">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex min-w-0 items-start gap-3">
+                  <span
+                    className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${
+                      formData.isActive !== false
+                        ? "bg-emerald-50 text-emerald-600"
+                        : "bg-slate-100 text-slate-500"
+                    }`}
+                  >
+                    <Power size={19} aria-hidden="true" />
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-semibold text-slate-900">
+                      {tr("activeStatus")}
+                    </h3>
+                    <p className="mt-1 text-xs leading-5 text-slate-500">
+                      {tr("activeStatusHint")}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={formData.isActive !== false}
+                  aria-label={tr("activeStatus")}
+                  onClick={() =>
+                    setFormData((previous) => ({
+                      ...previous,
+                      isActive: previous.isActive === false,
+                    }))
+                  }
+                  disabled={isBusy}
+                  className={`relative h-7 w-12 shrink-0 cursor-pointer overflow-hidden rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 ${
+                    formData.isActive !== false
+                      ? "bg-emerald-500"
+                      : "bg-slate-300"
+                  }`}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={`absolute top-1 left-0 size-5 rounded-full bg-white shadow-sm transition-transform duration-200 ${
+                      formData.isActive !== false
+                        ? "translate-x-6"
+                        : "translate-x-1"
+                    }`}
+                  />
+                </button>
+              </div>
+
+              <p
+                className={`mt-3 text-xs font-semibold ${
+                  formData.isActive !== false
+                    ? "text-emerald-700"
+                    : "text-slate-500"
+                }`}
+              >
+                {formData.isActive !== false
+                  ? tr("active")
+                  : tr("inactive")}
+              </p>
             </section>
 
             <section aria-labelledby={`${modalTitleId}-language`}>
