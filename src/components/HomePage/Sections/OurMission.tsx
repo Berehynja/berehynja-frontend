@@ -11,6 +11,15 @@ import type { LangKey } from "../../../types/types";
 
 const EDITOR_LANGUAGES: LangKey[] = ["ua", "de", "en"];
 
+const TEXT_LIMITS = {
+  sectionTitle: 60,
+  cardTitle: 28,
+  cardSubtitle: 28,
+  cardLead: 180,
+  primaryCardText: 520,
+  regularCardText: 320,
+} as const;
+
 const cardsConfig = [
   {
     id: "mission",
@@ -198,10 +207,10 @@ export default function OurMission() {
                   {card.icon}
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-xl leading-tight font-semibold text-slate-950 md:text-2xl">
+                  <h3 className="min-w-0 text-xl leading-tight font-semibold wrap-break-word text-slate-950 md:text-2xl">
                     {isLoading ? "..." : getText(titlePath, t(titlePath))}
                   </h3>
-                  <p className="mt-1 text-sm leading-6 font-semibold text-slate-500 md:text-base">
+                  <p className="mt-1 min-w-0 text-sm leading-6 font-semibold wrap-break-word text-slate-500 md:text-base">
                     {isLoading
                       ? "..."
                       : getText(subtitlePath, t(subtitlePath))}
@@ -209,10 +218,10 @@ export default function OurMission() {
                 </div>
               </div>
 
-              <p className="text-base leading-7 font-semibold text-slate-800 md:text-lg md:leading-8">
+              <p className="min-w-0 text-base leading-7 font-semibold wrap-break-word text-slate-800 md:text-lg md:leading-8">
                 {isLoading ? "..." : getText(leadPath, t(leadPath))}
               </p>
-              <p className="text-base leading-7 font-medium text-slate-600">
+              <p className="min-w-0 text-base leading-7 font-medium wrap-break-word text-slate-600">
                 {isLoading ? "..." : getText(textPath, t(textPath))}
               </p>
             </aside>
@@ -228,10 +237,33 @@ export default function OurMission() {
         modalTitle="Редагування картки"
         initialData={editorData.card}
         fields={[
-          { key: "title", label: "Заголовок", type: "input" },
-          { key: "subtitle", label: "Підзаголовок", type: "input" },
-          { key: "lead", label: "Лідабзац", type: "textarea" },
-          { key: "text", label: "Основний текст", type: "textarea" },
+          {
+            key: "title",
+            label: "Заголовок",
+            type: "input",
+            maxLength: TEXT_LIMITS.cardTitle,
+          },
+          {
+            key: "subtitle",
+            label: "Підзаголовок",
+            type: "input",
+            maxLength: TEXT_LIMITS.cardSubtitle,
+          },
+          {
+            key: "lead",
+            label: "Лідабзац",
+            type: "textarea",
+            maxLength: TEXT_LIMITS.cardLead,
+          },
+          {
+            key: "text",
+            label: "Основний текст",
+            type: "textarea",
+            maxLength:
+              activeCard === "mission"
+                ? TEXT_LIMITS.primaryCardText
+                : TEXT_LIMITS.regularCardText,
+          },
         ]}
       />
 
@@ -242,7 +274,14 @@ export default function OurMission() {
         sectionName="ourMission"
         modalTitle="Редагування заголовку"
         initialData={editorData.title}
-        fields={[{ key: "title", label: "Заголовок", type: "input" }]}
+        fields={[
+          {
+            key: "title",
+            label: "Заголовок",
+            type: "input",
+            maxLength: TEXT_LIMITS.sectionTitle,
+          },
+        ]}
       />
     </section>
   );

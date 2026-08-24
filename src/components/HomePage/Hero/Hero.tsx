@@ -118,6 +118,7 @@ export const Hero = () => {
       key: "description",
       label: t("home.heroUi.descriptionField"),
       type: "textarea",
+      maxLength: 450,
     },
   ];
 

@@ -11,6 +11,12 @@ import type { LangKey } from "../../../types/types";
 
 const EDITOR_LANGUAGES: LangKey[] = ["ua", "de", "en"];
 
+const TEXT_LIMITS = {
+  sectionTitle: 60,
+  cardTitle: 25,
+  cardDescription: 180,
+} as const;
+
 const featuresConfig = [
   {
     id: "support",
@@ -179,10 +185,10 @@ export function HowWeHelp() {
                 key={item.id}
                 className={`relative flex min-h-68 w-full flex-col overflow-hidden rounded-2xl border border-slate-200 border-t-4 bg-white p-6 pb-20 shadow-[0_8px_24px_rgba(15,23,42,0.08)] transition-all duration-500 ease-out hover:z-10 hover:-translate-y-2 hover:shadow-[0_26px_64px_rgba(15,23,42,0.22)] md:rounded-3xl md:p-7 md:pb-20 ${item.borderColor}`}
               >
-                <h3 className="pr-10 text-xl leading-tight font-semibold text-slate-950 md:text-2xl">
+                <h3 className="min-w-0 pr-10 text-xl leading-tight font-semibold wrap-break-word text-slate-950 md:text-2xl">
                   {isLoading ? "..." : getText(titlePath, t(titlePath))}
                 </h3>
-                <p className="mt-4 text-base leading-7 font-medium text-slate-600">
+                <p className="mt-4 min-w-0 text-base leading-7 font-medium wrap-break-word text-slate-600">
                   {isLoading
                     ? "..."
                     : getText(descriptionPath, t(descriptionPath))}
@@ -215,8 +221,18 @@ export function HowWeHelp() {
         modalTitle="Редагування картки"
         initialData={editorData.card}
         fields={[
-          { key: "title", label: "Заголовок", type: "input" },
-          { key: "description", label: "Опис", type: "textarea" },
+          {
+            key: "title",
+            label: "Заголовок",
+            type: "input",
+            maxLength: TEXT_LIMITS.cardTitle,
+          },
+          {
+            key: "description",
+            label: "Опис",
+            type: "textarea",
+            maxLength: TEXT_LIMITS.cardDescription,
+          },
         ]}
       />
 
@@ -227,7 +243,14 @@ export function HowWeHelp() {
         sectionName="howWeHelp"
         modalTitle="Редагування заголовку"
         initialData={editorData.title}
-        fields={[{ key: "title", label: "Заголовок", type: "input" }]}
+        fields={[
+          {
+            key: "title",
+            label: "Заголовок",
+            type: "input",
+            maxLength: TEXT_LIMITS.sectionTitle,
+          },
+        ]}
       />
     </section>
   );

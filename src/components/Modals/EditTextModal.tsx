@@ -37,6 +37,7 @@ export interface FieldConfig {
   mediaCategory?: MediaCategory;
   required?: boolean;
   placeholder?: FieldLabel;
+  maxLength?: number;
 }
 
 interface EditTextModalProps {
@@ -645,6 +646,7 @@ export const EditTextModal = ({
                 currentLang,
               );
               const isRequired = field.required !== false;
+              const fieldValue = formData[field.key]?.[activeLang] ?? "";
 
               return (
                 <label key={field.key} className="block">
@@ -660,7 +662,8 @@ export const EditTextModal = ({
                   {field.type === "input" ? (
                     <input
                       type="text"
-                      value={formData[field.key]?.[activeLang] ?? ""}
+                      value={fieldValue}
+                      maxLength={field.maxLength}
                       onChange={(event) =>
                         handleTextChange(field.key, event.target.value)
                       }
@@ -670,13 +673,27 @@ export const EditTextModal = ({
                   ) : (
                     <textarea
                       rows={4}
-                      value={formData[field.key]?.[activeLang] ?? ""}
+                      value={fieldValue}
+                      maxLength={field.maxLength}
                       onChange={(event) =>
                         handleTextChange(field.key, event.target.value)
                       }
                       placeholder={placeholder}
                       className="w-full resize-y rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 leading-7 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
                     />
+                  )}
+
+                  {field.maxLength && (
+                    <span
+                      aria-live="polite"
+                      className={`mt-1.5 block text-right text-xs font-semibold tabular-nums ${
+                        fieldValue.length >= field.maxLength
+                          ? "text-red-600"
+                          : "text-slate-500"
+                      }`}
+                    >
+                      {fieldValue.length} / {field.maxLength}
+                    </span>
                   )}
                 </label>
               );
