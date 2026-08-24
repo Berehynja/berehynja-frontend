@@ -1,5 +1,6 @@
 import {
   CheckCircle2,
+  CircleAlert,
   MessageSquare,
   Phone,
   Send,
@@ -42,10 +43,17 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
-  const [privacyError, setPrivacyError] = useState(false);
+  const [showValidationErrors, setShowValidationErrors] = useState(false);
   const [submitError, setSubmitError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const isNameValid = fullName.trim().length >= 2;
+  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const isFormComplete = isNameValid && isEmailValid && acceptedPrivacy;
+  const nameInvalid = showValidationErrors && !isNameValid;
+  const emailInvalid = showValidationErrors && !isEmailValid;
+  const privacyInvalid = showValidationErrors && !acceptedPrivacy;
 
   const resetForm = useCallback(() => {
     setFullName("");
@@ -53,7 +61,7 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
     setPhone("");
     setMessage("");
     setAcceptedPrivacy(false);
-    setPrivacyError(false);
+    setShowValidationErrors(false);
     setSubmitError(false);
     setIsSubmitting(false);
     setIsSubmitted(false);
@@ -92,13 +100,20 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
     event.preventDefault();
     if (isSubmitting) return;
 
-    if (!acceptedPrivacy) {
-      setPrivacyError(true);
+    if (!isFormComplete) {
+      setShowValidationErrors(true);
+
+      const firstInvalidFieldId = !isNameValid
+        ? `${fieldId}-name`
+        : !isEmailValid
+          ? `${fieldId}-email`
+          : `${fieldId}-privacy`;
+
+      document.getElementById(firstInvalidFieldId)?.focus();
       return;
     }
 
     setIsSubmitting(true);
-    setPrivacyError(false);
     setSubmitError(false);
 
     try {
@@ -169,14 +184,25 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
 
         {!isSubmitted ? (
           <div className="text-left">
-            <form className="space-y-5" onSubmit={handleSubmit}>
+            <form className="space-y-5" onSubmit={handleSubmit} noValidate>
               <div>
                 <label
                   htmlFor={`${fieldId}-name`}
-                  className="mb-2 block text-sm font-semibold text-slate-800 md:text-base"
+                  className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-slate-800 md:text-base"
                 >
-                  {t("joinModal.fullName")}
+                  {t("joinModal.fullName").replace(/\s*\*+\s*$/, "")}
+                  <RequiredIndicator label={t("joinModal.required")} />
                 </label>
+
+                {nameInvalid && (
+                  <p
+                    id={`${fieldId}-name-error`}
+                    role="alert"
+                    className="mb-2 text-sm font-semibold text-red-700"
+                  >
+                    {t("joinModal.fullNameRequired")}
+                  </p>
+                )}
 
                 <div className="relative">
                   <User
@@ -188,12 +214,16 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                     id={`${fieldId}-name`}
                     required
                     minLength={2}
+                    aria-invalid={nameInvalid}
+                    aria-describedby={
+                      nameInvalid ? `${fieldId}-name-error` : undefined
+                    }
                     type="text"
                     value={fullName}
                     onChange={(event) => setFullName(event.target.value)}
                     autoComplete="name"
                     placeholder={t("joinModal.fullNamePlaceholder")}
-                    className="w-full rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 text-base text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                    className={`w-full rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 text-base text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 ${nameInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""}`}
                   />
                 </div>
               </div>
@@ -202,10 +232,24 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                 <div>
                   <label
                     htmlFor={`${fieldId}-email`}
-                    className="mb-2 block text-sm font-semibold text-slate-800 md:text-base"
+                    className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-slate-800 md:text-base"
                   >
-                    {t("joinModal.email")}
+                    {t("joinModal.email").replace(/\s*\*+\s*$/, "")}
+                    <RequiredIndicator label={t("joinModal.required")} />
                   </label>
+                  {showValidationErrors && (
+                    <div className="mb-2 min-h-10">
+                      {emailInvalid && (
+                        <p
+                          id={`${fieldId}-email-error`}
+                          role="alert"
+                          className="text-sm leading-5 font-semibold text-red-700"
+                        >
+                          {t("joinModal.emailInvalid")}
+                        </p>
+                      )}
+                    </div>
+                  )}
                   <input
                     id={`${fieldId}-email`}
                     required
@@ -214,8 +258,12 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                     onChange={(event) => setEmail(event.target.value)}
                     autoComplete="email"
                     inputMode="email"
+                    aria-invalid={emailInvalid}
+                    aria-describedby={
+                      emailInvalid ? `${fieldId}-email-error` : undefined
+                    }
                     placeholder={t("joinModal.emailPlaceholder")}
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-5 py-3.5 text-base text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                    className={`w-full rounded-2xl border border-slate-200 bg-white px-5 py-3.5 text-base text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 ${emailInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""}`}
                   />
                 </div>
 
@@ -229,6 +277,10 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                       {t("joinModal.optional")}
                     </span>
                   </label>
+
+                  {showValidationErrors && (
+                    <div aria-hidden="true" className="mb-2 min-h-10" />
+                  )}
 
                   <div className="relative">
                     <Phone
@@ -256,6 +308,9 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                   className="mb-2 block text-sm font-semibold text-slate-800 md:text-base"
                 >
                   {t("joinModal.message")}
+                  <span className="ml-1 font-normal text-slate-500 lowercase">
+                    {t("joinModal.optional")}
+                  </span>
                 </label>
 
                 <div className="relative">
@@ -275,17 +330,23 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                 </div>
               </div>
 
-              <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 font-medium text-slate-700 transition-colors hover:border-blue-200 hover:bg-blue-50/50 md:text-base md:leading-7">
+              <label
+                className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 text-sm leading-6 font-medium text-slate-700 transition-colors md:text-base md:leading-7 ${
+                  privacyInvalid
+                    ? "border-red-300 bg-red-50"
+                    : "border-slate-200 bg-slate-50 hover:border-blue-200 hover:bg-blue-50/50"
+                }`}
+              >
                 <input
+                  id={`${fieldId}-privacy`}
                   type="checkbox"
                   checked={acceptedPrivacy}
                   onChange={(event) => {
                     setAcceptedPrivacy(event.target.checked);
-                    if (event.target.checked) setPrivacyError(false);
                   }}
-                  aria-invalid={privacyError}
-                  aria-describedby={privacyError ? privacyErrorId : undefined}
-                  className="mt-1 size-4 shrink-0 cursor-pointer accent-blue-600"
+                  aria-invalid={privacyInvalid}
+                  aria-describedby={privacyInvalid ? privacyErrorId : undefined}
+                  className="size-4 shrink-0 cursor-pointer accent-blue-600"
                 />
                 <span>
                   {t("joinModal.privacyBefore")} {" "}
@@ -300,7 +361,7 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                 </span>
               </label>
 
-              {privacyError && (
+              {privacyInvalid && (
                 <p
                   id={privacyErrorId}
                   role="alert"
@@ -322,12 +383,14 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                aria-disabled={isSubmitting || !acceptedPrivacy}
-                aria-describedby={privacyError ? privacyErrorId : undefined}
-                className={`group flex w-full cursor-pointer items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-semibold shadow-lg transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:cursor-wait disabled:opacity-60 ${
-                  acceptedPrivacy
-                    ? "bg-slate-950 text-white hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl"
-                    : "bg-slate-300 text-slate-700 hover:bg-slate-400"
+                aria-disabled={isSubmitting || !isFormComplete}
+                aria-describedby={privacyInvalid ? privacyErrorId : undefined}
+                className={`group flex w-full items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-semibold shadow-lg transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:opacity-60 ${
+                  isSubmitting
+                    ? "cursor-wait bg-blue-600 text-white"
+                    : isFormComplete
+                      ? "cursor-pointer bg-blue-600 text-white hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl"
+                      : "cursor-pointer bg-slate-300 text-slate-600 hover:bg-slate-400"
                 }`}
               >
                 <span>
@@ -364,3 +427,10 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
     </div>
   );
 };
+
+const RequiredIndicator = ({ label }: { label: string }) => (
+  <span className="inline-flex shrink-0 items-center gap-1 text-xs font-semibold text-red-600">
+    {label}
+    <CircleAlert size={15} strokeWidth={2} aria-hidden="true" />
+  </span>
+);

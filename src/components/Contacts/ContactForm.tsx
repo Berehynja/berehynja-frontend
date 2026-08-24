@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import {
   CheckCircle2,
+  CircleAlert,
   Loader2,
   Mail,
   MessageSquare,
@@ -33,11 +34,20 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
-  const [privacyError, setPrivacyError] = useState(false);
+  const [showValidationErrors, setShowValidationErrors] = useState(false);
   const [submitError, setSubmitError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const isNameValid = name.trim().length >= 2;
+  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const isMessageValid = message.trim().length >= 5;
+  const isFormComplete =
+    isNameValid && isEmailValid && isMessageValid && acceptedPrivacy;
+  const nameInvalid = showValidationErrors && !isNameValid;
+  const emailInvalid = showValidationErrors && !isEmailValid;
+  const messageInvalid = showValidationErrors && !isMessageValid;
+  const privacyInvalid = showValidationErrors && !acceptedPrivacy;
 
   const resetForm = () => {
     setName("");
@@ -45,7 +55,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
     setPhone("");
     setMessage("");
     setAcceptedPrivacy(false);
-    setPrivacyError(false);
+    setShowValidationErrors(false);
     setSubmitError(false);
     setIsSubmitted(false);
   };
@@ -54,13 +64,22 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
     event.preventDefault();
     if (isSubmitting) return;
 
-    if (!acceptedPrivacy) {
-      setPrivacyError(true);
+    if (!isFormComplete) {
+      setShowValidationErrors(true);
+
+      const firstInvalidFieldId = !isNameValid
+        ? `${fieldId}-name`
+        : !isEmailValid
+          ? `${fieldId}-email`
+          : !isMessageValid
+            ? `${fieldId}-message`
+            : `${fieldId}-privacy`;
+
+      document.getElementById(firstInvalidFieldId)?.focus();
       return;
     }
 
     setIsSubmitting(true);
-    setPrivacyError(false);
     setSubmitError(false);
 
     try {
@@ -134,13 +153,19 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
       <form
         name="contact_form"
         onSubmit={submitHandler}
+        noValidate
         className="relative flex flex-col gap-6"
       >
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
           <FormFieldLabel
             htmlFor={`${fieldId}-name`}
             label={t("contact.form.name")}
             requiredLabel={t("contact.form.required")}
+            error={
+              nameInvalid ? t("contact.form.nameRequired") : undefined
+            }
+            errorId={`${fieldId}-name-error`}
+            reserveErrorSpace={showValidationErrors}
           >
             <User
               size={18}
@@ -156,8 +181,12 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               autoComplete="name"
               required
               minLength={2}
+              aria-invalid={nameInvalid}
+              aria-describedby={
+                nameInvalid ? `${fieldId}-name-error` : undefined
+              }
               placeholder={t("contact.form.namePlaceholder")}
-              className={inputClassName}
+              className={`${inputClassName} ${nameInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""}`}
             />
           </FormFieldLabel>
 
@@ -165,6 +194,11 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
             htmlFor={`${fieldId}-email`}
             label={t("contact.form.email")}
             requiredLabel={t("contact.form.required")}
+            error={
+              emailInvalid ? t("contact.form.emailInvalid") : undefined
+            }
+            errorId={`${fieldId}-email-error`}
+            reserveErrorSpace={showValidationErrors}
           >
             <Mail
               size={18}
@@ -180,8 +214,12 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               autoComplete="email"
               inputMode="email"
               required
+              aria-invalid={emailInvalid}
+              aria-describedby={
+                emailInvalid ? `${fieldId}-email-error` : undefined
+              }
               placeholder={t("contact.form.emailPlaceholder")}
-              className={inputClassName}
+              className={`${inputClassName} ${emailInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""}`}
             />
           </FormFieldLabel>
         </div>
@@ -212,11 +250,20 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
         <div>
           <label
             htmlFor={`${fieldId}-message`}
-            className="mb-2 block text-sm font-semibold text-slate-800"
+            className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-slate-800"
           >
             {t("contact.form.message")}
-            <span className="ml-1 text-xs text-blue-600">{t("contact.form.required")}</span>
+            <RequiredIndicator label={t("contact.form.required")} />
           </label>
+          {messageInvalid && (
+            <p
+              id={`${fieldId}-message-error`}
+              role="alert"
+              className="mb-2 text-sm font-semibold text-red-700"
+            >
+              {t("contact.form.messageRequired")}
+            </p>
+          )}
           <div className="relative">
             <MessageSquare
               size={18}
@@ -231,31 +278,35 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               onChange={(event) => setMessage(event.target.value)}
               required
               minLength={5}
+              aria-invalid={messageInvalid}
+              aria-describedby={
+                messageInvalid ? `${fieldId}-message-error` : undefined
+              }
               placeholder={t("contact.form.messagePlaceholder")}
-              className="min-h-40 w-full resize-y rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 font-medium text-slate-950 shadow-sm outline-none transition placeholder:font-normal placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+              className={`min-h-40 w-full resize-y rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 font-medium text-slate-950 shadow-sm outline-none transition placeholder:font-normal placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 ${messageInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""}`}
             />
           </div>
         </div>
 
         <label
-          className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-4 text-sm leading-6 text-slate-700 transition ${
-            privacyError
+          className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 text-sm leading-6 text-slate-700 transition ${
+            privacyInvalid
               ? "border-red-300 bg-red-50"
               : "border-slate-200 bg-slate-50 hover:border-blue-200 hover:bg-blue-50/50"
           }`}
         >
           <input
+            id={`${fieldId}-privacy`}
             type="checkbox"
             checked={acceptedPrivacy}
             onChange={(event) => {
               setAcceptedPrivacy(event.target.checked);
-              if (event.target.checked) setPrivacyError(false);
             }}
-            aria-invalid={privacyError}
+            aria-invalid={privacyInvalid}
             aria-describedby={
-              privacyError ? `${fieldId}-privacy-error` : undefined
+              privacyInvalid ? `${fieldId}-privacy-error` : undefined
             }
-            className="mt-1 size-4 shrink-0 cursor-pointer accent-blue-600"
+            className="size-4 shrink-0 cursor-pointer accent-blue-600"
           />
           <span>
             {t("contact.form.privacyBefore")}{" "}
@@ -272,7 +323,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
           </span>
         </label>
 
-        {privacyError && (
+        {privacyInvalid && (
           <p
             id={`${fieldId}-privacy-error`}
             role="alert"
@@ -291,11 +342,13 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
         <button
           type="submit"
           disabled={isSubmitting}
-          aria-disabled={isSubmitting}
-          className={`group inline-flex cursor-pointer items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-semibold text-white shadow-lg transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:cursor-wait disabled:opacity-60 ${
-            acceptedPrivacy
-              ? "bg-blue-600 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl"
-              : "bg-slate-600 hover:bg-slate-700"
+          aria-disabled={isSubmitting || !isFormComplete}
+          className={`group inline-flex items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-semibold shadow-lg transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:opacity-60 ${
+            isSubmitting
+              ? "cursor-wait bg-blue-600 text-white"
+              : isFormComplete
+                ? "cursor-pointer bg-blue-600 text-white hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl"
+                : "cursor-pointer bg-slate-300 text-slate-600 hover:bg-slate-400"
           }`}
         >
           {isSubmitting ? (
@@ -319,6 +372,9 @@ interface FormFieldLabelProps {
   label: string;
   requiredLabel?: string;
   optionalLabel?: string;
+  error?: string;
+  errorId?: string;
+  reserveErrorSpace?: boolean;
   children: ReactNode;
 }
 
@@ -327,16 +383,19 @@ const FormFieldLabel = ({
   label,
   requiredLabel,
   optionalLabel,
+  error,
+  errorId,
+  reserveErrorSpace = false,
   children,
 }: FormFieldLabelProps) => (
   <div>
     <label
       htmlFor={htmlFor}
-      className="mb-2 block text-sm font-semibold text-slate-800"
+      className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-slate-800"
     >
       {label}
       {requiredLabel && (
-        <span className="ml-1 text-xs text-blue-600">{requiredLabel}</span>
+        <RequiredIndicator label={requiredLabel} />
       )}
       {optionalLabel && (
         <span className="ml-1 font-normal text-slate-500">
@@ -344,6 +403,36 @@ const FormFieldLabel = ({
         </span>
       )}
     </label>
+    {reserveErrorSpace ? (
+      <div className="mb-2 min-h-10">
+        {error && (
+          <p
+            id={errorId}
+            role="alert"
+            className="text-sm leading-5 font-semibold text-red-700"
+          >
+            {error}
+          </p>
+        )}
+      </div>
+    ) : (
+      error && (
+        <p
+          id={errorId}
+          role="alert"
+          className="mb-2 text-sm font-semibold text-red-700"
+        >
+          {error}
+        </p>
+      )
+    )}
     <div className="relative">{children}</div>
   </div>
+);
+
+const RequiredIndicator = ({ label }: { label: string }) => (
+  <span className="inline-flex shrink-0 items-center gap-1 text-xs font-semibold text-red-600">
+    {label}
+    <CircleAlert size={15} strokeWidth={2} aria-hidden="true" />
+  </span>
 );
