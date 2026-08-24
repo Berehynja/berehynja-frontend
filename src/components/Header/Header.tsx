@@ -19,9 +19,9 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white shadow-2xs">
-      <div className="relative mx-auto flex h-20 max-w-360 items-center gap-2 px-3 sm:px-5 lg:grid lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:gap-4 lg:px-4 xl:gap-6 xl:px-10">
+      <div className="mx-auto grid h-20 max-w-360 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 sm:px-5 lg:gap-4 lg:px-4 xl:gap-6 xl:px-10">
         <NavLink
-          className="flex shrink-0 items-center justify-center decoration-0 lg:col-start-1 lg:row-start-1"
+          className="col-start-1 row-start-1 flex shrink-0 items-center justify-center decoration-0"
           to="/"
           end
           aria-label="Berehynia"
@@ -36,17 +36,17 @@ export function Header() {
         </NavLink>
 
         {isAdmin && (
-          <div className="absolute left-1/2 shrink-0 -translate-x-1/2 lg:static lg:col-start-2 lg:row-start-1 lg:justify-self-center lg:translate-x-0">
+          <div className="col-start-2 row-start-1 shrink-0 justify-self-center">
             <AdminLogout />
           </div>
         )}
 
-        <div className="ml-auto hidden min-w-0 items-center gap-3 lg:col-start-3 lg:row-start-1 lg:ml-0 lg:flex lg:justify-self-end xl:gap-5">
+        <div className="hidden min-w-0 items-center gap-3 lg:col-start-3 lg:row-start-1 lg:flex lg:justify-self-end xl:gap-5">
           <HeaderNav />
           <LanguageSwitcher />
         </div>
 
-        <div className="ml-auto shrink-0 lg:hidden">
+        <div className="col-start-3 row-start-1 shrink-0 justify-self-end lg:hidden">
           <button
             type="button"
             onClick={toggleMobileMenu}

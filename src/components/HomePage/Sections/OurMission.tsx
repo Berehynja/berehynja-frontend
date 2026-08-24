@@ -41,13 +41,13 @@ const cardsConfig = [
     id: "adults",
     icon: <Briefcase />,
     className:
-      "bg-Orange-2 self-start md:col-span-2 xl:col-start-1 xl:row-start-2",
+      "bg-Orange-2 md:col-span-2 xl:col-start-1 xl:row-start-2",
   },
   {
     id: "summary",
     icon: <Heart />,
     className:
-      "bg-Orange-2 self-start md:col-span-2 xl:col-start-3 xl:row-start-2",
+      "bg-Orange-2 md:col-span-2 xl:col-start-3 xl:row-start-2",
   },
 ] as const;
 
@@ -160,7 +160,7 @@ export default function OurMission() {
         className="text-center"
       >
         <div
-          className={`relative mx-auto w-fit max-w-full ${isAdmin ? "pr-12" : ""}`}
+          className={`relative mx-auto w-fit max-w-full ${isAdmin ? "pr-12" : "pr-0"}`}
         >
           <h2 className="text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
             {mainTitle}
@@ -202,7 +202,7 @@ export default function OurMission() {
                 />
               )}
 
-              <div className="flex items-center gap-4 pr-10">
+              <div className="flex items-center gap-4">
                 <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-white/70 bg-white/70 text-slate-800 shadow-sm">
                   {card.icon}
                 </div>
