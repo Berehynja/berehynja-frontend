@@ -2,6 +2,7 @@ import {
   useCallback,
   useEffect,
   useId,
+  useMemo,
   useRef,
   useState,
   type ChangeEvent,
@@ -55,6 +56,34 @@ const LANGUAGES: Array<{ key: LangKey; label: string }> = [
 
 const EMPTY_LOCALIZED_TEXT: LocalizedText = { ua: "", de: "", en: "" };
 
+const getAgeGroupKey = (label: string) =>
+  label
+    .normalize("NFKC")
+    .trim()
+    .replace(/[‐‑‒–—−]/g, "-")
+    .replace(/\s+/g, " ")
+    .toLocaleLowerCase();
+
+const deduplicateAgeGroupIds = (
+  selectedIds: string[],
+  ageGroups: AgeGroup[],
+) => {
+  const knownGroupIds = new Set(ageGroups.map((group) => group.id));
+  const uniqueIdsByLabel = new Map<string, string>();
+
+  ageGroups.forEach((group) => {
+    if (!selectedIds.includes(group.id)) return;
+
+    const key = getAgeGroupKey(group.label);
+    if (!uniqueIdsByLabel.has(key)) {
+      uniqueIdsByLabel.set(key, group.id);
+    }
+  });
+
+  const unknownIds = selectedIds.filter((id) => !knownGroupIds.has(id));
+  return [...unknownIds, ...uniqueIdsByLabel.values()];
+};
+
 const normalizeLocalizedText = (value: unknown): LocalizedText => {
   if (typeof value === "string") {
     return { ...EMPTY_LOCALIZED_TEXT, ua: value };
@@ -106,6 +135,25 @@ export function AddLessonModal({
 
   const isBusy = isUploading || isSubmitting || isDeleting;
 
+  const visibleAgeGroups = useMemo(() => {
+    const groupsByLabel = new Map<string, AgeGroup>();
+
+    ageGroups.forEach((group) => {
+      const key = getAgeGroupKey(group.label);
+      const savedGroup = groupsByLabel.get(key);
+
+      if (
+        !savedGroup ||
+        (!form.ageGroupIds.includes(savedGroup.id) &&
+          form.ageGroupIds.includes(group.id))
+      ) {
+        groupsByLabel.set(key, group);
+      }
+    });
+
+    return Array.from(groupsByLabel.values());
+  }, [ageGroups, form.ageGroupIds]);
+
   const handleClose = useCallback(() => {
     if (isBusy) return;
     setIsDeleteModalOpen(false);
@@ -154,13 +202,29 @@ export function AddLessonModal({
     }));
   };
 
-  const toggleAgeGroup = (id: string) => {
-    setForm((previous) => ({
-      ...previous,
-      ageGroupIds: previous.ageGroupIds.includes(id)
-        ? previous.ageGroupIds.filter((ageId) => ageId !== id)
-        : [...previous.ageGroupIds, id],
-    }));
+  const toggleAgeGroup = (group: AgeGroup) => {
+    const groupKey = getAgeGroupKey(group.label);
+    const duplicateIds = new Set(
+      ageGroups
+        .filter((candidate) => getAgeGroupKey(candidate.label) === groupKey)
+        .map((candidate) => candidate.id),
+    );
+
+    setForm((previous) => {
+      const isSelected = previous.ageGroupIds.some((id) =>
+        duplicateIds.has(id),
+      );
+      const otherGroupIds = previous.ageGroupIds.filter(
+        (id) => !duplicateIds.has(id),
+      );
+
+      return {
+        ...previous,
+        ageGroupIds: isSelected
+          ? otherGroupIds
+          : [...otherGroupIds, group.id],
+      };
+    });
   };
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -211,6 +275,10 @@ export function AddLessonModal({
             de: form.description.de.trim(),
             en: form.description.en.trim(),
           },
+          ageGroupIds: deduplicateAgeGroupIds(
+            form.ageGroupIds,
+            ageGroups,
+          ),
         },
         programToEdit?.id,
       );
@@ -343,7 +411,7 @@ export function AddLessonModal({
 
               {form.image ? (
                 <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-100">
-                  <div className="aspect-[16/7] overflow-hidden">
+                  <div className="aspect-16/7 overflow-hidden">
                     <img
                       src={form.image}
                       alt=""
@@ -527,10 +595,15 @@ export function AddLessonModal({
                 </span>
               </div>
 
-              {ageGroups.length > 0 ? (
+              {visibleAgeGroups.length > 0 ? (
                 <div className="flex flex-wrap gap-2.5">
-                  {ageGroups.map((group) => {
-                    const isSelected = form.ageGroupIds.includes(group.id);
+                  {visibleAgeGroups.map((group) => {
+                    const groupKey = getAgeGroupKey(group.label);
+                    const isSelected = ageGroups.some(
+                      (candidate) =>
+                        getAgeGroupKey(candidate.label) === groupKey &&
+                        form.ageGroupIds.includes(candidate.id),
+                    );
 
                     return (
                       <label
@@ -544,7 +617,7 @@ export function AddLessonModal({
                         <input
                           type="checkbox"
                           checked={isSelected}
-                          onChange={() => toggleAgeGroup(group.id)}
+                          onChange={() => toggleAgeGroup(group)}
                           className="size-4 accent-blue-600"
                         />
                         <span className="text-sm font-bold">{group.label}</span>
