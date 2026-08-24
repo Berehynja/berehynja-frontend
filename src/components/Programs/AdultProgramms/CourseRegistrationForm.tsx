@@ -1,109 +1,82 @@
-import {
-  CheckCircle2,
-  CircleAlert,
-  Mail,
-  Phone,
-  Send,
-  ShieldCheck,
-  User,
-} from "lucide-react";
-import { useId, useState, type FormEvent } from "react";
+import { useId, useState, type FormEvent, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import {
+  CheckCircle2,
+  Loader2,
+  Mail,
+  MessageSquare,
+  Phone,
+  Send,
+  User,
+} from "lucide-react";
 
-export interface CourseRegistrationData {
-  courseId: string;
-  courseTitle: string;
-  fullName: string;
+export interface ContactFormData {
+  name: string;
   email: string;
   phone: string;
+  message: string;
   acceptedPrivacy: boolean;
+  submittedAt: string;
+  source: string;
 }
 
-interface CourseRegistrationFormProps {
-  courseId: string;
-  courseTitle: string;
-  onSubmit: (data: CourseRegistrationData) => void | Promise<void>;
+interface ContactFormProps {
+  onSubmit?: (data: ContactFormData) => void | Promise<void>;
 }
 
-interface RequiredIndicatorProps {
-  label: string;
-}
-
-const RequiredIndicator = ({ label }: RequiredIndicatorProps) => (
-  <span className="inline-flex shrink-0 items-center gap-1 text-xs font-semibold text-red-600">
-    {label}
-    <CircleAlert size={15} strokeWidth={2} aria-hidden="true" />
-  </span>
-);
-
-export const CourseRegistrationForm = ({
-  courseId,
-  courseTitle,
-  onSubmit,
-}: CourseRegistrationFormProps) => {
+export const ContactForm = ({ onSubmit }: ContactFormProps) => {
   const { t } = useTranslation();
   const fieldId = useId();
-  const titleId = `${fieldId}-title`;
-  const nameErrorId = `${fieldId}-name-error`;
-  const emailErrorId = `${fieldId}-email-error`;
-  const phoneErrorId = `${fieldId}-phone-error`;
-  const privacyErrorId = `${fieldId}-privacy-error`;
-  const requiredLabel = t("common.editTextModal.required");
-
-  const [fullName, setFullName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
-  const [showValidationErrors, setShowValidationErrors] = useState(false);
+  const [privacyError, setPrivacyError] = useState(false);
   const [submitError, setSubmitError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const isNameValid = fullName.trim().length >= 2;
-  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-  const isPhoneValid = phone.replace(/\D/g, "").length >= 6;
-  const isFormComplete =
-    isNameValid && isEmailValid && isPhoneValid && acceptedPrivacy;
-  const nameInvalid = showValidationErrors && !isNameValid;
-  const emailInvalid = showValidationErrors && !isEmailValid;
-  const phoneInvalid = showValidationErrors && !isPhoneValid;
-  const privacyInvalid = showValidationErrors && !acceptedPrivacy;
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const resetForm = () => {
+    setName("");
+    setEmail("");
+    setPhone("");
+    setMessage("");
+    setAcceptedPrivacy(false);
+    setPrivacyError(false);
+    setSubmitError(false);
+    setIsSubmitted(false);
+  };
+
+  const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (isSubmitting) return;
 
-    if (!isFormComplete) {
-      setShowValidationErrors(true);
-
-      const firstInvalidFieldId = !isNameValid
-        ? `${fieldId}-name`
-        : !isEmailValid
-          ? `${fieldId}-email`
-          : !isPhoneValid
-            ? `${fieldId}-phone`
-            : `${fieldId}-privacy`;
-
-      document.getElementById(firstInvalidFieldId)?.focus();
+    if (!acceptedPrivacy) {
+      setPrivacyError(true);
       return;
     }
 
     setIsSubmitting(true);
+    setPrivacyError(false);
     setSubmitError(false);
 
     try {
-      await onSubmit({
-        courseId,
-        courseTitle,
-        fullName: fullName.trim(),
+      await onSubmit?.({
+        name: name.trim(),
         email: email.trim(),
         phone: phone.trim(),
+        message: message.trim(),
         acceptedPrivacy,
+        submittedAt: new Date().toISOString(),
+        source: "Berehynja Website",
       });
+
       setIsSubmitted(true);
     } catch (error) {
-      console.error("Course registration error:", error);
+      console.error("Contact form submission error:", error);
       setSubmitError(true);
     } finally {
       setIsSubmitting(false);
@@ -111,277 +84,266 @@ export const CourseRegistrationForm = ({
   };
 
   const inputClassName =
-    "w-full rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 text-base text-slate-950 shadow-sm outline-none transition-[border-color,box-shadow] placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100";
+    "w-full rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 font-medium text-slate-950 shadow-sm outline-none transition placeholder:font-normal placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10";
 
   if (isSubmitted) {
     return (
       <section
         role="status"
-        aria-live="polite"
-        className="font-nunito w-full overflow-hidden rounded-4xl border border-emerald-100 bg-white shadow-[0_28px_90px_rgba(15,23,42,0.24)]"
+        aria-labelledby={`${fieldId}-success-title`}
+        className="font-nunito flex h-full w-full flex-col items-center justify-center rounded-4xl border border-emerald-100 bg-emerald-50/70 px-6 py-12 text-center shadow-[0_20px_60px_rgba(15,23,42,0.08)] md:px-10"
       >
-        <div className="bg-linear-to-br from-emerald-500 to-emerald-700 px-6 py-8 text-center text-white md:px-10">
-          <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/25">
-            <CheckCircle2 size={34} aria-hidden="true" />
-          </div>
+        <div className="mb-5 flex size-16 items-center justify-center rounded-full bg-white text-emerald-600 shadow-sm ring-1 ring-emerald-100">
+          <CheckCircle2 size={34} aria-hidden="true" />
         </div>
-        <div className="px-6 py-10 text-center md:px-10 md:py-12">
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-950 md:text-3xl">
-            {t("courseRegistration.successTitle")}
-          </h2>
-          <p className="mx-auto mt-4 max-w-md text-base leading-7 font-medium text-slate-600 md:text-lg md:leading-8">
-            {t("courseRegistration.successText")}
-          </p>
-        </div>
+
+        <h2
+          id={`${fieldId}-success-title`}
+          className="text-preset-3 font-semibold tracking-tight text-slate-950"
+        >
+          {t("contact.form.successTitle")}
+        </h2>
+        <p className="mt-3 max-w-md text-slate-700">{t("contact.form.successText")}</p>
+
+        <button
+          type="button"
+          onClick={resetForm}
+          className="mt-7 cursor-pointer rounded-2xl border border-emerald-200 bg-white px-6 py-3 text-sm font-semibold text-emerald-700 shadow-sm transition hover:border-emerald-300 hover:shadow-md"
+        >
+          {t("contact.form.sendAnother")}
+        </button>
       </section>
     );
   }
 
   return (
     <section
-      aria-labelledby={titleId}
-      className="font-nunito w-full overflow-hidden rounded-4xl border border-white/70 bg-white shadow-[0_28px_90px_rgba(15,23,42,0.3)]"
+      aria-labelledby={`${fieldId}-title`}
+      className="font-nunito relative h-full overflow-hidden rounded-4xl border border-slate-200 bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.12)] md:p-10 lg:p-12"
     >
-      <header className="bg-linear-to-br from-blue-600 to-blue-900 px-5 py-6 pr-16 text-white md:px-8 md:py-7 md:pr-20">
-        <div className="flex items-start gap-4">
-          <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-yellow-300 shadow-inner ring-1 ring-white/15 backdrop-blur-md">
-            <ShieldCheck size={25} aria-hidden="true" />
-          </div>
-          <div className="min-w-0">
-            <p className="text-xs font-bold tracking-[0.14em] text-blue-100 uppercase">
-              {t("courseRegistration.eyebrow")}
-            </p>
-            <h2
-              id={titleId}
-              className="mt-1 text-2xl leading-tight font-semibold tracking-tight text-white md:text-3xl"
-            >
-              {t("courseRegistration.title")}
-            </h2>
-            <p className="mt-2 max-w-xl text-sm leading-6 font-medium text-blue-100 md:text-base md:leading-7">
-              {t("courseRegistration.description")}
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-5 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-sm">
-          <span className="block text-[11px] font-bold tracking-[0.12em] text-blue-100 uppercase">
-            {t("courseRegistration.selectedCourse")}
-          </span>
-          <span className="mt-1 block text-base leading-6 font-semibold wrap-break-word text-white md:text-lg">
-            {courseTitle}
-          </span>
-        </div>
+      <header className="mb-8">
+        <h2
+          id={`${fieldId}-title`}
+          className="text-preset-3 font-semibold tracking-tight text-slate-950"
+        >
+          {t("contact.form.title")}
+        </h2>
+        <p className="mt-3 max-w-2xl text-slate-600">{t("contact.form.description")}</p>
       </header>
 
-      <div className="bg-slate-50/60 p-5 md:p-8">
-        <form onSubmit={handleSubmit} noValidate className="space-y-5">
-          <div>
-            <div className="mb-2 flex items-center gap-1.5">
-              <label
-                htmlFor={`${fieldId}-name`}
-                className="text-sm font-semibold text-slate-800 md:text-base"
-              >
-                {t("courseRegistration.fullName")}
-              </label>
-              <RequiredIndicator label={requiredLabel} />
-            </div>
-            {nameInvalid && (
-              <p
-                id={nameErrorId}
-                role="alert"
-                className="mb-2 text-sm font-semibold text-red-700"
-              >
-                {t("courseRegistration.fullNameRequired", {
-                  defaultValue: "Вкажіть ім’я та прізвище.",
-                })}
-              </p>
-            )}
-            <div className="relative">
-              <User
-                size={19}
-                aria-hidden="true"
-                className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-500"
-              />
-              <input
-                id={`${fieldId}-name`}
-                type="text"
-                value={fullName}
-                onChange={(event) => setFullName(event.target.value)}
-                autoComplete="name"
-                required
-                minLength={2}
-                aria-invalid={nameInvalid}
-                aria-describedby={nameInvalid ? nameErrorId : undefined}
-                placeholder={t("courseRegistration.fullNamePlaceholder")}
-                className={`${inputClassName} ${nameInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""}`}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            <div>
-              <div className="mb-2 flex items-center gap-1.5">
-                <label
-                  htmlFor={`${fieldId}-email`}
-                  className="text-sm font-semibold text-slate-800 md:text-base"
-                >
-                  {t("courseRegistration.email")}
-                </label>
-                <RequiredIndicator label={requiredLabel} />
-              </div>
-              {emailInvalid && (
-                <p
-                  id={emailErrorId}
-                  role="alert"
-                  className="mb-2 text-sm font-semibold text-red-700"
-                >
-                  {t("courseRegistration.emailInvalid", {
-                    defaultValue: "Вкажіть коректну електронну адресу.",
-                  })}
-                </p>
-              )}
-              <div className="relative">
-                <Mail
-                  size={19}
-                  aria-hidden="true"
-                  className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-500"
-                />
-                <input
-                  id={`${fieldId}-email`}
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  autoComplete="email"
-                  inputMode="email"
-                  required
-                  aria-invalid={emailInvalid}
-                  aria-describedby={emailInvalid ? emailErrorId : undefined}
-                  placeholder={t("courseRegistration.emailPlaceholder")}
-                  className={`${inputClassName} ${emailInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""}`}
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="mb-2 flex items-center gap-1.5">
-                <label
-                  htmlFor={`${fieldId}-phone`}
-                  className="text-sm font-semibold text-slate-800 md:text-base"
-                >
-                  {t("courseRegistration.phone")}
-                </label>
-                <RequiredIndicator label={requiredLabel} />
-              </div>
-              {phoneInvalid && (
-                <p
-                  id={phoneErrorId}
-                  role="alert"
-                  className="mb-2 text-sm font-semibold text-red-700"
-                >
-                  {t("courseRegistration.phoneInvalid", {
-                    defaultValue: "Вкажіть коректний номер телефону.",
-                  })}
-                </p>
-              )}
-              <div className="relative">
-                <Phone
-                  size={19}
-                  aria-hidden="true"
-                  className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-500"
-                />
-                <input
-                  id={`${fieldId}-phone`}
-                  type="tel"
-                  value={phone}
-                  onChange={(event) => setPhone(event.target.value)}
-                  autoComplete="tel"
-                  inputMode="tel"
-                  required
-                  minLength={6}
-                  aria-invalid={phoneInvalid}
-                  aria-describedby={phoneInvalid ? phoneErrorId : undefined}
-                  placeholder={t("courseRegistration.phonePlaceholder")}
-                  className={`${inputClassName} ${phoneInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""}`}
-                />
-              </div>
-            </div>
-          </div>
-
-          <label
-            className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 text-sm leading-6 font-medium transition-colors md:text-base md:leading-7 ${
-              privacyInvalid
-                ? "border-red-300 bg-red-50 text-red-900"
-                : "border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50/50"
-            }`}
+      <form
+        name="contact_form"
+        onSubmit={submitHandler}
+        className="relative flex flex-col gap-6"
+      >
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <FormFieldLabel
+            htmlFor={`${fieldId}-name`}
+            label={t("contact.form.name")}
+            requiredLabel={t("contact.form.required")}
           >
-            <input
-              type="checkbox"
-              id={`${fieldId}-privacy`}
-              checked={acceptedPrivacy}
-              onChange={(event) => {
-                setAcceptedPrivacy(event.target.checked);
-              }}
-              aria-invalid={privacyInvalid}
-              aria-describedby={privacyInvalid ? privacyErrorId : undefined}
-              className="size-4 shrink-0 cursor-pointer accent-blue-600"
-            />
-            <span>
-              <span className="block">{t("courseRegistration.privacy")}</span>
-              <Link
-                to="/privacy"
-                onClick={(event) => event.stopPropagation()}
-                className="mt-1 inline-flex font-semibold text-blue-700 underline underline-offset-2 hover:text-blue-900"
-              >
-                {t("privacy.title")}
-              </Link>
-            </span>
-          </label>
-
-          {privacyInvalid && (
-            <p
-              id={privacyErrorId}
-              role="alert"
-              className="text-sm leading-6 font-semibold text-red-700 md:text-base"
-            >
-              {t("courseRegistration.privacyRequired")}
-            </p>
-          )}
-
-          {submitError && (
-            <p
-              role="alert"
-              className="text-sm leading-6 font-semibold text-red-700 md:text-base"
-            >
-              {t("courseRegistration.submitError")}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            aria-disabled={isSubmitting || !isFormComplete}
-            aria-describedby={privacyInvalid ? privacyErrorId : undefined}
-            className={`group flex w-full items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-semibold shadow-lg transition-[color,background-color,box-shadow,transform] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:opacity-60 ${
-              isSubmitting
-                ? "cursor-wait bg-blue-600 text-white"
-                : isFormComplete
-                  ? "cursor-pointer bg-blue-600 text-white hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl"
-                  : "cursor-pointer bg-slate-300 text-slate-600 hover:bg-slate-400"
-            }`}
-          >
-            <span>
-              {isSubmitting
-                ? t("courseRegistration.submitting")
-                : t("courseRegistration.submit")}
-            </span>
-            <Send
-              size={19}
+            <User
+              size={18}
               aria-hidden="true"
-              className="transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-0.5"
+              className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"
             />
-          </button>
-        </form>
-      </div>
+            <input
+              id={`${fieldId}-name`}
+              type="text"
+              name="name"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              autoComplete="name"
+              required
+              minLength={2}
+              placeholder={t("contact.form.namePlaceholder")}
+              className={inputClassName}
+            />
+          </FormFieldLabel>
+
+          <FormFieldLabel
+            htmlFor={`${fieldId}-email`}
+            label={t("contact.form.email")}
+            requiredLabel={t("contact.form.required")}
+          >
+            <Mail
+              size={18}
+              aria-hidden="true"
+              className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"
+            />
+            <input
+              id={`${fieldId}-email`}
+              type="email"
+              name="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              autoComplete="email"
+              inputMode="email"
+              required
+              placeholder={t("contact.form.emailPlaceholder")}
+              className={inputClassName}
+            />
+          </FormFieldLabel>
+        </div>
+
+        <FormFieldLabel
+          htmlFor={`${fieldId}-phone`}
+          label={t("contact.form.phone")}
+          optionalLabel={t("contact.form.optional")}
+        >
+          <Phone
+            size={18}
+            aria-hidden="true"
+            className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"
+          />
+          <input
+            id={`${fieldId}-phone`}
+            type="tel"
+            name="phone"
+            value={phone}
+            onChange={(event) => setPhone(event.target.value)}
+            autoComplete="tel"
+            inputMode="tel"
+            placeholder={t("contact.form.phonePlaceholder")}
+            className={inputClassName}
+          />
+        </FormFieldLabel>
+
+        <div>
+          <label
+            htmlFor={`${fieldId}-message`}
+            className="mb-2 block text-sm font-semibold text-slate-800"
+          >
+            {t("contact.form.message")}
+            <span className="ml-1 text-xs text-blue-600">{t("contact.form.required")}</span>
+          </label>
+          <div className="relative">
+            <MessageSquare
+              size={18}
+              aria-hidden="true"
+              className="pointer-events-none absolute top-4 left-4 text-slate-400"
+            />
+            <textarea
+              id={`${fieldId}-message`}
+              name="message"
+              rows={4}
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
+              required
+              minLength={5}
+              placeholder={t("contact.form.messagePlaceholder")}
+              className="min-h-40 w-full resize-y rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 font-medium text-slate-950 shadow-sm outline-none transition placeholder:font-normal placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+            />
+          </div>
+        </div>
+
+        <label
+          className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-4 text-sm leading-6 text-slate-700 transition ${
+            privacyError
+              ? "border-red-300 bg-red-50"
+              : "border-slate-200 bg-slate-50 hover:border-blue-200 hover:bg-blue-50/50"
+          }`}
+        >
+          <input
+            type="checkbox"
+            checked={acceptedPrivacy}
+            onChange={(event) => {
+              setAcceptedPrivacy(event.target.checked);
+              if (event.target.checked) setPrivacyError(false);
+            }}
+            aria-invalid={privacyError}
+            aria-describedby={
+              privacyError ? `${fieldId}-privacy-error` : undefined
+            }
+            className="mt-1 size-4 shrink-0 cursor-pointer accent-blue-600"
+          />
+          <span>
+            {t("contact.form.privacyBefore")}{" "}
+            <Link
+              to="/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(event) => event.stopPropagation()}
+              className="font-semibold text-blue-700 underline transition hover:text-blue-800"
+            >
+              {t("contact.form.privacyLink")}
+            </Link>
+            .
+          </span>
+        </label>
+
+        {privacyError && (
+          <p
+            id={`${fieldId}-privacy-error`}
+            role="alert"
+            className="text-sm font-semibold text-red-700"
+          >
+            {t("contact.form.privacyRequired")}
+          </p>
+        )}
+
+        {submitError && (
+          <p role="alert" className="text-sm font-semibold text-red-700">
+            {t("contact.form.submitError")}
+          </p>
+        )}
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          aria-disabled={isSubmitting}
+          className={`group inline-flex cursor-pointer items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-semibold text-white shadow-lg transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:cursor-wait disabled:opacity-60 ${
+            acceptedPrivacy
+              ? "bg-blue-600 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl"
+              : "bg-slate-600 hover:bg-slate-700"
+          }`}
+        >
+          {isSubmitting ? (
+            <Loader2 size={20} className="animate-spin" aria-hidden="true" />
+          ) : (
+            <Send
+              size={20}
+              aria-hidden="true"
+              className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+            />
+          )}
+          {isSubmitting ? t("contact.form.submitting") : t("contact.form.submit")}
+        </button>
+      </form>
     </section>
   );
 };
+
+interface FormFieldLabelProps {
+  htmlFor: string;
+  label: string;
+  requiredLabel?: string;
+  optionalLabel?: string;
+  children: ReactNode;
+}
+
+const FormFieldLabel = ({
+  htmlFor,
+  label,
+  requiredLabel,
+  optionalLabel,
+  children,
+}: FormFieldLabelProps) => (
+  <div>
+    <label
+      htmlFor={htmlFor}
+      className="mb-2 block text-sm font-semibold text-slate-800"
+    >
+      {label}
+      {requiredLabel && (
+        <span className="ml-1 text-xs text-blue-600">{requiredLabel}</span>
+      )}
+      {optionalLabel && (
+        <span className="ml-1 font-normal text-slate-500">
+          ({optionalLabel})
+        </span>
+      )}
+    </label>
+    <div className="relative">{children}</div>
+  </div>
+);
