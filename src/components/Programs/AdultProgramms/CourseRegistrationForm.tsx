@@ -111,7 +111,7 @@ export const CourseRegistrationForm = ({
   };
 
   const inputClassName =
-    "w-full rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 text-base text-slate-950 shadow-sm outline-none transition-[border-color,box-shadow] placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100";
+    "w-full rounded-2xl border border-slate-200 bg-white py-3 pr-4 pl-11 text-base text-slate-950 shadow-sm outline-none transition-[border-color,box-shadow] placeholder:text-slate-500 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 md:py-3.5 md:pl-12";
 
   if (isSubmitted) {
     return (
@@ -176,8 +176,8 @@ export const CourseRegistrationForm = ({
         </div>
       </header>
 
-      <div className="bg-slate-50/60 p-5 md:p-8">
-        <form onSubmit={handleSubmit} noValidate className="space-y-5">
+      <div className="bg-slate-50/60 p-4 md:p-8">
+        <form onSubmit={handleSubmit} noValidate className="space-y-4 md:space-y-5">
           <div>
             <div className="mb-2 flex items-center gap-1.5">
               <label
@@ -221,7 +221,7 @@ export const CourseRegistrationForm = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
             <div>
               <div className="mb-2 flex items-center gap-1.5">
                 <label
@@ -311,7 +311,7 @@ export const CourseRegistrationForm = ({
           </div>
 
           <label
-            className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 text-sm leading-6 font-medium transition-colors md:text-base md:leading-7 ${
+            className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-3 text-sm leading-6 font-medium transition-colors md:p-4 md:text-base md:leading-7 ${
               privacyInvalid
                 ? "border-red-300 bg-red-50 text-red-900"
                 : "border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50/50"
@@ -364,7 +364,7 @@ export const CourseRegistrationForm = ({
             disabled={isSubmitting}
             aria-disabled={isSubmitting || !isFormComplete}
             aria-describedby={privacyInvalid ? privacyErrorId : undefined}
-            className={`group flex w-full items-center justify-center gap-3 rounded-2xl px-6 py-4 text-base font-semibold shadow-lg transition-[color,background-color,box-shadow,transform] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:opacity-60 ${
+            className={`group flex w-full items-center justify-center gap-3 rounded-2xl px-6 py-3.5 text-base font-semibold shadow-lg transition-[color,background-color,box-shadow,transform] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:opacity-60 md:py-4 ${
               isSubmitting
                 ? "cursor-wait bg-blue-600 text-white"
                 : isFormComplete
