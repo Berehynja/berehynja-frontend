@@ -88,6 +88,7 @@
       "empty": "Partners will be added soon.",
       "delete": "Delete partner",
       "confirmDelete": "Delete this partner?",
+      "deleteMessage": "Partner “{{name}}” will be permanently deleted. This action cannot be undone.",
       "openWebsite": "Open partner website",
       "added": "Partner added!",
       "deleted": "Partner deleted!",
