@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 
 import { useAuth } from "../../AuthProvider/useAuth";
 import { AddPartnerModal } from "../../Modals/AddPartnersModal";
+import { ConfirmModal } from "../../Modals/ConfirmModal";
 import { PageLoader } from "../../ui/PageLoader";
 import {
   addPartner,
@@ -14,54 +15,6 @@ import {
 import type { Partner } from "../../../types/partners";
 import type { LangKey } from "../../../types/types";
 
-const PARTNERS_TEXT = {
-  add: {
-    ua: "Додати партнера",
-    de: "Partner hinzufügen",
-    en: "Add partner",
-  },
-  empty: {
-    ua: "Партнери незабаром з’являться.",
-    de: "Partner werden bald hinzugefügt.",
-    en: "Partners will be added soon.",
-  },
-  delete: {
-    ua: "Видалити партнера",
-    de: "Partner löschen",
-    en: "Delete partner",
-  },
-  confirmDelete: {
-    ua: "Видалити цього партнера?",
-    de: "Diesen Partner löschen?",
-    en: "Delete this partner?",
-  },
-  openWebsite: {
-    ua: "Відкрити сайт партнера",
-    de: "Partner-Website öffnen",
-    en: "Open partner website",
-  },
-  added: {
-    ua: "Партнера додано!",
-    de: "Partner wurde hinzugefügt!",
-    en: "Partner added!",
-  },
-  deleted: {
-    ua: "Партнера видалено!",
-    de: "Partner wurde gelöscht!",
-    en: "Partner deleted!",
-  },
-  addError: {
-    ua: "Не вдалося додати партнера.",
-    de: "Der Partner konnte nicht hinzugefügt werden.",
-    en: "The partner could not be added.",
-  },
-  deleteError: {
-    ua: "Не вдалося видалити партнера.",
-    de: "Der Partner konnte nicht gelöscht werden.",
-    en: "The partner could not be deleted.",
-  },
-};
-
 export const Partners = () => {
   const { t, i18n } = useTranslation();
   const { isAdmin } = useAuth();
@@ -69,6 +22,7 @@ export const Partners = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [partnerToDelete, setPartnerToDelete] = useState<Partner | null>(null);
 
   const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
     "-",
@@ -94,31 +48,27 @@ export const Partners = () => {
     try {
       await addPartner(newPartner);
       setIsModalOpen(false);
-      toast.success(PARTNERS_TEXT.added[currentLang]);
+      toast.success(t("about.partners.added"));
     } catch (error) {
       console.error("Partner creation error:", error);
-      toast.error(PARTNERS_TEXT.addError[currentLang]);
+      toast.error(t("about.partners.addError"));
     } finally {
       setIsProcessing(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (
-      isProcessing ||
-      !window.confirm(PARTNERS_TEXT.confirmDelete[currentLang])
-    ) {
-      return;
-    }
+    if (isProcessing) return;
 
     setIsProcessing(true);
 
     try {
       await deletePartner(id);
-      toast.success(PARTNERS_TEXT.deleted[currentLang]);
+      toast.success(t("about.partners.deleted"));
+      setPartnerToDelete(null);
     } catch (error) {
       console.error("Partner deletion error:", error);
-      toast.error(PARTNERS_TEXT.deleteError[currentLang]);
+      toast.error(t("about.partners.deleteError"));
     } finally {
       setIsProcessing(false);
     }
@@ -127,9 +77,17 @@ export const Partners = () => {
   const cardClassName =
     "flex min-h-28 w-full items-center justify-center overflow-hidden bg-white p-4 outline-none transition-colors duration-300 group-hover:bg-blue-50/60 focus-visible:relative focus-visible:z-10 focus-visible:ring-3 focus-visible:ring-inset focus-visible:ring-blue-500/30 md:min-h-32 md:p-5 lg:min-h-36";
 
+  if (isLoading) {
+    return <PageLoader visible />;
+  }
+
+  if (partners.length === 0 && !isAdmin) {
+    return null;
+  }
+
   return (
     <section className="w-full px-4 md:px-8">
-      <PageLoader visible={isLoading || isProcessing} />
+      <PageLoader visible={isProcessing && !partnerToDelete} />
 
       <div className="mx-auto w-full max-w-7xl">
         <header className="mb-8 text-center md:mb-10">
@@ -138,7 +96,7 @@ export const Partners = () => {
           </h2>
         </header>
 
-        {!isLoading && (partners.length > 0 || isAdmin) && (
+        {(partners.length > 0 || isAdmin) && (
           <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 md:grid-cols-4 xl:grid-cols-6">
             {isAdmin && (
               <li className="min-w-0 bg-white">
@@ -151,7 +109,7 @@ export const Partners = () => {
                     <Plus size={22} aria-hidden="true" />
                   </span>
                   <span className="text-center text-xs font-bold md:text-sm">
-                    {PARTNERS_TEXT.add[currentLang]}
+                    {t("about.partners.add")}
                   </span>
                 </button>
               </li>
@@ -189,7 +147,7 @@ export const Partners = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       title={partnerName}
-                      aria-label={`${PARTNERS_TEXT.openWebsite[currentLang]}: ${partnerName}`}
+                      aria-label={`${t("about.partners.openWebsite")}: ${partnerName}`}
                       className={cardClassName}
                     >
                       {logoContent}
@@ -207,9 +165,9 @@ export const Partners = () => {
                   {isAdmin && partner.id && (
                     <button
                       type="button"
-                      onClick={() => void handleDelete(partner.id!)}
-                      aria-label={`${PARTNERS_TEXT.delete[currentLang]}: ${partnerName}`}
-                      title={PARTNERS_TEXT.delete[currentLang]}
+                      onClick={() => setPartnerToDelete(partner)}
+                      aria-label={`${t("about.partners.delete")}: ${partnerName}`}
+                      title={t("about.partners.delete")}
                       className="absolute top-2 right-2 z-20 flex size-11 cursor-pointer items-center justify-center rounded-xl border border-red-100 bg-white/95 text-red-600 shadow-md backdrop-blur transition-all duration-200 hover:border-red-600 hover:bg-red-600 hover:text-white active:scale-95 focus-visible:ring-3 focus-visible:ring-red-500/30 focus-visible:outline-none md:top-2.5 md:right-2.5"
                     >
                       <Trash2 size={17} aria-hidden="true" />
@@ -221,11 +179,6 @@ export const Partners = () => {
           </ul>
         )}
 
-        {!isLoading && partners.length === 0 && !isAdmin && (
-          <div className="flex min-h-36 items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-6 text-center text-sm font-medium text-slate-600">
-            {PARTNERS_TEXT.empty[currentLang]}
-          </div>
-        )}
       </div>
 
       {isAdmin && (
@@ -237,6 +190,26 @@ export const Partners = () => {
           onSave={handleAddPartner}
         />
       )}
+
+      <ConfirmModal
+        isOpen={Boolean(partnerToDelete)}
+        onClose={() => {
+          if (!isProcessing) setPartnerToDelete(null);
+        }}
+        onConfirm={() =>
+          partnerToDelete?.id
+            ? handleDelete(partnerToDelete.id)
+            : Promise.resolve()
+        }
+        isLoading={isProcessing}
+        title={t("about.partners.confirmDelete")}
+        message={t("about.partners.deleteMessage", {
+          name:
+            partnerToDelete?.name[currentLang] ||
+            partnerToDelete?.name.ua ||
+            t("about.ourPartners"),
+        })}
+      />
     </section>
   );
 };

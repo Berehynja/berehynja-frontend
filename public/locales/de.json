@@ -88,6 +88,7 @@
       "empty": "Partner werden bald hinzugefügt.",
       "delete": "Partner löschen",
       "confirmDelete": "Diesen Partner löschen?",
+      "deleteMessage": "Der Partner „{{name}}“ wird dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.",
       "openWebsite": "Partner-Website öffnen",
       "added": "Partner wurde hinzugefügt!",
       "deleted": "Partner wurde gelöscht!",

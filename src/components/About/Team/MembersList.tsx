@@ -16,10 +16,11 @@ import {
   updateTeamMember,
 } from "../../../services/teamService";
 import type { TeamMember } from "../../../types/teamMember";
+import type { LangKey } from "../../../types/types";
 
 export const MembersList = () => {
   const { isAdmin } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [team, setTeam] = useState<TeamMember[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -27,6 +28,12 @@ export const MembersList = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
 
+  const detectedLanguage = (i18n.resolvedLanguage || i18n.language).split(
+    "-",
+  )[0];
+  const currentLang: LangKey = ["ua", "de", "en"].includes(detectedLanguage)
+    ? (detectedLanguage as LangKey)
+    : "ua";
 
   useEffect(() => {
     const loadTeam = async () => {
@@ -104,12 +111,7 @@ export const MembersList = () => {
   };
 
   const handleDeleteMember = async (id: string) => {
-    if (
-      isProcessing ||
-      !window.confirm(t("about.team.confirmDelete"))
-    ) {
-      return;
-    }
+    if (isProcessing) return;
 
     setIsProcessing(true);
 
@@ -127,6 +129,7 @@ export const MembersList = () => {
     } catch (error) {
       console.error("Team member deletion error:", error);
       toast.error(t("about.team.deleteError"));
+      throw error;
     } finally {
       setIsProcessing(false);
     }
@@ -139,7 +142,7 @@ export const MembersList = () => {
       <header className="mb-12 text-center">
         <h2
           id="team-list-title"
-          className="font-nunito mb-4 flex items-center justify-center gap-3 text-3xl font-bold text-slate-950 md:text-4xl"
+          className="text-preset-2 font-nunito mb-4 text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl"
         >
           {t("about.team.title")}
         </h2>
@@ -155,6 +158,7 @@ export const MembersList = () => {
           )}
 
           {team.map((member) => {
+            const memberName = member.name[currentLang] || member.name.ua;
 
             return (
               <div key={member.id} className="group relative h-full min-w-0">
@@ -167,7 +171,7 @@ export const MembersList = () => {
                   <button
                     type="button"
                     onClick={() => handleOpenEdit(member)}
-                    aria-label={`${t("about.team.edit")}: ${member.name[t("about.team.language") as keyof typeof member.name] || member.name.ua}`}
+                    aria-label={`${t("about.team.edit")}: ${memberName}`}
                     title={t("about.team.edit")}
                     className="absolute top-4 right-4 z-10 flex size-11 cursor-pointer items-center justify-center rounded-xl border border-white/60 bg-white/90 text-slate-700 shadow-md backdrop-blur-sm transition-all duration-300 hover:border-blue-600 hover:bg-blue-600 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                   >

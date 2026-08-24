@@ -321,12 +321,10 @@ export const AddTeamMemberModal = ({
 
     try {
       await onDelete(memberToEdit.id);
-      toast.success(tr("deleted"));
       setIsDeleteModalOpen(false);
       onClose();
     } catch (error) {
       console.error("Team member delete error:", error);
-      toast.error(tr("deleteError"));
     } finally {
       setIsDeleting(false);
     }
