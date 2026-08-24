@@ -20,10 +20,7 @@ import type { ProgramAdults } from "../../../types/program";
 import type { LangKey } from "../../../types/types";
 import { PageLoader } from "../../ui/PageLoader";
 import toast from "react-hot-toast";
-import {
-  CourseRegistrationForm,
-  type CourseRegistrationData,
-} from "./CourseRegistrationForm";
+import { CourseRegistrationForm, type CourseRegistrationData } from "./CourseRegistrationForm";
 
 export const ProgramDetail = () => {
   const [program, setProgram] = useState<ProgramAdults | null>(null);
@@ -109,8 +106,7 @@ export const ProgramDetail = () => {
     );
   }
 
-  const localizedTitle =
-    program.title?.[lang]?.trim() || program.title?.ua?.trim() || "";
+  const localizedTitle = program.title?.[lang]?.trim() || program.title?.ua?.trim() || "";
   const isActive = program.isActive !== false;
 
   return (
@@ -127,7 +123,7 @@ export const ProgramDetail = () => {
 
       <div className="flex flex-col items-center justify-center gap-8 py-7 md:flex-row md:py-10">
         <div className="flex flex-col items-center justify-center text-nowrap">
-          <h2 className="text-preset-2 flex flex-nowrap justify-center pb-4 font-bold">
+          <h2 className="text-preset-2 flex flex-nowrap justify-center pb-4 font-semibold">
             {localizedTitle}
           </h2>
           <div className="mb-4 h-1 w-full bg-linear-to-r from-blue-500 to-yellow-400"></div>
@@ -161,26 +157,25 @@ export const ProgramDetail = () => {
                 <Info className="text-blue-500" /> {t("programs.adults.detail.about")}
               </h3>
               {isAdmin && (
-              <button
-                type="button"
-                onClick={() => {
-                  setIsEditing(!isEditing);
-                  setEditLang(lang);
-                }}
-                className="flex items-center gap-1 text-sm font-bold text-blue-500 transition-all hover:opacity-70"
-              >
-                {isEditing ? (
-                  <>
-                    <X size={16} /> {t("programs.adults.detail.cancel")}
-                  </>
-                ) : (
-                  <>
-                    <Pencil size={16} /> {t("programs.adults.detail.edit")}
-                  </>
-                )}
-              </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsEditing(!isEditing);
+                    setEditLang(lang);
+                  }}
+                  className="flex items-center gap-1 text-sm font-bold text-blue-500 transition-all hover:opacity-70"
+                >
+                  {isEditing ? (
+                    <>
+                      <X size={16} /> {t("programs.adults.detail.cancel")}
+                    </>
+                  ) : (
+                    <>
+                      <Pencil size={16} /> {t("programs.adults.detail.edit")}
+                    </>
+                  )}
+                </button>
               )}
-
             </div>
 
             {isEditing && (
@@ -220,13 +215,11 @@ export const ProgramDetail = () => {
                                 [editLang]: event.target.value,
                               },
                             }
-                          : previousProgram,
+                          : previousProgram
                       )
                     }
-                    placeholder={t(
-                      "programs.adults.detail.courseTitlePlaceholder",
-                    )}
-                    className="w-full rounded-2xl border-2 border-slate-100 bg-slate-50 px-5 py-3.5 text-base font-semibold text-slate-950 outline-none transition-colors placeholder:font-normal placeholder:text-slate-400 focus:border-blue-500"
+                    placeholder={t("programs.adults.detail.courseTitlePlaceholder")}
+                    className="w-full rounded-2xl border-2 border-slate-100 bg-slate-50 px-5 py-3.5 text-base font-semibold text-slate-950 transition-colors outline-none placeholder:font-normal placeholder:text-slate-400 focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -238,9 +231,15 @@ export const ProgramDetail = () => {
                 className="h-64 w-full rounded-3xl border-2 border-slate-100 bg-slate-50 p-6 font-medium outline-none focus:border-blue-500"
                 value={program.description[editLang] || ""}
                 onChange={(e) =>
-                  setProgram((prev) => prev 
-                  ? {...prev, description: {...prev.description!, [editLang]: e.target.value }} 
-                  : prev )}
+                  setProgram((prev) =>
+                    prev
+                      ? {
+                          ...prev,
+                          description: { ...prev.description!, [editLang]: e.target.value },
+                        }
+                      : prev
+                  )
+                }
               />
             ) : (
               <p className="text-lg leading-8 font-medium whitespace-pre-line text-gray-600">
@@ -251,9 +250,7 @@ export const ProgramDetail = () => {
 
           <div className="grid grid-cols-1 gap-6 pt-6 md:grid-cols-2">
             <div className="rounded-4xl border border-slate-100 bg-slate-50 p-8 text-left">
-              <h4 className="mb-6 text-xl font-bold">
-                {t("programs.adults.detail.features")}
-              </h4>
+              <h4 className="mb-6 text-xl font-bold">{t("programs.adults.detail.features")}</h4>
               <ul className="space-y-4">
                 {(isEditing
                   ? program.features?.[editLang]?.length
@@ -265,41 +262,43 @@ export const ProgramDetail = () => {
                   .map((feature: string, index: number) =>
                     isEditing ? (
                       <div key={`${editLang}-${index}`} className="flex items-center gap-1">
-                      <input
-                        type="text"
-                        className="mb-2 w-full rounded-xl border-2 border-slate-200 bg-white p-3 text-sm font-semibold shadow-sm outline-none focus:border-blue-500"
-                        value={feature}
-                        onChange={(e) => {
-                          const newArray = [...(program.features?.[editLang] || [""])];
-                          newArray[index] = e.target.value;
+                        <input
+                          type="text"
+                          className="mb-2 w-full rounded-xl border-2 border-slate-200 bg-white p-3 text-sm font-semibold shadow-sm outline-none focus:border-blue-500"
+                          value={feature}
+                          onChange={(e) => {
+                            const newArray = [...(program.features?.[editLang] || [""])];
+                            newArray[index] = e.target.value;
 
-                          setProgram((prev) => prev
-                          ? {...prev, features: {...prev.features!, [editLang]: newArray } } 
-                          : prev );
-                        }}
-                      />
-                      <button
-                        type="button"
-                        aria-label={t("programs.adults.detail.removeFeature")}
-                        onClick={() =>
-                          setProgram((prev) => {
-                            const newArray = [...(prev?.features?.[editLang] || [])];
-                            newArray.splice(index, 1);
-                            return prev
-                              ? {
-                                  ...prev,
-                                  features: {
-                                    ...prev.features!,
-                                    [editLang]: newArray,
-                                  },
-                                }
-                              : prev;
-                          })
-                        }
-                      >
-                        <X size={24} className="text-red-500" />
-                      </button>
-                    </div>
+                            setProgram((prev) =>
+                              prev
+                                ? { ...prev, features: { ...prev.features!, [editLang]: newArray } }
+                                : prev
+                            );
+                          }}
+                        />
+                        <button
+                          type="button"
+                          aria-label={t("programs.adults.detail.removeFeature")}
+                          onClick={() =>
+                            setProgram((prev) => {
+                              const newArray = [...(prev?.features?.[editLang] || [])];
+                              newArray.splice(index, 1);
+                              return prev
+                                ? {
+                                    ...prev,
+                                    features: {
+                                      ...prev.features!,
+                                      [editLang]: newArray,
+                                    },
+                                  }
+                                : prev;
+                            })
+                          }
+                        >
+                          <X size={24} className="text-red-500" />
+                        </button>
+                      </div>
                     ) : (
                       <li
                         key={index}
@@ -318,8 +317,15 @@ export const ProgramDetail = () => {
                   onClick={() => {
                     setProgram((prev) =>
                       prev
-                        ? {...prev, features: {...prev.features!, [editLang]: [...(prev.features?.[editLang] || []), ""]}} 
-                        : prev );
+                        ? {
+                            ...prev,
+                            features: {
+                              ...prev.features!,
+                              [editLang]: [...(prev.features?.[editLang] || []), ""],
+                            },
+                          }
+                        : prev
+                    );
                   }}
                   className="pt-4 font-bold text-blue-500"
                 >
@@ -330,9 +336,7 @@ export const ProgramDetail = () => {
 
             <div className="flex flex-col items-center justify-center rounded-4xl border border-blue-100 bg-blue-50 p-8 text-center">
               <Target size={48} className="mb-4 text-blue-500" />
-              <h4 className="mb-2 text-xl font-bold">
-                {t("programs.adults.detail.goal")}
-              </h4>
+              <h4 className="mb-2 text-xl font-bold">{t("programs.adults.detail.goal")}</h4>
 
               {isEditing ? (
                 <textarea
@@ -340,7 +344,12 @@ export const ProgramDetail = () => {
                   className="w-full rounded-2xl border-2 border-blue-100 bg-white p-3 font-semibold text-blue-800 outline-none focus:border-blue-500"
                   value={program.target?.[editLang] || ""}
                   onChange={(e) =>
-                    setProgram((prev) => prev ? {...prev, target: {...prev.target, [editLang]: e.target.value }} : prev)}
+                    setProgram((prev) =>
+                      prev
+                        ? { ...prev, target: { ...prev.target, [editLang]: e.target.value } }
+                        : prev
+                    )
+                  }
                 />
               ) : (
                 <p className="font-semibold text-blue-800">{program.target[lang]}</p>
