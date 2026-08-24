@@ -129,7 +129,7 @@ export const MobileMenu = ({
         aria-label={t("header.navigation", { defaultValue: "Main navigation" })}
         aria-hidden={!mobMenuIsOpen}
         inert={!mobMenuIsOpen}
-        className={`fixed inset-y-0 right-0 z-70 flex h-dvh w-[88vw] flex-col overflow-hidden border-l shadow-[-24px_0_70px_rgba(2,6,23,0.35)] transition-transform duration-300 ease-out min-[480px]:w-[70vw] min-[480px]:max-w-140 ${
+        className={`fixed inset-y-0 right-0 z-70 flex h-dvh w-[75vw] flex-col overflow-hidden border-l shadow-[-24px_0_70px_rgba(2,6,23,0.35)] transition-transform duration-300 ease-out ${
           isDark
             ? "border-white/10 bg-[#0a192f] text-white"
             : "border-slate-200 bg-linear-to-br from-blue-50 via-white to-yellow-50 text-slate-900"

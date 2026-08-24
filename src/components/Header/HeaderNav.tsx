@@ -31,7 +31,11 @@ export const HeaderNav = ({ mobileTheme = "light" }: HeaderNavProps) => {
   }`;
 
   return (
-    <nav className="font-nunito mb-10 flex w-full flex-col items-center justify-center gap-7 text-xl whitespace-nowrap text-stone-600 lg:mb-0 lg:w-auto lg:shrink-0 lg:flex-row lg:justify-end lg:gap-5 lg:px-1 lg:text-5 lg:text-black xl:gap-8 xl:px-5 xl:text-xl">
+    <nav
+      className={`font-nunito mb-10 flex w-full flex-col items-center justify-center gap-7 text-xl whitespace-nowrap lg:mb-0 lg:w-auto lg:shrink-0 lg:flex-row lg:justify-end lg:gap-5 lg:px-1 lg:text-[17px] lg:text-black xl:gap-8 xl:px-5 xl:text-xl ${
+        isDark ? "text-slate-100" : "text-slate-700"
+      }`}
+    >
       <NavLink to="/" end onClick={closeProgramsMenu}>
         <span className={linkStyles}>{t("header.home")}</span>
       </NavLink>
