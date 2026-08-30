@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Trash2 } from "lucide-react";
+import { Save, Trash2, X } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { COLORS, type LessonColor } from "../../../data/colors";
@@ -191,38 +191,45 @@ export function InlineScheduleForm({
         </div>
       </div>
 
-      <div className="mt-2 flex justify-end gap-2 border-t border-gray-100 pt-3">
+      <div className="mt-2 flex items-center justify-center gap-4 border-t border-gray-100 pt-3">
         {/* Кнопка видалення (показуємо тільки при редагуванні, коли є initialData і onDelete) */}
         {initialData && onDelete && (
-          <div className="flex w-full justify-center">
-            <button
-              onClick={() => {
-                const programTitle = programs.find((p) => p.id === lessonId)?.title || "це заняття";
-                onDelete(
-                  initialData.id,
-                  typeof programTitle === "string"
-                    ? programTitle
-                    : programTitle[i18n.language as keyof typeof programTitle] || programTitle.ua
-                );
-              }}
-              className="cursor-pointer rounded-lg px-3 py-2 text-sm font-bold text-red-600 transition-colors hover:bg-red-50"
-            >
-              <Trash2 size={24} />
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => {
+              const programTitle = programs.find((p) => p.id === lessonId)?.title || "це заняття";
+              onDelete(
+                initialData.id,
+                typeof programTitle === "string"
+                  ? programTitle
+                  : programTitle[i18n.language as keyof typeof programTitle] || programTitle.ua
+              );
+            }}
+            aria-label="Видалити заняття"
+            title="Видалити заняття"
+            className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg px-3 py-2 text-sm font-bold text-red-600 transition-colors hover:bg-red-50"
+          >
+            <Trash2 size={24} aria-hidden="true" />
+          </button>
         )}
 
         <button
+          type="button"
           onClick={onCancel}
-          className="cursor-pointer rounded-lg bg-gray-100 px-4 py-2 text-sm font-bold text-gray-600 transition-colors hover:bg-gray-200"
+          aria-label="Скасувати"
+          title="Скасувати"
+          className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-gray-100 text-gray-600 transition-colors hover:bg-gray-200"
         >
-          Скасувати
+          <X size={20} aria-hidden="true" />
         </button>
         <button
+          type="button"
           onClick={handleSubmit}
-          className="bg-Blue cursor-pointer rounded-lg px-4 py-2 text-sm font-bold text-white shadow-sm transition-colors hover:bg-blue-600"
+          aria-label="Зберегти"
+          title="Зберегти"
+          className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-emerald-600 text-white shadow-sm transition-colors hover:bg-emerald-700"
         >
-          Зберегти
+          <Save size={20} aria-hidden="true" />
         </button>
       </div>
     </div>
@@ -231,4 +238,3 @@ export function InlineScheduleForm({
 
 // ============================================================================
 // ГОЛОВНИЙ КОМПОНЕНТ
-
