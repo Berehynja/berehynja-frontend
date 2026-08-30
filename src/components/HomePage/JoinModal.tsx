@@ -38,7 +38,7 @@ interface JoinModalProps {
 }
 
 export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const fieldId = useId();
   const titleId = `${fieldId}-title`;
   const privacyErrorId = `${fieldId}-privacy-error`;
@@ -50,6 +50,7 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
   const [showValidationErrors, setShowValidationErrors] = useState(false);
   const [submitError, setSubmitError] = useState(false);
+  const [rateLimitError, setRateLimitError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
@@ -60,6 +61,15 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
   const isFormFieldsComplete = isNameValid && isEmailValid && acceptedPrivacy;
   const isTurnstileValid = turnstileToken.trim().length > 0;
   const isFormComplete = isFormFieldsComplete && isTurnstileValid;
+  const currentLanguage = (i18n.resolvedLanguage ?? i18n.language ?? "uk")
+    .toLowerCase()
+    .split(/[-_]/)[0];
+  const rateLimitMessage =
+    currentLanguage === "de"
+      ? "Das Sendelimit wurde überschritten. Bitte warten Sie 5 Minuten und versuchen Sie es erneut."
+      : currentLanguage === "en"
+        ? "Submission limit exceeded. Please wait 5 minutes and try again."
+        : "Ліміт відправлень перевищено. Зачекайте 5 хвилин і спробуйте ще раз.";
   const nameInvalid = showValidationErrors && !isNameValid;
   const emailInvalid = showValidationErrors && !isEmailValid;
   const privacyInvalid = showValidationErrors && !acceptedPrivacy;
@@ -72,6 +82,7 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
     setAcceptedPrivacy(false);
     setShowValidationErrors(false);
     setSubmitError(false);
+    setRateLimitError(false);
     setIsSubmitting(false);
     setIsSubmitted(false);
     setTurnstileToken("");
@@ -111,6 +122,9 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
     event.preventDefault();
     if (isSubmitting) return;
 
+    setSubmitError(false);
+    setRateLimitError(false);
+
     if (!isFormFieldsComplete) {
       setShowValidationErrors(true);
 
@@ -132,6 +146,7 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
 
     setIsSubmitting(true);
     setSubmitError(false);
+    setRateLimitError(false);
 
     try {
       const formData: JoinFormData = {
@@ -153,6 +168,13 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
         },
         body: JSON.stringify(formData),
       });
+
+      if (response.status === 429) {
+        setRateLimitError(true);
+        setTurnstileToken("");
+        setTurnstileVersion((value) => value + 1);
+        return;
+      }
 
       if (!response.ok) {
         throw new Error(`Join form submission error: ${response.status}`);
@@ -414,6 +436,15 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                   className="text-sm leading-6 font-semibold text-red-700 md:text-base"
                 >
                   {t("joinModal.submitError")}
+                </p>
+              )}
+
+              {rateLimitError && (
+                <p
+                  role="alert"
+                  className="text-sm leading-6 font-semibold text-red-700 md:text-base"
+                >
+                  {rateLimitMessage}
                 </p>
               )}
 

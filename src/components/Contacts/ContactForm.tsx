@@ -30,7 +30,7 @@ interface ContactFormProps {
 }
 
 export const ContactForm = ({ onSubmit }: ContactFormProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const fieldId = useId();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -39,6 +39,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
   const [showValidationErrors, setShowValidationErrors] = useState(false);
   const [submitError, setSubmitError] = useState(false);
+  const [rateLimitError, setRateLimitError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
@@ -51,6 +52,15 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
     isNameValid && isEmailValid && isMessageValid && acceptedPrivacy;
   const isTurnstileValid = turnstileToken.trim().length > 0;
   const isFormComplete = isFormFieldsComplete && isTurnstileValid;
+  const currentLanguage = (i18n.resolvedLanguage ?? i18n.language ?? "uk")
+    .toLowerCase()
+    .split(/[-_]/)[0];
+  const rateLimitMessage =
+    currentLanguage === "de"
+      ? "Das Sendelimit wurde überschritten. Bitte warten Sie 5 Minuten und versuchen Sie es erneut."
+      : currentLanguage === "en"
+        ? "Submission limit exceeded. Please wait 5 minutes and try again."
+        : "Ліміт відправлень перевищено. Зачекайте 5 хвилин і спробуйте ще раз.";
 
   const nameInvalid = showValidationErrors && !isNameValid;
   const emailInvalid = showValidationErrors && !isEmailValid;
@@ -65,6 +75,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
     setAcceptedPrivacy(false);
     setShowValidationErrors(false);
     setSubmitError(false);
+    setRateLimitError(false);
     setIsSubmitted(false);
     setTurnstileToken("");
     setTurnstileVersion((value) => value + 1);
@@ -74,6 +85,9 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
     event.preventDefault();
 
     if (isSubmitting) return;
+
+    setSubmitError(false);
+    setRateLimitError(false);
 
     if (!isFormFieldsComplete) {
       setShowValidationErrors(true);
@@ -98,6 +112,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
 
     setIsSubmitting(true);
     setSubmitError(false);
+    setRateLimitError(false);
 
     try {
       const formData: ContactFormData = {
@@ -119,6 +134,13 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
         },
         body: JSON.stringify(formData),
       });
+
+      if (response.status === 429) {
+        setRateLimitError(true);
+        setTurnstileToken("");
+        setTurnstileVersion((value) => value + 1);
+        return;
+      }
 
       if (!response.ok) {
         throw new Error(`Form submission error: ${response.status}`);
@@ -375,6 +397,11 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
         {submitError && (
           <p role="alert" className="text-sm font-semibold text-red-700">
             {t("contact.form.submitError")}
+          </p>
+        )}
+        {rateLimitError && (
+          <p role="alert" className="text-sm font-semibold text-red-700">
+            {rateLimitMessage}
           </p>
         )}
         <TurnstileWidget
