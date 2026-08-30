@@ -6,4 +6,13 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   base: "/",
   plugins: [react(), tailwindcss()],
+
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://berehynja.de",
+        changeOrigin: true,
+      },
+    },
+  },
 });

@@ -1,6 +1,7 @@
 import { useId, useState, type FormEvent, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { TurnstileWidget } from "./../TurnstileWidget/TurnstileWidget";
 import {
   CheckCircle2,
   CircleAlert,
@@ -19,7 +20,9 @@ export interface ContactFormData {
   message: string;
   acceptedPrivacy: boolean;
   submittedAt: string;
-  source: string;
+  timezone: string;
+  formName: string;
+  turnstileToken: string;
 }
 
 interface ContactFormProps {
@@ -38,12 +41,17 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
   const [submitError, setSubmitError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileVersion, setTurnstileVersion] = useState(0);
 
   const isNameValid = name.trim().length >= 2;
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const isMessageValid = message.trim().length >= 5;
-  const isFormComplete =
+  const isFormFieldsComplete =
     isNameValid && isEmailValid && isMessageValid && acceptedPrivacy;
+  const isTurnstileValid = turnstileToken.trim().length > 0;
+  const isFormComplete = isFormFieldsComplete && isTurnstileValid;
+
   const nameInvalid = showValidationErrors && !isNameValid;
   const emailInvalid = showValidationErrors && !isEmailValid;
   const messageInvalid = showValidationErrors && !isMessageValid;
@@ -58,13 +66,16 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
     setShowValidationErrors(false);
     setSubmitError(false);
     setIsSubmitted(false);
+    setTurnstileToken("");
+    setTurnstileVersion((value) => value + 1);
   };
 
   const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     if (isSubmitting) return;
 
-    if (!isFormComplete) {
+    if (!isFormFieldsComplete) {
       setShowValidationErrors(true);
 
       const firstInvalidFieldId = !isNameValid
@@ -79,24 +90,49 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
       return;
     }
 
+    if (!isTurnstileValid) {
+      setSubmitError(true);
+      setTurnstileVersion((value) => value + 1);
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError(false);
 
     try {
-      await onSubmit?.({
+      const formData: ContactFormData = {
         name: name.trim(),
         email: email.trim(),
         phone: phone.trim(),
         message: message.trim(),
         acceptedPrivacy,
         submittedAt: new Date().toISOString(),
-        source: "Berehynja Website",
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        formName: "contact_form",
+        turnstileToken,
+      };
+
+      const response = await fetch("/api/forms", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
+
+      if (!response.ok) {
+        throw new Error(`Form submission error: ${response.status}`);
+      }
+
+      await onSubmit?.(formData);
 
       setIsSubmitted(true);
     } catch (error) {
       console.error("Contact form submission error:", error);
       setSubmitError(true);
+
+      setTurnstileToken("");
+      setTurnstileVersion((value) => value + 1);
     } finally {
       setIsSubmitting(false);
     }
@@ -122,6 +158,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
         >
           {t("contact.form.successTitle")}
         </h2>
+
         <p className="mt-3 max-w-md text-slate-700">{t("contact.form.successText")}</p>
 
         <button
@@ -147,6 +184,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
         >
           {t("contact.form.title")}
         </h2>
+
         <p className="mt-3 max-w-2xl text-slate-600">{t("contact.form.description")}</p>
       </header>
 
@@ -154,16 +192,14 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
         name="contact_form"
         onSubmit={submitHandler}
         noValidate
-        className="relative flex flex-col gap-6"
+        className="relative flex flex-col gap-4 md:gap-5"
       >
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
           <FormFieldLabel
             htmlFor={`${fieldId}-name`}
             label={t("contact.form.name")}
             requiredLabel={t("contact.form.required")}
-            error={
-              nameInvalid ? t("contact.form.nameRequired") : undefined
-            }
+            error={nameInvalid ? t("contact.form.nameRequired") : undefined}
             errorId={`${fieldId}-name-error`}
             reserveErrorSpace={showValidationErrors}
           >
@@ -172,6 +208,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               aria-hidden="true"
               className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"
             />
+
             <input
               id={`${fieldId}-name`}
               type="text"
@@ -182,11 +219,11 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               required
               minLength={2}
               aria-invalid={nameInvalid}
-              aria-describedby={
-                nameInvalid ? `${fieldId}-name-error` : undefined
-              }
+              aria-describedby={nameInvalid ? `${fieldId}-name-error` : undefined}
               placeholder={t("contact.form.namePlaceholder")}
-              className={`${inputClassName} ${nameInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""}`}
+              className={`${inputClassName} ${
+                nameInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""
+              }`}
             />
           </FormFieldLabel>
 
@@ -194,9 +231,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
             htmlFor={`${fieldId}-email`}
             label={t("contact.form.email")}
             requiredLabel={t("contact.form.required")}
-            error={
-              emailInvalid ? t("contact.form.emailInvalid") : undefined
-            }
+            error={emailInvalid ? t("contact.form.emailInvalid") : undefined}
             errorId={`${fieldId}-email-error`}
             reserveErrorSpace={showValidationErrors}
           >
@@ -205,6 +240,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               aria-hidden="true"
               className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"
             />
+
             <input
               id={`${fieldId}-email`}
               type="email"
@@ -215,11 +251,11 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               inputMode="email"
               required
               aria-invalid={emailInvalid}
-              aria-describedby={
-                emailInvalid ? `${fieldId}-email-error` : undefined
-              }
+              aria-describedby={emailInvalid ? `${fieldId}-email-error` : undefined}
               placeholder={t("contact.form.emailPlaceholder")}
-              className={`${inputClassName} ${emailInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""}`}
+              className={`${inputClassName} ${
+                emailInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""
+              }`}
             />
           </FormFieldLabel>
         </div>
@@ -234,6 +270,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
             aria-hidden="true"
             className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"
           />
+
           <input
             id={`${fieldId}-phone`}
             type="tel"
@@ -255,6 +292,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
             {t("contact.form.message")}
             <RequiredIndicator label={t("contact.form.required")} />
           </label>
+
           {messageInvalid && (
             <p
               id={`${fieldId}-message-error`}
@@ -264,12 +302,14 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               {t("contact.form.messageRequired")}
             </p>
           )}
+
           <div className="relative">
             <MessageSquare
               size={18}
               aria-hidden="true"
               className="pointer-events-none absolute top-4 left-4 text-slate-400"
             />
+
             <textarea
               id={`${fieldId}-message`}
               name="message"
@@ -279,11 +319,11 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               required
               minLength={5}
               aria-invalid={messageInvalid}
-              aria-describedby={
-                messageInvalid ? `${fieldId}-message-error` : undefined
-              }
+              aria-describedby={messageInvalid ? `${fieldId}-message-error` : undefined}
               placeholder={t("contact.form.messagePlaceholder")}
-              className={`min-h-40 w-full resize-y rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 font-medium text-slate-950 shadow-sm outline-none transition placeholder:font-normal placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 ${messageInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""}`}
+              className={`min-h-40 w-full resize-y rounded-2xl border border-slate-200 bg-white py-3.5 pr-4 pl-12 font-medium text-slate-950 shadow-sm transition outline-none placeholder:font-normal placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 ${
+                messageInvalid ? "border-red-400 focus:border-red-600 focus:ring-red-100" : ""
+              }`}
             />
           </div>
         </div>
@@ -303,11 +343,10 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               setAcceptedPrivacy(event.target.checked);
             }}
             aria-invalid={privacyInvalid}
-            aria-describedby={
-              privacyInvalid ? `${fieldId}-privacy-error` : undefined
-            }
+            aria-describedby={privacyInvalid ? `${fieldId}-privacy-error` : undefined}
             className="size-4 shrink-0 cursor-pointer accent-blue-600"
           />
+
           <span>
             {t("contact.form.privacyBefore")}{" "}
             <Link
@@ -338,7 +377,11 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
             {t("contact.form.submitError")}
           </p>
         )}
-
+        <TurnstileWidget
+          key={turnstileVersion}
+          action="contact_form"
+          onVerify={setTurnstileToken}
+        />
         <button
           type="submit"
           disabled={isSubmitting}
@@ -360,6 +403,7 @@ export const ContactForm = ({ onSubmit }: ContactFormProps) => {
               className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
             />
           )}
+
           {isSubmitting ? t("contact.form.submitting") : t("contact.form.submit")}
         </button>
       </form>
@@ -394,38 +438,28 @@ const FormFieldLabel = ({
       className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-slate-800"
     >
       {label}
-      {requiredLabel && (
-        <RequiredIndicator label={requiredLabel} />
-      )}
-      {optionalLabel && (
-        <span className="ml-1 font-normal text-slate-500">
-          ({optionalLabel})
-        </span>
-      )}
+
+      {requiredLabel && <RequiredIndicator label={requiredLabel} />}
+
+      {optionalLabel && <span className="ml-1 font-normal text-slate-500">({optionalLabel})</span>}
     </label>
+
     {reserveErrorSpace ? (
       <div className="mb-2 min-h-10">
         {error && (
-          <p
-            id={errorId}
-            role="alert"
-            className="text-sm leading-5 font-semibold text-red-700"
-          >
+          <p id={errorId} role="alert" className="text-sm leading-5 font-semibold text-red-700">
             {error}
           </p>
         )}
       </div>
     ) : (
       error && (
-        <p
-          id={errorId}
-          role="alert"
-          className="mb-2 text-sm font-semibold text-red-700"
-        >
+        <p id={errorId} role="alert" className="mb-2 text-sm font-semibold text-red-700">
           {error}
         </p>
       )
     )}
+
     <div className="relative">{children}</div>
   </div>
 );
