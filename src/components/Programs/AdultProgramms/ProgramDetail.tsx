@@ -20,7 +20,7 @@ import type { ProgramAdults } from "../../../types/program";
 import type { LangKey } from "../../../types/types";
 import { PageLoader } from "../../ui/PageLoader";
 import toast from "react-hot-toast";
-import { CourseRegistrationForm, type CourseRegistrationData } from "./CourseRegistrationForm";
+import { CourseRegistrationForm } from "./CourseRegistrationForm";
 
 export const ProgramDetail = () => {
   const [program, setProgram] = useState<ProgramAdults | null>(null);
@@ -90,10 +90,6 @@ export const ProgramDetail = () => {
     } finally {
       setIsSaving(false);
     }
-  };
-
-  const handleRegistration = (data: CourseRegistrationData) => {
-    console.log("Course registration data:", data);
   };
 
   if (isLoading) return <PageLoader visible />;
@@ -475,7 +471,7 @@ export const ProgramDetail = () => {
             <CourseRegistrationForm
               courseId={program.id}
               courseTitle={localizedTitle}
-              onSubmit={handleRegistration}
+              courseIsActive={isActive}
             />
           </div>
         </div>

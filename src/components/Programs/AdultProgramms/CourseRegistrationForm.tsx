@@ -30,7 +30,7 @@ interface CourseRegistrationFormProps {
   courseId: string;
   courseTitle: string;
   courseIsActive: boolean;
-  onSubmit: (data: CourseRegistrationData) => void | Promise<void>;
+  onSubmit?: (data: CourseRegistrationData) => void | Promise<void>;
 }
 
 interface RequiredIndicatorProps {
@@ -160,7 +160,7 @@ export const CourseRegistrationForm = ({
         );
       }
 
-      await onSubmit(formData);
+      await onSubmit?.(formData);
       setIsSubmitted(true);
     } catch (error) {
       console.error("Course registration error:", error);
