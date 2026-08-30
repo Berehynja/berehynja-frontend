@@ -17,6 +17,7 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { TurnstileWidget } from "./../TurnstileWidget/TurnstileWidget";
 
 export interface JoinFormData {
   fullName: string;
@@ -24,6 +25,10 @@ export interface JoinFormData {
   phone: string;
   message: string;
   acceptedPrivacy: boolean;
+  submittedAt: string;
+  timezone: string;
+  formName: string;
+  turnstileToken: string;
 }
 
 interface JoinModalProps {
@@ -47,10 +52,14 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
   const [submitError, setSubmitError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileVersion, setTurnstileVersion] = useState(0);
 
   const isNameValid = fullName.trim().length >= 2;
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-  const isFormComplete = isNameValid && isEmailValid && acceptedPrivacy;
+  const isFormFieldsComplete = isNameValid && isEmailValid && acceptedPrivacy;
+  const isTurnstileValid = turnstileToken.trim().length > 0;
+  const isFormComplete = isFormFieldsComplete && isTurnstileValid;
   const nameInvalid = showValidationErrors && !isNameValid;
   const emailInvalid = showValidationErrors && !isEmailValid;
   const privacyInvalid = showValidationErrors && !acceptedPrivacy;
@@ -65,6 +74,8 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
     setSubmitError(false);
     setIsSubmitting(false);
     setIsSubmitted(false);
+    setTurnstileToken("");
+    setTurnstileVersion((value) => value + 1);
   }, []);
 
   const handleClose = useCallback(() => {
@@ -100,7 +111,7 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
     event.preventDefault();
     if (isSubmitting) return;
 
-    if (!isFormComplete) {
+    if (!isFormFieldsComplete) {
       setShowValidationErrors(true);
 
       const firstInvalidFieldId = !isNameValid
@@ -113,22 +124,48 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
       return;
     }
 
+    if (!isTurnstileValid) {
+      setSubmitError(true);
+      setTurnstileVersion((value) => value + 1);
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError(false);
 
     try {
-      await onSubmit?.({
+      const formData: JoinFormData = {
         fullName: fullName.trim(),
         email: email.trim(),
         phone: phone.trim(),
         message: message.trim(),
         acceptedPrivacy,
+        submittedAt: new Date().toISOString(),
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        formName: "join_form",
+        turnstileToken,
+      };
+
+      const response = await fetch("/api/forms", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
+
+      if (!response.ok) {
+        throw new Error(`Join form submission error: ${response.status}`);
+      }
+
+      await onSubmit?.(formData);
 
       setIsSubmitted(true);
     } catch (error) {
       console.error("Join form submission error:", error);
       setSubmitError(true);
+      setTurnstileToken("");
+      setTurnstileVersion((value) => value + 1);
     } finally {
       setIsSubmitting(false);
     }
@@ -379,6 +416,12 @@ export const JoinModal = ({ isOpen, onClose, onSubmit }: JoinModalProps) => {
                   {t("joinModal.submitError")}
                 </p>
               )}
+
+              <TurnstileWidget
+                key={turnstileVersion}
+                action="join_form"
+                onVerify={setTurnstileToken}
+              />
 
               <button
                 type="submit"

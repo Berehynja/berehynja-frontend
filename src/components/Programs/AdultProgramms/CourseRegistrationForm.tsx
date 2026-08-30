@@ -10,19 +10,26 @@ import {
 import { useId, useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { TurnstileWidget } from "./../../TurnstileWidget/TurnstileWidget";
 
 export interface CourseRegistrationData {
   courseId: string;
   courseTitle: string;
+  courseIsActive: boolean;
   fullName: string;
   email: string;
   phone: string;
   acceptedPrivacy: boolean;
+  submittedAt: string;
+  timezone: string;
+  formName: string;
+  turnstileToken: string;
 }
 
 interface CourseRegistrationFormProps {
   courseId: string;
   courseTitle: string;
+  courseIsActive: boolean;
   onSubmit: (data: CourseRegistrationData) => void | Promise<void>;
 }
 
@@ -40,6 +47,7 @@ const RequiredIndicator = ({ label }: RequiredIndicatorProps) => (
 export const CourseRegistrationForm = ({
   courseId,
   courseTitle,
+  courseIsActive,
   onSubmit,
 }: CourseRegistrationFormProps) => {
   const { t } = useTranslation();
@@ -59,12 +67,16 @@ export const CourseRegistrationForm = ({
   const [submitError, setSubmitError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileVersion, setTurnstileVersion] = useState(0);
 
   const isNameValid = fullName.trim().length >= 2;
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const isPhoneValid = phone.replace(/\D/g, "").length >= 6;
-  const isFormComplete =
+  const isFormFieldsComplete =
     isNameValid && isEmailValid && isPhoneValid && acceptedPrivacy;
+  const isTurnstileValid = turnstileToken.trim().length > 0;
+  const isFormComplete = isFormFieldsComplete && isTurnstileValid;
   const nameInvalid = showValidationErrors && !isNameValid;
   const emailInvalid = showValidationErrors && !isEmailValid;
   const phoneInvalid = showValidationErrors && !isPhoneValid;
@@ -74,7 +86,7 @@ export const CourseRegistrationForm = ({
     event.preventDefault();
     if (isSubmitting) return;
 
-    if (!isFormComplete) {
+    if (!isFormFieldsComplete) {
       setShowValidationErrors(true);
 
       const firstInvalidFieldId = !isNameValid
@@ -89,22 +101,51 @@ export const CourseRegistrationForm = ({
       return;
     }
 
+    if (!isTurnstileValid) {
+      setSubmitError(true);
+      setTurnstileVersion((value) => value + 1);
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError(false);
 
     try {
-      await onSubmit({
+      const formData: CourseRegistrationData = {
         courseId,
         courseTitle,
+        courseIsActive,
         fullName: fullName.trim(),
         email: email.trim(),
         phone: phone.trim(),
         acceptedPrivacy,
+        submittedAt: new Date().toISOString(),
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        formName: "course_registration",
+        turnstileToken,
+      };
+
+      const response = await fetch("/api/forms", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
+
+      if (!response.ok) {
+        throw new Error(
+          `Course registration error: ${response.status}`,
+        );
+      }
+
+      await onSubmit(formData);
       setIsSubmitted(true);
     } catch (error) {
       console.error("Course registration error:", error);
       setSubmitError(true);
+      setTurnstileToken("");
+      setTurnstileVersion((value) => value + 1);
     } finally {
       setIsSubmitting(false);
     }
@@ -358,6 +399,12 @@ export const CourseRegistrationForm = ({
               {t("courseRegistration.submitError")}
             </p>
           )}
+
+          <TurnstileWidget
+            key={turnstileVersion}
+            action="course_registration"
+            onVerify={setTurnstileToken}
+          />
 
           <button
             type="submit"

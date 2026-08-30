@@ -153,8 +153,8 @@ export const TurnstileWidget = ({
       <div
         className={
           widgetSize === "compact"
-            ? "mx-auto w-[150px]"
-            : "w-[300px] max-w-full"
+            ? "mx-auto w-37.5"
+            : "w-75 max-w-full"
         }
       >
         <div ref={containerRef} />
