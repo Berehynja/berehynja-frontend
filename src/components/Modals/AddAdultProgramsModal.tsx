@@ -407,11 +407,11 @@ export const AddProgramModal = ({
 
               {formData.image ? (
                 <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-100">
-                  <div className="aspect-16/6 max-h-72 overflow-hidden">
+                  <div className="flex h-64 items-center justify-center overflow-hidden bg-slate-100">
                     <img
                       src={formData.image}
                       alt={formData.title[activeLang] || modalTitle}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-contain"
                     />
                   </div>
 

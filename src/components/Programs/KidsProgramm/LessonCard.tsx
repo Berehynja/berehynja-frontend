@@ -16,15 +16,8 @@ interface LessonCardProps {
   onEdit?: (program: Program) => void;
 }
 
-const getLessonImageUrl = (
-  url: string,
-  width: number,
-  height: number,
-) =>
-  optimizeCloudinaryImage(
-    url,
-    `f_auto,q_auto:good,c_fill,g_auto,w_${width},h_${height}`,
-  );
+const getLessonImageUrl = (url: string, width: number) =>
+  optimizeCloudinaryImage(url, `f_auto,q_auto:good,c_limit,w_${width}`);
 
 export function LessonCard({ lesson, onEdit }: LessonCardProps) {
   const { i18n } = useTranslation();
@@ -34,15 +27,12 @@ export function LessonCard({ lesson, onEdit }: LessonCardProps) {
   const cardButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  const currentLang = (
-    i18n.resolvedLanguage || i18n.language
-  ).split("-")[0] as LangKey;
+  const currentLang = (i18n.resolvedLanguage || i18n.language).split("-")[0] as LangKey;
 
   const style = COLOR_STYLES[lesson.color] || COLOR_STYLES.RoyalBlue;
   const IconComponent = AVAILABLE_ICONS[lesson.iconName] || Sparkles;
   const title = lesson.title[currentLang] || lesson.title.ua;
-  const description =
-    lesson.description?.[currentLang] || lesson.description?.ua;
+  const description = lesson.description?.[currentLang] || lesson.description?.ua;
   const modalId = `lesson-modal-${lesson.id}`;
   const modalTitleId = `lesson-modal-title-${lesson.id}`;
 
@@ -74,6 +64,8 @@ export function LessonCard({ lesson, onEdit }: LessonCardProps) {
   useEffect(() => {
     if (!isModalOpen) return;
 
+    const cardButton = cardButtonRef.current;
+
     const previousBodyOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     closeButtonRef.current?.focus();
@@ -95,7 +87,7 @@ export function LessonCard({ lesson, onEdit }: LessonCardProps) {
       window.clearTimeout(loadingTimeoutId);
       document.body.style.overflow = previousBodyOverflow;
       document.removeEventListener("keydown", handleKeyDown);
-      cardButtonRef.current?.focus();
+      cardButton?.focus();
     };
   }, [isModalOpen]);
 
@@ -117,19 +109,17 @@ export function LessonCard({ lesson, onEdit }: LessonCardProps) {
         >
           {lesson.image ? (
             <img
-              src={getLessonImageUrl(lesson.image, 640, 640)}
+              src={getLessonImageUrl(lesson.image, 640)}
               alt=""
               aria-hidden="true"
               width={640}
               height={640}
               loading="lazy"
               decoding="async"
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+              className="absolute inset-0 h-full w-full object-contain transition-transform duration-700 ease-out group-hover:scale-110"
             />
           ) : (
-            <div
-              className={`absolute inset-0 h-full w-full bg-linear-to-br ${style.gradient}`}
-            />
+            <div className={`absolute inset-0 h-full w-full bg-linear-to-br ${style.gradient}`} />
           )}
 
           <div className="absolute inset-0 bg-black/10 transition-colors group-hover:bg-black/25" />
@@ -193,14 +183,12 @@ export function LessonCard({ lesson, onEdit }: LessonCardProps) {
             </button>
 
             <div className="flex flex-col">
-              <div className="relative h-72 w-full sm:h-96">
+              <div className="relative h-72 w-full bg-slate-900 sm:h-96">
                 {lesson.image ? (
                   <img
-                    src={getLessonImageUrl(lesson.image, 1024, 640)}
+                    src={getLessonImageUrl(lesson.image, 1024)}
                     alt=""
                     aria-hidden="true"
-                    width={1024}
-                    height={640}
                     loading="eager"
                     decoding="async"
                     onLoad={() => setIsModalImageLoading(false)}
@@ -208,9 +196,7 @@ export function LessonCard({ lesson, onEdit }: LessonCardProps) {
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div
-                    className={`h-full w-full bg-linear-to-br ${style.gradient}`}
-                  />
+                  <div className={`h-full w-full bg-linear-to-br ${style.gradient}`} />
                 )}
 
                 <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent" />

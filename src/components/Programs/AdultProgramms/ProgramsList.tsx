@@ -269,7 +269,7 @@ export const ProgramsList = () => {
                     loading={index === 0 ? "eager" : "lazy"}
                     fetchPriority={index === 0 ? "high" : "auto"}
                     decoding="async"
-                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    className="h-full w-full object-cover transition-[filter] duration-700 ease-out group-hover:brightness-105"
                   />
 
                   <div

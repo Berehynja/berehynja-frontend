@@ -411,11 +411,11 @@ export function AddLessonModal({
 
               {form.image ? (
                 <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-100">
-                  <div className="aspect-16/7 overflow-hidden">
+                  <div className="flex max-h-72 min-h-48 items-center justify-center overflow-hidden bg-slate-100">
                     <img
                       src={form.image}
-                      alt=""
-                      className="h-full w-full object-cover"
+                      alt={form.title[activeLang] || tr("illustration")}
+                      className="max-h-72 w-full object-contain"
                     />
                   </div>
 
