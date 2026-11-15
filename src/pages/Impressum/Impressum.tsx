@@ -10,6 +10,8 @@ import {
   Mail,
   MapPin,
   Pencil,
+  Plus,
+  Trash2,
   Phone,
   Save,
   ShieldCheck,
@@ -30,8 +32,26 @@ import type { ContactData } from "../../types/contactData";
 import type { ImpressumData } from "../../types/impressumData";
 import type { LangKey } from "../../types/types";
 
-const INITIAL_DATA: ImpressumData = {
+type ImpressumWithRepresentatives = ImpressumData & {
+  representatives?: string[];
+};
+
+const normalizeImpressum = (
+  data: Partial<ImpressumWithRepresentatives> | null | undefined,
+): ImpressumWithRepresentatives => {
+  const normalized = { ...INITIAL_DATA, ...data };
+  const representatives = Array.isArray(data?.representatives)
+    ? data.representatives
+    : data?.representative?.trim()
+      ? [data.representative.trim()]
+      : [];
+
+  return { ...normalized, representatives };
+};
+
+const INITIAL_DATA: ImpressumWithRepresentatives = {
   representative: "",
+  representatives: [],
   position: "",
   registerCourt: "",
   registerNumber: "",
@@ -54,6 +74,9 @@ const UI_TEXT = {
     headerPlaceholder: "Вступний текст (необов’язково)...",
     representativePlaceholder: "Ім’я представника",
     positionPlaceholder: "Посада, наприклад Vorstand",
+    addRepresentative: "Додати співзасновника",
+    removeRepresentative: "Видалити співзасновника",
+    confirmRemoveRepresentative: "Видалити цю особу зі списку представників?",
     responsiblePlaceholder: "Ім’я та адреса відповідальної особи...",
   },
   de: {
@@ -66,6 +89,9 @@ const UI_TEXT = {
     headerPlaceholder: "Einleitungstext (optional)...",
     representativePlaceholder: "Name der vertretungsberechtigten Person",
     positionPlaceholder: "Position, zum Beispiel Vorstand",
+    addRepresentative: "Mitgründer hinzufügen",
+    removeRepresentative: "Mitgründer entfernen",
+    confirmRemoveRepresentative: "Diese Person aus der Vertreterliste entfernen?",
     responsiblePlaceholder: "Name und Anschrift der verantwortlichen Person...",
   },
   en: {
@@ -78,6 +104,9 @@ const UI_TEXT = {
     headerPlaceholder: "Introductory text (optional)...",
     representativePlaceholder: "Representative’s name",
     positionPlaceholder: "Position, for example Vorstand",
+    addRepresentative: "Add co-founder",
+    removeRepresentative: "Remove co-founder",
+    confirmRemoveRepresentative: "Remove this person from the list of representatives?",
     responsiblePlaceholder: "Name and address of the responsible person...",
   },
 } as const;
@@ -88,9 +117,9 @@ export const Impressum = () => {
   const [editingBlock, setEditingBlock] = useState<EditableBlock | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [legalData, setLegalData] = useState<ImpressumData>(INITIAL_DATA);
+  const [legalData, setLegalData] = useState<ImpressumWithRepresentatives>(INITIAL_DATA);
   const [savedLegalData, setSavedLegalData] =
-    useState<ImpressumData>(INITIAL_DATA);
+    useState<ImpressumWithRepresentatives>(INITIAL_DATA);
   const [contacts, setContacts] = useState<ContactData | null>(null);
 
   const detectedLanguage = (i18n.resolvedLanguage || i18n.language)
@@ -103,7 +132,7 @@ export const Impressum = () => {
 
   useEffect(() => {
     const unsubscribeImpressum = subscribeToImpressum((data) => {
-      const normalizedData = { ...INITIAL_DATA, ...data };
+      const normalizedData = normalizeImpressum(data);
       setLegalData(normalizedData);
       setSavedLegalData(normalizedData);
     });
@@ -126,6 +155,32 @@ export const Impressum = () => {
     setLegalData((previous) => ({ ...previous, [name]: value }));
   };
 
+  const handleRepresentativeChange = (index: number, value: string) => {
+    setLegalData((previous) => ({
+      ...previous,
+      representatives: (previous.representatives || []).map((name, i) =>
+        i === index ? value : name,
+      ),
+    }));
+  };
+
+  const handleAddRepresentative = () => {
+    setLegalData((previous) => ({
+      ...previous,
+      representatives: [...(previous.representatives || []), ""],
+    }));
+  };
+
+  const handleRemoveRepresentative = (index: number) => {
+    if (!window.confirm(text.confirmRemoveRepresentative)) return;
+    setLegalData((previous) => ({
+      ...previous,
+      representatives: (previous.representatives || []).filter(
+        (_, i) => i !== index,
+      ),
+    }));
+  };
+
   const handleStartEditing = (block: EditableBlock) => {
     setSavedLegalData({ ...legalData });
     setEditingBlock(block);
@@ -142,8 +197,19 @@ export const Impressum = () => {
     setIsSaving(true);
 
     try {
-      await saveImpressum(legalData);
-      setSavedLegalData({ ...legalData });
+      const representatives = (legalData.representatives || [])
+        .map((name) => name.trim())
+        .filter(Boolean);
+      const updatedData = {
+        ...legalData,
+        representatives,
+        // Preserve the old single-name field for compatibility with existing data.
+        representative: representatives[0] || "",
+        position: "",
+      };
+      await saveImpressum(updatedData);
+      setLegalData(updatedData);
+      setSavedLegalData(updatedData);
       setEditingBlock(null);
       toast.success(text.saved);
     } catch (error) {
@@ -273,29 +339,57 @@ export const Impressum = () => {
           >
             {editingBlock === "representative" ? (
               <div className="space-y-3">
-                <input
-                  name="representative"
-                  value={legalData.representative}
-                  onChange={handleChange}
-                  className={inputClassName}
-                  placeholder={text.representativePlaceholder}
-                />
-                <input
-                  name="position"
-                  value={legalData.position}
-                  onChange={handleChange}
-                  className={inputClassName}
-                  placeholder={text.positionPlaceholder}
-                />
+                {(legalData.representatives || []).map((name, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <input
+                      value={name}
+                      onChange={(event) =>
+                        handleRepresentativeChange(index, event.target.value)
+                      }
+                      className={inputClassName}
+                      placeholder={text.representativePlaceholder}
+                      aria-label={`${text.representativePlaceholder} ${index + 1}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveRepresentative(index)}
+                      disabled={isSaving}
+                      aria-label={text.removeRepresentative}
+                      title={text.removeRepresentative}
+                      className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-red-200 bg-white text-red-600 transition hover:bg-red-50 disabled:opacity-50"
+                    >
+                      <Trash2 size={18} aria-hidden="true" />
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={handleAddRepresentative}
+                  disabled={isSaving}
+                  className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-700 transition hover:bg-blue-100 disabled:opacity-50"
+                >
+                  <Plus size={18} aria-hidden="true" />
+                  {text.addRepresentative}
+                </button>
               </div>
             ) : (
-              <div>
-                <p className="text-lg font-semibold text-slate-950 md:text-xl">
-                  {legalData.representative || "Nicht angegeben"}
-                </p>
-                <p className="mt-2 inline-flex rounded-lg border border-slate-200 bg-slate-100 px-3 py-1 text-sm font-semibold tracking-wide text-slate-600 uppercase">
-                  {legalData.position || "Nicht angegeben"}
-                </p>
+              <div className="space-y-2">
+                {(legalData.representatives || []).filter(Boolean).length ? (
+                  (legalData.representatives || [])
+                    .filter(Boolean)
+                    .map((name, index) => (
+                      <p
+                        key={`${index}-${name}`}
+                        className="text-lg font-semibold text-slate-950 md:text-xl"
+                      >
+                        {name}
+                      </p>
+                    ))
+                ) : (
+                  <p className="text-lg font-semibold text-slate-950 md:text-xl">
+                    Nicht angegeben
+                  </p>
+                )}
               </div>
             )}
           </LegalCard>

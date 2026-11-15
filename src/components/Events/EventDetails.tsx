@@ -17,7 +17,6 @@ import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
-
 import { db } from "../../firebase";
 import { getEventById } from "../../services/eventsService";
 import type { Event } from "../../types/event";
@@ -25,7 +24,6 @@ import type { LangKey } from "../../types/types";
 import { useAuth } from "../AuthProvider/useAuth";
 import { AddMediaModal } from "../Modals/AddMediaModal";
 import { PageLoader } from "../ui/PageLoader";
-
 interface MediaItem {
   id: string;
   url: string;
@@ -33,81 +31,63 @@ interface MediaItem {
   type: "image" | "video";
   publicId?: string;
 }
-
 type MediaCategory = "images" | "videos";
-
 const DATE_LOCALES: Record<LangKey, string> = {
   ua: "uk-UA",
   de: "de-DE",
   en: "en-GB",
 };
-
 const getCurrentLanguage = (language: string): LangKey => {
   const normalizedLanguage = language.split("-")[0].toLowerCase();
-
   return ["ua", "de", "en"].includes(normalizedLanguage)
     ? (normalizedLanguage as LangKey)
     : "ua";
 };
-
 const getYouTubeId = (value: string): string | null => {
   try {
     const url = new URL(value);
     const hostname = url.hostname.replace("www.", "");
-
     if (hostname === "youtu.be") {
       const id = url.pathname.split("/").filter(Boolean)[0];
       return id?.length === 11 ? id : null;
     }
-
     if (hostname === "youtube.com" || hostname === "m.youtube.com") {
       const queryId = url.searchParams.get("v");
       if (queryId?.length === 11) return queryId;
-
       const pathParts = url.pathname.split("/").filter(Boolean);
       const supportedPrefix = ["embed", "shorts", "live"].includes(
         pathParts[0] ?? "",
       );
       const pathId = supportedPrefix ? pathParts[1] : null;
-
       return pathId?.length === 11 ? pathId : null;
     }
   } catch {
     const fallbackMatch = value.match(
       /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/))([\w-]{11})/,
     );
-
     return fallbackMatch?.[1] ?? null;
   }
-
   return null;
 };
-
 const getCloudinaryUrl = (url: string, transformation: string) => {
   if (!url.includes("cloudinary.com") || !url.includes("/upload/")) {
     return url;
   }
-
   return url.replace("/upload/", `/upload/${transformation}/`);
 };
-
 const formatEventDate = (dateValue: string, language: LangKey) => {
   const date = new Date(dateValue);
-
   if (Number.isNaN(date.getTime())) return "";
-
   return date.toLocaleDateString(DATE_LOCALES[language], {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
 };
-
 export const EventDetails = () => {
   const { eventId } = useParams();
   const { t, i18n } = useTranslation();
   const { isAdmin } = useAuth();
-
   const [event, setEvent] = useState<Event | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isBannerLoading, setIsBannerLoading] = useState(false);
@@ -118,36 +98,28 @@ export const EventDetails = () => {
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
   const [deletingMediaId, setDeletingMediaId] = useState<string | null>(null);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-
   const currentLang = getCurrentLanguage(
     i18n.resolvedLanguage || i18n.language,
   );
-
   useEffect(() => {
     let isActive = true;
-
     const loadEvent = async () => {
       setIsLoading(true);
       setEvent(null);
       setSelectedMedia(null);
       setIsDescriptionExpanded(false);
       setActiveCategory("images");
-
       if (!eventId) {
         setIsLoading(false);
         return;
       }
-
       try {
         const eventData = await getEventById(eventId);
-
         if (!isActive) return;
-
         setEvent(eventData);
         setIsBannerLoading(Boolean(eventData?.imageBanner));
       } catch (error) {
         if (!isActive) return;
-
         console.error("Event loading error:", error);
         setEvent(null);
         toast.error(t("events.details.loadError"));
@@ -155,32 +127,24 @@ export const EventDetails = () => {
         if (isActive) setIsLoading(false);
       }
     };
-
     void loadEvent();
-
     return () => {
       isActive = false;
     };
   }, [eventId, t]);
-
   useEffect(() => {
     if (!selectedMedia) return;
-
     const previousOverflow = document.body.style.overflow;
-
     const handleKeyDown = (keyboardEvent: KeyboardEvent) => {
       if (keyboardEvent.key === "Escape") setSelectedMedia(null);
     };
-
     document.body.style.overflow = "hidden";
     document.addEventListener("keydown", handleKeyDown);
-
     return () => {
       document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [selectedMedia]);
-
   const title = event?.titles[currentLang] || event?.titles.ua || "";
   const description =
     event?.descriptions[currentLang] || event?.descriptions.ua || "";
@@ -188,15 +152,12 @@ export const EventDetails = () => {
   const formattedDate = event?.date
     ? formatEventDate(event.date, currentLang)
     : "";
-
   const handleOpenUpload = (type: "image" | "video") => {
     setMediaType(type);
     setIsModalOpen(true);
   };
-
   const handleAddMedia = async (url: string, publicId?: string) => {
     if (!eventId || !event) return;
-
     const category: MediaCategory = mediaType === "image" ? "images" : "videos";
     const newItem: MediaItem = {
       id: crypto.randomUUID(),
@@ -205,20 +166,16 @@ export const EventDetails = () => {
       alt: title || t("events.details.eventMedia"),
       ...(publicId ? { publicId } : {}),
     };
-
     await updateDoc(doc(db, "events", eventId), {
       [category]: arrayUnion(newItem),
     });
-
     setEvent((currentEvent) => {
       if (!currentEvent) return null;
-
       return {
         ...currentEvent,
         [category]: [...(currentEvent[category] || []), newItem],
       };
     });
-
     setActiveCategory(category);
     toast.success(
       t(
@@ -228,7 +185,6 @@ export const EventDetails = () => {
       ),
     );
   };
-
   const handleDeleteMedia = async (
     item: MediaItem,
     category: MediaCategory,
@@ -240,17 +196,13 @@ export const EventDetails = () => {
     ) {
       return;
     }
-
     setDeletingMediaId(item.id);
-
     try {
       await updateDoc(doc(db, "events", eventId), {
         [category]: arrayRemove(item),
       });
-
       setEvent((currentEvent) => {
         if (!currentEvent) return null;
-
         return {
           ...currentEvent,
           [category]: (currentEvent[category] || []).filter(
@@ -258,7 +210,6 @@ export const EventDetails = () => {
           ),
         };
       });
-
       if (selectedMedia?.id === item.id) setSelectedMedia(null);
       toast.success(t("events.details.mediaDeleted"));
     } catch (error) {
@@ -268,22 +219,18 @@ export const EventDetails = () => {
       setDeletingMediaId(null);
     }
   };
-
   const handleTabKeyDown = (
     keyboardEvent: ReactKeyboardEvent<HTMLButtonElement>,
   ) => {
     if (keyboardEvent.key !== "ArrowLeft" && keyboardEvent.key !== "ArrowRight") {
       return;
     }
-
     keyboardEvent.preventDefault();
     setActiveCategory((currentCategory) =>
       currentCategory === "images" ? "videos" : "images",
     );
   };
-
   if (isLoading) return <PageLoader visible />;
-
   if (!event) {
     return (
       <div className="font-nunito flex min-h-80 w-full flex-col items-center justify-center gap-6 px-4 text-center">
@@ -300,14 +247,11 @@ export const EventDetails = () => {
       </div>
     );
   }
-
   const photos = (event.images || []) as MediaItem[];
   const videos = (event.videos || []) as MediaItem[];
-
   return (
     <div className="font-nunito w-full px-3 py-8 md:px-4">
       <PageLoader visible={isBannerLoading} />
-
       <div className="mx-auto w-full max-w-7xl">
         <Link
           to="/events"
@@ -316,14 +260,13 @@ export const EventDetails = () => {
           <ArrowLeft size={20} aria-hidden="true" />
           {t("events.details.back")}
         </Link>
-
         <article className="mb-12 grid grid-cols-1 overflow-hidden rounded-4xl border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.1)] md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
           <div className="relative aspect-video min-h-56 overflow-hidden bg-slate-100 md:aspect-auto md:min-h-90">
             {event.imageBanner ? (
               <img
                 src={getCloudinaryUrl(
                   event.imageBanner,
-                  "f_auto,q_auto:good,c_fill,g_auto,w_1400,h_900",
+                  "f_auto,q_auto:good,c_limit,w_1400,h_900",
                 )}
                 alt={title || t("events.details.eventImage")}
                 loading="eager"
@@ -331,7 +274,7 @@ export const EventDetails = () => {
                 decoding="async"
                 onLoad={() => setIsBannerLoading(false)}
                 onError={() => setIsBannerLoading(false)}
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover object-center"
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center text-slate-400">
@@ -339,12 +282,10 @@ export const EventDetails = () => {
               </div>
             )}
           </div>
-
           <div className="flex min-w-0 flex-col justify-center p-5 md:p-7 lg:p-8">
             <h1 className="text-3xl leading-tight font-semibold tracking-tight text-slate-950 md:text-4xl">
               {title}
             </h1>
-
             <div className="mt-4 flex flex-wrap gap-2.5 text-sm font-semibold">
               {formattedDate && (
                 <div className="flex items-center gap-2 rounded-xl bg-blue-50 px-3 py-2 text-blue-700">
@@ -352,14 +293,12 @@ export const EventDetails = () => {
                   <time dateTime={event.date}>{formattedDate}</time>
                 </div>
               )}
-
               {event.time && (
                 <div className="flex items-center gap-2 rounded-xl bg-slate-100 px-3 py-2 text-slate-700">
                   <Clock3 size={17} aria-hidden="true" />
                   {event.time}
                 </div>
               )}
-
               {event.location && (
                 <div className="flex min-w-0 items-center gap-2 rounded-xl bg-amber-50 px-3 py-2 text-amber-900">
                   <MapPin size={17} className="shrink-0" aria-hidden="true" />
@@ -367,7 +306,6 @@ export const EventDetails = () => {
                 </div>
               )}
             </div>
-
             {description && (
               <div className="mt-5">
                 <p
@@ -379,7 +317,6 @@ export const EventDetails = () => {
                 >
                   {description}
                 </p>
-
                 {shouldCollapseDescription && (
                   <button
                     type="button"
@@ -400,12 +337,10 @@ export const EventDetails = () => {
             )}
           </div>
         </article>
-
         <section aria-labelledby="event-media-title">
           <h2 id="event-media-title" className="sr-only">
             {t("events.details.media")}
           </h2>
-
           <div className="mb-8 flex justify-center">
             <div
               role="tablist"
@@ -433,7 +368,6 @@ export const EventDetails = () => {
                   {photos.length}
                 </span>
               </button>
-
               <button
                 id="event-videos-tab"
                 type="button"
@@ -457,7 +391,6 @@ export const EventDetails = () => {
               </button>
             </div>
           </div>
-
           {activeCategory === "images" && (
             <div
               id="event-photos-panel"
@@ -483,7 +416,6 @@ export const EventDetails = () => {
                       </button>
                     </li>
                   )}
-
                   {photos.map((image) => (
                     <li
                       key={image.id}
@@ -506,7 +438,6 @@ export const EventDetails = () => {
                           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                       </button>
-
                       {isAdmin && (
                         <button
                           type="button"
@@ -534,7 +465,6 @@ export const EventDetails = () => {
               )}
             </div>
           )}
-
           {activeCategory === "videos" && (
             <div
               id="event-videos-panel"
@@ -560,10 +490,8 @@ export const EventDetails = () => {
                       </button>
                     </li>
                   )}
-
                   {videos.map((video) => {
                     const videoId = getYouTubeId(video.url);
-
                     return (
                       <li
                         key={video.id}
@@ -575,7 +503,6 @@ export const EventDetails = () => {
                             {video.alt || title}
                           </span>
                         </div>
-
                         <button
                           type="button"
                           onClick={() => videoId && setSelectedMedia(video)}
@@ -587,7 +514,6 @@ export const EventDetails = () => {
                             <Play size={28} className="ml-1 fill-current" aria-hidden="true" />
                           </span>
                         </button>
-
                         {isAdmin && (
                           <button
                             type="button"
@@ -618,7 +544,6 @@ export const EventDetails = () => {
           )}
         </section>
       </div>
-
       {selectedMedia && (
         <MediaViewer
           item={selectedMedia}
@@ -632,7 +557,6 @@ export const EventDetails = () => {
           onClose={() => setSelectedMedia(null)}
         />
       )}
-
       <AddMediaModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -644,12 +568,10 @@ export const EventDetails = () => {
     </div>
   );
 };
-
 interface EmptyMediaStateProps {
   icon: typeof Camera;
   text: string;
 }
-
 const EmptyMediaState = ({ icon: Icon, text }: EmptyMediaStateProps) => (
   <div
     role="status"
@@ -659,7 +581,6 @@ const EmptyMediaState = ({ icon: Icon, text }: EmptyMediaStateProps) => (
     <p className="text-base font-medium">{text}</p>
   </div>
 );
-
 interface MediaViewerProps {
   item: MediaItem;
   title: string;
@@ -667,7 +588,6 @@ interface MediaViewerProps {
   dialogLabel: string;
   onClose: () => void;
 }
-
 const MediaViewer = ({
   item,
   title,
@@ -676,7 +596,6 @@ const MediaViewer = ({
   onClose,
 }: MediaViewerProps) => {
   const videoId = item.type === "video" ? getYouTubeId(item.url) : null;
-
   return (
     <div
       role="dialog"
@@ -699,7 +618,6 @@ const MediaViewer = ({
         >
           <X size={24} aria-hidden="true" />
         </button>
-
         {item.type === "video" && videoId ? (
           <div className="aspect-video w-full overflow-hidden rounded-2xl bg-black shadow-2xl">
             <iframe

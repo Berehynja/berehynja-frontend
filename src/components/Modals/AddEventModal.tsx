@@ -1,21 +1,5 @@
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useState,
-  type ChangeEvent,
-  type FormEvent,
-} from "react";
-import {
-  Calendar,
-  CheckCircle2,
-  Clock,
-  Loader2,
-  MapPin,
-  Plus,
-  Trash2,
-  X,
-} from "lucide-react";
+import { useCallback, useEffect, useId, useState, type ChangeEvent, type FormEvent } from "react";
+import { Calendar, CheckCircle2, Clock, Loader2, MapPin, Plus, Trash2, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 
@@ -87,10 +71,7 @@ export const AddEventModal = ({
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [formData, setFormData] = useState<Event>(() =>
-    createFormData(eventToEdit),
-  );
-
+  const [formData, setFormData] = useState<Event>(() => createFormData(eventToEdit));
 
   const isBusy = isUploading || isSubmitting || isDeleting;
 
@@ -140,11 +121,7 @@ export const AddEventModal = ({
     setIsUploading(true);
 
     try {
-      const result = await uploadMedia(
-        file,
-        "banners",
-        formData.titles.ua.trim() || "event",
-      );
+      const result = await uploadMedia(file, "events", formData.titles.ua.trim() || "event");
       setFormData((currentData) => ({
         ...currentData,
         imageBanner: result.url,
@@ -195,14 +172,11 @@ export const AddEventModal = ({
     }
   };
 
-  const isLanguageFilled = (language: LangKey) =>
-    formData.titles[language].trim().length > 2;
+  const isLanguageFilled = (language: LangKey) => formData.titles[language].trim().length > 2;
 
   if (!isOpen) return null;
 
-  const modalTitle = eventToEdit
-    ? tr("editTitle")
-    : tr("createTitle");
+  const modalTitle = eventToEdit ? tr("editTitle") : tr("createTitle");
 
   return (
     <div
@@ -243,7 +217,7 @@ export const AddEventModal = ({
             disabled={isBusy}
             aria-label={tr("close")}
             title={tr("close")}
-            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-white/15 bg-black/10 text-white shadow-sm backdrop-blur-md transition hover:bg-black/20 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-white/15 bg-black/10 text-white shadow-sm backdrop-blur-md transition hover:bg-black/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             <X size={22} aria-hidden="true" />
           </button>
@@ -257,11 +231,7 @@ export const AddEventModal = ({
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <label className="flex flex-col gap-2">
               <span className="ml-1 flex items-center gap-2 text-sm font-semibold text-slate-700">
-                <Calendar
-                  size={15}
-                  className="text-blue-600"
-                  aria-hidden="true"
-                />
+                <Calendar size={15} className="text-blue-600" aria-hidden="true" />
                 {tr("date")}
               </span>
               <input
@@ -275,17 +245,13 @@ export const AddEventModal = ({
                   }))
                 }
                 required
-                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base font-medium text-slate-950 shadow-sm outline-none transition-all focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base font-medium text-slate-950 shadow-sm transition-all outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
               />
             </label>
 
             <label className="flex flex-col gap-2">
               <span className="ml-1 flex items-center gap-2 text-sm font-semibold text-slate-700">
-                <Clock
-                  size={15}
-                  className="text-purple-600"
-                  aria-hidden="true"
-                />
+                <Clock size={15} className="text-purple-600" aria-hidden="true" />
                 {tr("time")}
               </span>
               <input
@@ -298,7 +264,7 @@ export const AddEventModal = ({
                     time: event.target.value,
                   }))
                 }
-                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base font-medium text-slate-950 shadow-sm outline-none transition-all placeholder:text-slate-500 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base font-medium text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
               />
             </label>
 
@@ -317,7 +283,7 @@ export const AddEventModal = ({
                     location: event.target.value,
                   }))
                 }
-                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base font-medium text-slate-950 shadow-sm outline-none transition-all placeholder:text-slate-500 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base font-medium text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-500 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
               />
             </label>
           </div>
@@ -342,11 +308,7 @@ export const AddEventModal = ({
               >
                 {language}
                 {isLanguageFilled(language) && (
-                  <CheckCircle2
-                    size={14}
-                    className="text-emerald-600"
-                    aria-hidden="true"
-                  />
+                  <CheckCircle2 size={14} className="text-emerald-600" aria-hidden="true" />
                 )}
               </button>
             ))}
@@ -359,11 +321,9 @@ export const AddEventModal = ({
               </span>
               <input
                 value={formData.titles[activeLang]}
-                onChange={(event) =>
-                  handleLocalizedChange("titles", event.target.value)
-                }
+                onChange={(event) => handleLocalizedChange("titles", event.target.value)}
                 placeholder={tr("titlePlaceholder")}
-                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base font-medium text-slate-950 shadow-sm outline-none transition-all placeholder:text-slate-400 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base font-medium text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-400 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
               />
             </label>
 
@@ -374,35 +334,27 @@ export const AddEventModal = ({
               <textarea
                 rows={4}
                 value={formData.descriptions[activeLang]}
-                onChange={(event) =>
-                  handleLocalizedChange("descriptions", event.target.value)
-                }
-                placeholder={
-                  tr("descriptionPlaceholder")
-                }
-                className="w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base leading-7 font-medium text-slate-950 shadow-sm outline-none transition-all placeholder:text-slate-400 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                onChange={(event) => handleLocalizedChange("descriptions", event.target.value)}
+                placeholder={tr("descriptionPlaceholder")}
+                className="w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base leading-7 font-medium text-slate-950 shadow-sm transition-all outline-none placeholder:text-slate-400 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
               />
             </label>
           </div>
 
           <div className="flex flex-col gap-2">
-            <span className="ml-1 text-sm font-semibold text-slate-700">
-              {tr("mainImage")}
-            </span>
+            <span className="ml-1 text-sm font-semibold text-slate-700">{tr("mainImage")}</span>
 
             {formData.imageBanner ? (
-              <div className="group relative h-40 w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
+              <div className="group relative flex h-64 w-full items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
                 <img
                   src={formData.imageBanner}
                   alt={formData.titles[activeLang] || modalTitle}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain object-center"
                 />
 
                 <div className="absolute inset-x-0 bottom-0 flex items-center justify-end gap-2 bg-linear-to-t from-slate-950/80 to-transparent p-4 pt-10">
                   <label className="cursor-pointer rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-950 shadow-sm transition-colors hover:bg-blue-50">
-                    {isUploading
-                      ? tr("uploading")
-                      : tr("changeImage")}
+                    {isUploading ? tr("uploading") : tr("changeImage")}
                     <input
                       type="file"
                       accept="image/*"
@@ -431,19 +383,13 @@ export const AddEventModal = ({
               <label className="group flex h-32 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 text-slate-600 transition-all hover:border-blue-500 hover:bg-blue-50 hover:text-blue-700">
                 <span className="flex size-11 items-center justify-center rounded-xl bg-white text-blue-600 shadow-sm transition-transform group-hover:scale-110">
                   {isUploading ? (
-                    <Loader2
-                      size={21}
-                      className="animate-spin"
-                      aria-hidden="true"
-                    />
+                    <Loader2 size={21} className="animate-spin" aria-hidden="true" />
                   ) : (
                     <Plus size={22} aria-hidden="true" />
                   )}
                 </span>
                 <span className="text-sm font-semibold">
-                  {isUploading
-                    ? tr("uploading")
-                    : tr("addImage")}
+                  {isUploading ? tr("uploading") : tr("addImage")}
                 </span>
                 <input
                   type="file"
@@ -455,64 +401,55 @@ export const AddEventModal = ({
               </label>
             )}
           </div>
-
         </form>
 
         <footer className="flex shrink-0 flex-col gap-3 border-t border-slate-200 bg-slate-50 px-5 py-4 md:flex-row md:items-center md:justify-between md:px-8">
-            <div>
-              {eventToEdit?.id && onDelete && (
-                <button
-                  type="button"
-                  onClick={() => void handleDelete()}
-                  disabled={isBusy}
-                  className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
-                >
-                  {isDeleting ? (
-                    <Loader2
-                      size={17}
-                      className="animate-spin"
-                      aria-hidden="true"
-                    />
-                  ) : (
-                    <Trash2 size={17} aria-hidden="true" />
-                  )}
-                  {tr("deleteEvent")}
-                </button>
-              )}
-            </div>
-
-            <div className="flex flex-col-reverse gap-3 md:flex-row">
+          <div>
+            {eventToEdit?.id && onDelete && (
               <button
                 type="button"
-                onClick={handleClose}
+                onClick={() => void handleDelete()}
                 disabled={isBusy}
-                className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition-all hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
               >
-                {tr("cancel")}
-              </button>
-
-              <button
-                type="submit"
-                form="event-form"
-                disabled={isBusy}
-                className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition-all hover:bg-blue-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2
-                      size={16}
-                      className="animate-spin"
-                      aria-hidden="true"
-                    />
-                    {tr("saving")}
-                  </>
-                ) : eventToEdit ? (
-                  tr("saveChanges")
+                {isDeleting ? (
+                  <Loader2 size={17} className="animate-spin" aria-hidden="true" />
                 ) : (
-                  tr("publish")
+                  <Trash2 size={17} aria-hidden="true" />
                 )}
+                {tr("deleteEvent")}
               </button>
-            </div>
+            )}
+          </div>
+
+          <div className="flex flex-col-reverse gap-3 md:flex-row">
+            <button
+              type="button"
+              onClick={handleClose}
+              disabled={isBusy}
+              className="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition-all hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {tr("cancel")}
+            </button>
+
+            <button
+              type="submit"
+              form="event-form"
+              disabled={isBusy}
+              className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition-all hover:bg-blue-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+                  {tr("saving")}
+                </>
+              ) : eventToEdit ? (
+                tr("saveChanges")
+              ) : (
+                tr("publish")
+              )}
+            </button>
+          </div>
         </footer>
       </div>
     </div>
