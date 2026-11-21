@@ -26,7 +26,7 @@ const getAdultImageUrl = (url: string, width: number) =>
 const getProgramIconUrl = (url: string) =>
   optimizeCloudinaryImage(
     url,
-    "f_auto,q_auto:eco,c_fill,g_auto,w_96,h_96",
+    "f_auto,q_auto:good,c_limit,w_480",
   );
 
 export const ProgramsSection = () => {
@@ -115,169 +115,151 @@ export const ProgramsSection = () => {
       </div>
 
       <div className="font-nunito grid w-full grid-cols-1 gap-8 lg:auto-rows-fr">
-        <div className="group relative flex h-full flex-col items-stretch overflow-hidden rounded-[2.5rem] border border-gray-200 bg-white shadow-xl transition-all duration-300 hover:-translate-y-1 lg:flex-row">
-          <div className="flex shrink-0 flex-row items-center justify-center gap-4 border-b border-gray-200 p-6 text-center md:p-8 lg:w-50 lg:flex-col lg:border-r lg:border-b-0">
+        <div className="group relative flex min-h-0 flex-col overflow-hidden rounded-[2.5rem] border border-gray-200 bg-white shadow-xl transition-all duration-300 hover:-translate-y-1">
+          {/* Заголовок — окрема смуга, не стискає інформацію */}
+          <div className="flex items-center justify-center gap-4 border-b border-gray-200 px-6 py-5 text-center md:justify-start md:px-8">
             <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-emerald-100 bg-white text-emerald-700 shadow-sm">
-              <GraduationCap size={26} />
+              <GraduationCap size={26} aria-hidden="true" />
             </div>
-
             <h3 className="text-xl leading-tight font-black tracking-tight text-slate-800 uppercase">
               {texts.adultsTitle[currentLang]}
             </h3>
           </div>
 
-          <div className="flex min-w-0 flex-1 flex-col justify-center gap-4 p-6 md:p-8 lg:py-6">
-            {nextProgramAdult && (
-              <>
-                <div className="inline-flex items-center gap-2 self-start rounded-xl border border-emerald-100/30 bg-white px-3 py-1.5 text-xs font-black tracking-wider text-emerald-800 uppercase shadow-sm">
-                  <Clock size={14} aria-hidden="true" />
-                  <span className="leading-none text-slate-900">
+          {nextProgramAdult && (
+            <div className="grid min-w-0 grid-cols-1 lg:grid-cols-[minmax(0,42%)_minmax(0,1fr)]">
+              {/* Фото займає власну область зі стабільними пропорціями */}
+              <div className="relative aspect-4/3 min-w-0 overflow-hidden bg-slate-100 sm:aspect-16/9 lg:aspect-auto">
+                {nextProgramAdult.image ? (
+                  <>
+                    <img
+                      src={getAdultImageUrl(nextProgramAdult.image, 640)}
+                      srcSet={`${getAdultImageUrl(nextProgramAdult.image, 480)} 480w, ${getAdultImageUrl(nextProgramAdult.image, 640)} 640w, ${getAdultImageUrl(nextProgramAdult.image, 960)} 960w`}
+                      sizes="(min-width: 1024px) 42vw, 100vw"
+                      alt={nextProgramAdult.title[currentLang]}
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/35 via-transparent to-transparent" />
+                  </>
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center bg-emerald-100/50 text-emerald-700">
+                    <GraduationCap size={40} aria-hidden="true" />
+                  </div>
+                )}
+              </div>
+
+              {/* Інформація про курс — без стискання */}
+              <div className="flex min-w-0 flex-col gap-4 p-5 sm:p-7 xl:p-8">
+                <div className="inline-flex max-w-full items-center gap-2 self-start rounded-xl border border-emerald-100/40 bg-white px-3 py-2 text-xs font-black tracking-wide text-emerald-800 shadow-sm">
+                  <Clock size={15} className="shrink-0" aria-hidden="true" />
+                  <span className="min-w-0 break-words text-slate-900">
                     {nextProgramAdult.dateRange}
                   </span>
                 </div>
 
-                <h4 className="text-xl leading-tight font-black tracking-tight text-slate-800 md:text-2xl">
+                <h4 className="text-xl leading-tight font-black tracking-tight break-words text-slate-800 md:text-2xl">
                   {nextProgramAdult.title[currentLang]}
                 </h4>
 
-                <p className="line-clamp-3 text-[15px] leading-relaxed font-medium text-slate-600">
+                <p className="line-clamp-4 text-[15px] leading-relaxed font-medium text-slate-600">
                   {nextProgramAdult.description[currentLang]}
                 </p>
 
-                <div className="mt-1 grid w-full grid-cols-1 gap-3 xl:grid-cols-2">
+                <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2">
                   <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-emerald-100/40 bg-white/90 p-3 shadow-sm">
-                    <div className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
+                    <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
                       <MapPin size={16} aria-hidden="true" />
                     </div>
-
                     <div className="flex min-w-0 flex-col">
-                      <span className="mb-0.5 text-xs leading-none font-black tracking-wider text-slate-600 uppercase">
+                      <span className="mb-1 text-xs leading-none font-black tracking-wide text-slate-600 uppercase">
                         {texts.locationLabel[currentLang]}
                       </span>
-                      <span className="truncate text-sm leading-tight font-bold text-slate-700">
+                      <span className="min-w-0 break-words text-sm leading-tight font-bold text-slate-700">
                         {nextProgramAdult.location[currentLang]}
                       </span>
                     </div>
                   </div>
 
                   <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-emerald-100/40 bg-white/90 p-3 shadow-sm">
-                    <div className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
+                    <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
                       <Users size={16} aria-hidden="true" />
                     </div>
-
                     <div className="flex min-w-0 flex-col">
-                      <span className="mb-0.5 text-xs leading-none font-black tracking-wider text-slate-600 uppercase">
+                      <span className="mb-1 text-xs leading-none font-black tracking-wide text-slate-600 uppercase">
                         {texts.capacityLabel[currentLang]}
                       </span>
-                      <span className="truncate text-sm leading-tight font-bold text-slate-700">
+                      <span className="min-w-0 break-words text-sm leading-tight font-bold text-slate-700">
                         {nextProgramAdult.capacity[currentLang]}
                       </span>
                     </div>
                   </div>
                 </div>
-              </>
-            )}
-          </div>
-
-          {nextProgramAdult && (
-            <div className="relative order-first h-64 w-full shrink-0 overflow-hidden border-b border-emerald-100/40 md:h-104 lg:order-0 lg:h-auto lg:w-80 lg:border-b-0">
-              {nextProgramAdult.image ? (
-                <>
-                  <img
-                    src={getAdultImageUrl(nextProgramAdult.image, 640)}
-                    srcSet={`${getAdultImageUrl(nextProgramAdult.image, 480)} 480w, ${getAdultImageUrl(nextProgramAdult.image, 640)} 640w, ${getAdultImageUrl(nextProgramAdult.image, 960)} 960w`}
-                    sizes="(min-width: 1024px) 320px, 100vw"
-                    alt={nextProgramAdult.title[currentLang]}
-                    width={640}
-                    height={640}
-                    loading="lazy"
-                    decoding="async"
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-80" />
-                </>
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center bg-emerald-100/50 text-emerald-700">
-                  <GraduationCap size={40} />
-                </div>
-              )}
+              </div>
             </div>
           )}
-
-          <div className="mx-auto flex w-full max-w-md shrink-0 items-center justify-center border-t border-emerald-100/40 p-6 md:p-8 lg:mx-0 lg:w-55 lg:max-w-none lg:border-t-0 lg:border-l lg:border-emerald-100/20 lg:p-0">
+          {/* Спільний нижній ряд: кнопка не впливає на висоту фотографії */}
+          <div className="mt-auto flex justify-center border-t border-gray-200 px-5 py-4 sm:px-7 xl:px-8">
             <Link
               to="/programs/adults"
-              className="mx-6 flex w-full shrink-0 items-center justify-center gap-3 whitespace-nowrap rounded-xl bg-slate-900 px-6 py-4 text-center text-xs font-black tracking-widest text-white uppercase shadow-md transition-all duration-250 hover:bg-blue-700 active:scale-[0.97] lg:mx-0 lg:w-auto"
+              className="group/btn inline-flex w-full items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-3.5 text-center text-sm font-black tracking-wide text-white uppercase shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 active:scale-[0.98] sm:w-60"
             >
-              <span className="translate-y-px leading-none">
-                {texts.allCoursesBtn[currentLang]}
-              </span>
-              <ArrowRight
-                size={16}
-                aria-hidden="true"
-                className="shrink-0 transition-transform duration-300 group-hover:translate-x-1"
-              />
+              <span>{texts.allCoursesBtn[currentLang]}</span>
+              <ArrowRight size={17} className="shrink-0 transition-transform duration-300 group-hover/btn:translate-x-1" aria-hidden="true" />
             </Link>
           </div>
         </div>
 
-        <div className="group relative flex h-full flex-col items-stretch overflow-hidden rounded-[2.5rem] border border-gray-200 bg-white shadow-xl transition-all duration-300 hover:-translate-y-1 lg:flex-row">
-          <div className="flex shrink-0 flex-row items-center justify-center gap-4 border-b border-amber-100/60 p-6 text-center md:p-8 lg:w-50 lg:flex-col lg:border-r lg:border-b-0">
-            <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-amber-100 bg-white text-amber-700 shadow-md">
-              <Baby size={24} />
+        <div className="group relative flex min-h-0 flex-col overflow-hidden rounded-[2.5rem] border border-gray-200 bg-white shadow-xl transition-all duration-300 hover:-translate-y-1">
+          {/* Такий самий верхній заголовок, як у блоці для дорослих */}
+          <div className="flex items-center justify-center gap-4 border-b border-gray-200 px-6 py-5 text-center md:justify-start md:px-8">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-amber-100 bg-white text-amber-700 shadow-sm">
+              <Baby size={24} aria-hidden="true" />
             </div>
-
             <h3 className="text-xl leading-tight font-black tracking-tight text-slate-800 uppercase">
               {texts.kidsTitle[currentLang]}
             </h3>
           </div>
 
-          <div className="flex min-w-0 flex-1 flex-col justify-center p-6 md:p-8 lg:h-full lg:py-6">
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:h-full lg:auto-rows-fr">
-              {kidsPrograms.map((program) => (
-                <div
-                  key={program.id}
-                  className="flex h-full min-w-0 items-center gap-3 rounded-2xl border border-amber-100/40 bg-white p-2.5 shadow-sm transition-all lg:p-4"
-                >
-                  <div className="size-9 shrink-0 overflow-hidden rounded-md border border-slate-100 bg-slate-100 shadow-sm lg:size-12 lg:rounded-xl">
-                    {program.image ? (
-                      <img
-                        src={getProgramIconUrl(program.image)}
-                        alt=""
-                        width={48}
-                        height={48}
-                        loading="lazy"
-                        decoding="async"
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center bg-amber-50 text-amber-700">
-                        <Baby size={16} />
-                      </div>
-                    )}
-                  </div>
-
-                  <span className="translate-y-px truncate text-sm leading-tight font-bold text-slate-700 lg:text-[15px] lg:text-wrap">
-                    {program.title[currentLang]}
-                  </span>
+          {/* Програми на повній ширині: жодної вузької бічної колонки */}
+          <div className="grid min-h-0 flex-1 grid-cols-1 gap-2 p-4 sm:p-5 md:grid-cols-2 md:grid-rows-3 md:gap-3 xl:p-6">
+            {kidsPrograms.map((program) => (
+              <div
+                key={program.id}
+                className="flex min-h-[76px] min-w-0 items-stretch overflow-hidden rounded-2xl border border-amber-100/60 bg-white shadow-sm transition-all hover:shadow-md"
+              >
+                <div className="relative w-20 shrink-0 self-stretch overflow-hidden rounded-l-2xl rounded-r-none bg-slate-100 sm:w-24">
+                  {program.image ? (
+                    <img
+                      src={getProgramIconUrl(program.image)}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-amber-50 text-amber-700">
+                      <Baby size={20} aria-hidden="true" />
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
+
+                <span className="flex min-w-0 flex-1 items-center px-3 py-2 text-[clamp(1.125rem,calc(0.75rem+1.15vw),1.625rem)] leading-snug font-bold tracking-tight text-slate-800 sm:px-4">
+                  {program.title[currentLang]}
+                </span>
+              </div>
+            ))}
           </div>
 
-          <div className="mx-auto flex w-full max-w-md shrink-0 items-center justify-center border-t border-amber-100/20 p-6 md:p-8 lg:mx-0 lg:w-55 lg:max-w-none lg:border-t-0 lg:border-l lg:p-0">
+          {/* Такий самий нижній ряд, як у блоці для дорослих */}
+          <div className="mt-auto flex justify-center border-t border-gray-200 px-5 py-4 sm:px-7 xl:px-8">
             <Link
               to="/programs/kids"
-              className="mx-6 flex w-full shrink-0 items-center justify-center gap-3 whitespace-nowrap rounded-xl bg-slate-900 px-6 py-4 text-center text-xs font-black tracking-widest text-white uppercase shadow-md transition-all duration-300 hover:bg-amber-700 active:scale-[0.97] lg:mx-0 lg:w-auto"
+              className="group/btn inline-flex w-full items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-3.5 text-center text-sm font-black tracking-wide text-white uppercase shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-amber-700 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 active:scale-[0.98] sm:w-60"
             >
-              <span className="translate-y-px leading-none">
-                {texts.allProgramsBtn[currentLang]}
-              </span>
-              <ArrowRight
-                size={16}
-                aria-hidden="true"
-                className="shrink-0 transition-transform duration-300 group-hover:translate-x-1"
-              />
+              <span>{texts.allProgramsBtn[currentLang]}</span>
+              <ArrowRight size={17} className="shrink-0 transition-transform duration-300 group-hover/btn:translate-x-1" aria-hidden="true" />
             </Link>
           </div>
         </div>
