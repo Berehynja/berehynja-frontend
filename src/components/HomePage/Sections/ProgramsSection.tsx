@@ -129,7 +129,7 @@ export const ProgramsSection = () => {
           {nextProgramAdult && (
             <div className="grid min-w-0 grid-cols-1 lg:grid-cols-[minmax(0,42%)_minmax(0,1fr)]">
               {/* Фото займає власну область зі стабільними пропорціями */}
-              <div className="relative aspect-4/3 min-w-0 overflow-hidden bg-slate-100 sm:aspect-16/9 lg:aspect-auto">
+              <div className="relative aspect-4/3 min-w-0 overflow-hidden bg-slate-100 sm:aspect-video lg:aspect-auto">
                 {nextProgramAdult.image ? (
                   <>
                     <img
@@ -154,12 +154,12 @@ export const ProgramsSection = () => {
               <div className="flex min-w-0 flex-col gap-4 p-5 sm:p-7 xl:p-8">
                 <div className="inline-flex max-w-full items-center gap-2 self-start rounded-xl border border-emerald-100/40 bg-white px-3 py-2 text-xs font-black tracking-wide text-emerald-800 shadow-sm">
                   <Clock size={15} className="shrink-0" aria-hidden="true" />
-                  <span className="min-w-0 break-words text-slate-900">
+                  <span className="min-w-0 wrap-break-words text-slate-900">
                     {nextProgramAdult.dateRange}
                   </span>
                 </div>
 
-                <h4 className="text-xl leading-tight font-black tracking-tight break-words text-slate-800 md:text-2xl">
+                <h4 className="text-xl leading-tight font-black tracking-tight wrap-break-words text-slate-800 md:text-2xl">
                   {nextProgramAdult.title[currentLang]}
                 </h4>
 
@@ -176,7 +176,7 @@ export const ProgramsSection = () => {
                       <span className="mb-1 text-xs leading-none font-black tracking-wide text-slate-600 uppercase">
                         {texts.locationLabel[currentLang]}
                       </span>
-                      <span className="min-w-0 break-words text-sm leading-tight font-bold text-slate-700">
+                      <span className="min-w-0 wrap-break-words text-sm leading-tight font-bold text-slate-700">
                         {nextProgramAdult.location[currentLang]}
                       </span>
                     </div>
@@ -190,7 +190,7 @@ export const ProgramsSection = () => {
                       <span className="mb-1 text-xs leading-none font-black tracking-wide text-slate-600 uppercase">
                         {texts.capacityLabel[currentLang]}
                       </span>
-                      <span className="min-w-0 break-words text-sm leading-tight font-bold text-slate-700">
+                      <span className="min-w-0 wrap-break-words text-sm leading-tight font-bold text-slate-700">
                         {nextProgramAdult.capacity[currentLang]}
                       </span>
                     </div>
@@ -203,7 +203,7 @@ export const ProgramsSection = () => {
           <div className="mt-auto flex justify-center border-t border-gray-200 px-5 py-4 sm:px-7 xl:px-8">
             <Link
               to="/programs/adults"
-              className="group/btn inline-flex w-full items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-3.5 text-center text-sm font-black tracking-wide text-white uppercase shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 active:scale-[0.98] sm:w-60"
+              className="group/btn inline-flex w-full items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-3.5 text-center text-sm font-bold tracking-wide text-white uppercase shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 active:scale-[0.98] sm:w-60"
             >
               <span>{texts.allCoursesBtn[currentLang]}</span>
               <ArrowRight size={17} className="shrink-0 transition-transform duration-300 group-hover/btn:translate-x-1" aria-hidden="true" />
@@ -227,7 +227,7 @@ export const ProgramsSection = () => {
             {kidsPrograms.map((program) => (
               <div
                 key={program.id}
-                className="flex min-h-[76px] min-w-0 items-stretch overflow-hidden rounded-2xl border border-amber-100/60 bg-white shadow-sm transition-all hover:shadow-md"
+                className="flex min-h-19 min-w-0 items-stretch overflow-hidden rounded-2xl border border-amber-100/60 bg-white shadow-sm transition-all hover:shadow-md"
               >
                 <div className="relative w-20 shrink-0 self-stretch overflow-hidden rounded-l-2xl rounded-r-none bg-slate-100 sm:w-24">
                   {program.image ? (
@@ -256,7 +256,7 @@ export const ProgramsSection = () => {
           <div className="mt-auto flex justify-center border-t border-gray-200 px-5 py-4 sm:px-7 xl:px-8">
             <Link
               to="/programs/kids"
-              className="group/btn inline-flex w-full items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-3.5 text-center text-sm font-black tracking-wide text-white uppercase shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-amber-700 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 active:scale-[0.98] sm:w-60"
+              className="group/btn inline-flex w-full items-center justify-center gap-3 rounded-xl bg-slate-900 px-6 py-3.5 text-center text-sm font-bold tracking-wide text-white uppercase shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-amber-700 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 active:scale-[0.98] sm:w-60"
             >
               <span>{texts.allProgramsBtn[currentLang]}</span>
               <ArrowRight size={17} className="shrink-0 transition-transform duration-300 group-hover/btn:translate-x-1" aria-hidden="true" />
