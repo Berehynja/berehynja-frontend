@@ -229,7 +229,7 @@ export const ProgramsSection = () => {
                 key={program.id}
                 className="flex min-h-19 min-w-0 items-stretch overflow-hidden rounded-2xl border border-amber-100/60 bg-white shadow-sm transition-all hover:shadow-md"
               >
-                <div className="relative w-20 shrink-0 self-stretch overflow-hidden rounded-l-2xl rounded-r-none bg-slate-100 sm:w-24">
+                <div className="relative aspect-square w-20 shrink-0 self-center overflow-hidden rounded-l-2xl rounded-r-none bg-slate-100 sm:w-24">
                   {program.image ? (
                     <img
                       src={getProgramIconUrl(program.image)}
