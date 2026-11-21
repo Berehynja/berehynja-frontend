@@ -125,7 +125,7 @@ export const EventsSection = () => {
     });
   };
 
-  if (loading) return <PageLoader visible />;
+  if (loading) return <PageLoader visible fullscreen={false} />;
   if (eventsList.length === 0) return null;
 
   return (

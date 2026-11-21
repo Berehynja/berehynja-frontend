@@ -1,4 +1,5 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+
+import { Route, Routes } from "react-router-dom";
 
 import { Layout } from "../Layout/Layout";
 import { EventDetails } from "../Events/EventDetails";
@@ -18,12 +19,12 @@ import { Privacy } from "../../pages/Privacy/Privacy";
 import { AdultPrograms } from "../../pages/Programs/AdultPrograms";
 
 function App() {
-  const location = useLocation();
-
+  
   return (
-    <Routes location={location} key={location.pathname}>
+    <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
+
         <Route
           path="login"
           element={
@@ -32,6 +33,7 @@ function App() {
             </GuestOnlyRoute>
           }
         />
+
         <Route path="about" element={<About />} />
         <Route path="events" element={<Events />} />
         <Route path="events/:eventId" element={<EventDetails />} />

@@ -104,7 +104,7 @@ export const ProgramsSection = () => {
     void loadData();
   }, []);
 
-  if (loading) return <PageLoader visible />;
+  if (loading) return <PageLoader visible fullscreen={false} />;
 
   return (
     <section className="font-nunito w-full md:p-4">

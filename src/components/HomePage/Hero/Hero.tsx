@@ -49,8 +49,8 @@ export const Hero = () => {
       ? window.matchMedia("(max-width: 767px)").matches
       : false,
   );
-  const [isBannerReady, setIsBannerReady] = useState(false);
-  const [hasLoadingTimedOut, setHasLoadingTimedOut] = useState(false);
+  // Відстежуємо завершення завантаження поточного банера.
+  const [loadedBannerKey, setLoadedBannerKey] = useState<string | null>(null);
 
   const title = getText("hero.title", t("home.welcome"));
   const description = getText("hero.description", t("home.description"));
@@ -63,9 +63,11 @@ export const Hero = () => {
     heroMedia.mobileBannerImage?.trim() ||
     currentBanner;
 
-  const activeBanner = isMobileViewport
-    ? currentMobileBanner
-    : currentBanner;
+  const activeBanner = isMobileViewport ? currentMobileBanner : currentBanner;
+  const bannerKey = activeBanner
+    ? `${isMobileViewport ? "mobile" : "desktop"}-${activeBanner}`
+    : null;
+  const isBannerPending = Boolean(bannerKey && loadedBannerKey !== bannerKey);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 767px)");
@@ -77,22 +79,6 @@ export const Hero = () => {
     return () =>
       mediaQuery.removeEventListener("change", handleViewportChange);
   }, []);
-
-  useEffect(() => {
-    setIsBannerReady(!activeBanner);
-    setHasLoadingTimedOut(false);
-
-    if (!activeBanner) return;
-
-    const safetyTimeoutId = window.setTimeout(() => {
-      setHasLoadingTimedOut(true);
-    }, 8000);
-
-    return () => window.clearTimeout(safetyTimeoutId);
-  }, [activeBanner]);
-
-  const isHeroReady =
-    !isLoading && (isBannerReady || hasLoadingTimedOut || !activeBanner);
 
   const heroFields: FieldConfig[] = [
     {
@@ -124,12 +110,13 @@ export const Hero = () => {
 
   return (
     <>
-      <PageLoader visible={!isHeroReady} />
+      {/* Глобальний спінер залишається лише для початкових даних Hero. */}
+      <PageLoader visible={isLoading} />
 
       <section className="relative isolate w-full overflow-hidden rounded-b-3xl bg-slate-950 text-white md:min-h-170">
-        {activeBanner && (
+        {activeBanner && bannerKey && (
           <img
-            key={`${isMobileViewport ? "mobile" : "desktop"}-${activeBanner}`}
+            key={bannerKey}
             src={
               isMobileViewport
                 ? getHeroMobileImageUrl(activeBanner, 768)
@@ -148,15 +135,22 @@ export const Hero = () => {
             loading="eager"
             fetchPriority="high"
             decoding="async"
-            onLoad={() => setIsBannerReady(true)}
-            onError={() => setIsBannerReady(true)}
+            onLoad={() => setLoadedBannerKey(bannerKey)}
+            onError={() => setLoadedBannerKey(bannerKey)}
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
         )}
 
+        {/* Локальний спінер: лише всередині Hero, без блокування сторінки. */}
+        {isBannerPending && (
+          <div className="pointer-events-none absolute inset-0 z-1 flex items-center justify-center bg-slate-950/55">
+            <PageLoader visible fullscreen={false} />
+          </div>
+        )}
+
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-linear-to-b from-slate-950/75 via-slate-950/10 to-slate-950/95 md:bg-linear-to-r md:from-slate-950/95 md:via-slate-950/68 md:to-slate-950/5"
+          className="pointer-events-none absolute inset-0 bg-linear-to-b from-slate-950/75 via-slate-950/10 to-slate-950/95 md:bg-linear-to-r md:from-slate-950/95 md:via-slate-950/68 md:to-slate-950/5"
         />
 
         <div className="relative z-10 mx-auto flex min-h-170 w-full max-w-360 flex-col px-5 pt-7 pb-8 md:justify-center md:px-10 md:py-16 lg:px-14 xl:px-18">

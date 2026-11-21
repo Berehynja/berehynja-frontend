@@ -1,15 +1,24 @@
+
 interface PageLoaderProps {
   visible: boolean;
+  fullscreen?: boolean;
 }
 
-export const PageLoader = ({ visible }: PageLoaderProps) => {
+export const PageLoader = ({
+  visible,
+  fullscreen = true,
+}: PageLoaderProps) => {
   if (!visible) return null;
 
   return (
     <div
       role="status"
       aria-label="Loading"
-      className="fixed inset-0 z-9998 flex items-center justify-center bg-white"
+      className={
+        fullscreen
+          ? "fixed inset-0 z-9998 flex items-center justify-center bg-white"
+          : "flex min-h-64 w-full items-center justify-center"
+      }
     >
       <div className="flex flex-col items-center gap-5">
         <div className="relative flex size-20 items-center justify-center">
@@ -18,14 +27,7 @@ export const PageLoader = ({ visible }: PageLoaderProps) => {
             aria-hidden="true"
             className="absolute inset-0 size-full animate-spin"
           >
-            <circle
-              cx="40"
-              cy="40"
-              r="34"
-              fill="none"
-              stroke="#dbeafe"
-              strokeWidth="3"
-            />
+            <circle cx="40" cy="40" r="34" fill="none" stroke="#dbeafe" strokeWidth="3" />
             <path
               d="M40 6a34 34 0 0 1 29.45 17"
               fill="none"
@@ -85,4 +87,3 @@ export const PageLoader = ({ visible }: PageLoaderProps) => {
     </div>
   );
 };
-
